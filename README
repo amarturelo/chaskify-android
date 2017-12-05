@@ -1,0 +1,65 @@
+#login
+http://customer.chaskify.com/api/login?username=amarturelo&password=demo&remember=on&device_id=86ba6653-00d5-4008-8025-bcd33a8d3a21&device_platform=Android&lang_id=es&token=50e6136270e33c7ce418e9c9581b4d18
+
+#Disponible 1-2
+http://customer.chaskify.com/api/ChangeDutyStatus?onduty=1&lang_id=es&token=50e6136270e33c7ce418e9c9581b4d18
+
+#Calendario rango de fecha
+http://customer.chaskify.com/api/CalendarTask/?token=50e6136270e33c7ce418e9c9581b4d18&start=2017-11-27&end=2018-01-08&timeZone=300
+
+#Listar notificaciones
+http://customer.chaskify.com/api/GetNotifications?timeZone=300&lang_id=es&token=50e6136270e33c7ce418e9c9581b4d18
+
+respuesta success
+{
+    "code": 1,
+    "msg": "OK",
+    "details": [
+        {
+            "push_id": "2096",
+            "customer_id": "33",
+            "device_platform": "Android",
+            "device_id": "86ba6653-00d5-4008-8025-bcd33a8d3a21",
+            "push_title": "ASSIGN TASK",
+            "push_message": "You have new assign task 3643",
+            "push_type": "task",
+            "actions": "ASSIGN_TASK",
+            "status": "process",
+            "json_response": "{\"success\":200}",
+            "driver_id": "175",
+            "task_id": "3643",
+            "date_created": "Dic 04,2017 14:00:40",
+            "date_process": "2017-12-04 19:00:43",
+            "ip_address": "172.31.0.231",
+            "is_read": "2",
+            "message": null
+        }
+    ]
+}
+
+
+
+#Detalles de una tarea
+http://customer.chaskify.com/api/TaskDetails?task_id=3643&timeZone=300&jsonDate=2017-12-05T08:43:25.808Z&lang_id=es&token=50e6136270e33c7ce418e9c9581b4d18
+
+respuesta error
+{
+    "code": 2,
+    "msg": "Lo sentimos pero esta tarea ha sido asignada a otros",
+    "details": ""
+}
+
+#Borrar tareas
+http://customer.chaskify.com/api/clearNofications?undefined&lang_id=es&token=50e6136270e33c7ce418e9c9581b4d18
+
+#Tareas en rango de fecha
+http://customer.chaskify.com/api/getTaskByDate?date=2017/12/05&onduty=1&timeZone=300&lang_id=es&token=50e6136270e33c7ce418e9c9581b4d18
+
+respuesta
+{
+    "code": 2,
+    "msg": "No hay Tareas para hoy",
+    "details": ""
+}
+
+
