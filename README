@@ -62,4 +62,138 @@ respuesta
     "details": ""
 }
 
+#Get notifications
+http://customer.chaskify.com/api/GetNotifications?timeZone=300&lang_id=es&token=50e6136270e33c7ce418e9c9581b4d18
+
+respuesta con cosa
+
+{
+    "code": 1,
+    "msg": "OK",
+    "details": [
+        {
+            "push_id": "2103",
+            "customer_id": "164",
+            "device_platform": "Android",
+            "device_id": "86ba6653-00d5-4008-8025-bcd33a8d3a21",
+            "push_title": "Otro titulo",
+            "push_message": "Otro titulo",
+            "push_type": "campaign",
+            "actions": "private",
+            "status": "process",
+            "json_response": "{\"success\":200}",
+            "driver_id": "174",
+            "task_id": "0",
+            "date_created": "Dic 05,2017 3:48:03",
+            "date_process": "2017-12-05 08:48:07",
+            "ip_address": "172.31.0.231",
+            "is_read": "2",
+            "message": null
+        },
+        {
+            "push_id": "2102",
+            "customer_id": "164",
+            "device_platform": "Android",
+            "device_id": "86ba6653-00d5-4008-8025-bcd33a8d3a21",
+            "push_title": "Titulo del mensaje",
+            "push_message": "Cuerpo del mensaje",
+            "push_type": "campaign",
+            "actions": "private",
+            "status": "process",
+            "json_response": "{\"success\":200}",
+            "driver_id": "174",
+            "task_id": "0",
+            "date_created": "Dic 05,2017 3:46:23",
+            "date_process": "2017-12-05 08:46:27",
+            "ip_address": "172.31.0.231",
+            "is_read": "2",
+            "message": null
+        },
+        {
+            "push_id": "2085",
+            "customer_id": "164",
+            "device_platform": "Android",
+            "device_id": "86ba6653-00d5-4008-8025-bcd33a8d3a21",
+            "push_title": "asd",
+            "push_message": "asd",
+            "push_type": "campaign",
+            "actions": "private",
+            "status": "process",
+            "json_response": "{\"success\":200}",
+            "driver_id": "174",
+            "task_id": "0",
+            "date_created": "Dic 04,2017 13:16:18",
+            "date_process": "2017-12-04 18:16:20",
+            "ip_address": "172.31.0.231",
+            "is_read": "2",
+            "message": null
+        },
+        {
+            "push_id": "2084",
+            "customer_id": "164",
+            "device_platform": "Android",
+            "device_id": "86ba6653-00d5-4008-8025-bcd33a8d3a21",
+            "push_title": "asda",
+            "push_message": "asd",
+            "push_type": "campaign",
+            "actions": "private",
+            "status": "process",
+            "json_response": "{\"success\":200}",
+            "driver_id": "174",
+            "task_id": "0",
+            "date_created": "Dic 04,2017 13:09:46",
+            "date_process": "2017-12-04 18:09:51",
+            "ip_address": "172.31.0.231",
+            "is_read": "2",
+            "message": null
+        }
+    ]
+}
+
+respuesta vacia
+{
+    "code": 2,
+    "msg": "Sin notificaciones",
+    "details": ""
+}
+
+#configuraciones
+http://customer.chaskify.com/api/GetSettings?&lang_id=es&token=50e6136270e33c7ce418e9c9581b4d18
+
+respuesta
+{
+    "code": 1,
+    "msg": "OK",
+    "details": {
+        "enabled_push": "1",
+        "language": {
+            "en": "English"
+        }
+    }
+}
+
+#profile
+http://customer.chaskify.com/api/GetProfile?&lang_id=es&token=50e6136270e33c7ce418e9c9581b4d18
+
+respuesta
+{
+    "code": 1,
+    "msg": "OK",
+    "details": {
+        "team_name": "Metropolis Team",
+        "email": "amarturelo@gmail.com",
+        "phone": "+5352950107",
+        "transport_type_id": "truck",
+        "transport_type_id2": "Truck",
+        "transport_description": "Hunday Santa Fe, 2016",
+        "licence_plate": "W456t",
+        "color": "Red",
+        "driver_id": "175",
+        "driver_picture": ""
+    }
+}
+
+#update profile
+http://customer.chaskify.com/api/UpdateProfile?phone=%2B5352950107&image_filename1=https://s3-us-west-2.amazonaws.com/chaskify-backend-uploads/picture_174-23659001023.png&lang_id=es&token=5ccba8b7b051136d6e588a008e93be9a
+
 
