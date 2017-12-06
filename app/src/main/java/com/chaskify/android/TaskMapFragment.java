@@ -5,19 +5,27 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.maps.CameraUpdate;
+import com.chaskify.android.adapters.TaskSnapListAdapter;
+import com.chaskify.android.model.TaskSnapModel;
+import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -33,6 +41,8 @@ public class TaskMapFragment extends Fragment implements OnMapReadyCallback {
     private MapView mMapView;
 
     private GoogleMap mMap;
+
+    private RecyclerView mTaskSnapList;
 
 
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
@@ -84,8 +94,41 @@ public class TaskMapFragment extends Fragment implements OnMapReadyCallback {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mMapView = view.findViewById(R.id.map);
+        mTaskSnapList = view.findViewById(R.id.task_snap_list);
         mMapView.onCreate(savedInstanceState);
         mMapView.getMapAsync(this);
+
+        initTaskSnapList();
+    }
+
+    private void initTaskSnapList() {
+        SnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(mTaskSnapList);
+
+        mTaskSnapList.setLayoutManager(new LinearLayoutManager(getContext(),
+                LinearLayoutManager.HORIZONTAL, false));
+
+
+
+        List<TaskSnapModel> taskSnapModels = new ArrayList<>();
+        taskSnapModels.add(new TaskSnapModel()
+                .setAddress("Edificio 28b apto 7, Pueblo Griffo")
+                .setClientName("Mike Hussey")
+                .setStatus("started"));
+
+        taskSnapModels.add(new TaskSnapModel()
+                .setAddress("201 Worth St, New York, United Stated")
+                .setClientName("Mike Hussey")
+                .setStatus("started"));
+
+        taskSnapModels.add(new TaskSnapModel()
+                .setAddress("calle 10 e/ aldabo y carretera, Havana, Cuba")
+                .setClientName("Contantinopla de la Luz")
+                .setStatus("started"));
+
+        TaskSnapListAdapter taskSnapListAdapter = new TaskSnapListAdapter(taskSnapModels);
+        mTaskSnapList.setAdapter(taskSnapListAdapter);
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

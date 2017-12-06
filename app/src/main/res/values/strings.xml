@@ -12,4 +12,6 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_on_duty">On Duty</string>
+    <string name="action_off_duty">Off duty</string>
 </resources>

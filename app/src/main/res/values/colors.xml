@@ -3,4 +3,9 @@
     <color name="colorPrimary">#0b5779</color>
     <color name="colorPrimaryDark">#083a51</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="disable_foreground_grey">#42221f1f</color>
+    <color name="disable_thumb_grey">#1c000000</color>
+    <color name="enable_thumb_green">#46bdbf</color>
+    <color name="task_started">#2196f3</color>
 </resources>
