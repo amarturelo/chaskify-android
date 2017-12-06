@@ -26,7 +26,7 @@ public class TaskSnapListAdapter extends RecyclerView.Adapter<TaskSnapListAdapte
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_item_card_view, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_item_card_view_2, parent, false);
         return new ViewHolder(view);
     }
 
