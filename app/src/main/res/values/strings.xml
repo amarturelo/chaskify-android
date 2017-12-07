@@ -14,4 +14,15 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="action_on_duty">On Duty</string>
     <string name="action_off_duty">Off duty</string>
+    <string name="title_activity_settings">Ajustes</string>
+    <string name="title_preference_account">Cuenta</string>
+    <string name="title_preference_profile">Perfil</string>
+    <string name="title_preference_preferences">Preferencias</string>
+    <string name="title_preference_notifications">Notificaciones</string>
+    <string name="title_preference_enable_push">Notificaciones push</string>
+    <string name="title_preference_notification_sound">Sonido</string>
+    <string name="title_preference_language">Lenguaje</string>
+    <string name="key_preference_enable_push">key_preference_enable_push</string>
+    <string name="title_activity_notifications">Notificaciones</string>
+    <string name="action_clear_all">Limpiar todas</string>
 </resources>

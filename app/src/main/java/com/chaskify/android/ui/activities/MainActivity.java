@@ -1,12 +1,12 @@
-package com.chaskify.android;
+package com.chaskify.android.ui.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources.Theme;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.support.v7.widget.Toolbar;
-import android.util.JsonReader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,24 +18,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.bugsee.library.Bugsee;
-import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
-import com.chaskify.chaskify_sdk.rest.client.LoginRestClient;
-import com.chaskify.chaskify_sdk.rest.model.ChaskifyError;
-import com.chaskify.chaskify_sdk.rest.model.login.Credentials;
+import com.chaskify.android.R;
+import com.chaskify.android.ui.fragments.TaskMapFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
     private Toolbar toolbar;
@@ -134,7 +123,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_profile) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        if (id == R.id.action_notification) {
+            Intent intent = new Intent(this, NotificationsActivity.class);
+            startActivity(intent);
             return true;
         }
 

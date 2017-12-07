@@ -1,4 +1,4 @@
-package com.chaskify.android;
+package com.chaskify.android.ui.fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -9,14 +9,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.chaskify.android.R;
 import com.chaskify.android.adapters.TaskSnapListAdapter;
 import com.chaskify.android.model.TaskSnapModel;
-import com.github.rubensousa.gravitysnaphelper.GravitySnapHelper;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
