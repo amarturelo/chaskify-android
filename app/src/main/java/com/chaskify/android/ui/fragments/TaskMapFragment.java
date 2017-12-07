@@ -16,12 +16,9 @@ import android.view.ViewGroup;
 import com.chaskify.android.R;
 import com.chaskify.android.adapters.TaskSnapListAdapter;
 import com.chaskify.android.model.TaskSnapModel;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +35,7 @@ import java.util.List;
 public class TaskMapFragment extends Fragment implements OnMapReadyCallback {
 
     private MapView mMapView;
-
-    private GoogleMap mMap;
+    private MapboxMap mMapboxMap;
 
     private RecyclerView mTaskSnapList;
 
@@ -161,13 +157,13 @@ public class TaskMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+    public void onMapReady(MapboxMap mapboxMap) {
+        mMapboxMap = mapboxMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        /*LatLng sydney = new LatLng(-34, 151);
+        mMapboxMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMapboxMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
     }
 
     /**

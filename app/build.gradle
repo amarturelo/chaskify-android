@@ -36,8 +36,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    //google play
-    implementation 'com.google.android.gms:play-services-maps:11.6.2'
     //fragmentation
     compile 'me.yokeyword:fragmentation:1.1.8'
     compile 'me.yokeyword:fragmentation-swipeback:1.1.8'
@@ -53,4 +51,9 @@ dependencies {
     compile 'com.bugsee:bugsee-android:+'
     implementation project(':logger')
     implementation project(':chaskify-sdk')
+
+    //mapbox
+    implementation ('com.mapbox.mapboxsdk:mapbox-android-sdk:5.2.0@aar'){
+        transitive = true
+    }
 }

@@ -6,6 +6,7 @@ import android.content.Context;
 import com.bugsee.library.Bugsee;
 import com.bugsee.library.events.BugseeLogLevel;
 import com.chaskify.logger.CrashReportingTree;
+import com.mapbox.mapboxsdk.Mapbox;
 
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
@@ -29,6 +30,12 @@ public class ChaskifyApp extends Application {
         super.onCreate();
         initBugReport();
         initFragmentation();
+        initMaps();
+    }
+
+    private void initMaps() {
+        // Mapbox Access token
+        Mapbox.getInstance(getApplicationContext(), getString(R.string.mapbox_maps_key));
     }
 
     private void initBugReport() {
@@ -37,7 +44,7 @@ public class ChaskifyApp extends Application {
         options.put(Bugsee.Option.ShakeToTrigger, false);
         options.put(Bugsee.Option.NotificationBarTrigger, false);
         options.put(Bugsee.Option.UseSdCard, false);
-        options.put(Bugsee.Option.VideoEnabled, false);
+        options.put (Bugsee.Option.VideoEnabled, false);
         options.put(Bugsee.Option.ScreenshotEnabled, false);
         options.put(Bugsee.Option.ExtendedVideoMode, false);
 
