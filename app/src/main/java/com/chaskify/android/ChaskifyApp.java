@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.bugsee.library.Bugsee;
 import com.bugsee.library.events.BugseeLogLevel;
+import com.chaskify.logger.CrashReportingTree;
 
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
@@ -14,6 +15,7 @@ import org.acra.config.ConfigurationBuilder;
 import java.util.HashMap;
 
 import me.yokeyword.fragmentation.Fragmentation;
+import timber.log.Timber;
 
 /**
  * Created by alberto on 5/12/17.
@@ -39,8 +41,13 @@ public class ChaskifyApp extends Application {
         options.put(Bugsee.Option.ScreenshotEnabled, false);
         options.put(Bugsee.Option.ExtendedVideoMode, false);
 
-        Bugsee.launch(this, "ffdfa3d0-b5ee-4e3a-9361-740851bc4d13",options);
-        //ACRA.init(this);
+        Bugsee.launch(this, "ffdfa3d0-b5ee-4e3a-9361-740851bc4d13", options);
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        } else {
+            Timber.plant(new CrashReportingTree());
+        }
     }
 
     private void initFragmentation() {

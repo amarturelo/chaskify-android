@@ -196,4 +196,48 @@ respuesta
 #update profile
 http://customer.chaskify.com/api/UpdateProfile?phone=%2B5352950107&image_filename1=https://s3-us-west-2.amazonaws.com/chaskify-backend-uploads/picture_174-23659001023.png&lang_id=es&token=5ccba8b7b051136d6e588a008e93be9a
 
+#gettask by date
+http://customer.chaskify.com/api/GetTaskByDate?date=2017/12/06&onduty=1&timeZone=300&lang_id=es&token=5ccba8b7b051136d6e588a008e93be9a
+
+respuesta
+{
+    "code": 1,
+    "msg": "OK",
+    "details": [
+        {
+            "task_id": "3681",
+            "customer_id": "164",
+            "task_description": "BUscar los mandados",
+            "trans_type": "service",
+            "contact_number": "+152851447",
+            "email_address": "amarturelo@outlook.com",
+            "customer_name": "Pepe",
+            "delivery_date": "2017-12-06 08:49:00",
+            "delivery_address": "Havana, Florida, Estados Unidos",
+            "team_id": "92",
+            "driver_id": "174",
+            "task_lat": "30.62380689999999",
+            "task_lng": "-84.41462899999999",
+            "customer_signature": null,
+            "customer_picture": null,
+            "status": "ASSIGNED",
+            "date_created": "2017-12-05 08:50:55",
+            "date_modified": "2017-12-05 08:53:10",
+            "ip_address": "172.31.0.231",
+            "auto_assign_type": "send_to_all",
+            "assign_started": "2017-12-05 08:50:55",
+            "assignment_status": null,
+            "tags": "new",
+            "autoassignment": "0",
+            "order_number": "45",
+            "totalTime": "0",
+            "totalMiles": "0",
+            "delivery_time": "3:49",
+            "status_raw": "ASSIGNED",
+            "trans_type_raw": "service",
+            "waypoints": "0"
+        }
+    ]
+}
+
 

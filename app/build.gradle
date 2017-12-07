@@ -47,9 +47,8 @@ dependencies {
     //okhttp
     compile 'com.squareup.okhttp3:okhttp:3.9.0'
     implementation project(':data')
-
-
     compile 'ch.acra:acra:4.9.2'
-
     compile 'com.bugsee:bugsee-android:+'
+    implementation project(':logger')
+    implementation project(':chaskify-sdk')
 }

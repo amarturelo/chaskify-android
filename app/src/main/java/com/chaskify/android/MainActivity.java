@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.support.v7.widget.Toolbar;
+import android.util.JsonReader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,15 +19,28 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bugsee.library.Bugsee;
+import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
+import com.chaskify.chaskify_sdk.rest.client.LoginRestClient;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifyError;
+import com.chaskify.chaskify_sdk.rest.model.login.Credentials;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
     private Toolbar toolbar;
     private GoogleMap mMap;
+    String json = "({\"code\":1,\"msg\":\"Autenticaci\\u00f3n Satisfactoria\",\"details\":{\"username\":\"amarturelo\",\"password\":\"demo\",\"remember\":\"\",\"todays_date\":\"Dic, 07\",\"on_duty\":1,\"token\":\"50e6136270e33c7ce418e9c9581b4d18\",\"duty_status\":\"1\",\"location_accuracy\":1,\"icons\":{\"logo_company\":\"https:\\/\\/s3-us-west-2.amazonaws.com\\/chaskify-backend-uploads\\/logo_company-42261060377.png\",\"logo_customer_location\":\"logo_customer_location-GAKSJMKC86PUZVGWQV98.png\",\"driver_icon_offline\":\"http:\\/\\/customer.chaskify.com\\/assets\\/images\\/driver-offline.png\",\"logo_driver\":\"http:\\/\\/customer.chaskify.com\\/assets\\/images\\/logo_driver.png\",\"logo_driver_route\":\"http:\\/\\/customer.chaskify.com\\/assets\\/images\\/logo_driver_route.png\",\"logo_delivery_location\":\"http:\\/\\/customer.chaskify.com\\/assets\\/images\\/logo_delivery_location.png\",\"logo_completed_delivery\":\"http:\\/\\/customer.chaskify.com\\/assets\\/images\\/logo_completed_delivery.png\",\"delivery_icon_failed\":\"http:\\/\\/customer.chaskify.com\\/assets\\/images\\/delivery_icon_failed.png\",\"logo_pickup_location\":\"http:\\/\\/customer.chaskify.com\\/assets\\/images\\/logo_pickup_location.png\",\"logo_completed_pickup\":\"http:\\/\\/customer.chaskify.com\\/assets\\/images\\/logo_completed_pickup.png\",\"pickup_icon_failed\":\"http:\\/\\/customer.chaskify.com\\/assets\\/images\\/delivery_icon_failed.png\",\"logo_service_location\":\"http:\\/\\/customer.chaskify.com\\/assets\\/images\\/logo_service_location.png\",\"logo_completed_service\":\"http:\\/\\/customer.chaskify.com\\/assets\\/images\\/logo_completed_service.png\",\"service_icon_failed\":\"http:\\/\\/customer.chaskify.com\\/assets\\/images\\/delivery_icon_failed.png\"}}})\n";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +53,34 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         initActivity(savedInstanceState);
 
-        Bugsee.logException(new Exception("test"));
         /*// Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);*/
+
+        /*LoginRestClient loginRestClient = new LoginRestClient(null);
+        loginRestClient.loginWithUser("amarturelo", "demo", new ApiCallback<Credentials>() {
+            @Override
+            public void onSuccess(Credentials info) {
+
+            }
+
+            @Override
+            public void onNetworkError(Exception e) {
+
+            }
+
+            @Override
+            public void onMatrixError(ChaskifyError e) {
+
+            }
+
+            @Override
+            public void onUnexpectedError(Exception e) {
+
+            }
+        });*/
+
     }
 
     private void initActivity(Bundle savedInstanceState) {
