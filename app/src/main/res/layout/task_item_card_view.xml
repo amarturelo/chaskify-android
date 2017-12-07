@@ -9,14 +9,20 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
+        android:paddingRight="16dp"
+        android:paddingLeft="8dp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        >
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:orientation="vertical">
+            android:layout_toLeftOf="@+id/action_status"
+            android:orientation="vertical"
+            android:paddingRight="8dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -24,10 +30,10 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/task_client_name"
+                    android:id="@+id/task_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mike Hussey"
+                    android:text="11:35 am"
                     android:textColor="@android:color/black"
                     android:textSize="24sp" />
 
@@ -38,7 +44,8 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:text="400ft"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:visibility="gone" />
             </RelativeLayout>
 
 
@@ -75,35 +82,39 @@
                     android:layout_height="24dp"
                     android:padding="4dp"
                     android:tint="@color/cardview_dark_background"
-                    app:srcCompat="@drawable/ic_time_black_24dp" />
+                    app:srcCompat="@drawable/ic_person_black_24dp" />
 
                 <TextView
-                    android:id="@+id/task_date"
+                    android:id="@+id/task_client_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="11:35 am"
+                    android:text="Alberto Marturelo"
                     android:textSize="14sp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="4dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_task_started"
-                    android:paddingBottom="4dp"
-                    android:paddingLeft="6dp"
-                    android:paddingRight="6dp"
-                    android:paddingTop="4dp"
-                    android:text="started"
-                    android:textColor="@android:color/white" />
-            </LinearLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/action_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingTop="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_task_started"
+                android:paddingBottom="4dp"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:paddingTop="4dp"
+                android:text="started"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>
