@@ -6,6 +6,7 @@ import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.model.BaseResponse;
 import com.chaskify.chaskify_sdk.rest.model.login.Credentials;
 import com.chaskify.chaskify_sdk.rest.model.login.LoginResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -13,10 +14,12 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 
 import retrofit2.Call;
@@ -40,14 +43,21 @@ public class LoginRestClient extends RestClient<LoginApi> {
     }
 
     private void login(String user, String password, final ApiCallback<Credentials> callback) {
-        mApi.login(user, password, "es").enqueue(new Callback<BaseResponse>() {
+        mApi.login(user, password, "es").enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                Timber.d("");
+            public void onResponse(Call<String> call, Response<String> response) {
+                ObjectMapper mapper = new ObjectMapper();
+                try {
+                    BaseResponse readValue = mapper.readValue(response.body(), BaseResponse.class);
+                    Timber.d(readValue.getMsg());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
 
             @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Timber.d("");
 
             }

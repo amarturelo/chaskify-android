@@ -20,6 +20,10 @@ import android.widget.TextView;
 
 import com.chaskify.android.R;
 import com.chaskify.android.ui.fragments.TaskMapFragment;
+import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
+import com.chaskify.chaskify_sdk.rest.client.LoginRestClient;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifyError;
+import com.chaskify.chaskify_sdk.rest.model.login.Credentials;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -47,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);*/
 
-        /*LoginRestClient loginRestClient = new LoginRestClient(null);
+        LoginRestClient loginRestClient = new LoginRestClient(null);
         loginRestClient.loginWithUser("amarturelo", "demo", new ApiCallback<Credentials>() {
             @Override
             public void onSuccess(Credentials info) {
@@ -68,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onUnexpectedError(Exception e) {
 
             }
-        });*/
+        });
 
     }
 

@@ -1,9 +1,5 @@
 package com.chaskify.chaskify_sdk.rest.api;
 
-import com.chaskify.chaskify_sdk.rest.model.BaseResponse;
-import com.chaskify.chaskify_sdk.rest.model.login.LoginResponse;
-
-import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -13,7 +9,7 @@ import retrofit2.http.Query;
  */
 public interface LoginApi {
     @GET("login")
-    Call<BaseResponse> login(@Query("username") String username, @Query("password") String password, @Query("lang_id") String lang_id);
+    Call<String> login(@Query("username") String username, @Query("password") String password, @Query("lang_id") String lang_id);
 
     /**
      * Try to create an account

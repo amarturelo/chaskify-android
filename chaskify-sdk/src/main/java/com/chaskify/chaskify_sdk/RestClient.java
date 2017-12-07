@@ -1,6 +1,7 @@
 package com.chaskify.chaskify_sdk;
 
 import com.chaskify.chaskify_sdk.rest.converter.LenientGsonConverterFactory;
+import com.chaskify.chaskify_sdk.rest.converter.ToStringConverterFactory;
 import com.chaskify.chaskify_sdk.rest.model.BaseResponse;
 import com.chaskify.chaskify_sdk.rest.model.login.Credentials;
 import com.chaskify.chaskify_sdk.rest.model.login.LoginResponse;
@@ -43,7 +44,7 @@ public class RestClient<T> {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .client(mOkHttpClient)
-                .addConverterFactory(LenientGsonConverterFactory.create(getGson()))
+                .addConverterFactory(new ToStringConverterFactory())
                 .baseUrl(BASE)
                 .build();
 
