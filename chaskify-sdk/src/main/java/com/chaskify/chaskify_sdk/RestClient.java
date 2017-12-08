@@ -14,6 +14,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import timber.log.Timber;
 
 public class RestClient<T> {
 
@@ -27,10 +28,13 @@ public class RestClient<T> {
 
     protected Credentials mCredentials;
 
+    protected HomeServerConnectionConfig mHsConfig;
+
     protected OkHttpClient mOkHttpClient;
 
-    public RestClient(Credentials mCredentials, Class<T> type) {
-        this.mCredentials = mCredentials;
+    public RestClient(HomeServerConnectionConfig hsConfig, Class<T> type) {
+        this.mHsConfig = hsConfig;
+        this.mCredentials = hsConfig.getCredentials();
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);

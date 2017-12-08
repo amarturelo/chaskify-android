@@ -1,5 +1,6 @@
 package com.chaskify.chaskify_sdk.rest.client;
 
+import com.chaskify.chaskify_sdk.HomeServerConnectionConfig;
 import com.chaskify.chaskify_sdk.RestClient;
 import com.chaskify.chaskify_sdk.rest.api.LoginApi;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
@@ -33,9 +34,8 @@ import timber.log.Timber;
 
 public class LoginRestClient extends RestClient<LoginApi> {
 
-    public LoginRestClient(Credentials mCredentials) {
-        super(mCredentials, LoginApi.class);
-        Timber.tag(this.getClass().getSimpleName());
+    public LoginRestClient(HomeServerConnectionConfig hsConfig) {
+        super(hsConfig, LoginApi.class);
     }
 
     public void loginWithUser(final String user, final String password, final ApiCallback<Credentials> callback) {
@@ -43,23 +43,15 @@ public class LoginRestClient extends RestClient<LoginApi> {
     }
 
     private void login(String user, String password, final ApiCallback<Credentials> callback) {
-        mApi.login(user, password, "es").enqueue(new Callback<String>() {
+        mApi.login(user, password, mHsConfig.getLang_id()).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                ObjectMapper mapper = new ObjectMapper();
-                try {
-                    BaseResponse readValue = mapper.readValue(response.body(), BaseResponse.class);
-                    Timber.d(readValue.getMsg());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                Timber.d("");
-
+                callback.onNetworkError((Exception) t);
             }
         });
     }
