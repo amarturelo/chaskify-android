@@ -6,7 +6,6 @@ import com.chaskify.chaskify_sdk.rest.api.TaskApi;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.exceptions.TokenNotFoundException;
 import com.chaskify.chaskify_sdk.rest.model.Task;
-import com.chaskify.chaskify_sdk.rest.model.login.Credentials;
 
 import java.util.List;
 
@@ -23,25 +22,48 @@ public class TaskRestClient extends RestClient<TaskApi> {
         super(hsConfig, TaskApi.class);
     }
 
-    public void getTaskByDate(String date, int onduty, String timeZone, ApiCallback<List<Task>> callback) throws TokenNotFoundException {
+    public void taskByDate(String date, int onduty, String timeZone, ApiCallback<List<Task>> callback) throws TokenNotFoundException {
         if (mCredentials != null)
-            getTaskByDate(date, onduty, timeZone, "es", mCredentials.accessToken, callback);
+            taskByDate(date, onduty, timeZone, "es", mCredentials.accessToken, callback);
         else
             throw new TokenNotFoundException();
     }
 
-    private void getTaskByDate(String date, int onduty, String timeZone, String lang_id, String token, final ApiCallback<List<Task>> callback) {
-        mApi.taskByDate(date, onduty, timeZone, lang_id, token).enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+    private void taskByDate(String date, int onduty, String timeZone, String lang_id, String token, final ApiCallback<List<Task>> callback) {
+        mApi.taskByDate(date, onduty, timeZone, lang_id, token)
+                .enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
 
-            }
+                    }
 
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                callback.onNetworkError((Exception) t);
-            }
-        });
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        callback.onNetworkError((Exception) t);
+                    }
+                });
+    }
+
+    public void taskDetails(String task_id, ApiCallback<Task> callback) throws TokenNotFoundException {
+        if (mCredentials != null)
+            taskDetails(task_id, mHsConfig.getTimeZone(), mHsConfig.getLang_id(), mCredentials.accessToken, callback);
+        else
+            throw new TokenNotFoundException();
+    }
+
+    private void taskDetails(String task_id, String timeZone, String lang_id, String accessToken, final ApiCallback<Task> callback) {
+        mApi.taskDetails(task_id, timeZone, lang_id, accessToken)
+                .enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        callback.onNetworkError((Exception) t);
+                    }
+                });
     }
 
 }

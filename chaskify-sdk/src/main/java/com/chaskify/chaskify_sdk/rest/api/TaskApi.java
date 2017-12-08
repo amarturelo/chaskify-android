@@ -20,7 +20,6 @@ public interface TaskApi {
     @GET("TaskDetails")
     Call<String> taskDetails(
             @Query("task_id") String task_id
-            , @Query("onduty") int onduty
             , @Query("timeZone") String timeZone
             , @Query("lang_id") String lang_id
             , @Query("token") String token);

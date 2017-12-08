@@ -43,17 +43,18 @@ public class LoginRestClient extends RestClient<LoginApi> {
     }
 
     private void login(String user, String password, final ApiCallback<Credentials> callback) {
-        mApi.login(user, password, mHsConfig.getLang_id()).enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+        mApi.login(user, password, mHsConfig.getLang_id())
+                .enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
 
-            }
+                    }
 
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                callback.onNetworkError((Exception) t);
-            }
-        });
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        callback.onNetworkError((Exception) t);
+                    }
+                });
     }
 
     @Override
