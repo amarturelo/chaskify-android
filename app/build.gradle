@@ -50,10 +50,9 @@ dependencies {
     compile 'ch.acra:acra:4.9.2'
     compile 'com.bugsee:bugsee-android:+'
     implementation project(':logger')
-    implementation project(':chaskify-sdk')
-
     //mapbox
-    implementation ('com.mapbox.mapboxsdk:mapbox-android-sdk:5.2.0@aar'){
+    implementation('com.mapbox.mapboxsdk:mapbox-android-sdk:5.2.0@aar') {
         transitive = true
     }
+    implementation project(':chaskify-sdk')
 }

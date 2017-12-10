@@ -47,7 +47,11 @@ public class LoginRestClient extends RestClient<LoginApi> {
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
+                        Type type = new TypeToken<BaseResponse<LoginResponse>>() {
+                        }.getType();
 
+                        BaseResponse<LoginResponse> baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), type);
+                        Timber.d(baseResponse.toString());
                     }
 
                     @Override
@@ -62,12 +66,6 @@ public class LoginRestClient extends RestClient<LoginApi> {
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-                .registerTypeAdapter(BaseResponse.class, new JsonDeserializer<BaseResponse>() {
-                    @Override
-                    public BaseResponse deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                        return null;
-                    }
-                })
                 .create();
         return gson;
     }

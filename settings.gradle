@@ -1,1 +1,1 @@
-include ':app', ':domain', ':data', ':chaskify-sdk', ':logger'
+include ':app', ':domain', ':data',  ':logger', ':chaskify-sdk'

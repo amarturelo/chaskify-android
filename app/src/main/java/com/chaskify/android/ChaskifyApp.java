@@ -4,14 +4,10 @@ import android.app.Application;
 import android.content.Context;
 
 import com.bugsee.library.Bugsee;
-import com.bugsee.library.events.BugseeLogLevel;
 import com.chaskify.logger.CrashReportingTree;
 import com.mapbox.mapboxsdk.Mapbox;
 
-import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
-import org.acra.config.ACRAConfiguration;
-import org.acra.config.ConfigurationBuilder;
 
 import java.util.HashMap;
 
@@ -48,7 +44,7 @@ public class ChaskifyApp extends Application {
         options.put(Bugsee.Option.ScreenshotEnabled, false);
         options.put(Bugsee.Option.ExtendedVideoMode, false);
 
-        Bugsee.launch(this, "ffdfa3d0-b5ee-4e3a-9361-740851bc4d13", options);
+        Bugsee.launch(this, getString(R.string.bugsee), options);
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());

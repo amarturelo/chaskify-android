@@ -7,16 +7,16 @@ import com.google.gson.annotations.SerializedName;
  * Created by alberto on 7/12/17.
  */
 
-public class BaseResponse {
+public class BaseResponse<DETAILS> {
     @SerializedName("code")
     @Expose
     private int code;
     @SerializedName("msg")
     @Expose
     private String msg;
-    /*@SerializedName("details")
+    @SerializedName("details")
     @Expose
-    private DETAILS details;*/
+    private DETAILS details;
 
     public int getCode() {
         return code;
@@ -34,11 +34,11 @@ public class BaseResponse {
         this.msg = msg;
     }
 
-    /*public DETAILS getDetails() {
+    public DETAILS getDetails() {
         return details;
     }
 
     public void setDetails(DETAILS details) {
         this.details = details;
-    }*/
+    }
 }
