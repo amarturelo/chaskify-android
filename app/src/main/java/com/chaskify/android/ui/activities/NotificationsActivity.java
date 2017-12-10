@@ -9,17 +9,22 @@ import android.view.Menu;
 import android.view.View;
 
 import com.chaskify.android.R;
+import com.chaskify.android.ui.base.BaseActivity;
 
-public class NotificationsActivity extends AppCompatActivity {
+public class NotificationsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notifications);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.activity_notifications;
     }
 
     @Override

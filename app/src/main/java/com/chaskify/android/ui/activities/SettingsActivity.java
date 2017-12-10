@@ -8,19 +8,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.chaskify.android.R;
+import com.chaskify.android.ui.base.BaseActivity;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
-
+    @Override
+    protected int getLayout() {
+        return R.layout.activity_settings;
     }
 
 }

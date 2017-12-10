@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.chaskify.android.R;
+import com.chaskify.android.ui.base.BaseActivity;
 import com.chaskify.android.ui.fragments.TaskMapFragment;
 import com.chaskify.chaskify_sdk.HomeServerConnectionConfig;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
@@ -27,14 +28,17 @@ import com.chaskify.chaskify_sdk.rest.model.ChaskifyError;
 import com.chaskify.chaskify_sdk.rest.model.login.Credentials;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     private Toolbar toolbar;
+
+    @Override
+    protected int getLayout() {
+        return R.layout.activity_main;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
         initToolBar();
 
         initSpinner();
