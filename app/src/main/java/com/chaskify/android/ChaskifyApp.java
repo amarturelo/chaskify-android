@@ -8,6 +8,8 @@ import com.chaskify.logger.CrashReportingTree;
 
 import org.acra.annotation.ReportsCrashes;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import me.yokeyword.fragmentation.Fragmentation;
 import timber.log.Timber;
 
@@ -23,9 +25,18 @@ public class ChaskifyApp extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        initRealm();
         initBugReport();
         initFragmentation();
         initMaps();
+    }
+
+    private void initRealm() {
+        Realm.init(getApplicationContext());
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder()
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        Realm.setDefaultConfiguration(realmConfiguration);
     }
 
     private void initMaps() {
