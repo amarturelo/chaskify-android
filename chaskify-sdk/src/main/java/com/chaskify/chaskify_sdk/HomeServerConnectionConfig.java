@@ -48,6 +48,7 @@ public class HomeServerConnectionConfig {
         return this;
     }
 
+
     @Override
     public String toString() {
         return "HomeServerConnectionConfig{" +

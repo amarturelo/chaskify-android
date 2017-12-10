@@ -5,6 +5,7 @@ package com.chaskify.android;
  */
 
 public class Chaskify {
+
     private static final Chaskify ourInstance = new Chaskify();
 
     public static Chaskify getInstance() {
@@ -13,4 +14,5 @@ public class Chaskify {
 
     private Chaskify() {
     }
+
 }

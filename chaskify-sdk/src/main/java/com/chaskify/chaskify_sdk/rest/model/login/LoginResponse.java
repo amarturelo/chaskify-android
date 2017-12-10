@@ -15,7 +15,8 @@ public class LoginResponse {
     private String remember;
     @SerializedName("todays_date")
     @Expose
-    private String todaysDate;
+    private String todaysDate;    //public String refreshToken;
+
     @SerializedName("on_duty")
     @Expose
     private int onDuty;
