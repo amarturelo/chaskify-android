@@ -2,6 +2,7 @@ package com.chaskify.android;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDexApplication;
 
 import com.chaskify.logger.CrashReportingTree;
 
@@ -16,7 +17,9 @@ import timber.log.Timber;
 @ReportsCrashes(
         formUri = "https://collector.tracepot.com/72e42953"
 )
-public class ChaskifyApp extends Application {
+public class ChaskifyApp extends MultiDexApplication {
+
+
     @Override
     public void onCreate() {
         super.onCreate();

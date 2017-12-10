@@ -29,15 +29,12 @@ import java.util.List;
  * Use the {@link TaskMapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TaskMapFragment extends Fragment  {
+public class TaskMapFragment extends BaseFragment implements OnMapReadyCallback {
 
     //private MapView mMapView;
     //private MapboxMap mMapboxMap;
 
     private RecyclerView mTaskSnapList;
-
-
-    private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -75,14 +72,6 @@ public class TaskMapFragment extends Fragment  {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_task_map, container, false);
-        return view;
-    }
-
-    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //mMapView = view.findViewById(R.id.map);
@@ -99,7 +88,6 @@ public class TaskMapFragment extends Fragment  {
 
         mTaskSnapList.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.HORIZONTAL, false));
-
 
 
         List<TaskSnapModel> taskSnapModels = new ArrayList<>();
@@ -162,6 +150,11 @@ public class TaskMapFragment extends Fragment  {
         mMapboxMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMapboxMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*//*
     }*/
+
+    @Override
+    protected int getLayout() {
+        return R.layout.fragment_task_map;
+    }
 
     /**
      * This interface must be implemented by activities that contain this
