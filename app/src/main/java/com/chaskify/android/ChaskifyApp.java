@@ -3,13 +3,9 @@ package com.chaskify.android;
 import android.app.Application;
 import android.content.Context;
 
-import com.bugsee.library.Bugsee;
 import com.chaskify.logger.CrashReportingTree;
-import com.mapbox.mapboxsdk.Mapbox;
 
 import org.acra.annotation.ReportsCrashes;
-
-import java.util.HashMap;
 
 import me.yokeyword.fragmentation.Fragmentation;
 import timber.log.Timber;
@@ -31,21 +27,10 @@ public class ChaskifyApp extends Application {
 
     private void initMaps() {
         // Mapbox Access token
-        Mapbox.getInstance(getApplicationContext(), getString(R.string.mapbox_maps_key));
+        //Mapbox.getInstance(getApplicationContext(), getString(R.string.mapbox_maps_key));
     }
 
     private void initBugReport() {
-        HashMap<String, Object> options = new HashMap<>();
-        options.put(Bugsee.Option.MaxRecordingTime, 60);
-        options.put(Bugsee.Option.ShakeToTrigger, false);
-        options.put(Bugsee.Option.NotificationBarTrigger, false);
-        options.put(Bugsee.Option.UseSdCard, false);
-        options.put (Bugsee.Option.VideoEnabled, false);
-        options.put(Bugsee.Option.ScreenshotEnabled, false);
-        options.put(Bugsee.Option.ExtendedVideoMode, false);
-
-        Bugsee.launch(this, getString(R.string.bugsee), options);
-
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         } else {

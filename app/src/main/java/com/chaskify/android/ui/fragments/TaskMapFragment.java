@@ -16,9 +16,6 @@ import android.view.ViewGroup;
 import com.chaskify.android.R;
 import com.chaskify.android.adapters.TaskSnapListAdapter;
 import com.chaskify.android.model.TaskSnapModel;
-import com.mapbox.mapboxsdk.maps.MapView;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +29,10 @@ import java.util.List;
  * Use the {@link TaskMapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TaskMapFragment extends Fragment implements OnMapReadyCallback {
+public class TaskMapFragment extends Fragment  {
 
-    private MapView mMapView;
-    private MapboxMap mMapboxMap;
+    //private MapView mMapView;
+    //private MapboxMap mMapboxMap;
 
     private RecyclerView mTaskSnapList;
 
@@ -88,10 +85,10 @@ public class TaskMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mMapView = view.findViewById(R.id.map);
+        //mMapView = view.findViewById(R.id.map);
         mTaskSnapList = view.findViewById(R.id.task_snap_list);
-        mMapView.onCreate(savedInstanceState);
-        mMapView.getMapAsync(this);
+        //mMapView.onCreate(savedInstanceState);
+        //mMapView.getMapAsync(this);
 
         initTaskSnapList();
     }
@@ -136,7 +133,7 @@ public class TaskMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onPause() {
         super.onPause();
-        mMapView.onPause();
+        //mMapView.onPause();
     }
 
     @Override
@@ -156,15 +153,15 @@ public class TaskMapFragment extends Fragment implements OnMapReadyCallback {
         mListener = null;
     }
 
-    @Override
+    /*@Override
     public void onMapReady(MapboxMap mapboxMap) {
         mMapboxMap = mapboxMap;
 
         // Add a marker in Sydney and move the camera
-        /*LatLng sydney = new LatLng(-34, 151);
+        *//*LatLng sydney = new LatLng(-34, 151);
         mMapboxMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMapboxMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*/
-    }
+        mMapboxMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*//*
+    }*/
 
     /**
      * This interface must be implemented by activities that contain this
@@ -183,19 +180,19 @@ public class TaskMapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onResume() {
-        mMapView.onResume();
+        //mMapView.onResume();
         super.onResume();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mMapView.onDestroy();
+        //mMapView.onDestroy();
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        mMapView.onLowMemory();
+        //mMapView.onLowMemory();
     }
 }
