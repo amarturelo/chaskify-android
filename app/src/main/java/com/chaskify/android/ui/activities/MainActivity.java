@@ -141,6 +141,11 @@ public class MainActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public static Intent getCallingIntent(Context context) {
+        Intent intent = new Intent(context,MainActivity.class);
+        return intent;
+    }
+
     private static class MyAdapter extends ArrayAdapter<String> implements ThemedSpinnerAdapter {
         private final ThemedSpinnerAdapter.Helper mDropDownHelper;
 

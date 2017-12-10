@@ -3,6 +3,8 @@ package com.chaskify.domain.interactors;
 import com.chaskify.domain.model.HomeServerConnectionConfig;
 import com.chaskify.domain.repositories.HomeServerConfigurationRepository;
 
+import java.util.List;
+
 import io.reactivex.Single;
 
 /**
@@ -17,7 +19,7 @@ public class HomeServerConfigurationInteractor {
         this.homeServerConfigurationRepository = homeServerConfigurationRepository;
     }
 
-    public Single<HomeServerConnectionConfig> homeServerConnectionConfigs() {
+    public Single<List<HomeServerConnectionConfig>> homeServerConnectionConfigs() {
         return homeServerConfigurationRepository.getHomeServerConfigurations();
     }
 }

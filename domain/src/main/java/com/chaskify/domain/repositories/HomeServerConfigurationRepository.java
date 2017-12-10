@@ -2,6 +2,8 @@ package com.chaskify.domain.repositories;
 
 import com.chaskify.domain.model.HomeServerConnectionConfig;
 
+import java.util.List;
+
 import io.reactivex.Single;
 
 /**
@@ -9,5 +11,5 @@ import io.reactivex.Single;
  */
 
 public interface HomeServerConfigurationRepository {
-    Single<HomeServerConnectionConfig> getHomeServerConfigurations();
+    Single<List<HomeServerConnectionConfig>> getHomeServerConfigurations();
 }

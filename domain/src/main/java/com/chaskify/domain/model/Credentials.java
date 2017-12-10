@@ -39,14 +39,7 @@ public class Credentials {
         return this;
     }
 
-    public String getDeviceId() {
-        return deviceId;
-    }
 
-    public Credentials setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-        return this;
-    }
 
     @Override
     public String toString() {

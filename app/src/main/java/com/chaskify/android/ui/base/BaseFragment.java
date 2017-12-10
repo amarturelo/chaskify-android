@@ -9,11 +9,13 @@ import android.view.ViewGroup;
 
 import com.chaskify.android.R;
 
+import me.yokeyword.fragmentation.SupportFragment;
+
 /**
  * Created by alberto on 9/12/17.
  */
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends SupportFragment {
 
     @Nullable
     @Override

@@ -6,25 +6,25 @@ import android.support.multidex.MultiDexApplication;
 
 import com.chaskify.logger.CrashReportingTree;
 
-import org.acra.annotation.ReportsCrashes;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import me.yokeyword.fragmentation.Fragmentation;
+import me.yokeyword.fragmentation.helper.ExceptionHandler;
 import timber.log.Timber;
 
 /**
  * Created by alberto on 5/12/17.
  */
-@ReportsCrashes(
-        formUri = "https://collector.tracepot.com/72e42953"
-)
+
 public class ChaskifyApp extends MultiDexApplication {
 
 
     @Override
     public void onCreate() {
         super.onCreate();
+        Timber.tag(this.getClass().getSimpleName());
+
         initRealm();
         initBugReport();
         initFragmentation();
@@ -56,6 +56,12 @@ public class ChaskifyApp extends MultiDexApplication {
         Fragmentation.builder()
                 .stackViewMode(Fragmentation.BUBBLE)
                 .debug(BuildConfig.DEBUG)
+                .handleException(new ExceptionHandler() {
+                    @Override
+                    public void onException(Exception e) {
+                        Timber.e(e);
+                    }
+                })
                 .install();
     }
 

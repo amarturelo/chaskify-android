@@ -37,9 +37,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-
     compile 'com.android.support:multidex:1.0.1'
-
     //fragmentation
     compile 'me.yokeyword:fragmentation:1.1.8'
     compile 'me.yokeyword:fragmentation-swipeback:1.1.8'
@@ -51,9 +49,7 @@ dependencies {
     //okhttp
     compile 'com.squareup.okhttp3:okhttp:3.9.1'
     implementation project(':data')
-    compile 'ch.acra:acra:4.9.2'
     implementation project(':logger')
-
     implementation project(':chaskify-sdk')
-
+    implementation project(':domain')
 }

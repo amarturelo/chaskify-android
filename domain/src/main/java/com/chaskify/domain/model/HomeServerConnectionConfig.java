@@ -5,18 +5,13 @@ package com.chaskify.domain.model;
  */
 
 public class HomeServerConnectionConfig {
+    private boolean isDefault;
     private String timeZone;
     private String lang_id;
     private Credentials credentials;
+    private String deviceId;
 
-    public HomeServerConnectionConfig(String timeZone, String lang_id, Credentials credentials) {
-        this.timeZone = timeZone;
-        this.lang_id = lang_id;
-        this.credentials = credentials;
-    }
-
-    public HomeServerConnectionConfig(String timeZone, String lang_id) {
-        this(timeZone, lang_id, null);
+    public HomeServerConnectionConfig() {
     }
 
     public String getTimeZone() {
@@ -46,6 +41,23 @@ public class HomeServerConnectionConfig {
         return this;
     }
 
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public HomeServerConnectionConfig setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+        return this;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public HomeServerConnectionConfig setDefault(boolean aDefault) {
+        isDefault = aDefault;
+        return this;
+    }
 
     @Override
     public String toString() {
