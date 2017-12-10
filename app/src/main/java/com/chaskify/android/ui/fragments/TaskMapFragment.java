@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import com.chaskify.android.R;
 import com.chaskify.android.adapters.TaskSnapListAdapter;
 import com.chaskify.android.model.TaskSnapModel;
+import com.chaskify.android.ui.base.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ import java.util.List;
  * Use the {@link TaskMapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TaskMapFragment extends BaseFragment implements OnMapReadyCallback {
+public class TaskMapFragment extends BaseFragment {
 
     //private MapView mMapView;
     //private MapboxMap mMapboxMap;
