@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initSpinner() {
         // Setup spinner
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        Spinner spinner = findViewById(R.id.spinner);
         spinner.setAdapter(new MyAdapter(
                 toolbar.getContext()
                 , new String[]{
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                 view = convertView;
             }
 
-            TextView textView = (TextView) view.findViewById(android.R.id.text1);
+            TextView textView = view.findViewById(android.R.id.text1);
             textView.setText(getItem(position));
 
             return view;
