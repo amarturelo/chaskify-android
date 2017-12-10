@@ -15,9 +15,9 @@ import io.realm.Realm;
  * Created by alberto on 10/12/17.
  */
 
-public class RealmServerConfigurationRepository implements HomeServerConfigurationRepository {
+public class RealmServerConfigurationRepositoryImpl implements HomeServerConfigurationRepository {
 
-    public RealmServerConfigurationRepository() {
+    public RealmServerConfigurationRepositoryImpl() {
     }
 
     @Override

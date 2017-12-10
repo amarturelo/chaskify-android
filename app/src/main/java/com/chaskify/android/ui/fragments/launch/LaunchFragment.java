@@ -1,7 +1,6 @@
 package com.chaskify.android.ui.fragments.launch;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,7 +8,7 @@ import android.view.View;
 
 import com.chaskify.android.R;
 import com.chaskify.android.ui.base.BaseFragment;
-import com.chaskify.data.repositories.RealmServerConfigurationRepository;
+import com.chaskify.data.repositories.RealmServerConfigurationRepositoryImpl;
 import com.chaskify.domain.interactors.HomeServerConfigurationInteractor;
 
 /**
@@ -59,7 +58,7 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View 
 
         launchPresenter = new LaunchPresenter(
                 new HomeServerConfigurationInteractor(
-                        new RealmServerConfigurationRepository()
+                        new RealmServerConfigurationRepositoryImpl()
                 )
         );
     }
