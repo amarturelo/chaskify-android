@@ -3,7 +3,7 @@ package com.chaskify.data.repositories;
 import com.annimon.stream.Stream;
 import com.chaskify.data.model.RealmHomeServerConnectionConfig;
 import com.chaskify.domain.model.HomeServerConnectionConfig;
-import com.chaskify.domain.repositories.HomeServerConfigurationRepository;
+import com.chaskify.domain.repositories.LoginRepository;
 
 import java.util.List;
 
@@ -15,9 +15,9 @@ import io.realm.Realm;
  * Created by alberto on 10/12/17.
  */
 
-public class RealmServerConfigurationRepositoryImpl implements HomeServerConfigurationRepository {
+public class RealmLoginRepositoryImpl implements LoginRepository {
 
-    public RealmServerConfigurationRepositoryImpl() {
+    public RealmLoginRepositoryImpl() {
     }
 
     @Override

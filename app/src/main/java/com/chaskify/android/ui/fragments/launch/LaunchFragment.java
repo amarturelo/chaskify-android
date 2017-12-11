@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.chaskify.android.R;
 import com.chaskify.android.ui.base.BaseFragment;
-import com.chaskify.data.repositories.RealmServerConfigurationRepositoryImpl;
+import com.chaskify.data.repositories.RealmLoginRepositoryImpl;
 import com.chaskify.domain.interactors.HomeServerConfigurationInteractor;
 
 /**
@@ -58,7 +58,7 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View 
 
         launchPresenter = new LaunchPresenter(
                 new HomeServerConfigurationInteractor(
-                        new RealmServerConfigurationRepositoryImpl()
+                        new RealmLoginRepositoryImpl()
                 )
         );
     }

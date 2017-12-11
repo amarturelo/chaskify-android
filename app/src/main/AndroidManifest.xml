@@ -22,18 +22,15 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ui.activities.SettingsActivity"
-            android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.NotificationsActivity"
-            android:label="@string/title_activity_notifications"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activities.LoginActivity"
-            android:label="@string/title_activity_login" />
+             />
         <activity
             android:name=".ui.activities.LaunchActivity"
-            android:label="@string/title_activity_launch"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,7 +1,7 @@
 package com.chaskify.domain.interactors;
 
 import com.chaskify.domain.model.HomeServerConnectionConfig;
-import com.chaskify.domain.repositories.HomeServerConfigurationRepository;
+import com.chaskify.domain.repositories.LoginRepository;
 
 import java.util.List;
 
@@ -13,9 +13,9 @@ import io.reactivex.Single;
 
 public class HomeServerConfigurationInteractor {
 
-    private HomeServerConfigurationRepository homeServerConfigurationRepository;
+    private LoginRepository homeServerConfigurationRepository;
 
-    public HomeServerConfigurationInteractor(HomeServerConfigurationRepository homeServerConfigurationRepository) {
+    public HomeServerConfigurationInteractor(LoginRepository homeServerConfigurationRepository) {
         this.homeServerConfigurationRepository = homeServerConfigurationRepository;
     }
 

@@ -37,4 +37,5 @@ dependencies {
     implementation project(':domain')
 
 
+    compile project(path: ':chaskify-sdk')
 }
