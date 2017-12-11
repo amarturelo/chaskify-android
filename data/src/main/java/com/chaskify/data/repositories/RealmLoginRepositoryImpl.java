@@ -1,7 +1,7 @@
 package com.chaskify.data.repositories;
 
 import com.annimon.stream.Stream;
-import com.chaskify.data.model.RealmHomeServerConnectionConfig;
+import com.chaskify.data.model.internal.RealmHomeServerConnectionConfig;
 import com.chaskify.domain.model.HomeServerConnectionConfig;
 import com.chaskify.domain.repositories.LoginRepository;
 

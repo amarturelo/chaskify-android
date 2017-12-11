@@ -1,48 +1,19 @@
 package com.chaskify.data.model.internal;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 public class RealmIcons {
 
-    @SerializedName("driver_icon_offline")
-    @Expose
     private String driverIconOffline;
-    @SerializedName("logo_company")
-    @Expose
     private String logoCompany;
-    @SerializedName("logo_driver")
-    @Expose
     private String logoDriver;
-    @SerializedName("logo_driver_route")
-    @Expose
     private String logoDriverRoute;
-    @SerializedName("logo_delivery_location")
-    @Expose
     private String logoDeliveryLocation;
-    @SerializedName("logo_completed_delivery")
-    @Expose
     private String logoCompletedDelivery;
-    @SerializedName("delivery_icon_failed")
-    @Expose
     private String deliveryIconFailed;
-    @SerializedName("logo_pickup_location")
-    @Expose
     private String logoPickupLocation;
-    @SerializedName("logo_completed_pickup")
-    @Expose
     private String logoCompletedPickup;
-    @SerializedName("pickup_icon_failed")
-    @Expose
     private String pickupIconFailed;
-    @SerializedName("logo_service_location")
-    @Expose
     private String logoServiceLocation;
-    @SerializedName("logo_completed_service")
-    @Expose
     private String logoCompletedService;
-    @SerializedName("service_icon_failed")
-    @Expose
     private String serviceIconFailed;
 
     public String getDriverIconOffline() {

@@ -1,4 +1,4 @@
-package com.chaskify.data.model;
+package com.chaskify.data.model.internal;
 
 import com.chaskify.domain.model.Credentials;
 
