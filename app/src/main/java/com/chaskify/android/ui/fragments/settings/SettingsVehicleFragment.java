@@ -1,4 +1,4 @@
-package com.chaskify.android.ui.fragments;
+package com.chaskify.android.ui.fragments.settings;
 
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
@@ -13,15 +13,14 @@ import com.chaskify.android.R;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class RootSettingsFragment extends PreferenceFragment {
+public class SettingsVehicleFragment extends PreferenceFragment {
 
-    public RootSettingsFragment() {
+    public SettingsVehicleFragment() {
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.root_preferences);
+        addPreferencesFromResource(R.xml.vehicle_preferences);
     }
-
 }

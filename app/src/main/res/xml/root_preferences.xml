@@ -2,8 +2,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/title_preference_account">
+
         <Preference
-            android:key="key_preference_profile"
+            android:key="@string/key_preference_profile"
             android:title="@string/title_preference_profile" />
     </PreferenceCategory>
 
@@ -22,4 +23,5 @@
             android:summary="la ballmesa"
             android:title="@string/title_preference_notification_sound" />
     </PreferenceCategory>
+
 </PreferenceScreen>
