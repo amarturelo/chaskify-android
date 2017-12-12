@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
-        <item name="colorAccent">@color/enable_thumb_green</item>
+        <item name="colorAccent">@color/colorAccent</item>
 
     </style>
 
@@ -20,5 +20,15 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="ChaskifyButton">
+        <item name="android:textStyle">normal</item>
+        <item name="android:background">@drawable/selector_chaskify_button</item>
+        <item name="android:textColor">@color/chaskify_button_text_color</item>
+    </style>
+
+    <style name="ChaskifyEditText" parent="Base.V7.Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/bg_chaskify_edittext</item>
+        <item name="android:padding">10dp</item>
+    </style>
 
 </resources>
