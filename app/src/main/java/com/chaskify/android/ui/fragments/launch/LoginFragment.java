@@ -49,8 +49,6 @@ public class LoginFragment extends BaseFragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private LoginPresenter loginPresenter;
-
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -80,8 +78,6 @@ public class LoginFragment extends BaseFragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-        loginPresenter = new LoginPresenter();
     }
 
     @Override
@@ -131,11 +127,6 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         initView(view);
-        initMode();
-    }
-
-    private void initMode() {
-
     }
 
     private void initView(View view) {

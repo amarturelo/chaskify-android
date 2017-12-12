@@ -15,7 +15,7 @@ import com.chaskify.chaskify_sdk.rest.model.login.Credentials;
 
 public class ChaskifySession {
     private Credentials mCredentials;
-    private HomeServerConnectionConfig mHsConfig;
+    private ProfileConnectionConfig mHsConfig;
 
     private LoginRestClient mLoginRestClient;
     private ProfileRestClient mProfileRestClient;
@@ -23,15 +23,15 @@ public class ChaskifySession {
     private NotificationRestClient mNotificationRestClient;
     private SettingsRestClient mSettingsRestClient;
 
-    public ChaskifySession(HomeServerConnectionConfig mHsConfig) {
+    public ChaskifySession(ProfileConnectionConfig mHsConfig) {
         this.mHsConfig = mHsConfig;
         this.mCredentials = mHsConfig.getCredentials();
 
-        mLoginRestClient = new LoginRestClient(mHsConfig);
-        mProfileRestClient = new ProfileRestClient(mHsConfig);
-        mTaskRestClient = new TaskRestClient(mHsConfig);
-        mNotificationRestClient = new NotificationRestClient(mHsConfig);
-        mSettingsRestClient = new SettingsRestClient(mHsConfig);
+        mLoginRestClient = new LoginRestClient(mCredentials);
+        mProfileRestClient = new ProfileRestClient(mCredentials);
+        mTaskRestClient = new TaskRestClient(mCredentials);
+        mNotificationRestClient = new NotificationRestClient(mCredentials);
+        mSettingsRestClient = new SettingsRestClient(mCredentials);
     }
 
     /**
@@ -47,7 +47,7 @@ public class ChaskifySession {
         return mCredentials;
     }
 
-    public HomeServerConnectionConfig getHsConfig() {
+    public ProfileConnectionConfig getHsConfig() {
         return mHsConfig;
     }
 

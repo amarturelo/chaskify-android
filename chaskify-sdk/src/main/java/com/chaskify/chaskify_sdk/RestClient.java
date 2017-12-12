@@ -5,15 +5,10 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.chaskify.chaskify_sdk.rest.converter.LenientGsonConverterFactory;
 import com.chaskify.chaskify_sdk.rest.converter.ToStringConverterFactory;
-import com.chaskify.chaskify_sdk.rest.model.BaseResponse;
 import com.chaskify.chaskify_sdk.rest.model.login.Credentials;
-import com.chaskify.chaskify_sdk.rest.model.login.LoginResponse;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.TimeUnit;
 
@@ -21,7 +16,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import timber.log.Timber;
 
 public class RestClient<T> {
 
@@ -38,13 +32,10 @@ public class RestClient<T> {
 
     protected Credentials mCredentials;
 
-    protected HomeServerConnectionConfig mHsConfig;
-
     protected OkHttpClient mOkHttpClient;
 
-    public RestClient(HomeServerConnectionConfig hsConfig, Class<T> type) {
-        this.mHsConfig = hsConfig;
-        this.mCredentials = hsConfig.getCredentials();
+    public RestClient(Credentials credentials, Class<T> type) {
+        this.mCredentials = credentials;
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);

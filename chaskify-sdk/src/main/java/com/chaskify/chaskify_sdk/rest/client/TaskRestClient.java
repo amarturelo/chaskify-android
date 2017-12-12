@@ -1,11 +1,11 @@
 package com.chaskify.chaskify_sdk.rest.client;
 
-import com.chaskify.chaskify_sdk.HomeServerConnectionConfig;
 import com.chaskify.chaskify_sdk.RestClient;
 import com.chaskify.chaskify_sdk.rest.api.TaskApi;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.exceptions.TokenNotFoundException;
 import com.chaskify.chaskify_sdk.rest.model.Task;
+import com.chaskify.chaskify_sdk.rest.model.login.Credentials;
 
 import java.util.List;
 
@@ -18,8 +18,8 @@ import retrofit2.Response;
  */
 
 public class TaskRestClient extends RestClient<TaskApi> {
-    public TaskRestClient(HomeServerConnectionConfig hsConfig) {
-        super(hsConfig, TaskApi.class);
+    public TaskRestClient(Credentials credentials) {
+        super(credentials, TaskApi.class);
     }
 
     public void taskByDate(String date, int onduty, String timeZone, ApiCallback<List<Task>> callback) throws TokenNotFoundException {
@@ -46,7 +46,7 @@ public class TaskRestClient extends RestClient<TaskApi> {
 
     public void taskDetails(String task_id, ApiCallback<Task> callback) throws TokenNotFoundException {
         if (mCredentials != null)
-            taskDetails(task_id, mHsConfig.getTimeZone(), mHsConfig.getLang_id(), mCredentials.accessToken, callback);
+            taskDetails(task_id, "300", "en", mCredentials.accessToken, callback);
         else
             throw new TokenNotFoundException();
     }

@@ -1,11 +1,12 @@
 package com.chaskify.chaskify_sdk.rest.client;
 
-import com.chaskify.chaskify_sdk.HomeServerConnectionConfig;
+import com.chaskify.chaskify_sdk.ProfileConnectionConfig;
 import com.chaskify.chaskify_sdk.RestClient;
 import com.chaskify.chaskify_sdk.rest.api.ProfileApi;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.exceptions.TokenNotFoundException;
 import com.chaskify.chaskify_sdk.rest.model.Profile;
+import com.chaskify.chaskify_sdk.rest.model.login.Credentials;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -16,13 +17,13 @@ import retrofit2.Response;
  */
 
 public class ProfileRestClient extends RestClient<ProfileApi> {
-    public ProfileRestClient(HomeServerConnectionConfig hsConfig) {
-        super(hsConfig, ProfileApi.class);
+    public ProfileRestClient(Credentials credentials) {
+        super(credentials, ProfileApi.class);
     }
 
     public void getProfile(ApiCallback<Profile> callback) throws TokenNotFoundException {
         if (mCredentials != null)
-            getProfile(mHsConfig.getLang_id(), mCredentials.accessToken, callback);
+            getProfile("es", mCredentials.accessToken, callback);
         else
             throw new TokenNotFoundException();
     }

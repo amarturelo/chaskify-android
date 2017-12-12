@@ -1,26 +1,17 @@
 package com.chaskify.chaskify_sdk.rest.client;
 
-import com.chaskify.chaskify_sdk.HomeServerConnectionConfig;
+import com.chaskify.chaskify_sdk.ProfileConnectionConfig;
 import com.chaskify.chaskify_sdk.RestClient;
 import com.chaskify.chaskify_sdk.rest.api.LoginApi;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.model.BaseResponse;
 import com.chaskify.chaskify_sdk.rest.model.login.Credentials;
 import com.chaskify.chaskify_sdk.rest.model.login.LoginResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 
 import retrofit2.Call;
@@ -34,16 +25,16 @@ import timber.log.Timber;
 
 public class LoginRestClient extends RestClient<LoginApi> {
 
-    public LoginRestClient(HomeServerConnectionConfig hsConfig) {
-        super(hsConfig, LoginApi.class);
+    public LoginRestClient(Credentials credentials) {
+        super(credentials, LoginApi.class);
     }
 
-    public void loginWithUser(final String user, final String password, final ApiCallback<Credentials> callback) {
+    public void loginWithUser(final String user, final String password, final ApiCallback<ProfileConnectionConfig> callback) {
         login(user, password, callback);
     }
 
-    private void login(String user, String password, final ApiCallback<Credentials> callback) {
-        mApi.login(user, password, mHsConfig.getLang_id())
+    private void login(String user, String password, final ApiCallback<ProfileConnectionConfig> callback) {
+        mApi.login(user, password)
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {

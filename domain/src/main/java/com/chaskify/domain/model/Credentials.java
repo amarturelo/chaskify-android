@@ -1,16 +1,20 @@
 package com.chaskify.domain.model;
 
 /**
- * The user's credentials.
+ * Created by alberto on 11/12/17.
  */
+
 public class Credentials {
-    public String accessToken;
+    private String accessToken;
 
-    public String username;
+    private String username;
 
-    public String password;
+    private String password;
 
-    public String deviceId;
+    private String deviceId;
+
+    public Credentials() {
+    }
 
     public String getAccessToken() {
         return accessToken;
@@ -39,15 +43,12 @@ public class Credentials {
         return this;
     }
 
+    public String getDeviceId() {
+        return deviceId;
+    }
 
-
-    @Override
-    public String toString() {
-        return "Credentials{" +
-                "accessToken='" + accessToken + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", deviceId='" + deviceId + '\'' +
-                '}';
+    public Credentials setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+        return this;
     }
 }

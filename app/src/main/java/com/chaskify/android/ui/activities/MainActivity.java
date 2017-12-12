@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources.Theme;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -21,7 +20,7 @@ import android.widget.TextView;
 import com.chaskify.android.R;
 import com.chaskify.android.ui.base.BaseActivity;
 import com.chaskify.android.ui.fragments.TaskMapFragment;
-import com.chaskify.chaskify_sdk.HomeServerConnectionConfig;
+import com.chaskify.chaskify_sdk.ProfileConnectionConfig;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.client.LoginRestClient;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyError;
@@ -50,7 +49,7 @@ public class MainActivity extends BaseActivity {
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);*/
 
-        LoginRestClient loginRestClient = new LoginRestClient(new HomeServerConnectionConfig("300","es"));
+        LoginRestClient loginRestClient = new LoginRestClient(new ProfileConnectionConfig("300","es"));
         loginRestClient.loginWithUser("amarturelo", "demo", new ApiCallback<Credentials>() {
             @Override
             public void onSuccess(Credentials info) {

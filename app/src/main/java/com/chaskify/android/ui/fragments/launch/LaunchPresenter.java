@@ -2,26 +2,19 @@ package com.chaskify.android.ui.fragments.launch;
 
 import android.support.annotation.NonNull;
 
-import com.annimon.stream.Stream;
-import com.annimon.stream.function.Consumer;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
-import com.chaskify.domain.interactors.HomeServerConfigurationInteractor;
-import com.chaskify.domain.model.HomeServerConnectionConfig;
+import com.chaskify.domain.interactors.CredentialsInteractor;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-
-/**
- * Created by alberto on 10/12/17.
- */
 
 public class LaunchPresenter extends BasePresenter<LaunchContract.View>
         implements LaunchContract.Presenter {
 
-    private HomeServerConfigurationInteractor homeServerConfigurationInteractor;
+    private CredentialsInteractor credentialsInteractor;
 
-    LaunchPresenter(HomeServerConfigurationInteractor homeServerConfigurationInteractor) {
-        this.homeServerConfigurationInteractor = homeServerConfigurationInteractor;
+    LaunchPresenter(CredentialsInteractor credentialsInteractor) {
+        this.credentialsInteractor = credentialsInteractor;
     }
 
     @Override
@@ -33,12 +26,12 @@ public class LaunchPresenter extends BasePresenter<LaunchContract.View>
     @Override
     public void findHomeConfigurations() {
         addSubscription(
-                homeServerConfigurationInteractor
-                        .homeServerConnectionConfigs()
+                credentialsInteractor
+                        .getCredentials()
                         .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(homeServerConnectionConfigs -> {
-                            if (homeServerConnectionConfigs.isEmpty())
+                            /*if (homeServerConnectionConfigs.isEmpty())
                                 view.showLogin();
                             else {
                                 Stream.of(homeServerConnectionConfigs)
@@ -56,7 +49,7 @@ public class LaunchPresenter extends BasePresenter<LaunchContract.View>
                                                 view.renderProfiles();
                                             }
                                         });
-                            }
+                            }*/
                         })
         );
     }

@@ -1,7 +1,5 @@
 package com.chaskify.data.model.internal;
 
-import com.chaskify.domain.model.Credentials;
-
 import io.realm.RealmObject;
 
 /**
@@ -9,6 +7,11 @@ import io.realm.RealmObject;
  */
 
 public class RealmCredentials extends RealmObject {
+    public static final String ACCESS_TOKEN = "accessToken";
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
+
+
     public String accessToken;
 
     public String username;
@@ -56,11 +59,4 @@ public class RealmCredentials extends RealmObject {
                 '}';
     }
 
-    public Credentials toDomain() {
-        return new Credentials()
-                .setAccessToken(this.getAccessToken())
-                .setUsername(this.getUsername())
-                .setPassword(this.getPassword())
-                ;
-    }
 }

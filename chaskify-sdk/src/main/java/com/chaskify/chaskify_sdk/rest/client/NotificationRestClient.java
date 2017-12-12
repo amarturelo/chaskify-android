@@ -1,11 +1,12 @@
 package com.chaskify.chaskify_sdk.rest.client;
 
-import com.chaskify.chaskify_sdk.HomeServerConnectionConfig;
+import com.chaskify.chaskify_sdk.ProfileConnectionConfig;
 import com.chaskify.chaskify_sdk.RestClient;
 import com.chaskify.chaskify_sdk.rest.api.NotificationApi;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.exceptions.TokenNotFoundException;
 import com.chaskify.chaskify_sdk.rest.model.Notification;
+import com.chaskify.chaskify_sdk.rest.model.login.Credentials;
 
 import java.util.List;
 
@@ -18,13 +19,13 @@ import retrofit2.Response;
  */
 
 public class NotificationRestClient extends RestClient<NotificationApi> {
-    public NotificationRestClient(HomeServerConnectionConfig hsConfig) {
-        super(hsConfig, NotificationApi.class);
+    public NotificationRestClient(Credentials credentials) {
+        super(credentials, NotificationApi.class);
     }
 
     public void getNotifications(final ApiCallback<List<Notification>> callback) throws TokenNotFoundException {
         if (mCredentials != null)
-            getNotifications(mHsConfig.getTimeZone(), mHsConfig.getLang_id(), mCredentials.accessToken, callback);
+            getNotifications("300", "en", mCredentials.accessToken, callback);
         else
             throw new TokenNotFoundException();
     }
