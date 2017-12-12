@@ -5,6 +5,7 @@ import com.chaskify.chaskify_sdk.RestClient;
 import com.chaskify.chaskify_sdk.rest.api.LoginApi;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.model.BaseResponse;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifyError;
 import com.chaskify.chaskify_sdk.rest.model.login.Credentials;
 import com.chaskify.chaskify_sdk.rest.model.login.LoginResponse;
 import com.google.gson.FieldNamingPolicy;
@@ -33,7 +34,7 @@ public class LoginRestClient extends RestClient<LoginApi> {
         login(user, password, callback);
     }
 
-    private void login(String user, String password, final ApiCallback<ProfileConnectionConfig> callback) {
+    private void login(final String user, final String password, final ApiCallback<ProfileConnectionConfig> callback) {
         mApi.login(user, password)
                 .enqueue(new Callback<String>() {
                     @Override
@@ -42,7 +43,22 @@ public class LoginRestClient extends RestClient<LoginApi> {
                         }.getType();
 
                         BaseResponse<LoginResponse> baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), type);
-                        Timber.d(baseResponse.toString());
+                        if (baseResponse.getCode() == 1)
+                            callback.onSuccess(new ProfileConnectionConfig()
+                                    .setOn_duty(baseResponse
+                                            .getDetails()
+                                            .getOnDuty())
+                                    .setCredentials(new Credentials()
+                                            .setUsername(user)
+                                            .setPassword(password)
+                                            .setAccessToken(baseResponse
+                                                    .getDetails()
+                                                    .getToken()))
+                                    .setIcons(baseResponse
+                                            .getDetails()
+                                            .getIcons()));
+                        else
+                            callback.onChaskifyError(new ChaskifyError(baseResponse.getMsg()));
                     }
 
                     @Override

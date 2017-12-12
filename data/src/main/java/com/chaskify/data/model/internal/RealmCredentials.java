@@ -14,6 +14,8 @@ public class RealmCredentials extends RealmObject {
     public static final String PASSWORD = "password";
 
 
+    private boolean isDefault;
+
     public String accessToken;
 
     public String username;
@@ -51,6 +53,14 @@ public class RealmCredentials extends RealmObject {
         return this;
     }
 
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public RealmCredentials setDefault(boolean aDefault) {
+        isDefault = aDefault;
+        return this;
+    }
 
     @Override
     public String toString() {
@@ -66,6 +76,7 @@ public class RealmCredentials extends RealmObject {
                 .setAccessToken(this.getAccessToken())
                 .setUsername(this.getUsername())
                 .setPassword(this.getPassword())
+                .setDefault(this.isDefault())
                 ;
     }
 }

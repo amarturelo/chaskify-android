@@ -27,7 +27,7 @@ public class Chaskify {
         mChaskifySession = chaskifySession;
     }
 
-    public ChaskifySession createSession(ProfileConnectionConfig homeServerConnectionConfig) {
+    public static ChaskifySession createSession(ProfileConnectionConfig homeServerConnectionConfig) {
         return new ChaskifySession(homeServerConnectionConfig);
     }
 

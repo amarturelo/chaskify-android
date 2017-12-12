@@ -49,7 +49,6 @@ public class RestClient<T> {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .client(mOkHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
                 .addConverterFactory(new ToStringConverterFactory())
                 .baseUrl(BASE)
                 .build();

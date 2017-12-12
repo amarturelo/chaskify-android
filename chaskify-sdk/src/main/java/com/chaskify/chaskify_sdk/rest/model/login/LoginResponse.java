@@ -1,5 +1,6 @@
 package com.chaskify.chaskify_sdk.rest.model.login;
 
+import com.chaskify.chaskify_sdk.rest.model.Icons;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -16,7 +17,6 @@ public class LoginResponse {
     @SerializedName("todays_date")
     @Expose
     private String todaysDate;    //public String refreshToken;
-
     @SerializedName("on_duty")
     @Expose
     private int onDuty;
@@ -29,6 +29,12 @@ public class LoginResponse {
     @SerializedName("location_accuracy")
     @Expose
     private int locationAccuracy;
+    @SerializedName("icons")
+    @Expose
+    private Icons icons;
+
+    public LoginResponse() {
+    }
 
     public String getUsername() {
         return username;
@@ -92,6 +98,15 @@ public class LoginResponse {
 
     public void setLocationAccuracy(int locationAccuracy) {
         this.locationAccuracy = locationAccuracy;
+    }
+
+    public Icons getIcons() {
+        return icons;
+    }
+
+    public LoginResponse setIcons(Icons icons) {
+        this.icons = icons;
+        return this;
     }
 
 

@@ -5,4 +5,10 @@ package com.chaskify.chaskify_sdk.rest.model;
  */
 
 public class ChaskifyError {
+    private String error;
+
+    public ChaskifyError(String error) {
+        this.error = error;
+    }
+
 }

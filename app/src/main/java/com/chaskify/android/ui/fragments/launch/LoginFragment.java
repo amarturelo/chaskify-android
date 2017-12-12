@@ -10,16 +10,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.chaskify.android.LoginHandler;
 import com.chaskify.android.R;
-import com.chaskify.android.ui.activities.LoginActivity;
 import com.chaskify.android.ui.base.BaseFragment;
 
 /**
@@ -30,7 +29,7 @@ import com.chaskify.android.ui.base.BaseFragment;
  * Use the {@link LoginFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LoginFragment extends BaseFragment {
+public class LoginFragment extends BaseFragment implements LoginContract.View {
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -48,6 +47,8 @@ public class LoginFragment extends BaseFragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private LoginPresenter mLoginPresenter;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -85,6 +86,9 @@ public class LoginFragment extends BaseFragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        mLoginPresenter = new LoginPresenter(
+                new LoginHandler()
+        );
     }
 
     @Override
@@ -116,6 +120,30 @@ public class LoginFragment extends BaseFragment {
         mListener = null;
     }
 
+    @Override
+    public void loginComplete() {
+        goToSplash();
+    }
+
+    private void goToSplash() {
+        startWithPop(SplashFragment.newInstance());
+    }
+
+    @Override
+    public void showError(Exception e) {
+        Toast.makeText(getContext(), e.toString(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showProgress() {
+        showProgress(true);
+    }
+
+    @Override
+    public void hideProgress() {
+        showProgress(false);
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -133,6 +161,7 @@ public class LoginFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        mLoginPresenter.bindView(this);
         initView(view);
     }
 
@@ -199,9 +228,9 @@ public class LoginFragment extends BaseFragment {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
             /*mAuthTask = new LoginActivity.UserLoginTask(email, password);
             mAuthTask.execute((Void) null);*/
+            mLoginPresenter.login(mEmailView.getText().toString(), mPasswordView.getText().toString());
         }
     }
 

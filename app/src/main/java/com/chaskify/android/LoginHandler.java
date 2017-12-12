@@ -1,16 +1,11 @@
 package com.chaskify.android;
 
-import android.text.TextUtils;
-
 import com.chaskify.android.store.LoginStorage;
 import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.chaskify_sdk.ProfileConnectionConfig;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.client.LoginRestClient;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyError;
-import com.chaskify.chaskify_sdk.rest.model.login.Credentials;
-
-import java.util.Collection;
 
 /**
  * Created by alberto on 11/12/17.
@@ -38,8 +33,8 @@ public class LoginHandler {
             }
 
             @Override
-            public void onMatrixError(ChaskifyError e) {
-                callback.onMatrixError(e);
+            public void onChaskifyError(ChaskifyError e) {
+                callback.onChaskifyError(e);
             }
 
             @Override
@@ -58,8 +53,9 @@ public class LoginHandler {
     }
 
     private void onRegistrationDone(ProfileConnectionConfig homeServerConnectionConfig, ApiCallback<ProfileConnectionConfig> callback) {
-        ChaskifySession session = Chaskify.getInstance().createSession(homeServerConnectionConfig);
+        ChaskifySession session = Chaskify.createSession(homeServerConnectionConfig);
         mLoginStorage.addCredentials(homeServerConnectionConfig.getCredentials());
+        mLoginStorage.setDefault(homeServerConnectionConfig.getCredentials());
         Chaskify.getInstance(session);
         callback.onSuccess(homeServerConnectionConfig);
     }

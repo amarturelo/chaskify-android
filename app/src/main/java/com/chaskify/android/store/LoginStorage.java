@@ -1,6 +1,7 @@
 package com.chaskify.android.store;
 
 import com.annimon.stream.Stream;
+import com.annimon.stream.function.Consumer;
 import com.chaskify.chaskify_sdk.rest.model.login.Credentials;
 import com.chaskify.data.model.internal.RealmCredentials;
 
@@ -29,6 +30,19 @@ public class LoginStorage {
                 .toList();
     }
 
+    public void setDefault(Credentials credentials) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        Stream.of(realm.where(RealmCredentials.class).findAll())
+                .forEach(realmCredentials -> {
+                    if (realmCredentials.getUsername().equals(credentials.getUsername()))
+                        realmCredentials.setDefault(true);
+                    else
+                        realmCredentials.setDefault(false);
+                });
+        realm.commitTransaction();
+        realm.close();
+    }
 
     public void addCredentials(Credentials credentials) {
         if (null != credentials) {
