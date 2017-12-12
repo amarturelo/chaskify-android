@@ -1,10 +1,13 @@
 package com.chaskify.domain.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by alberto on 11/12/17.
  */
 
-public class Credentials {
+public class Credentials implements Parcelable {
     private boolean isDefault;
 
     private String accessToken;
@@ -17,6 +20,26 @@ public class Credentials {
 
     public Credentials() {
     }
+
+    protected Credentials(Parcel in) {
+        isDefault = in.readByte() != 0;
+        accessToken = in.readString();
+        username = in.readString();
+        password = in.readString();
+        deviceId = in.readString();
+    }
+
+    public static final Creator<Credentials> CREATOR = new Creator<Credentials>() {
+        @Override
+        public Credentials createFromParcel(Parcel in) {
+            return new Credentials(in);
+        }
+
+        @Override
+        public Credentials[] newArray(int size) {
+            return new Credentials[size];
+        }
+    };
 
     public String getAccessToken() {
         return accessToken;
@@ -72,5 +95,19 @@ public class Credentials {
                 ", password='" + password + '\'' +
                 ", deviceId='" + deviceId + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (isDefault ? 1 : 0));
+        dest.writeString(accessToken);
+        dest.writeString(username);
+        dest.writeString(password);
+        dest.writeString(deviceId);
     }
 }

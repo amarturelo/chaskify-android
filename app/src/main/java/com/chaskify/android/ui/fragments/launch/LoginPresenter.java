@@ -11,6 +11,7 @@ import com.chaskify.chaskify_sdk.rest.model.ChaskifyError;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import timber.log.Timber;
 
 public class LoginPresenter extends BasePresenter<LoginContract.View>
         implements LoginContract.Presenter {
@@ -23,6 +24,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View>
 
     @Override
     public void login(String username, String password) {
+        Timber.d("::Authenticating credentials " + "Username:" + username + " Password:" + password + "::");
         addSubscription(doLogin(username, password)
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())

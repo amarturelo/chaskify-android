@@ -1,6 +1,7 @@
 package com.chaskify.android.ui.fragments.launch;
 
 import com.chaskify.android.shared.BaseContract;
+import com.chaskify.domain.model.Credentials;
 
 import java.util.List;
 
@@ -16,6 +17,8 @@ class LaunchContract {
         void showProgress();
 
         void hideProgress();
+
+        void launchLogin(Credentials credentials);
     }
 
     interface Presenter extends BaseContract.Presenter<LaunchContract.View> {

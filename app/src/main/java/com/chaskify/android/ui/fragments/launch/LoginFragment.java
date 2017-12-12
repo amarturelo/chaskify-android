@@ -20,6 +20,9 @@ import android.widget.Toast;
 import com.chaskify.android.LoginHandler;
 import com.chaskify.android.R;
 import com.chaskify.android.ui.base.BaseFragment;
+import com.chaskify.domain.model.Credentials;
+
+import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,6 +34,7 @@ import com.chaskify.android.ui.base.BaseFragment;
  */
 public class LoginFragment extends BaseFragment implements LoginContract.View {
 
+    private static String ARG_CREDENTIALS = "credentials";
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -77,6 +81,18 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public static LoginFragment newInstance(Credentials credentials) {
+        LoginFragment fragment = new LoginFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_CREDENTIALS, credentials);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public Credentials currentCredentials() {
+        return getArguments().getParcelable(ARG_CREDENTIALS);
     }
 
     @Override
@@ -144,6 +160,7 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
         showProgress(false);
     }
 
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -163,6 +180,15 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mLoginPresenter.bindView(this);
         initView(view);
+        init();
+    }
+
+    private void init() {
+        if (currentCredentials() != null) {
+            mEmailView.setText(currentCredentials().getUsername());
+            mPasswordView.setText(currentCredentials().getPassword());
+            attemptLogin();
+        }
     }
 
     private void initView(View view) {

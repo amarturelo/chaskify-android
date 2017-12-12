@@ -11,8 +11,11 @@ import com.chaskify.android.ui.base.BaseFragment;
 import com.chaskify.data.cache.impl.CredentialsCacheImpl;
 import com.chaskify.data.repositories.RealmCredentialsRepositoryImpl;
 import com.chaskify.domain.interactors.CredentialsInteractor;
+import com.chaskify.domain.model.Credentials;
 
 import java.util.List;
+
+import timber.log.Timber;
 
 public class LaunchFragment extends BaseFragment implements LaunchContract.View {
     // TODO: Rename parameter arguments, choose names that match
@@ -77,21 +80,30 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View 
 
     @Override
     public void launchLogin() {
+        Timber.d("::Launch login::");
         startWithPop(LoginFragment.newInstance());
     }
 
     @Override
     public void launchSplash() {
+        Timber.d("::Launch splash::");
         startWithPop(SplashFragment.newInstance());
     }
 
     public void renderCredentials(List<String> credentials) {
+        Timber.d("::Render credentials " + credentials.toString() + "::");
 
     }
 
     @Override
     public void showProgress() {
 
+    }
+
+    @Override
+    public void launchLogin(Credentials credentials) {
+        Timber.d("::Launch login whit credential " + credentials.getUsername() + "::");
+        start(LoginFragment.newInstance(credentials));
     }
 
     @Override
