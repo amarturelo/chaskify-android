@@ -11,9 +11,15 @@ public class Chaskify {
 
     ChaskifySession mChaskifySession;
 
-    private static final Chaskify ourInstance = null;
+    private static Chaskify ourInstance = null;
 
     public static Chaskify getInstance() {
+        return ourInstance;
+    }
+
+    public static Chaskify getInstance(ChaskifySession mChaskifySession) {
+        if (mChaskifySession != null && ourInstance == null)
+            ourInstance = new Chaskify(mChaskifySession);
         return ourInstance;
     }
 

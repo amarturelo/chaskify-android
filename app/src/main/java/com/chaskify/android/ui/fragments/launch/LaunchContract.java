@@ -2,17 +2,23 @@ package com.chaskify.android.ui.fragments.launch;
 
 import com.chaskify.android.shared.BaseContract;
 
+import java.util.List;
+
 class LaunchContract {
     interface View extends BaseContract.View {
 
-        void showLogin();
+        void launchLogin();
 
-        void launch();
+        void launchSplash();
 
-        void renderProfiles();
+        void renderCredentials(List<String> crendetials);
+
+        void showProgress();
+
+        void hideProgress();
     }
 
     interface Presenter extends BaseContract.Presenter<LaunchContract.View> {
-        void findHomeConfigurations();
+        void findCredentials();
     }
 }

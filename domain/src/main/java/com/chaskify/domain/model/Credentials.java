@@ -5,6 +5,8 @@ package com.chaskify.domain.model;
  */
 
 public class Credentials {
+    private boolean isDefault;
+
     private String accessToken;
 
     private String username;
@@ -50,5 +52,25 @@ public class Credentials {
     public Credentials setDeviceId(String deviceId) {
         this.deviceId = deviceId;
         return this;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public Credentials setDefault(boolean aDefault) {
+        this.isDefault = aDefault;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Credentials{" +
+                "isDefault=" + isDefault +
+                ", accessToken='" + accessToken + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", deviceId='" + deviceId + '\'' +
+                '}';
     }
 }

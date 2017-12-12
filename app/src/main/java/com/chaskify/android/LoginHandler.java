@@ -60,8 +60,7 @@ public class LoginHandler {
     private void onRegistrationDone(ProfileConnectionConfig homeServerConnectionConfig, ApiCallback<ProfileConnectionConfig> callback) {
         ChaskifySession session = Chaskify.getInstance().createSession(homeServerConnectionConfig);
         mLoginStorage.addCredentials(homeServerConnectionConfig.getCredentials());
-        Chaskify.getInstance().addSession(session);
-
+        Chaskify.getInstance(session);
         callback.onSuccess(homeServerConnectionConfig);
     }
 }

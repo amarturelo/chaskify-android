@@ -8,23 +8,21 @@ import android.view.View;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.ui.base.BaseFragment;
+import com.chaskify.data.cache.impl.CredentialsCacheImpl;
+import com.chaskify.data.repositories.RealmCredentialsRepositoryImpl;
+import com.chaskify.domain.interactors.CredentialsInteractor;
 
-import timber.log.Timber;
+import java.util.List;
 
-public class LaunchFragment extends BaseFragment {
+public class LaunchFragment extends BaseFragment implements LaunchContract.View {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private LaunchPresenter launchPresenter;
 
 
     public LaunchFragment() {
         // Required empty public constructor
-        Timber.tag(this.getClass().getSimpleName());
     }
 
 
@@ -39,21 +37,20 @@ public class LaunchFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-        hasCredentials();
+        launchPresenter = new LaunchPresenter(
+                new CredentialsInteractor(
+                        new RealmCredentialsRepositoryImpl(
+                                new CredentialsCacheImpl()
+                        )
+                )
+        );
     }
 
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        launchPresenter.bindView(this);
     }
 
     @Override
@@ -75,32 +72,31 @@ public class LaunchFragment extends BaseFragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        launchPresenter.release();
     }
 
-    public void renderProfiles() {
-
+    @Override
+    public void launchLogin() {
+        startWithPop(LoginFragment.newInstance());
     }
 
-    /**
-     * @return true if some credentials have been saved.
-     */
-    private void hasCredentials() {
-        /*if (!Chaskify.getMXSessions().isEmpty()) {
-            if (Chaskify.getInstance().getDefaultSession() != null)
-                goToSplash();
-            else
-                renderProfiles();
-        } else {
-            goToLogin();
-        }*/
+    @Override
+    public void launchSplash() {
+        startWithPop(SplashFragment.newInstance());
     }
 
-    private void goToLogin() {
-        startWithPop(LoginFragment.newInstance("", ""));
+    public void renderCredentials(List<String> credentials) {
 
     }
 
-    private void goToSplash() {
-        startWithPop(SplashFragment.newInstance("", ""));
+    @Override
+    public void showProgress() {
+
     }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
 }

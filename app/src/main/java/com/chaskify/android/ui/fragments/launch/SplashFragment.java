@@ -53,6 +53,13 @@ public class SplashFragment extends BaseFragment {
         return fragment;
     }
 
+    public static SplashFragment newInstance() {
+        SplashFragment fragment = new SplashFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

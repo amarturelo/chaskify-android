@@ -8,7 +8,7 @@ import com.chaskify.android.ui.base.BaseActivity;
 import com.chaskify.android.ui.fragments.launch.LaunchFragment;
 import com.chaskify.android.ui.fragments.launch.LoginFragment;
 
-public class LaunchActivity extends BaseActivity implements LaunchFragment.OnFragmentLaunchInteractionListener {
+public class LaunchActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +30,4 @@ public class LaunchActivity extends BaseActivity implements LaunchFragment.OnFra
         return R.layout.activity_launch;
     }
 
-    @Override
-    public void onLogin() {
-        start(LoginFragment.newInstance("", ""));
-    }
-
-    @Override
-    public void onLaunch() {
-
-    }
 }

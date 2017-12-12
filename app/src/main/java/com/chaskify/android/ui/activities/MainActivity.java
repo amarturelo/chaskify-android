@@ -49,29 +49,6 @@ public class MainActivity extends BaseActivity {
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);*/
 
-        LoginRestClient loginRestClient = new LoginRestClient(new ProfileConnectionConfig("300","es"));
-        loginRestClient.loginWithUser("amarturelo", "demo", new ApiCallback<Credentials>() {
-            @Override
-            public void onSuccess(Credentials info) {
-
-            }
-
-            @Override
-            public void onNetworkError(Exception e) {
-
-            }
-
-            @Override
-            public void onMatrixError(ChaskifyError e) {
-
-            }
-
-            @Override
-            public void onUnexpectedError(Exception e) {
-
-            }
-        });
-
     }
 
     private void initActivity(Bundle savedInstanceState) {
