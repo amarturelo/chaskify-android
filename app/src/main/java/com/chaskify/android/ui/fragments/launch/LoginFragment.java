@@ -19,10 +19,9 @@ import android.widget.Toast;
 
 import com.chaskify.android.LoginHandler;
 import com.chaskify.android.R;
+import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.base.BaseFragment;
 import com.chaskify.domain.model.Credentials;
-
-import me.yokeyword.fragmentation.ISupportFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,7 +38,7 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
-    private View mLoginFormView;
+    private View mEmailLoginFormView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -138,11 +137,12 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
 
     @Override
     public void loginComplete() {
-        goToSplash();
+        goToMain();
     }
 
-    private void goToSplash() {
-        startWithPop(SplashFragment.newInstance());
+    private void goToMain() {
+        getActivity().finish();
+        Navigator.goToMainActivity(getContext());
     }
 
     @Override
@@ -207,7 +207,7 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
         Button mEmailSignInButton = view.findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(v -> attemptLogin());
 
-        mLoginFormView = view.findViewById(R.id.login_form);
+        mEmailLoginFormView = view.findViewById(R.id.email_login_form);
         mProgressView = view.findViewById(R.id.login_progress);
     }
 
@@ -281,12 +281,12 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+            mEmailLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mEmailLoginFormView.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    mEmailLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
             });
 
@@ -302,7 +302,7 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mEmailLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 }

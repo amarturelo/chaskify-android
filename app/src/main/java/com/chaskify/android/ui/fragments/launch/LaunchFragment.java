@@ -84,12 +84,6 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View 
         startWithPop(LoginFragment.newInstance());
     }
 
-    @Override
-    public void launchSplash() {
-        Timber.d("::Launch splash::");
-        startWithPop(SplashFragment.newInstance());
-    }
-
     public void renderCredentials(List<String> credentials) {
         Timber.d("::Render credentials " + credentials.toString() + "::");
 

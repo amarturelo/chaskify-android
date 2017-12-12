@@ -10,8 +10,6 @@ class LaunchContract {
 
         void launchLogin();
 
-        void launchSplash();
-
         void renderCredentials(List<String> crendetials);
 
         void showProgress();

@@ -40,4 +40,5 @@
         completions."
     </string>
     <string name="title_activity_launch">LaunchActivity</string>
+    <string name="action_forget_password">Forgot password?</string>
 </resources>
