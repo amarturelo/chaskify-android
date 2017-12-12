@@ -1,5 +1,6 @@
 package com.chaskify.android;
 
+import com.chaskify.android.store.LoginStorage;
 import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.chaskify_sdk.ProfileConnectionConfig;
 
@@ -10,6 +11,8 @@ import com.chaskify.chaskify_sdk.ProfileConnectionConfig;
 public class Chaskify {
 
     ChaskifySession mChaskifySession;
+
+    private LoginStorage mLoginStorage;
 
     private static Chaskify ourInstance = null;
 
@@ -33,6 +36,10 @@ public class Chaskify {
 
     public ChaskifySession getChaskifySession() {
         return mChaskifySession;
+    }
+
+    public void logout(){
+
     }
 
 }

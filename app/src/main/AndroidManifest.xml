@@ -25,6 +25,7 @@
             android:label="@string/title_preference_preferences"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:label="@string/title_activity_notifications"
             android:name=".ui.activities.NotificationsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.activities.LoginActivity" />
@@ -44,7 +45,9 @@
         <activity
             android:name=".ui.activities.settings.SettingsProfileActivity"
             android:label="@string/title_activity_settings_profile"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>

@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
+import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.base.BaseFragment;
 import com.chaskify.data.cache.impl.CredentialsCacheImpl;
 import com.chaskify.data.repositories.RealmCredentialsRepositoryImpl;
@@ -98,6 +99,11 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View 
     public void launchLogin(Credentials credentials) {
         Timber.d("::Launch login whit credential " + credentials.getUsername() + "::");
         start(LoginFragment.newInstance(credentials));
+    }
+
+    @Override
+    public void launchSplash() {
+        getActivity().finish();
     }
 
     @Override

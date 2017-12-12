@@ -47,7 +47,10 @@ public class LaunchPresenter extends BasePresenter<LaunchContract.View>
                                         .findFirst();
                                 if (optional.isPresent()) {
                                     Timber.d("::Credentials " + optional.get().getUsername() + " as default::");
-                                    view.launchLogin(optional.get());
+                                    if (Chaskify.getInstance() != null && Chaskify.getInstance().getChaskifySession() != null)
+                                        view.launchSplash();
+                                    else
+                                        view.launchLogin(optional.get());
                                 } else {
                                     Timber.d("::Credentials is present but not things is default::");
                                     view.renderCredentials(Stream.of(credentials)
