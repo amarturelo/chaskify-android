@@ -1,6 +1,6 @@
 package com.chaskify.chaskify_sdk.rest.model.login;
 
-import com.chaskify.chaskify_sdk.rest.model.Icons;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifyIcons;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -29,9 +29,9 @@ public class LoginResponse {
     @SerializedName("location_accuracy")
     @Expose
     private int locationAccuracy;
-    @SerializedName("icons")
+    @SerializedName("chaskifyIcons")
     @Expose
-    private Icons icons;
+    private ChaskifyIcons chaskifyIcons;
 
     public LoginResponse() {
     }
@@ -100,12 +100,12 @@ public class LoginResponse {
         this.locationAccuracy = locationAccuracy;
     }
 
-    public Icons getIcons() {
-        return icons;
+    public ChaskifyIcons getChaskifyIcons() {
+        return chaskifyIcons;
     }
 
-    public LoginResponse setIcons(Icons icons) {
-        this.icons = icons;
+    public LoginResponse setChaskifyIcons(ChaskifyIcons chaskifyIcons) {
+        this.chaskifyIcons = chaskifyIcons;
         return this;
     }
 
@@ -121,7 +121,7 @@ public class LoginResponse {
             "token": "50e6136270e33c7ce418e9c9581b4d18",
             "duty_status": "1",
             "location_accuracy": 1,
-            "icons": {
+            "chaskifyIcons": {
         "logo_company": "https://s3-us-west-2.amazonaws.com/chaskify-backend-uploads/logo_company-42261060377.png",
                 "logo_customer_location": "logo_customer_location-GAKSJMKC86PUZVGWQV98.png",
                 "driver_icon_offline": "http://customer.chaskify.com/assets/images/driver-offline.png",

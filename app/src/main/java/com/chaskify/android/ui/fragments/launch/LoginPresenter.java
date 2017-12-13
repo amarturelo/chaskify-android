@@ -5,9 +5,11 @@ import android.support.annotation.NonNull;
 import com.chaskify.android.LoginHandler;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
-import com.chaskify.chaskify_sdk.ProfileConnectionConfig;
+import com.chaskify.chaskify_sdk.ChaskifyServerConfiguration;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyError;
+import com.chaskify.domain.model.Credentials;
+import com.chaskify.domain.model.ServerConfiguration;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -40,13 +42,13 @@ public class LoginPresenter extends BasePresenter<LoginContract.View>
         super.bindView(view);
     }
 
-    private Single<ProfileConnectionConfig> doLogin(String username, String password) {
+    private Single<Credentials> doLogin(String username, String password) {
         return Single
                 .create(emitter -> mLoginHandler
-                        .login(username, password, new ApiCallback<ProfileConnectionConfig>() {
+                        .login(username, password, new ApiCallback<Credentials>() {
                             @Override
-                            public void onSuccess(ProfileConnectionConfig profileConnectionConfig) {
-                                emitter.onSuccess(profileConnectionConfig);
+                            public void onSuccess(Credentials serverConfiguration) {
+                                emitter.onSuccess(serverConfiguration);
                             }
 
                             @Override

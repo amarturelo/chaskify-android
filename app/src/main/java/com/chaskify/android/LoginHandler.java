@@ -2,10 +2,13 @@ package com.chaskify.android;
 
 import com.chaskify.android.store.LoginStorage;
 import com.chaskify.chaskify_sdk.ChaskifySession;
-import com.chaskify.chaskify_sdk.ProfileConnectionConfig;
+import com.chaskify.chaskify_sdk.ChaskifyServerConfiguration;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.client.LoginRestClient;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyError;
+import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
+import com.chaskify.domain.model.Credentials;
+import com.chaskify.domain.model.ServerConfiguration;
 
 /**
  * Created by alberto on 11/12/17.
@@ -19,11 +22,11 @@ public class LoginHandler {
         mLoginStorage = new LoginStorage();
     }
 
-    public void login(String username, String password, ApiCallback<ProfileConnectionConfig> callback) {
+    public void login(String username, String password, ApiCallback<Credentials> callback) {
 
-        ApiCallback<ProfileConnectionConfig> loginApiCallback = new ApiCallback<ProfileConnectionConfig>() {
+        ApiCallback<ChaskifyCredentials> loginApiCallback = new ApiCallback<ChaskifyCredentials>() {
             @Override
-            public void onSuccess(ProfileConnectionConfig homeServerConnectionConfig) {
+            public void onSuccess(ChaskifyCredentials homeServerConnectionConfig) {
                 onRegistrationDone(homeServerConnectionConfig, callback);
             }
 
@@ -47,16 +50,19 @@ public class LoginHandler {
 
     }
 
-    private void callLogin(String username, String password, ApiCallback<ProfileConnectionConfig> loginApiCallback) {
+    private void callLogin(String username, String password, ApiCallback<ChaskifyCredentials> loginApiCallback) {
         LoginRestClient loginRestClient = new LoginRestClient(null);
         loginRestClient.loginWithUser(username, password, loginApiCallback);
     }
 
-    private void onRegistrationDone(ProfileConnectionConfig homeServerConnectionConfig, ApiCallback<ProfileConnectionConfig> callback) {
-        ChaskifySession session = Chaskify.createSession(homeServerConnectionConfig);
-        mLoginStorage.addCredentials(homeServerConnectionConfig.getCredentials());
-        mLoginStorage.setDefault(homeServerConnectionConfig.getCredentials());
-        Chaskify.getInstance(session);
-        callback.onSuccess(homeServerConnectionConfig);
+    private void onRegistrationDone(ChaskifyCredentials chaskifyCredentials, ApiCallback<Credentials> callback) {
+        Credentials credentials = new Credentials()
+                .setUsername(chaskifyCredentials.getUsername())
+                .setPassword(chaskifyCredentials.getPassword())
+                .setAccessToken(chaskifyCredentials.getAccessToken());
+
+        ChaskifySession session = Chaskify.createSession(credentials);
+        Chaskify.getInstance().addSession(session);
+        callback.onSuccess(credentials);
     }
 }

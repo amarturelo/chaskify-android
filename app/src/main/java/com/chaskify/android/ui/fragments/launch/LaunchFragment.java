@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
+import com.chaskify.android.model.ServerConfigurationListCacheModel;
 import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.base.BaseFragment;
 import com.chaskify.data.cache.impl.CredentialsCacheImpl;
@@ -19,11 +20,8 @@ import java.util.List;
 import timber.log.Timber;
 
 public class LaunchFragment extends BaseFragment implements LaunchContract.View {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
     private LaunchPresenter launchPresenter;
-
 
     public LaunchFragment() {
         // Required empty public constructor
@@ -42,11 +40,6 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         launchPresenter = new LaunchPresenter(
-                new CredentialsInteractor(
-                        new RealmCredentialsRepositoryImpl(
-                                new CredentialsCacheImpl()
-                        )
-                )
         );
     }
 
@@ -85,14 +78,13 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View 
         startWithPop(LoginFragment.newInstance());
     }
 
-    public void renderCredentials(List<String> credentials) {
+    public void renderCredentials(List<ServerConfigurationListCacheModel> credentials) {
         Timber.d("::Render credentials " + credentials.toString() + "::");
 
     }
 
     @Override
     public void showProgress() {
-
     }
 
     @Override
@@ -103,6 +95,7 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View 
 
     @Override
     public void launchSplash() {
+        startWithPop(SplashFragment.newInstance());
         getActivity().finish();
     }
 

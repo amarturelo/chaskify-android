@@ -1,5 +1,6 @@
 package com.chaskify.android.ui.fragments.launch;
 
+import com.chaskify.android.model.ServerConfigurationListCacheModel;
 import com.chaskify.android.shared.BaseContract;
 import com.chaskify.domain.model.Credentials;
 
@@ -10,7 +11,7 @@ class LaunchContract {
 
         void launchLogin();
 
-        void renderCredentials(List<String> crendetials);
+        void renderCredentials(List<ServerConfigurationListCacheModel> crendetials);
 
         void showProgress();
 

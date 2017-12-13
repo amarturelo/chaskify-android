@@ -1,12 +1,11 @@
 package com.chaskify.chaskify_sdk.rest.client;
 
-import com.chaskify.chaskify_sdk.ProfileConnectionConfig;
 import com.chaskify.chaskify_sdk.RestClient;
 import com.chaskify.chaskify_sdk.rest.api.NotificationApi;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.exceptions.TokenNotFoundException;
-import com.chaskify.chaskify_sdk.rest.model.Notification;
-import com.chaskify.chaskify_sdk.rest.model.login.Credentials;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifyNotification;
+import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
 
 import java.util.List;
 
@@ -19,18 +18,18 @@ import retrofit2.Response;
  */
 
 public class NotificationRestClient extends RestClient<NotificationApi> {
-    public NotificationRestClient(Credentials credentials) {
-        super(credentials, NotificationApi.class);
+    public NotificationRestClient(ChaskifyCredentials chaskifyCredentials) {
+        super(chaskifyCredentials, NotificationApi.class);
     }
 
-    public void getNotifications(final ApiCallback<List<Notification>> callback) throws TokenNotFoundException {
-        if (mCredentials != null)
-            getNotifications("300", "en", mCredentials.accessToken, callback);
+    public void getNotifications(final ApiCallback<List<ChaskifyNotification>> callback) throws TokenNotFoundException {
+        if (mChaskifyCredentials != null)
+            getNotifications("300", "en", mChaskifyCredentials.accessToken, callback);
         else
             throw new TokenNotFoundException();
     }
 
-    private void getNotifications(String timeZone, String lang_id, String accessToken, final ApiCallback<List<Notification>> callback) throws TokenNotFoundException {
+    private void getNotifications(String timeZone, String lang_id, String accessToken, final ApiCallback<List<ChaskifyNotification>> callback) throws TokenNotFoundException {
         mApi.notifications(timeZone, lang_id, accessToken)
                 .enqueue(new Callback<String>() {
                     @Override

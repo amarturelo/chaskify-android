@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by alberto on 6/12/17.
  */
 
-public class Notification {
+public class ChaskifyNotification {
     /*
             "push_id": "2096",
             "customer_id": "33",
@@ -42,14 +42,14 @@ public class Notification {
     private String is_read;
     private String message;
 
-    public Notification() {
+    public ChaskifyNotification() {
     }
 
     public String getPush_id() {
         return push_id;
     }
 
-    public Notification setPush_id(String push_id) {
+    public ChaskifyNotification setPush_id(String push_id) {
         this.push_id = push_id;
         return this;
     }
@@ -58,7 +58,7 @@ public class Notification {
         return customer_id;
     }
 
-    public Notification setCustomer_id(String customer_id) {
+    public ChaskifyNotification setCustomer_id(String customer_id) {
         this.customer_id = customer_id;
         return this;
     }
@@ -67,7 +67,7 @@ public class Notification {
         return device_platform;
     }
 
-    public Notification setDevice_platform(String device_platform) {
+    public ChaskifyNotification setDevice_platform(String device_platform) {
         this.device_platform = device_platform;
         return this;
     }
@@ -76,7 +76,7 @@ public class Notification {
         return device_id;
     }
 
-    public Notification setDevice_id(String device_id) {
+    public ChaskifyNotification setDevice_id(String device_id) {
         this.device_id = device_id;
         return this;
     }
@@ -85,7 +85,7 @@ public class Notification {
         return push_title;
     }
 
-    public Notification setPush_title(String push_title) {
+    public ChaskifyNotification setPush_title(String push_title) {
         this.push_title = push_title;
         return this;
     }
@@ -94,7 +94,7 @@ public class Notification {
         return push_message;
     }
 
-    public Notification setPush_message(String push_message) {
+    public ChaskifyNotification setPush_message(String push_message) {
         this.push_message = push_message;
         return this;
     }
@@ -103,7 +103,7 @@ public class Notification {
         return push_type;
     }
 
-    public Notification setPush_type(String push_type) {
+    public ChaskifyNotification setPush_type(String push_type) {
         this.push_type = push_type;
         return this;
     }
@@ -112,7 +112,7 @@ public class Notification {
         return actions;
     }
 
-    public Notification setActions(String actions) {
+    public ChaskifyNotification setActions(String actions) {
         this.actions = actions;
         return this;
     }
@@ -121,7 +121,7 @@ public class Notification {
         return mStatus;
     }
 
-    public Notification setmStatus(String mStatus) {
+    public ChaskifyNotification setmStatus(String mStatus) {
         this.mStatus = mStatus;
         return this;
     }
@@ -130,7 +130,7 @@ public class Notification {
         return driver_id;
     }
 
-    public Notification setDriver_id(String driver_id) {
+    public ChaskifyNotification setDriver_id(String driver_id) {
         this.driver_id = driver_id;
         return this;
     }
@@ -139,7 +139,7 @@ public class Notification {
         return task_id;
     }
 
-    public Notification setTask_id(String task_id) {
+    public ChaskifyNotification setTask_id(String task_id) {
         this.task_id = task_id;
         return this;
     }
@@ -148,7 +148,7 @@ public class Notification {
         return date_created;
     }
 
-    public Notification setDate_created(Date date_created) {
+    public ChaskifyNotification setDate_created(Date date_created) {
         this.date_created = date_created;
         return this;
     }
@@ -157,7 +157,7 @@ public class Notification {
         return date_process;
     }
 
-    public Notification setDate_process(Date date_process) {
+    public ChaskifyNotification setDate_process(Date date_process) {
         this.date_process = date_process;
         return this;
     }
@@ -166,7 +166,7 @@ public class Notification {
         return is_read;
     }
 
-    public Notification setIs_read(String is_read) {
+    public ChaskifyNotification setIs_read(String is_read) {
         this.is_read = is_read;
         return this;
     }
@@ -175,7 +175,7 @@ public class Notification {
         return message;
     }
 
-    public Notification setMessage(String message) {
+    public ChaskifyNotification setMessage(String message) {
         this.message = message;
         return this;
     }

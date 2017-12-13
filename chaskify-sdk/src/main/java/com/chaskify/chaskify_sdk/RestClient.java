@@ -7,7 +7,7 @@ import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
 import com.chaskify.chaskify_sdk.rest.converter.ToStringConverterFactory;
-import com.chaskify.chaskify_sdk.rest.model.login.Credentials;
+import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
 import com.google.gson.Gson;
 
 import java.util.concurrent.TimeUnit;
@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestClient<T> {
 
@@ -30,12 +29,12 @@ public class RestClient<T> {
     private static final int READ_TIMEOUT_MS = 6000;
     private static final int WRITE_TIMEOUT_MS = 6000;
 
-    protected Credentials mCredentials;
+    protected ChaskifyCredentials mChaskifyCredentials;
 
     protected OkHttpClient mOkHttpClient;
 
-    public RestClient(Credentials credentials, Class<T> type) {
-        this.mCredentials = credentials;
+    public RestClient(ChaskifyCredentials chaskifyCredentials, Class<T> type) {
+        this.mChaskifyCredentials = chaskifyCredentials;
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);

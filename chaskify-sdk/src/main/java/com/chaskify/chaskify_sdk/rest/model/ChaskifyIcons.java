@@ -3,7 +3,7 @@ package com.chaskify.chaskify_sdk.rest.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Icons {
+public class ChaskifyIcons {
 
     @SerializedName("driver_icon_offline")
     @Expose
@@ -45,14 +45,14 @@ public class Icons {
     @Expose
     private String serviceIconFailed;
 
-    public Icons() {
+    public ChaskifyIcons() {
     }
 
     public String getDriverIconOffline() {
         return driverIconOffline;
     }
 
-    public Icons setDriverIconOffline(String driverIconOffline) {
+    public ChaskifyIcons setDriverIconOffline(String driverIconOffline) {
         this.driverIconOffline = driverIconOffline;
         return this;
     }
@@ -61,7 +61,7 @@ public class Icons {
         return logoCompany;
     }
 
-    public Icons setLogoCompany(String logoCompany) {
+    public ChaskifyIcons setLogoCompany(String logoCompany) {
         this.logoCompany = logoCompany;
         return this;
     }
@@ -70,7 +70,7 @@ public class Icons {
         return logoDriver;
     }
 
-    public Icons setLogoDriver(String logoDriver) {
+    public ChaskifyIcons setLogoDriver(String logoDriver) {
         this.logoDriver = logoDriver;
         return this;
     }
@@ -79,7 +79,7 @@ public class Icons {
         return logoDriverRoute;
     }
 
-    public Icons setLogoDriverRoute(String logoDriverRoute) {
+    public ChaskifyIcons setLogoDriverRoute(String logoDriverRoute) {
         this.logoDriverRoute = logoDriverRoute;
         return this;
     }
@@ -88,7 +88,7 @@ public class Icons {
         return logoDeliveryLocation;
     }
 
-    public Icons setLogoDeliveryLocation(String logoDeliveryLocation) {
+    public ChaskifyIcons setLogoDeliveryLocation(String logoDeliveryLocation) {
         this.logoDeliveryLocation = logoDeliveryLocation;
         return this;
     }
@@ -97,7 +97,7 @@ public class Icons {
         return logoCompletedDelivery;
     }
 
-    public Icons setLogoCompletedDelivery(String logoCompletedDelivery) {
+    public ChaskifyIcons setLogoCompletedDelivery(String logoCompletedDelivery) {
         this.logoCompletedDelivery = logoCompletedDelivery;
         return this;
     }
@@ -106,7 +106,7 @@ public class Icons {
         return deliveryIconFailed;
     }
 
-    public Icons setDeliveryIconFailed(String deliveryIconFailed) {
+    public ChaskifyIcons setDeliveryIconFailed(String deliveryIconFailed) {
         this.deliveryIconFailed = deliveryIconFailed;
         return this;
     }
@@ -115,7 +115,7 @@ public class Icons {
         return logoPickupLocation;
     }
 
-    public Icons setLogoPickupLocation(String logoPickupLocation) {
+    public ChaskifyIcons setLogoPickupLocation(String logoPickupLocation) {
         this.logoPickupLocation = logoPickupLocation;
         return this;
     }
@@ -124,7 +124,7 @@ public class Icons {
         return logoCompletedPickup;
     }
 
-    public Icons setLogoCompletedPickup(String logoCompletedPickup) {
+    public ChaskifyIcons setLogoCompletedPickup(String logoCompletedPickup) {
         this.logoCompletedPickup = logoCompletedPickup;
         return this;
     }
@@ -133,7 +133,7 @@ public class Icons {
         return pickupIconFailed;
     }
 
-    public Icons setPickupIconFailed(String pickupIconFailed) {
+    public ChaskifyIcons setPickupIconFailed(String pickupIconFailed) {
         this.pickupIconFailed = pickupIconFailed;
         return this;
     }
@@ -142,7 +142,7 @@ public class Icons {
         return logoServiceLocation;
     }
 
-    public Icons setLogoServiceLocation(String logoServiceLocation) {
+    public ChaskifyIcons setLogoServiceLocation(String logoServiceLocation) {
         this.logoServiceLocation = logoServiceLocation;
         return this;
     }
@@ -151,7 +151,7 @@ public class Icons {
         return logoCompletedService;
     }
 
-    public Icons setLogoCompletedService(String logoCompletedService) {
+    public ChaskifyIcons setLogoCompletedService(String logoCompletedService) {
         this.logoCompletedService = logoCompletedService;
         return this;
     }
@@ -160,7 +160,7 @@ public class Icons {
         return serviceIconFailed;
     }
 
-    public Icons setServiceIconFailed(String serviceIconFailed) {
+    public ChaskifyIcons setServiceIconFailed(String serviceIconFailed) {
         this.serviceIconFailed = serviceIconFailed;
         return this;
     }

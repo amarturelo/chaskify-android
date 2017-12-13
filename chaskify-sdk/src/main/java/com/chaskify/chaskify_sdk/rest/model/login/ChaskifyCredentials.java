@@ -3,7 +3,7 @@ package com.chaskify.chaskify_sdk.rest.model.login;
 /**
  * The user's credentials.
  */
-public class Credentials {
+public class ChaskifyCredentials {
     public String accessToken;
 
     public String username;
@@ -16,7 +16,7 @@ public class Credentials {
         return accessToken;
     }
 
-    public Credentials setAccessToken(String accessToken) {
+    public ChaskifyCredentials setAccessToken(String accessToken) {
         this.accessToken = accessToken;
         return this;
     }
@@ -25,7 +25,7 @@ public class Credentials {
         return username;
     }
 
-    public Credentials setUsername(String username) {
+    public ChaskifyCredentials setUsername(String username) {
         this.username = username;
         return this;
     }
@@ -34,7 +34,7 @@ public class Credentials {
         return password;
     }
 
-    public Credentials setPassword(String password) {
+    public ChaskifyCredentials setPassword(String password) {
         this.password = password;
         return this;
     }
@@ -43,14 +43,14 @@ public class Credentials {
         return deviceId;
     }
 
-    public Credentials setDeviceId(String deviceId) {
+    public ChaskifyCredentials setDeviceId(String deviceId) {
         this.deviceId = deviceId;
         return this;
     }
 
     @Override
     public String toString() {
-        return "Credentials{" +
+        return "ChaskifyCredentials{" +
                 "accessToken='" + accessToken + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +

@@ -1,12 +1,12 @@
 package com.chaskify.chaskify_sdk.rest.client;
 
-import com.chaskify.chaskify_sdk.ProfileConnectionConfig;
+import com.chaskify.chaskify_sdk.ChaskifyServerConfiguration;
 import com.chaskify.chaskify_sdk.RestClient;
 import com.chaskify.chaskify_sdk.rest.api.LoginApi;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.model.BaseResponse;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyError;
-import com.chaskify.chaskify_sdk.rest.model.login.Credentials;
+import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
 import com.chaskify.chaskify_sdk.rest.model.login.LoginResponse;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -18,7 +18,6 @@ import java.lang.reflect.Type;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import timber.log.Timber;
 
 /**
  * Created by alberto on 7/12/17.
@@ -26,15 +25,15 @@ import timber.log.Timber;
 
 public class LoginRestClient extends RestClient<LoginApi> {
 
-    public LoginRestClient(Credentials credentials) {
-        super(credentials, LoginApi.class);
+    public LoginRestClient(ChaskifyCredentials chaskifyCredentials) {
+        super(chaskifyCredentials, LoginApi.class);
     }
 
-    public void loginWithUser(final String user, final String password, final ApiCallback<ProfileConnectionConfig> callback) {
+    public void loginWithUser(final String user, final String password, final ApiCallback<ChaskifyCredentials> callback) {
         login(user, password, callback);
     }
 
-    private void login(final String user, final String password, final ApiCallback<ProfileConnectionConfig> callback) {
+    private void login(final String user, final String password, final ApiCallback<ChaskifyCredentials> callback) {
         mApi.login(user, password)
                 .enqueue(new Callback<String>() {
                     @Override
@@ -44,19 +43,13 @@ public class LoginRestClient extends RestClient<LoginApi> {
 
                         BaseResponse<LoginResponse> baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), type);
                         if (baseResponse.getCode() == 1)
-                            callback.onSuccess(new ProfileConnectionConfig()
-                                    .setOn_duty(baseResponse
+                            callback.onSuccess(new ChaskifyCredentials()
+                                    .setUsername(user)
+                                    .setPassword(password)
+                                    .setAccessToken(baseResponse
                                             .getDetails()
-                                            .getOnDuty())
-                                    .setCredentials(new Credentials()
-                                            .setUsername(user)
-                                            .setPassword(password)
-                                            .setAccessToken(baseResponse
-                                                    .getDetails()
-                                                    .getToken()))
-                                    .setIcons(baseResponse
-                                            .getDetails()
-                                            .getIcons()));
+                                            .getToken())
+                            );
                         else
                             callback.onChaskifyError(new ChaskifyError(baseResponse.getMsg()));
                     }

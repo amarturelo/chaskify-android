@@ -4,8 +4,8 @@ import com.chaskify.chaskify_sdk.RestClient;
 import com.chaskify.chaskify_sdk.rest.api.SettingsApi;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.exceptions.TokenNotFoundException;
-import com.chaskify.chaskify_sdk.rest.model.Settings;
-import com.chaskify.chaskify_sdk.rest.model.login.Credentials;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifySettings;
+import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -16,18 +16,18 @@ import retrofit2.Response;
  */
 
 public class SettingsRestClient extends RestClient<SettingsApi> {
-    public SettingsRestClient(Credentials credentials) {
-        super(credentials, SettingsApi.class);
+    public SettingsRestClient(ChaskifyCredentials chaskifyCredentials) {
+        super(chaskifyCredentials, SettingsApi.class);
     }
 
-    public void getSettings(ApiCallback<Settings> callback) throws TokenNotFoundException {
-        if (mCredentials != null)
-            getSettings("es", mCredentials.accessToken, callback);
+    public void getSettings(ApiCallback<ChaskifySettings> callback) throws TokenNotFoundException {
+        if (mChaskifyCredentials != null)
+            getSettings("es", mChaskifyCredentials.accessToken, callback);
         else
             throw new TokenNotFoundException();
     }
 
-    private void getSettings(String lang_id, String accessToken, final ApiCallback<Settings> callback) {
+    private void getSettings(String lang_id, String accessToken, final ApiCallback<ChaskifySettings> callback) {
         mApi.settings(lang_id, accessToken)
                 .enqueue(new Callback<String>() {
                     @Override

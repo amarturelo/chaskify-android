@@ -4,8 +4,8 @@ import com.chaskify.chaskify_sdk.RestClient;
 import com.chaskify.chaskify_sdk.rest.api.TaskApi;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.exceptions.TokenNotFoundException;
-import com.chaskify.chaskify_sdk.rest.model.Task;
-import com.chaskify.chaskify_sdk.rest.model.login.Credentials;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifyTask;
+import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
 
 import java.util.List;
 
@@ -18,18 +18,18 @@ import retrofit2.Response;
  */
 
 public class TaskRestClient extends RestClient<TaskApi> {
-    public TaskRestClient(Credentials credentials) {
-        super(credentials, TaskApi.class);
+    public TaskRestClient(ChaskifyCredentials chaskifyCredentials) {
+        super(chaskifyCredentials, TaskApi.class);
     }
 
-    public void taskByDate(String date, int onduty, String timeZone, ApiCallback<List<Task>> callback) throws TokenNotFoundException {
-        if (mCredentials != null)
-            taskByDate(date, onduty, timeZone, "es", mCredentials.accessToken, callback);
+    public void taskByDate(String date, int onduty, String timeZone, ApiCallback<List<ChaskifyTask>> callback) throws TokenNotFoundException {
+        if (mChaskifyCredentials != null)
+            taskByDate(date, onduty, timeZone, "es", mChaskifyCredentials.accessToken, callback);
         else
             throw new TokenNotFoundException();
     }
 
-    private void taskByDate(String date, int onduty, String timeZone, String lang_id, String token, final ApiCallback<List<Task>> callback) {
+    private void taskByDate(String date, int onduty, String timeZone, String lang_id, String token, final ApiCallback<List<ChaskifyTask>> callback) {
         mApi.taskByDate(date, onduty, timeZone, lang_id, token)
                 .enqueue(new Callback<String>() {
                     @Override
@@ -44,14 +44,14 @@ public class TaskRestClient extends RestClient<TaskApi> {
                 });
     }
 
-    public void taskDetails(String task_id, ApiCallback<Task> callback) throws TokenNotFoundException {
-        if (mCredentials != null)
-            taskDetails(task_id, "300", "en", mCredentials.accessToken, callback);
+    public void taskDetails(String task_id, ApiCallback<ChaskifyTask> callback) throws TokenNotFoundException {
+        if (mChaskifyCredentials != null)
+            taskDetails(task_id, "300", "en", mChaskifyCredentials.accessToken, callback);
         else
             throw new TokenNotFoundException();
     }
 
-    private void taskDetails(String task_id, String timeZone, String lang_id, String accessToken, final ApiCallback<Task> callback) {
+    private void taskDetails(String task_id, String timeZone, String lang_id, String accessToken, final ApiCallback<ChaskifyTask> callback) {
         mApi.taskDetails(task_id, timeZone, lang_id, accessToken)
                 .enqueue(new Callback<String>() {
                     @Override
