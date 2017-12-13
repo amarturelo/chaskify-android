@@ -11,7 +11,11 @@ import com.chaskify.chaskify_sdk.rest.model.login.LoginResponse;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 
@@ -29,29 +33,31 @@ public class LoginRestClient extends RestClient<LoginApi> {
         super(chaskifyCredentials, LoginApi.class);
     }
 
-    public void loginWithUser(final String user, final String password, final ApiCallback<ChaskifyCredentials> callback) {
-        login(user, password, callback);
+    public void loginWithUser(final String user, final String password, String device_id, final ApiCallback<ChaskifyCredentials> callback) {
+        login(user, password, device_id, callback);
     }
 
-    private void login(final String user, final String password, final ApiCallback<ChaskifyCredentials> callback) {
-        mApi.login(user, password)
+    private void login(final String user, final String password, String device_id, final ApiCallback<ChaskifyCredentials> callback) {
+        mApi.login(user, password, device_id)
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         Type type = new TypeToken<BaseResponse<LoginResponse>>() {
                         }.getType();
 
-                        BaseResponse<LoginResponse> baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), type);
-                        if (baseResponse.getCode() == 1)
+                        JsonObject baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), JsonObject.class);
+                        if (baseResponse.get("code").getAsInt() == 1) {
+                            BaseResponse<LoginResponse> loginRequest = getGson().fromJson(baseResponse, type);
+
                             callback.onSuccess(new ChaskifyCredentials()
                                     .setUsername(user)
                                     .setPassword(password)
-                                    .setAccessToken(baseResponse
-                                            .getDetails()
-                                            .getToken())
+                                    .setAccessToken(loginRequest.getDetails().getToken())
+
                             );
-                        else
-                            callback.onChaskifyError(new ChaskifyError(baseResponse.getMsg()));
+                        } else {
+                            callback.onChaskifyError(new ChaskifyError(baseResponse.get("msg").getAsString()));
+                        }
                     }
 
                     @Override

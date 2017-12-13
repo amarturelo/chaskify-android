@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
+
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -10,7 +11,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-        manifestPlaceholders = [onesignal_app_id               : "fad7d10d-b7bb-48f1-8d55-fe4a484a075c",
+        manifestPlaceholders = [onesignal_app_id               : "c9985617-4268-4464-83b0-88a157ce5152",
                                 // Project number pulled from dashboard, local value is ignored.
                                 onesignal_google_project_number: "REMOTE"]
         multiDexEnabled true
@@ -39,7 +40,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.android.support:multidex:1.0.2'
     //fragmentation
     compile 'me.yokeyword:fragmentation:1.1.8'
     compile 'me.yokeyword:fragmentation-swipeback:1.1.8'
@@ -58,12 +59,13 @@ dependencies {
 
     //push
     // OneSignal SDK
-    compile 'com.onesignal:OneSignal:[3.6.1,3.99.99)'
+    compile 'com.onesignal:OneSignal:3.6.5@aar'
+
 
     // OneSignal requires at least version 7.0.0 of GMS but the newest version is recommend.
     // Required for OneSignal, even if you have added FCM.
-    compile 'com.google.android.gms:play-services-gcm:11.0.4'
+    compile 'com.google.android.gms:play-services-gcm:11.2.2'
 
     // Required for geotagging
-    compile 'com.google.android.gms:play-services-location:11.0.4'
+    compile 'com.google.android.gms:play-services-location:11.2.2'
 }

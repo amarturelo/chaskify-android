@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.chaskify.android.R;
 import com.chaskify.android.navigation.Navigator;
+import com.chaskify.android.service.ChaskifyService;
 import com.chaskify.android.ui.base.BaseFragment;
 
 /**
@@ -103,6 +104,9 @@ public class SplashFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        ChaskifyService.start(getActivity());
+
         Navigator.goToMainActivity(getContext());
     }
 }

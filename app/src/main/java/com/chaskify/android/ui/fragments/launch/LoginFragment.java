@@ -262,7 +262,8 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        //return email.contains("@");
+        return true;
     }
 
     private boolean isPasswordValid(String password) {

@@ -58,7 +58,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View>
 
                             @Override
                             public void onChaskifyError(ChaskifyError e) {
-
+                                emitter.onError(new Exception(e.getError()));
                             }
 
                             @Override

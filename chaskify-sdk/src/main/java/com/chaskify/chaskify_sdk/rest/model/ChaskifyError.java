@@ -11,4 +11,7 @@ public class ChaskifyError {
         this.error = error;
     }
 
+    public String getError() {
+        return error;
+    }
 }
