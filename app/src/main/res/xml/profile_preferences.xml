@@ -7,6 +7,10 @@
     <PreferenceCategory android:title="@string/title_preference_personal">
 
         <Preference
+            android:summary="Chaskify"
+            android:title="@string/title_preference_team" />
+
+        <Preference
             android:icon="@drawable/ic_mail_black_24dp"
             android:summary="amarturelo@gmail.com"
             android:title="@string/title_preference_email" />
