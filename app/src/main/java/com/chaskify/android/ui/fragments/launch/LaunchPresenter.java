@@ -39,7 +39,6 @@ public class LaunchPresenter extends BasePresenter<LaunchContract.View>
     @Override
     public void hasCredentials() {
         addSubscription(Single.just(Chaskify.getInstance())
-                .doOnSubscribe(disposable -> view.showProgress())
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(value -> {
@@ -51,6 +50,7 @@ public class LaunchPresenter extends BasePresenter<LaunchContract.View>
                                     Timber.d("::ChaskifyCredentials " + value.getDefaultSession().get().getCredentials().getUsername() + " as default::");
                                     view.launchSplash();
                                 } else {
+                                    view.showProgress();
                                     Timber.d("::ChaskifyCredentials is present but not things is default::");
                                     view.renderCredentials(Stream.of(value.getSessions())
                                             .map(chaskifySession ->

@@ -8,6 +8,7 @@ import android.view.View;
 import com.chaskify.android.R;
 import com.chaskify.android.model.ServerConfigurationListCacheModel;
 import com.chaskify.android.ui.base.BaseFragment;
+import com.chaskify.android.ui.widget.MultiStateView;
 
 import java.util.List;
 
@@ -16,6 +17,8 @@ import timber.log.Timber;
 public class LaunchFragment extends BaseFragment implements LaunchContract.View {
 
     private LaunchPresenter launchPresenter;
+
+    private MultiStateView multiStateView;
 
     public LaunchFragment() {
         // Required empty public constructor
@@ -41,6 +44,7 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        multiStateView = view.findViewById(R.id.multistate_profile_cache);
         launchPresenter.bindView(this);
     }
 
@@ -74,11 +78,6 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View 
 
     public void renderCredentials(List<ServerConfigurationListCacheModel> credentials) {
         Timber.d("::Render credentials " + credentials.toString() + "::");
-
-    }
-
-    @Override
-    public void showProgress() {
     }
 
     @Override
@@ -88,8 +87,17 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View 
     }
 
     @Override
-    public void hideProgress() {
-
+    public void showProgress() {
+        multiStateView.setVisibility(View.VISIBLE);
+        multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
     }
+
+    @Override
+    public void hideProgress() {
+        multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+    }
+
+
+
 
 }

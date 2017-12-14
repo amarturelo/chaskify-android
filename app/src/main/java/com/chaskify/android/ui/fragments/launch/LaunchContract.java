@@ -13,13 +13,11 @@ class LaunchContract {
 
         void renderCredentials(List<ServerConfigurationListCacheModel> crendetials);
 
+        void launchSplash();
+
         void showProgress();
 
         void hideProgress();
-
-
-        void launchSplash();
-
     }
 
     interface Presenter extends BaseContract.Presenter<LaunchContract.View> {

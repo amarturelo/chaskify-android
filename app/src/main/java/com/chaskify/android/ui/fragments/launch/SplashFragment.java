@@ -84,6 +84,7 @@ public class SplashFragment extends BaseFragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+
     }
 
     /**
@@ -109,4 +110,6 @@ public class SplashFragment extends BaseFragment {
 
         Navigator.goToMainActivity(getContext());
     }
+
+
 }

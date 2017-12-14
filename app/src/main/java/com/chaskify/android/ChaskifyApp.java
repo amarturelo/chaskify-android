@@ -4,12 +4,14 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.support.multidex.MultiDexApplication;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 
 import com.chaskify.android.push.ExampleNotificationOpenedHandler;
 import com.chaskify.android.push.ExampleNotificationReceivedHandler;
 import com.chaskify.android.ui.activities.MainActivity;
 import com.chaskify.logger.CrashReportingTree;
+import com.mapbox.mapboxsdk.Mapbox;
 import com.onesignal.OSNotification;
 import com.onesignal.OSNotificationAction;
 import com.onesignal.OSNotificationOpenResult;
@@ -35,7 +37,7 @@ public class ChaskifyApp extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         Timber.tag(this.getClass().getSimpleName());
-
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         Chaskify.getInstance(getApplicationContext());
 
         initRealm();
@@ -67,13 +69,10 @@ public class ChaskifyApp extends MultiDexApplication {
                 Timber.d("UserId: " + userId + " registrationId: " + registrationId);
             }
         });
-        OneSignal.enableSound(true);
-        OneSignal.enableVibrate(true);
     }
 
     private void initMaps() {
-        // Mapbox Access token
-        //Mapbox.getInstance(getApplicationContext(), getString(R.string.mapbox_maps_key));
+        Mapbox.getInstance(getApplicationContext(), getString(R.string.mapbox_maps_key));
     }
 
     private void initBugReport() {

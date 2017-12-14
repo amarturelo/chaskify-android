@@ -124,6 +124,7 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        mLoginPresenter.release();
     }
 
     @Override

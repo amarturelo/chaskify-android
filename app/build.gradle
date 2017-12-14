@@ -15,6 +15,7 @@ android {
                                 // Project number pulled from dashboard, local value is ignored.
                                 onesignal_google_project_number: "REMOTE"]
         multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -68,4 +69,7 @@ dependencies {
 
     // Required for geotagging
     compile 'com.google.android.gms:play-services-location:11.2.2'
+
+    //map
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:5.2.1'
 }
