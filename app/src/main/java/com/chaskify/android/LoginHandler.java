@@ -52,7 +52,7 @@ public class LoginHandler {
 
     private void callLogin(String username, String password, ApiCallback<ChaskifyCredentials> loginApiCallback) {
         LoginRestClient loginRestClient = new LoginRestClient(null);
-        loginRestClient.loginWithUser(username, password, "c9985617-4268-4464-83b0-88a157ce5152", loginApiCallback);
+        loginRestClient.loginWithUser(username, password, loginApiCallback);
     }
 
     private void onRegistrationDone(ChaskifyCredentials chaskifyCredentials, ApiCallback<Credentials> callback) {

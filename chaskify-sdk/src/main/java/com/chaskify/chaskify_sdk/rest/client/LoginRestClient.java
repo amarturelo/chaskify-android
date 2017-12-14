@@ -33,12 +33,12 @@ public class LoginRestClient extends RestClient<LoginApi> {
         super(chaskifyCredentials, LoginApi.class);
     }
 
-    public void loginWithUser(final String user, final String password, String device_id, final ApiCallback<ChaskifyCredentials> callback) {
-        login(user, password, device_id, callback);
+    public void loginWithUser(final String user, final String password, final ApiCallback<ChaskifyCredentials> callback) {
+        login(user, password, callback);
     }
 
-    private void login(final String user, final String password, String device_id, final ApiCallback<ChaskifyCredentials> callback) {
-        mApi.login(user, password, device_id)
+    private void login(final String user, final String password, final ApiCallback<ChaskifyCredentials> callback) {
+        mApi.login(user, password)
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
