@@ -17,6 +17,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 
 import retrofit2.Call;
@@ -35,6 +36,24 @@ public class LoginRestClient extends RestClient<LoginApi> {
 
     public void loginWithUser(final String user, final String password, final ApiCallback<ChaskifyCredentials> callback) {
         login(user, password, callback);
+    }
+
+    public ChaskifyCredentials loginWithUserExplicitly(final String user, final String password) throws Exception {
+        Response<String> response = mApi.login(user, password).execute();
+        Type type = new TypeToken<BaseResponse<LoginResponse>>() {
+        }.getType();
+
+        JsonObject baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), JsonObject.class);
+        if (baseResponse.get("code").getAsInt() == 1) {
+            BaseResponse<LoginResponse> loginRequest = getGson().fromJson(baseResponse, type);
+
+            return new ChaskifyCredentials()
+                    .setUsername(user)
+                    .setPassword(password)
+                    .setAccessToken(loginRequest.getDetails().getToken());
+        } else {
+            throw new Exception(baseResponse.get("msg").getAsString());
+        }
     }
 
     private void login(final String user, final String password, final ApiCallback<ChaskifyCredentials> callback) {
@@ -56,7 +75,7 @@ public class LoginRestClient extends RestClient<LoginApi> {
 
                             );
                         } else {
-                            callback.onChaskifyError(new ChaskifyError(baseResponse.get("msg").getAsString()));
+                            callback.onChaskifyError(new Exception(baseResponse.get("msg").getAsString()));
                         }
                     }
 
@@ -65,6 +84,8 @@ public class LoginRestClient extends RestClient<LoginApi> {
                         callback.onNetworkError((Exception) t);
                     }
                 });
+
+
     }
 
     @Override
