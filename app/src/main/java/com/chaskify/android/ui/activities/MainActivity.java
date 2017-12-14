@@ -18,7 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.chaskify.android.R;
-import com.chaskify.android.ui.activities.settings.RootSettingsActivity;
+import com.chaskify.android.ui.activities.settings.SettingsProfileActivity;
 import com.chaskify.android.ui.base.BaseActivity;
 import com.chaskify.android.ui.fragments.TaskMapFragment;
 
@@ -99,7 +99,7 @@ public class MainActivity extends BaseActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_profile) {
-            Intent intent = new Intent(this, RootSettingsActivity.class);
+            Intent intent = new Intent(this, SettingsProfileActivity.class);
             startActivity(intent);
             return true;
         }
@@ -114,7 +114,7 @@ public class MainActivity extends BaseActivity {
     }
 
     public static Intent getCallingIntent(Context context) {
-        Intent intent = new Intent(context,MainActivity.class);
+        Intent intent = new Intent(context, MainActivity.class);
         return intent;
     }
 

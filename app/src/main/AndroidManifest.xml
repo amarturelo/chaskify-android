@@ -33,10 +33,6 @@
             android:name=".ui.activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.settings.RootSettingsActivity"
-            android:label="@string/title_preference_preferences"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".ui.activities.NotificationsActivity"
             android:label="@string/title_activity_notifications"
             android:theme="@style/AppTheme.NoActionBar" />
