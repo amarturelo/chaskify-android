@@ -30,4 +30,5 @@ public class LaunchActivity extends BaseActivity {
         return R.layout.activity_launch;
     }
 
+
 }

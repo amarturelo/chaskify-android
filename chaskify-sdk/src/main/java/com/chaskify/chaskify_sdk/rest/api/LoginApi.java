@@ -9,7 +9,6 @@ import retrofit2.http.Query;
  */
 public interface LoginApi {
     @GET("login")
-    Call<String> login(@Query("username") String username, @Query("password") String password, @Query("device_id") String deviceId);
     Call<String> login(@Query("username") String username, @Query("password") String password);
 
     /**
