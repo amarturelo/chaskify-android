@@ -8,6 +8,7 @@ import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.model.ServerConfigurationListCacheModel;
 import com.chaskify.android.shared.BasePresenter;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
@@ -21,16 +22,18 @@ public class LaunchPresenter extends BasePresenter<LaunchContract.View>
     @Override
     public void bindView(@NonNull LaunchContract.View view) {
         super.bindView(view);
-        fetch();
+        synchronize();
     }
 
-    private void fetch() {
+    private void synchronize() {
         addSubscription(Single.just(Chaskify.getInstance())
-                .flatMapCompletable(Chaskify::fetch)
+                .filter(chaskify -> chaskify.getSessions().isEmpty())
+                .flatMapCompletable(Chaskify::synchronize)
+                .doFinally(this::hasCredentials)
                 .doOnSubscribe(disposable -> view.showProgress())
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::hasCredentials));
+                .subscribe());
     }
 
     @Override

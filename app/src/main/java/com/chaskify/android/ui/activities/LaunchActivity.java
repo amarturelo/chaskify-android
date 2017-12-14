@@ -10,6 +10,9 @@ import com.chaskify.android.ui.fragments.launch.LaunchFragment;
 import com.chaskify.android.ui.fragments.launch.LoginFragment;
 import com.chaskify.domain.model.Credentials;
 
+import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
+import me.yokeyword.fragmentation.anim.FragmentAnimator;
+
 public class LaunchActivity extends BaseActivity {
 
     public final static String ARG_ACCOUNT_TYPE = "ACCOUNT_TYPE";
@@ -59,4 +62,10 @@ public class LaunchActivity extends BaseActivity {
         return getIntent().getStringExtra(ARG_ACCOUNT_NAME) == null ? Optional.empty() : Optional.of(getIntent().getStringExtra(ARG_ACCOUNT_NAME));
 
     }
+
+    @Override
+    public FragmentAnimator getFragmentAnimator() {
+        return new DefaultNoAnimator();
+    }
+
 }

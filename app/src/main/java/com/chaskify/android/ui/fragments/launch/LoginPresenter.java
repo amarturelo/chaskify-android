@@ -5,11 +5,8 @@ import android.support.annotation.NonNull;
 import com.chaskify.android.LoginHandler;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
-import com.chaskify.chaskify_sdk.ChaskifyServerConfiguration;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
-import com.chaskify.chaskify_sdk.rest.model.ChaskifyError;
 import com.chaskify.domain.model.Credentials;
-import com.chaskify.domain.model.ServerConfiguration;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;

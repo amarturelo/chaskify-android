@@ -10,7 +10,7 @@ import io.realm.annotations.PrimaryKey;
  */
 
 public class RealmServerConfiguration extends RealmObject {
-    public static String CREDENTIALS = "realmCredentials";
+    public static String USERNAME = "username";
     @PrimaryKey
     private String username;
 

@@ -20,9 +20,10 @@ import android.widget.Toast;
 import com.chaskify.android.LoginHandler;
 import com.chaskify.android.R;
 import com.chaskify.android.navigation.Navigator;
+import com.chaskify.android.store.LoginStorage;
+import com.chaskify.android.store.PreferenceStorage;
 import com.chaskify.android.ui.activities.LaunchActivity;
 import com.chaskify.android.ui.base.BaseFragment;
-import com.chaskify.domain.model.Credentials;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,24 +59,6 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static LoginFragment newInstance(String param1, String param2) {
-        LoginFragment fragment = new LoginFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
         Bundle args = new Bundle();
@@ -103,7 +86,14 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         mLoginPresenter = new LoginPresenter(
-                new LoginHandler()
+                new LoginHandler(
+                        new LoginStorage(
+                                getContext()
+                        )
+                        , new PreferenceStorage(
+                        getContext()
+                )
+                )
         );
     }
 
@@ -204,10 +194,16 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
         });
 
         Button mEmailSignInButton = view.findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(v -> attemptLogin());
+        mEmailSignInButton.setOnClickListener(v -> login());
 
         mEmailLoginFormView = view.findViewById(R.id.email_login_form);
         mProgressView = view.findViewById(R.id.login_progress);
+    }
+
+    private void login() {
+        if (!attemptLogin()) {
+            mLoginPresenter.login(mEmailView.getText().toString(), mPasswordView.getText().toString());
+        }
     }
 
     /**
@@ -215,7 +211,7 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private void attemptLogin() {
+    private boolean attemptLogin() {
 
         // Reset errors.
         mEmailView.setError(null);
@@ -245,18 +241,12 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
             focusView = mEmailView;
             cancel = true;
         }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
+        if (cancel)
             focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            /*mAuthTask = new LoginActivity.UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);*/
-            mLoginPresenter.login(mEmailView.getText().toString(), mPasswordView.getText().toString());
-        }
+
+        return cancel;
+
+
     }
 
     private boolean isEmailValid(String email) {

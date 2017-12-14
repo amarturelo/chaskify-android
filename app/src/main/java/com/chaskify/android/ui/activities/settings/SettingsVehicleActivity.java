@@ -11,9 +11,10 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.chaskify.android.R;
+import com.chaskify.android.ui.base.AbstractSwipeBackActivity;
 import com.chaskify.android.ui.base.BaseActivity;
 
-public class SettingsVehicleActivity extends BaseActivity {
+public class SettingsVehicleActivity extends AbstractSwipeBackActivity {
 
     @Override
     protected int getLayout() {

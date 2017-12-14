@@ -9,6 +9,12 @@
     <uses-permission
         android:name="android.permission.GET_ACCOUNTS"
         android:maxSdkVersion="22" />
+    <uses-permission
+        android:name="android.permission.MANAGE_ACCOUNTS"
+        android:maxSdkVersion="22" />
+    <uses-permission
+        android:name="android.permission.USE_CREDENTIALS"
+        android:maxSdkVersion="22" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -34,7 +40,6 @@
             android:name=".ui.activities.NotificationsActivity"
             android:label="@string/title_activity_notifications"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.activities.LoginActivity" />
         <activity
             android:name=".ui.activities.LaunchActivity"
             android:theme="@style/AppTheme.NoActionBar">

@@ -5,15 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.model.ServerConfigurationListCacheModel;
-import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.base.BaseFragment;
-import com.chaskify.data.cache.impl.CredentialsCacheImpl;
-import com.chaskify.data.repositories.RealmCredentialsRepositoryImpl;
-import com.chaskify.domain.interactors.CredentialsInteractor;
-import com.chaskify.domain.model.Credentials;
 
 import java.util.List;
 

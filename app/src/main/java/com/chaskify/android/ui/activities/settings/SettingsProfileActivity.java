@@ -11,9 +11,10 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.chaskify.android.R;
+import com.chaskify.android.ui.base.AbstractSwipeBackActivity;
 import com.chaskify.android.ui.base.BaseActivity;
 
-public class SettingsProfileActivity extends BaseActivity {
+public class SettingsProfileActivity extends AbstractSwipeBackActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
