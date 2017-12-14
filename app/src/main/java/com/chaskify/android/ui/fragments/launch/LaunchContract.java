@@ -17,13 +17,12 @@ class LaunchContract {
 
         void hideProgress();
 
-        void launchLogin(Credentials credentials);
 
         void launchSplash();
 
     }
 
     interface Presenter extends BaseContract.Presenter<LaunchContract.View> {
-        void findCredentials();
+        void hasCredentials();
     }
 }

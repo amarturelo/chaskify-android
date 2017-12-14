@@ -1,18 +1,21 @@
 package com.chaskify.android;
 
+import android.content.Context;
+
 import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
-import com.annimon.stream.function.Consumer;
+import com.chaskify.android.store.AccountStorage;
 import com.chaskify.android.store.LoginStorage;
 import com.chaskify.chaskify_sdk.ChaskifySession;
-import com.chaskify.chaskify_sdk.ChaskifyServerConfiguration;
-import com.chaskify.chaskify_sdk.rest.model.ChaskifyIcons;
 import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
 import com.chaskify.domain.model.Credentials;
-import com.chaskify.domain.model.ServerConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Completable;
+import io.reactivex.CompletableEmitter;
+import io.reactivex.CompletableOnSubscribe;
 
 /**
  * Created by alberto on 9/12/17.
@@ -26,56 +29,37 @@ public class Chaskify {
 
     private LoginStorage mLoginStorage;
 
+    private AccountStorage mAccountStorage;
+
     private static Chaskify ourInstance = null;
 
     public static Chaskify getInstance() {
-        if (ourInstance == null)
-            ourInstance = new Chaskify();
         return ourInstance;
     }
 
-    private Chaskify() {
-        mChaskifySessions = new ArrayList<>();
-        mLoginStorage = new LoginStorage();
-        fetchChaskifySessions();
+    public static Chaskify getInstance(Context context) {
+        if (ourInstance == null && context != null)
+            ourInstance = new Chaskify(context);
+        return ourInstance;
     }
 
-    private void fetchChaskifySessions() {
-        List<ChaskifySession> sessions = getSessions();
-
-        List<Credentials> hsConfigList = mLoginStorage.getCredentialsList();
-
-        Stream.of(hsConfigList)
-                .map(Chaskify::createSession)
-                .filter(value -> !mChaskifySessions.contains(value))
-                .forEach(sessions::add);
-
-        synchronized (LOG_TAG) {
-            mChaskifySessions = sessions;
-        }
+    private Chaskify(Context context) {
+        mAccountStorage = new AccountStorage(context);
+        mChaskifySessions = new ArrayList<>();
+        mLoginStorage = new LoginStorage();
     }
 
     public synchronized Optional<ChaskifySession> getDefaultSession() {
-        List<Credentials> credentialsList = mLoginStorage.getCredentialsList();
+        List<ChaskifySession> sessions = getSessions();
 
-        Optional<Credentials> credentialsOptional = Stream.of(credentialsList)
-                .filter(value -> value.isDefault())
-                .findFirst();
-
-        Optional<ChaskifySession> defaultSession;
-        if (credentialsOptional.isPresent()) {
-            defaultSession = Stream.of(mChaskifySessions)
-                    .filter(value -> value.getCredentials().equals(credentialsOptional.get().getUsername()))
-                    .findFirst();
-            if (defaultSession.isPresent())
-                return defaultSession;
-            else {
-                ChaskifySession chaskifySession = createSession(credentialsOptional.get());
-                mChaskifySessions.add(chaskifySession);
-                return Optional.of(chaskifySession);
-            }
-        } else
+        if (sessions.isEmpty())
             return Optional.empty();
+
+        String name = mAccountStorage.getDefaultAccount();
+
+        return Stream.of(getSessions())
+                .filter(value -> value.equals(name))
+                .findFirst();
     }
 
     public synchronized void addSession(ChaskifySession chaskifySession) {
@@ -102,6 +86,15 @@ public class Chaskify {
                 .setUsername(credentials.getUsername()));
     }
 
+    public Completable fetch() {
+        return Completable.create(emitter -> {
+            Stream.of(mLoginStorage.getCredentialsList())
+                    .filter(value -> mAccountStorage.insert(value))
+                    .forEach(credentials -> mChaskifySessions.add(createSession(credentials)));
+            emitter.onComplete();
+        });
+    }
+
     public List<ChaskifySession> getSessions() {
         List<ChaskifySession> sessions = new ArrayList<>();
 
@@ -110,7 +103,6 @@ public class Chaskify {
                 sessions = new ArrayList<>(mChaskifySessions);
             }
         }
-
         return sessions;
     }
 }

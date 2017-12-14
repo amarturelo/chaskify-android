@@ -35,6 +35,9 @@ public class ChaskifyApp extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         Timber.tag(this.getClass().getSimpleName());
+
+        Chaskify.getInstance(getApplicationContext());
+
         initRealm();
         initBugReport();
         initFragmentation();

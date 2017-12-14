@@ -16,7 +16,7 @@ public interface ApiFailureCallback {
      *
      * @param e the Matrix error
      */
-    void onChaskifyError(ChaskifyError e);
+    void onChaskifyError(Exception e);
 
     /**
      * Called for some other type of error.

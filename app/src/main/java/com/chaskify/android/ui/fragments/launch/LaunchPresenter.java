@@ -2,14 +2,11 @@ package com.chaskify.android.ui.fragments.launch;
 
 import android.support.annotation.NonNull;
 
-import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.model.ServerConfigurationListCacheModel;
 import com.chaskify.android.shared.BasePresenter;
-import com.chaskify.domain.interactors.CredentialsInteractor;
-import com.chaskify.domain.model.Credentials;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -24,14 +21,22 @@ public class LaunchPresenter extends BasePresenter<LaunchContract.View>
     @Override
     public void bindView(@NonNull LaunchContract.View view) {
         super.bindView(view);
-        findCredentials();
+        fetch();
+    }
+
+    private void fetch() {
+        addSubscription(Single.just(Chaskify.getInstance())
+                .flatMapCompletable(Chaskify::fetch)
+                .doOnSubscribe(disposable -> view.showProgress())
+                .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::hasCredentials));
     }
 
     @Override
-    public void findCredentials() {
+    public void hasCredentials() {
         addSubscription(Single.just(Chaskify.getInstance())
                 .doOnSubscribe(disposable -> view.showProgress())
-
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(value -> {

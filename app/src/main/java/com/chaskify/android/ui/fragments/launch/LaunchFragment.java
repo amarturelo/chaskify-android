@@ -88,12 +88,6 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View 
     }
 
     @Override
-    public void launchLogin(Credentials credentials) {
-        Timber.d("::Launch login whit credential " + credentials.getUsername() + "::");
-        start(LoginFragment.newInstance(credentials));
-    }
-
-    @Override
     public void launchSplash() {
         startWithPop(SplashFragment.newInstance());
         getActivity().finish();

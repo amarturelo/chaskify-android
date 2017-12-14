@@ -1,14 +1,10 @@
 package com.chaskify.android;
 
-import com.chaskify.android.store.LoginStorage;
 import com.chaskify.chaskify_sdk.ChaskifySession;
-import com.chaskify.chaskify_sdk.ChaskifyServerConfiguration;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.client.LoginRestClient;
-import com.chaskify.chaskify_sdk.rest.model.ChaskifyError;
 import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
 import com.chaskify.domain.model.Credentials;
-import com.chaskify.domain.model.ServerConfiguration;
 
 /**
  * Created by alberto on 11/12/17.
@@ -16,10 +12,8 @@ import com.chaskify.domain.model.ServerConfiguration;
 
 public class LoginHandler {
 
-    private LoginStorage mLoginStorage;
 
     public LoginHandler() {
-        mLoginStorage = new LoginStorage();
     }
 
     public void login(String username, String password, ApiCallback<Credentials> callback) {
@@ -36,7 +30,7 @@ public class LoginHandler {
             }
 
             @Override
-            public void onChaskifyError(ChaskifyError e) {
+            public void onChaskifyError(Exception e) {
                 callback.onChaskifyError(e);
             }
 

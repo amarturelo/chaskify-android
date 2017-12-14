@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.chaskify.android.LoginHandler;
 import com.chaskify.android.R;
 import com.chaskify.android.navigation.Navigator;
+import com.chaskify.android.ui.activities.LaunchActivity;
 import com.chaskify.android.ui.base.BaseFragment;
 import com.chaskify.domain.model.Credentials;
 
@@ -33,7 +34,7 @@ import com.chaskify.domain.model.Credentials;
  */
 public class LoginFragment extends BaseFragment implements LoginContract.View {
 
-    private static String ARG_CREDENTIALS = "credentials";
+
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -82,16 +83,16 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
         return fragment;
     }
 
-    public static LoginFragment newInstance(Credentials credentials) {
+    public static LoginFragment newInstance(String name) {
         LoginFragment fragment = new LoginFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_CREDENTIALS, credentials);
+        args.putString(LaunchActivity.ARG_ACCOUNT_NAME, name);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public Credentials currentCredentials() {
-        return getArguments().getParcelable(ARG_CREDENTIALS);
+    public String getArgAccountName() {
+        return getArguments().getString(LaunchActivity.ARG_ACCOUNT_NAME);
     }
 
     @Override
@@ -184,10 +185,8 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
     }
 
     private void init() {
-        if (currentCredentials() != null) {
-            mEmailView.setText(currentCredentials().getUsername());
-            mPasswordView.setText(currentCredentials().getPassword());
-            attemptLogin();
+        if (getArgAccountName() != null) {
+            mEmailView.setText(getArgAccountName());
         }
     }
 

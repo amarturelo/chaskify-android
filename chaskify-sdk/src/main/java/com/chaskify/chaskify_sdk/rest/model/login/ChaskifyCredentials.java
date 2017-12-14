@@ -49,6 +49,21 @@ public class ChaskifyCredentials {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ChaskifyCredentials)) return false;
+
+        ChaskifyCredentials that = (ChaskifyCredentials) o;
+
+        return username != null ? username.equals(that.username) : that.username == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return username != null ? username.hashCode() : 0;
+    }
+
+    @Override
     public String toString() {
         return "ChaskifyCredentials{" +
                 "accessToken='" + accessToken + '\'' +

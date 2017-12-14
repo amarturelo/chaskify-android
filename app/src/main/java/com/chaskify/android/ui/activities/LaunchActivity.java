@@ -3,10 +3,12 @@ package com.chaskify.android.ui.activities;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import com.annimon.stream.Optional;
 import com.chaskify.android.R;
 import com.chaskify.android.ui.base.BaseActivity;
 import com.chaskify.android.ui.fragments.launch.LaunchFragment;
 import com.chaskify.android.ui.fragments.launch.LoginFragment;
+import com.chaskify.domain.model.Credentials;
 
 public class LaunchActivity extends BaseActivity {
 
@@ -35,8 +37,10 @@ public class LaunchActivity extends BaseActivity {
 
     private void initActivity(Bundle savedInstanceState) {
         if (savedInstanceState == null)
-            if (isAddingNewAccount())
+            if (getArgAddingNewAccount())
                 loadRootFragment(R.id.fragment, LoginFragment.newInstance());
+            else if (getArgAccountName().isPresent())
+                loadRootFragment(R.id.fragment, LoginFragment.newInstance(getArgAccountName().get()));
             else
                 loadRootFragment(R.id.fragment, LaunchFragment.newInstance());
     }
@@ -47,7 +51,12 @@ public class LaunchActivity extends BaseActivity {
     }
 
 
-    private boolean isAddingNewAccount() {
+    private boolean getArgAddingNewAccount() {
         return getIntent().getBooleanExtra(ARG_IS_ADDING_NEW_ACCOUNT, false);
+    }
+
+    private Optional<String> getArgAccountName() {
+        return getIntent().getStringExtra(ARG_ACCOUNT_NAME) == null ? Optional.empty() : Optional.of(getIntent().getStringExtra(ARG_ACCOUNT_NAME));
+
     }
 }

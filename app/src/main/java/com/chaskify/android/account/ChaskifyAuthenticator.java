@@ -4,9 +4,12 @@ import android.accounts.*;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.chaskify.android.ui.activities.LaunchActivity;
+import com.chaskify.chaskify_sdk.rest.client.LoginRestClient;
+import com.chaskify.domain.model.Credentials;
 
 import timber.log.Timber;
 
@@ -24,6 +27,8 @@ import static com.chaskify.android.account.AccountGeneral.AUTHTOKEN_TYPE_READ_ON
  */
 public class ChaskifyAuthenticator extends AbstractAccountAuthenticator {
 
+    private LoginRestClient loginRestClient;
+
     private String LOG_TAG = this.getClass().getSimpleName();
 
     private final Context mContext;
@@ -31,6 +36,7 @@ public class ChaskifyAuthenticator extends AbstractAccountAuthenticator {
     public ChaskifyAuthenticator(Context context) {
         super(context);
         Timber.tag(LOG_TAG);
+        loginRestClient = new LoginRestClient(null);
         this.mContext = context;
     }
 
@@ -59,29 +65,28 @@ public class ChaskifyAuthenticator extends AbstractAccountAuthenticator {
             return result;
         }
 
-        // Extract the username and password from the Account Manager, and ask
-        // the server for an appropriate AuthToken.
         final AccountManager am = AccountManager.get(mContext);
 
-        /*String authToken = am.peekAuthToken(account, authTokenType);
+        String authToken = am.peekAuthToken(account, authTokenType);
 
-        Log.d("udinic", LOG_TAG + "> peekAuthToken returned - " + authToken);
+        Timber.d("::peekAuthToken returned - " + authToken + "::");
 
         // Lets give another try to authenticate the user
         if (TextUtils.isEmpty(authToken)) {
             final String password = am.getPassword(account);
             if (password != null) {
                 try {
-                    Log.d("udinic", LOG_TAG + "> re-authenticating with the existing password");
-                    authToken = sServerAuthenticate.userSignIn(account.name, password, authTokenType);
+                    Timber.d("::re-authenticating with the existing password::");
+                    authToken = loginRestClient.loginWithUserExplicitly(account.name, password).getAccessToken();
+                    Timber.d("::authentication success with the existing password " + authToken + "::");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        }*/
+        }
 
         // If we get an authToken - we return it
-        /*if (!TextUtils.isEmpty(authToken)) {
+        if (!TextUtils.isEmpty(authToken)) {
             final Bundle result = new Bundle();
             result.putString(AccountManager.KEY_ACCOUNT_NAME, account.name);
             result.putString(AccountManager.KEY_ACCOUNT_TYPE, account.type);
@@ -92,14 +97,14 @@ public class ChaskifyAuthenticator extends AbstractAccountAuthenticator {
         // If we get here, then we couldn't access the user's password - so we
         // need to re-prompt them for their credentials. We do that by creating
         // an intent to display our AuthenticatorActivity.
-        final Intent intent = new Intent(mContext, AuthenticatorActivity.class);
+        final Intent intent = new Intent(mContext, LaunchActivity.class);
         intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
-        intent.putExtra(AuthenticatorActivity.ARG_ACCOUNT_TYPE, account.type);
-        intent.putExtra(AuthenticatorActivity.ARG_AUTH_TYPE, authTokenType);
-        intent.putExtra(AuthenticatorActivity.ARG_ACCOUNT_NAME, account.name);
+        intent.putExtra(LaunchActivity.ARG_ACCOUNT_TYPE, account.type);
+        intent.putExtra(LaunchActivity.ARG_AUTH_TYPE, authTokenType);
+        intent.putExtra(LaunchActivity.ARG_ACCOUNT_NAME, account.name);
         final Bundle bundle = new Bundle();
-        bundle.putParcelable(AccountManager.KEY_INTENT, intent);*/
-        return null;
+        bundle.putParcelable(AccountManager.KEY_INTENT, intent);
+        return bundle;
     }
 
 

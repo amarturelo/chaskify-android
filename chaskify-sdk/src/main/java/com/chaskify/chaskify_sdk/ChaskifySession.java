@@ -64,4 +64,19 @@ public class ChaskifySession {
     public SettingsRestClient getSettingsRestClient() {
         return mSettingsRestClient;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ChaskifySession)) return false;
+
+        ChaskifySession that = (ChaskifySession) o;
+
+        return mChaskifyCredentials != null ? mChaskifyCredentials.equals(that.mChaskifyCredentials) : that.mChaskifyCredentials == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return mChaskifyCredentials != null ? mChaskifyCredentials.hashCode() : 0;
+    }
 }
