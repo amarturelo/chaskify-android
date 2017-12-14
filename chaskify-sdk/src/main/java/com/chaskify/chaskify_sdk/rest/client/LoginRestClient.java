@@ -49,7 +49,6 @@ public class LoginRestClient extends RestClient<LoginApi> {
 
             return new ChaskifyCredentials()
                     .setUsername(user)
-                    .setPassword(password)
                     .setAccessToken(loginRequest.getDetails().getToken());
         } else {
             throw new Exception(baseResponse.get("msg").getAsString());
@@ -70,7 +69,6 @@ public class LoginRestClient extends RestClient<LoginApi> {
 
                             callback.onSuccess(new ChaskifyCredentials()
                                     .setUsername(user)
-                                    .setPassword(password)
                                     .setAccessToken(loginRequest.getDetails().getToken())
 
                             );
