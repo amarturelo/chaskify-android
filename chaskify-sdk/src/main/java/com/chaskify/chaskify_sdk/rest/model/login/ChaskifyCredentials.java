@@ -8,10 +8,6 @@ public class ChaskifyCredentials {
 
     public String username;
 
-    public String password;
-
-    public String deviceId;
-
     public String getAccessToken() {
         return accessToken;
     }
@@ -27,24 +23,6 @@ public class ChaskifyCredentials {
 
     public ChaskifyCredentials setUsername(String username) {
         this.username = username;
-        return this;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public ChaskifyCredentials setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public ChaskifyCredentials setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
         return this;
     }
 
@@ -68,8 +46,6 @@ public class ChaskifyCredentials {
         return "ChaskifyCredentials{" +
                 "accessToken='" + accessToken + '\'' +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", deviceId='" + deviceId + '\'' +
                 '}';
     }
 }
