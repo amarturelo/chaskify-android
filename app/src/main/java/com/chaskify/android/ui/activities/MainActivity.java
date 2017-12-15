@@ -2,25 +2,13 @@ package com.chaskify.android.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources.Theme;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.chaskify.android.R;
@@ -28,11 +16,11 @@ import com.chaskify.android.ui.activities.settings.SettingsProfileActivity;
 import com.chaskify.android.ui.base.BaseActivity;
 import com.chaskify.android.ui.fragments.TaskListFragment;
 import com.chaskify.android.ui.fragments.TaskMapFragment;
+import com.chaskify.android.ui.widget.AppBarStateChangeListener;
 import com.chaskify.android.ui.widget.DutyActionBar;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -46,7 +34,7 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
 
     private static final String ARG_TASK_VIEW_MODE = "TASK_VIEW_MODE";
     private static final String ARG_CURRENT_DATE = "CURRENT_DATE";
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("d MMMM yyyy", /*Locale.getDefault()*/Locale.ENGLISH);
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM,d", /*Locale.getDefault()*/Locale.getDefault());
     private AppBarLayout appBarLayout;
     private CompactCalendarView compactCalendarView;
 
@@ -68,22 +56,18 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Timber.tag(this.getClass().getSimpleName());
         initView();
 
         initToolBar();
 
         initSpinner();
 
-        initCalendar();
 
         initActivity(savedInstanceState);
 
     }
-
-    private void initCalendar() {
-
-    }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -93,7 +77,15 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
 
     private void initView() {
         appBarLayout = findViewById(R.id.app_bar_layout);
-
+        appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
+            @Override
+            public void onStateChanged(AppBarLayout appBarLayout, State state) {
+                if (state == State.EXPANDED)
+                    isExpanded = true;
+                else if (state == State.COLLAPSED)
+                    isExpanded = false;
+            }
+        });
         dutyActionBar = findViewById(R.id.duty_action_bar);
 
         dutyActionBar.setOnFragmentInteractionListenerDutyActionBar(this);
