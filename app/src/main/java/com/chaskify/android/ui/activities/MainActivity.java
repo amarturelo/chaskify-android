@@ -7,13 +7,13 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.annimon.stream.Stream;
 import com.annimon.stream.function.Consumer;
 import com.chaskify.android.R;
+import com.chaskify.android.Util;
 import com.chaskify.android.ui.activities.settings.SettingsProfileActivity;
 import com.chaskify.android.ui.base.BaseActivity;
 import com.chaskify.android.ui.fragments.TaskListFragment;
@@ -23,7 +23,6 @@ import com.chaskify.android.ui.widget.DutyActionBar;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -34,10 +33,10 @@ import timber.log.Timber;
 
 
 public class MainActivity extends BaseActivity implements DutyActionBar.OnFragmentInteractionListenerDutyActionBar {
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM,d", /*Locale.getDefault()*/Locale.getDefault());
 
     private static final String ARG_TASK_VIEW_MODE = "TASK_VIEW_MODE";
     private static final String ARG_CURRENT_DATE = "CURRENT_DATE";
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM,d", /*Locale.getDefault()*/Locale.getDefault());
     private AppBarLayout appBarLayout;
     private CompactCalendarView compactCalendarView;
 
@@ -142,7 +141,7 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
                     public void accept(SupportFragment supportFragment) {
                         if (supportFragment instanceof TaskMapFragment)
                             ((TaskMapFragment) supportFragment).putArguments(date);
-                        else if(supportFragment instanceof TaskListFragment)
+                        else if (supportFragment instanceof TaskListFragment)
                             ((TaskListFragment) supportFragment).putArguments(date);
 
                     }

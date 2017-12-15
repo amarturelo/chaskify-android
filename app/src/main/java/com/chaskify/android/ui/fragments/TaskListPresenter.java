@@ -7,6 +7,8 @@ import com.chaskify.android.shared.BasePresenter;
 import com.chaskify.android.ui.model.TaskItemModel;
 import com.chaskify.domain.interactors.TaskInteractor;
 
+import java.util.Date;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
@@ -25,8 +27,8 @@ public class TaskListPresenter extends BasePresenter<TaskListContract.View>
     }
 
     @Override
-    public void tasks(String date) {
-        addSubscription(taskInteractor.tasks(date, Util.timeZone())
+    public void tasks(Date date) {
+        addSubscription(taskInteractor.tasks(date)
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> view.showProgress())

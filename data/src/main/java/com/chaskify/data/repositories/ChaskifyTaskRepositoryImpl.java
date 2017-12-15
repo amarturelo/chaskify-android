@@ -9,6 +9,7 @@ import com.chaskify.data.realm.cache.TaskCache;
 import com.chaskify.domain.model.Task;
 import com.chaskify.domain.repositories.TaskRepository;
 
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -31,11 +32,11 @@ public class ChaskifyTaskRepositoryImpl implements TaskRepository {
     }
 
     @Override
-    public Single<List<Task>> tasks(String date, String timeZone) {
+    public Single<List<Task>> tasks(Date date) {
         return Single.create(new SingleOnSubscribe<List<ChaskifyTask>>() {
             @Override
             public void subscribe(SingleEmitter<List<ChaskifyTask>> emitter) throws Exception {
-                taskRestClient.taskByDate(date, timeZone, new ApiCallback<List<ChaskifyTask>>() {
+                taskRestClient.taskByDate(date,  new ApiCallback<List<ChaskifyTask>>() {
                     @Override
                     public void onSuccess(List<ChaskifyTask> chaskifyTasks) {
                         emitter.onSuccess(chaskifyTasks);

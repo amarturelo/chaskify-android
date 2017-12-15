@@ -136,13 +136,14 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
 
     @Override
     public void onRefresh() {
-        taskListPresenter.tasks(dateFormat.format(mCurrentDate));
+        taskListPresenter.tasks(mCurrentDate);
     }
 
     public void putArguments(Date date) {
         if (!mCurrentDate.equals(date)) {
             getArguments().putLong(ARG_CURRENT_DATE, date.getTime());
-            taskListPresenter.tasks(dateFormat.format(date));
+            mCurrentDate = date;
+            onRefresh();
         }
     }
 }

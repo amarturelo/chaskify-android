@@ -14,7 +14,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,19 +28,23 @@ import retrofit2.Response;
  */
 
 public class TaskRestClient extends RestClient<TaskApi> {
+
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", /*Locale.getDefault()*/Locale.getDefault());
+
+
     public TaskRestClient(ChaskifyCredentials chaskifyCredentials) {
         super(chaskifyCredentials, TaskApi.class);
     }
 
-    public void taskByDate(String date, String timeZone, ApiCallback<List<ChaskifyTask>> callback) throws TokenNotFoundException {
+    public void taskByDate(Date date, ApiCallback<List<ChaskifyTask>> callback) throws TokenNotFoundException {
         if (mChaskifyCredentials != null)
-            taskByDate(date, timeZone, mChaskifyCredentials.accessToken, callback);
+            taskByDate(date, mChaskifyCredentials.accessToken, callback);
         else
             throw new TokenNotFoundException();
     }
 
-    private void taskByDate(String date, String timeZone, String token, final ApiCallback<List<ChaskifyTask>> callback) {
-        mApi.taskByDate(date, timeZone, token)
+    private void taskByDate(Date date, String token, final ApiCallback<List<ChaskifyTask>> callback) {
+        mApi.taskByDate(dateFormat.format(date), String.valueOf(new Date().getTimezoneOffset()), token)
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {

@@ -1,11 +1,15 @@
 package com.chaskify.data.realm.cache.impl;
 
 import com.annimon.stream.Optional;
+import com.annimon.stream.Stream;
 import com.chaskify.data.realm.cache.TaskCache;
 import com.chaskify.data.model.chaskify.RealmTask;
 import com.chaskify.data.realm.module.InMemoryModule;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -16,6 +20,7 @@ import io.realm.RealmResults;
  */
 
 public class TaskCacheImpl implements TaskCache {
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", /*Locale.getDefault()*/Locale.getDefault());
 
     private RealmConfiguration configuration;
 
@@ -35,9 +40,10 @@ public class TaskCacheImpl implements TaskCache {
     }
 
     @Override
-    public List<RealmTask> findAllByDate(String date) {
-        Realm realm = Realm.getInstance(configuration);
-        return null;
+    public List<RealmTask> findAllByDate(Date date) {
+        return Stream.of(findAll())
+                .filter(value -> dateFormat.format(value.getDelivery_date()).equals(dateFormat.format(date)))
+                .toList();
     }
 
     @Override

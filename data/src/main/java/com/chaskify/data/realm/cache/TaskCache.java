@@ -3,6 +3,7 @@ package com.chaskify.data.realm.cache;
 import com.annimon.stream.Optional;
 import com.chaskify.data.model.chaskify.RealmTask;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -13,7 +14,7 @@ import java.util.List;
 public interface TaskCache {
     List<RealmTask> findAll();
 
-    List<RealmTask> findAllByDate(String date);
+    List<RealmTask> findAllByDate(Date date);
 
     Optional<RealmTask> find(String taskId);
 
