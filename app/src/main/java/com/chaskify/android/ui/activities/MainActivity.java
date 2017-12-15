@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources.Theme;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -14,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -23,9 +29,12 @@ import com.chaskify.android.ui.base.BaseActivity;
 import com.chaskify.android.ui.fragments.TaskListFragment;
 import com.chaskify.android.ui.fragments.TaskMapFragment;
 import com.chaskify.android.ui.widget.DutyActionBar;
+import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import me.yokeyword.fragmentation.SupportFragment;
@@ -36,7 +45,12 @@ import timber.log.Timber;
 public class MainActivity extends BaseActivity implements DutyActionBar.OnFragmentInteractionListenerDutyActionBar {
 
     private static final String ARG_TASK_VIEW_MODE = "TASK_VIEW_MODE";
+    private static final String ARG_CURRENT_DATE = "CURRENT_DATE";
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("d MMMM yyyy", /*Locale.getDefault()*/Locale.ENGLISH);
+    private AppBarLayout appBarLayout;
+    private CompactCalendarView compactCalendarView;
 
+    private boolean isExpanded = false;
 
     private Toolbar toolbar;
     private SupportFragment[] mFragments = new SupportFragment[4];
@@ -60,7 +74,13 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
 
         initSpinner();
 
+        initCalendar();
+
         initActivity(savedInstanceState);
+
+    }
+
+    private void initCalendar() {
 
     }
 
@@ -72,9 +92,58 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
     }
 
     private void initView() {
+        appBarLayout = findViewById(R.id.app_bar_layout);
+
         dutyActionBar = findViewById(R.id.duty_action_bar);
 
         dutyActionBar.setOnFragmentInteractionListenerDutyActionBar(this);
+
+
+        // Set up the CompactCalendarView
+        compactCalendarView = findViewById(R.id.compactcalendar_view);
+
+        // Force English
+        compactCalendarView.setLocale(TimeZone.getDefault(), /*Locale.getDefault()*/Locale.ENGLISH);
+
+        compactCalendarView.setShouldDrawDaysHeader(true);
+
+        compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
+            @Override
+            public void onDayClick(Date dateClicked) {
+                setTitle(dateFormat.format(dateClicked));
+            }
+
+            @Override
+            public void onMonthScroll(Date firstDayOfNewMonth) {
+                setTitle(dateFormat.format(firstDayOfNewMonth));
+            }
+        });
+
+        // Set current date to today
+        setCurrentDate(new Date());
+
+        RelativeLayout datePickerButton = findViewById(R.id.date_picker_button);
+
+        datePickerButton.setOnClickListener(v -> {
+            isExpanded = !isExpanded;
+            appBarLayout.setExpanded(isExpanded, true);
+        });
+    }
+
+    private void setCurrentDate(Date date) {
+        setTitle(dateFormat.format(date));
+        if (compactCalendarView != null) {
+            compactCalendarView.setCurrentDate(date);
+        }
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        TextView tvTitle = findViewById(R.id.date_picker_text_view);
+
+        if (tvTitle != null) {
+            tvTitle.setText(title);
+        }
     }
 
     private void initActivity(Bundle savedInstanceState) {
@@ -103,7 +172,7 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
 
     private void initSpinner() {
         // Setup spinner
-        Spinner spinner = findViewById(R.id.spinner);
+        /*Spinner spinner = findViewById(R.id.spinner);
         spinner.setAdapter(new MyAdapter(
                 toolbar.getContext()
                 , new String[]{
@@ -119,7 +188,7 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
-        });
+        });*/
     }
 
     private void initToolBar() {
@@ -182,47 +251,9 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
 
     }
 
-    private static class MyAdapter extends ArrayAdapter<String> implements ThemedSpinnerAdapter {
-        private final ThemedSpinnerAdapter.Helper mDropDownHelper;
-
-        public MyAdapter(Context context, String[] objects) {
-            super(context, android.R.layout.simple_list_item_1, objects);
-            mDropDownHelper = new ThemedSpinnerAdapter.Helper(context);
-        }
-
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            View view;
-
-            if (convertView == null) {
-                // Inflate the drop down using the helper's LayoutInflater
-                LayoutInflater inflater = mDropDownHelper.getDropDownViewInflater();
-                view = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
-            } else {
-                view = convertView;
-            }
-
-            TextView textView = view.findViewById(android.R.id.text1);
-            textView.setText(getItem(position));
-
-            return view;
-        }
-
-        @Override
-        public Theme getDropDownViewTheme() {
-            return mDropDownHelper.getDropDownViewTheme();
-        }
-
-        @Override
-        public void setDropDownViewTheme(Theme theme) {
-            mDropDownHelper.setDropDownViewTheme(theme);
-        }
-    }
-
     @Override
     public FragmentAnimator onCreateFragmentAnimator() {
-        return new FragmentAnimator()
-                ;
+        return new FragmentAnimator();
     }
 
 }
