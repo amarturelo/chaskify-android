@@ -16,6 +16,7 @@
         android:orientation="horizontal">
 
         <Switch
+            android:id="@+id/switch_action_duty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
@@ -43,12 +44,14 @@
         </FrameLayout>
 
         <FrameLayout
+            android:id="@+id/action_task_view_mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"
             android:padding="10dp">
 
             <ImageView
+                android:id="@+id/iv_task_view_mode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_map_black_24dp" />

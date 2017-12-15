@@ -71,5 +71,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:11.2.2'
 
     //map
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:5.2.1'
+    implementation ('com.mapbox.mapboxsdk:mapbox-android-sdk:5.2.1@aar') {
+        transitive = true
+    }
 }

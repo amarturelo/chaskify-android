@@ -20,11 +20,33 @@ import android.widget.TextView;
 import com.chaskify.android.R;
 import com.chaskify.android.ui.activities.settings.SettingsProfileActivity;
 import com.chaskify.android.ui.base.BaseActivity;
+import com.chaskify.android.ui.fragments.TaskListFragment;
 import com.chaskify.android.ui.fragments.TaskMapFragment;
+import com.chaskify.android.ui.fragments.launch.LoginFragment;
+import com.chaskify.android.ui.widget.DutyActionBar;
+import com.chaskify.data.api.model.Task;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import me.yokeyword.fragmentation.SupportFragment;
+import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
+import me.yokeyword.fragmentation.anim.FragmentAnimator;
+import timber.log.Timber;
 
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements DutyActionBar.OnFragmentInteractionListenerDutyActionBar {
+
+    private static final String ARG_TASK_VIEW_MODE = "TASK_VIEW_MODE";
+
+
     private Toolbar toolbar;
+    private SupportFragment[] mFragments = new SupportFragment[4];
+
+    public static final int LIST = 0;
+    public static final int MAP = 1;
+
+    private DutyActionBar dutyActionBar;
 
     @Override
     protected int getLayout() {
@@ -34,25 +56,51 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initView();
+
         initToolBar();
 
         initSpinner();
 
         initActivity(savedInstanceState);
 
-        /*// Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);*/
+    }
 
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(ARG_TASK_VIEW_MODE, dutyActionBar.getTaskView() == DutyActionBar.TASK_VIEW_MODE.LIST ? LIST : MAP);
+    }
+
+    private void initView() {
+        dutyActionBar = findViewById(R.id.duty_action_bar);
+
+        dutyActionBar.setOnFragmentInteractionListenerDutyActionBar(this);
     }
 
     private void initActivity(Bundle savedInstanceState) {
-        if (savedInstanceState == null)
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.container, TaskMapFragment.newInstance())
-                    .commit();
+        SupportFragment firstFragment = findFragment(TaskListFragment.class);
+        if (firstFragment == null) {
+            mFragments[LIST] = TaskListFragment.newInstance();
+            mFragments[MAP] = TaskMapFragment.newInstance();
+
+            loadMultipleRootFragment(R.id.container, savedInstanceState != null ? savedInstanceState.getInt(ARG_TASK_VIEW_MODE, LIST) : LIST,
+                    mFragments[LIST],
+                    mFragments[MAP]
+            );
+        } else {
+            mFragments[LIST] = firstFragment;
+            mFragments[MAP] = findFragment(TaskMapFragment.class);
+        }
+    }
+
+    private void renderTaskMap() {
+        showHideFragment(mFragments[MAP], mFragments[LIST]);
+    }
+
+    private void renderTaskList() {
+        showHideFragment(mFragments[LIST], mFragments[MAP]);
     }
 
     private void initSpinner() {
@@ -118,6 +166,24 @@ public class MainActivity extends BaseActivity {
         return intent;
     }
 
+    @Override
+    public void onDuty(DutyActionBar.DUTY_STATE dutyState) {
+
+    }
+
+    @Override
+    public void onTaskView(DutyActionBar.TASK_VIEW_MODE taskView) {
+        if (taskView == DutyActionBar.TASK_VIEW_MODE.LIST)
+            renderTaskList();
+        else
+            renderTaskMap();
+    }
+
+    @Override
+    public void onFilter() {
+
+    }
+
     private static class MyAdapter extends ArrayAdapter<String> implements ThemedSpinnerAdapter {
         private final ThemedSpinnerAdapter.Helper mDropDownHelper;
 
@@ -153,6 +219,12 @@ public class MainActivity extends BaseActivity {
         public void setDropDownViewTheme(Theme theme) {
             mDropDownHelper.setDropDownViewTheme(theme);
         }
+    }
+
+    @Override
+    public FragmentAnimator onCreateFragmentAnimator() {
+        return new FragmentAnimator()
+                ;
     }
 
 }
