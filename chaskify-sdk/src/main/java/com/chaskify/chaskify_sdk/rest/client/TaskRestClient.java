@@ -22,15 +22,15 @@ public class TaskRestClient extends RestClient<TaskApi> {
         super(chaskifyCredentials, TaskApi.class);
     }
 
-    public void taskByDate(String date, int onduty, String timeZone, ApiCallback<List<ChaskifyTask>> callback) throws TokenNotFoundException {
+    public void taskByDate(String date,  String timeZone, ApiCallback<List<ChaskifyTask>> callback) throws TokenNotFoundException {
         if (mChaskifyCredentials != null)
-            taskByDate(date, onduty, timeZone, "es", mChaskifyCredentials.accessToken, callback);
+            taskByDate(date,  timeZone, mChaskifyCredentials.accessToken, callback);
         else
             throw new TokenNotFoundException();
     }
 
-    private void taskByDate(String date, int onduty, String timeZone, String lang_id, String token, final ApiCallback<List<ChaskifyTask>> callback) {
-        mApi.taskByDate(date, onduty, timeZone, lang_id, token)
+    private void taskByDate(String date,  String timeZone,  String token, final ApiCallback<List<ChaskifyTask>> callback) {
+        mApi.taskByDate(date, timeZone, token)
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
@@ -52,7 +52,7 @@ public class TaskRestClient extends RestClient<TaskApi> {
     }
 
     private void taskDetails(String task_id, String timeZone, String lang_id, String accessToken, final ApiCallback<ChaskifyTask> callback) {
-        mApi.taskDetails(task_id, timeZone, lang_id, accessToken)
+        mApi.taskDetails(task_id, timeZone, accessToken)
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
