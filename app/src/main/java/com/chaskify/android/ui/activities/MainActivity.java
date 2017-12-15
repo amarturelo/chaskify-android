@@ -22,15 +22,13 @@ import com.chaskify.android.ui.activities.settings.SettingsProfileActivity;
 import com.chaskify.android.ui.base.BaseActivity;
 import com.chaskify.android.ui.fragments.TaskListFragment;
 import com.chaskify.android.ui.fragments.TaskMapFragment;
-import com.chaskify.android.ui.fragments.launch.LoginFragment;
 import com.chaskify.android.ui.widget.DutyActionBar;
-import com.chaskify.data.api.model.Task;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 
 import me.yokeyword.fragmentation.SupportFragment;
-import me.yokeyword.fragmentation.anim.DefaultHorizontalAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import timber.log.Timber;
 

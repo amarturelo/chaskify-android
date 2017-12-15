@@ -1,4 +1,4 @@
-package com.chaskify.android.model;
+package com.chaskify.android.ui.model;
 
 /**
  * Created by alberto on 12/12/17.

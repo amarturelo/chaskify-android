@@ -4,9 +4,16 @@ import com.chaskify.chaskify_sdk.RestClient;
 import com.chaskify.chaskify_sdk.rest.api.TaskApi;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.exceptions.TokenNotFoundException;
+import com.chaskify.chaskify_sdk.rest.model.BaseResponse;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyTask;
 import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
+import com.chaskify.chaskify_sdk.rest.model.login.LoginResponse;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 import retrofit2.Call;
@@ -22,19 +29,32 @@ public class TaskRestClient extends RestClient<TaskApi> {
         super(chaskifyCredentials, TaskApi.class);
     }
 
-    public void taskByDate(String date,  String timeZone, ApiCallback<List<ChaskifyTask>> callback) throws TokenNotFoundException {
+    public void taskByDate(String date, String timeZone, ApiCallback<List<ChaskifyTask>> callback) throws TokenNotFoundException {
         if (mChaskifyCredentials != null)
-            taskByDate(date,  timeZone, mChaskifyCredentials.accessToken, callback);
+            taskByDate(date, timeZone, mChaskifyCredentials.accessToken, callback);
         else
             throw new TokenNotFoundException();
     }
 
-    private void taskByDate(String date,  String timeZone,  String token, final ApiCallback<List<ChaskifyTask>> callback) {
+    private void taskByDate(String date, String timeZone, String token, final ApiCallback<List<ChaskifyTask>> callback) {
         mApi.taskByDate(date, timeZone, token)
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
+                        Type listTask = new TypeToken<List<ChaskifyTask>>() {
+                        }.getType();
 
+                        Type type = new TypeToken<BaseResponse<List<ChaskifyTask>>>() {
+                        }.getType();
+
+                        JsonObject baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), JsonObject.class);
+                        if (baseResponse.get("code").getAsInt() == 1) {
+                            BaseResponse<List<ChaskifyTask>> listBaseResponse = getGson().fromJson(baseResponse, type);
+                            callback.onSuccess(listBaseResponse.getDetails());
+
+                        } else {
+                            callback.onChaskifyError(new Exception(baseResponse.get("msg").getAsString()));
+                        }
                     }
 
                     @Override
@@ -66,4 +86,11 @@ public class TaskRestClient extends RestClient<TaskApi> {
                 });
     }
 
+    @Override
+    protected Gson getGson() {
+        return new GsonBuilder()
+                .setLenient()
+                .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                .create();
+    }
 }

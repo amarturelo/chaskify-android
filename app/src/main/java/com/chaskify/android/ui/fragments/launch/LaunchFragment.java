@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.chaskify.android.R;
-import com.chaskify.android.model.ServerConfigurationListCacheModel;
+import com.chaskify.android.ui.model.ServerConfigurationListCacheModel;
 import com.chaskify.android.ui.base.BaseFragment;
 import com.chaskify.android.ui.widget.MultiStateView;
 

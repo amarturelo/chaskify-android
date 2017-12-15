@@ -7,7 +7,7 @@
     <color name="disable_foreground_grey">#42221f1f</color>
     <color name="disable_thumb_grey">#1c000000</color>
     <color name="enable_thumb_green">#46bdbf</color>
-    <color name="task_started">#2196f3</color>
+    <color name="task_started">#f37824</color>
 
     <color name="yellow">#f37824</color>
     <color name="yellow_press">#f45800</color>
@@ -16,5 +16,6 @@
     <color name="chaskify_edit_text_background">#FEFEFE</color>
 
     <color name="chaskify_bg">#F3F3F4</color>
+    <color name="purple">#673AB7</color>
 
 </resources>

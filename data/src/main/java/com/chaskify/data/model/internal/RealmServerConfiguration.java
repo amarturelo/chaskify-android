@@ -1,5 +1,6 @@
 package com.chaskify.data.model.internal;
 
+import com.chaskify.data.model.chaskify.RealmIcons;
 import com.chaskify.domain.model.ServerConfiguration;
 
 import io.realm.RealmObject;

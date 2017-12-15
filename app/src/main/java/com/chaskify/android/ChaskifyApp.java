@@ -38,22 +38,18 @@ public class ChaskifyApp extends MultiDexApplication {
         super.onCreate();
         Timber.tag(this.getClass().getSimpleName());
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-        Chaskify.getInstance(getApplicationContext());
 
         initRealm();
         initBugReport();
         initFragmentation();
         initMaps();
         initPush();
+        Chaskify.getInstance(getApplicationContext());
 
     }
 
     private void initRealm() {
         Realm.init(getApplicationContext());
-        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder()
-                .deleteRealmIfMigrationNeeded()
-                .build();
-        Realm.setDefaultConfiguration(realmConfiguration);
     }
 
     private void initPush() {

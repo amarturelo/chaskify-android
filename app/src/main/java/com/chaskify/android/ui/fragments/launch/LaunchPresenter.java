@@ -5,10 +5,9 @@ import android.support.annotation.NonNull;
 import com.annimon.stream.Stream;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.looper.BackgroundLooper;
-import com.chaskify.android.model.ServerConfigurationListCacheModel;
+import com.chaskify.android.ui.model.ServerConfigurationListCacheModel;
 import com.chaskify.android.shared.BasePresenter;
 
-import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;

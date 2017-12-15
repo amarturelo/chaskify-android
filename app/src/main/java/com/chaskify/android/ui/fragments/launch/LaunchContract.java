@@ -1,8 +1,7 @@
 package com.chaskify.android.ui.fragments.launch;
 
-import com.chaskify.android.model.ServerConfigurationListCacheModel;
+import com.chaskify.android.ui.model.ServerConfigurationListCacheModel;
 import com.chaskify.android.shared.BaseContract;
-import com.chaskify.domain.model.Credentials;
 
 import java.util.List;
 

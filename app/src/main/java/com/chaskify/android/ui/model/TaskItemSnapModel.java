@@ -1,4 +1,4 @@
-package com.chaskify.android.model;
+package com.chaskify.android.ui.model;
 
 import java.util.Date;
 
@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by alberto on 6/12/17.
  */
 
-public class TaskSnapModel {
+public class TaskItemSnapModel {
     private Date mDate;
     private String mClientName;
     private String mAddress;
@@ -16,7 +16,7 @@ public class TaskSnapModel {
         return mDate;
     }
 
-    public TaskSnapModel setDate(Date mDate) {
+    public TaskItemSnapModel setDate(Date mDate) {
         this.mDate = mDate;
         return this;
     }
@@ -25,7 +25,7 @@ public class TaskSnapModel {
         return mClientName;
     }
 
-    public TaskSnapModel setClientName(String mClientName) {
+    public TaskItemSnapModel setClientName(String mClientName) {
         this.mClientName = mClientName;
         return this;
     }
@@ -34,7 +34,7 @@ public class TaskSnapModel {
         return mAddress;
     }
 
-    public TaskSnapModel setAddress(String mAddress) {
+    public TaskItemSnapModel setAddress(String mAddress) {
         this.mAddress = mAddress;
         return this;
     }
@@ -43,7 +43,7 @@ public class TaskSnapModel {
         return mStatus;
     }
 
-    public TaskSnapModel setStatus(String mStatus) {
+    public TaskItemSnapModel setStatus(String mStatus) {
         this.mStatus = mStatus;
         return this;
     }

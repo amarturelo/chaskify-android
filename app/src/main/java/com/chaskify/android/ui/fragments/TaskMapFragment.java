@@ -13,7 +13,7 @@ import android.view.View;
 
 import com.chaskify.android.R;
 import com.chaskify.android.adapters.TaskSnapListAdapter;
-import com.chaskify.android.model.TaskSnapModel;
+import com.chaskify.android.ui.model.TaskItemSnapModel;
 import com.chaskify.android.ui.base.BaseFragment;
 
 import java.util.ArrayList;
@@ -89,23 +89,23 @@ public class TaskMapFragment extends BaseFragment {
                 LinearLayoutManager.HORIZONTAL, false));
 
 
-        List<TaskSnapModel> taskSnapModels = new ArrayList<>();
-        taskSnapModels.add(new TaskSnapModel()
+        List<TaskItemSnapModel> taskItemSnapModels = new ArrayList<>();
+        taskItemSnapModels.add(new TaskItemSnapModel()
                 .setAddress("Edificio 28b apto 7, Pueblo Griffo")
                 .setClientName("Mike Hussey")
                 .setStatus("started"));
 
-        taskSnapModels.add(new TaskSnapModel()
+        taskItemSnapModels.add(new TaskItemSnapModel()
                 .setAddress("201 Worth St, New York, United Stated")
                 .setClientName("Mike Hussey")
                 .setStatus("started"));
 
-        taskSnapModels.add(new TaskSnapModel()
+        taskItemSnapModels.add(new TaskItemSnapModel()
                 .setAddress("calle 10 e/ aldabo y carretera, Havana, Cuba")
                 .setClientName("Contantinopla de la Luz")
                 .setStatus("started"));
 
-        TaskSnapListAdapter taskSnapListAdapter = new TaskSnapListAdapter(taskSnapModels);
+        TaskSnapListAdapter taskSnapListAdapter = new TaskSnapListAdapter(taskItemSnapModels);
         mTaskSnapList.setAdapter(taskSnapListAdapter);
 
     }

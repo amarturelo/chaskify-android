@@ -1,4 +1,4 @@
-package com.chaskify.data.model.internal;
+package com.chaskify.data.model.chaskify;
 
 import com.chaskify.domain.model.Icons;
 import com.google.gson.annotations.Expose;

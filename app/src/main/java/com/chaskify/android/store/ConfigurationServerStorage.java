@@ -2,11 +2,14 @@ package com.chaskify.android.store;
 
 import com.annimon.stream.Stream;
 import com.chaskify.data.model.internal.RealmServerConfiguration;
+import com.chaskify.data.realm.module.InMemoryModule;
+import com.chaskify.data.realm.module.InternalModule;
 import com.chaskify.domain.model.ServerConfiguration;
 
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 /**
  * Created by alberto on 11/12/17.
@@ -14,8 +17,18 @@ import io.realm.Realm;
 
 public class ConfigurationServerStorage {
 
+    private final RealmConfiguration configuration;
+
+    public ConfigurationServerStorage() {
+        configuration = new RealmConfiguration.Builder()
+                .name("configuration.realm")
+                .modules(new InternalModule())
+                .deleteRealmIfMigrationNeeded()
+                .build();
+    }
+
     public List<ServerConfiguration> getConfigurations() {
-        Realm realm = Realm.getDefaultInstance();
+        Realm realm = Realm.getInstance(configuration);
         realm.where(RealmServerConfiguration.class).findAll();
         return Stream.of(realm.where(RealmServerConfiguration.class)
                 .findAll())
@@ -28,7 +41,7 @@ public class ConfigurationServerStorage {
             RealmServerConfiguration realmCredentials = new RealmServerConfiguration()
                     .setUsername(serverConfiguration.getUsername());
 
-            Realm realm = Realm.getDefaultInstance();
+            Realm realm = Realm.getInstance(configuration);
             realm.beginTransaction();
             realm.insertOrUpdate(realmCredentials);
             realm.commitTransaction();
@@ -37,7 +50,7 @@ public class ConfigurationServerStorage {
     }
 
     public void removeConfiguration(String username) {
-        Realm realm = Realm.getDefaultInstance();
+        Realm realm = Realm.getInstance(configuration);
         realm.where(RealmServerConfiguration.class)
                 .equalTo(RealmServerConfiguration.USERNAME, username)
                 .findAll()
@@ -48,7 +61,7 @@ public class ConfigurationServerStorage {
      * Clear the stored values
      */
     public void clear() {
-        Realm realm = Realm.getDefaultInstance();
+        Realm realm = Realm.getInstance(configuration);
         realm.beginTransaction();
         realm.where(RealmServerConfiguration.class).findAllAsync().deleteAllFromRealm();
     }
