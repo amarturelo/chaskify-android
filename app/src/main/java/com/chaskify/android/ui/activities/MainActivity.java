@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.annimon.stream.Stream;
+import com.annimon.stream.function.Consumer;
 import com.chaskify.android.R;
 import com.chaskify.android.ui.activities.settings.SettingsProfileActivity;
 import com.chaskify.android.ui.base.BaseActivity;
@@ -21,6 +23,7 @@ import com.chaskify.android.ui.widget.DutyActionBar;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -48,6 +51,8 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
 
     private DutyActionBar dutyActionBar;
 
+    private Date currentDate;
+
     @Override
     protected int getLayout() {
         return R.layout.activity_main;
@@ -58,12 +63,17 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
         super.onCreate(savedInstanceState);
 
         Timber.tag(this.getClass().getSimpleName());
+
+        if (savedInstanceState != null)
+            currentDate = new Date(savedInstanceState.getLong(ARG_CURRENT_DATE, new Date().getTime()));
+        else
+            currentDate = new Date();
+
         initView();
 
         initToolBar();
 
         initSpinner();
-
 
         initActivity(savedInstanceState);
 
@@ -72,6 +82,7 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putLong(ARG_CURRENT_DATE, currentDate.getTime());
         outState.putInt(ARG_TASK_VIEW_MODE, dutyActionBar.getTaskView() == DutyActionBar.TASK_VIEW_MODE.LIST ? LIST : MAP);
     }
 
@@ -102,17 +113,19 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
         compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {
+                findTask(dateClicked);
                 setTitle(dateFormat.format(dateClicked));
             }
 
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
+                findTask(firstDayOfNewMonth);
                 setTitle(dateFormat.format(firstDayOfNewMonth));
             }
         });
 
         // Set current date to today
-        setCurrentDate(new Date());
+        setCurrentDate(currentDate);
 
         RelativeLayout datePickerButton = findViewById(R.id.date_picker_button);
 
@@ -120,6 +133,20 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
             isExpanded = !isExpanded;
             appBarLayout.setExpanded(isExpanded, true);
         });
+    }
+
+    private void findTask(Date date) {
+        Stream.of(mFragments)
+                .forEach(new Consumer<SupportFragment>() {
+                    @Override
+                    public void accept(SupportFragment supportFragment) {
+                        if (supportFragment instanceof TaskMapFragment)
+                            ((TaskMapFragment) supportFragment).putArguments(date);
+                        else if(supportFragment instanceof TaskListFragment)
+                            ((TaskListFragment) supportFragment).putArguments(date);
+
+                    }
+                });
     }
 
     private void setCurrentDate(Date date) {
@@ -141,8 +168,8 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
     private void initActivity(Bundle savedInstanceState) {
         SupportFragment firstFragment = findFragment(TaskListFragment.class);
         if (firstFragment == null) {
-            mFragments[LIST] = TaskListFragment.newInstance();
-            mFragments[MAP] = TaskMapFragment.newInstance();
+            mFragments[LIST] = TaskListFragment.newInstance(currentDate);
+            mFragments[MAP] = TaskMapFragment.newInstance(currentDate);
 
             loadMultipleRootFragment(R.id.container, savedInstanceState != null ? savedInstanceState.getInt(ARG_TASK_VIEW_MODE, LIST) : LIST,
                     mFragments[LIST],

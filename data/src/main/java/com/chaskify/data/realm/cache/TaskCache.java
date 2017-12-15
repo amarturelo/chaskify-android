@@ -13,6 +13,8 @@ import java.util.List;
 public interface TaskCache {
     List<RealmTask> findAll();
 
+    List<RealmTask> findAllByDate(String date);
+
     Optional<RealmTask> find(String taskId);
 
     void put(List<RealmTask> realmTasks);

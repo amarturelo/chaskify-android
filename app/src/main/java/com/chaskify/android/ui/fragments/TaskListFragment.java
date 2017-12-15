@@ -19,11 +19,18 @@ import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.repositories.ChaskifyTaskRepositoryImpl;
 import com.chaskify.domain.interactors.TaskInteractor;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class TaskListFragment extends BaseFragment implements TaskListContract.View, SwipeRefreshLayout.OnRefreshListener {
+
+    public static final String ARG_CURRENT_DATE = "CURRENT_DATE";
+
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", /*Locale.getDefault()*/Locale.getDefault());
+
 
     private TaskListPresenter taskListPresenter;
 
@@ -34,14 +41,16 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
     private SwipeRefreshLayout mSwipeRefresh;
 
     private MultiStateView mMultiStateView;
+    private Date mCurrentDate;
 
     public TaskListFragment() {
         // Required empty public constructor
     }
 
-    public static TaskListFragment newInstance() {
+    public static TaskListFragment newInstance(Date currentDate) {
         TaskListFragment fragment = new TaskListFragment();
         Bundle args = new Bundle();
+        args.putLong(ARG_CURRENT_DATE, currentDate.getTime());
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,6 +58,8 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mCurrentDate = new Date(getArguments().getLong(ARG_CURRENT_DATE, new Date().getTime()));
+
         taskListPresenter = new TaskListPresenter(new TaskInteractor(
                 new ChaskifyTaskRepositoryImpl(
                         Chaskify.getInstance().getDefaultSession().get().getTaskRestClient()
@@ -63,10 +74,8 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
         initViews(view);
 
         taskListPresenter.bindView(this);
-        if (savedInstanceState == null) {
-            taskListPresenter.tasks("2017-12-16");
-        }
     }
+
 
     private void initViews(View view) {
         taskListAdapter = new TaskListAdapter();
@@ -122,26 +131,18 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
 
     @Override
     public void renderTaskListView(List<TaskItemModel> tasks) {
-        tasks.add(new TaskItemModel()
-                .setCustomer_name("Joseito")
-                .setDelivery_address("Calle 34 e/ 10 de octubre y azul")
-                .setTask_id("456")
-                .setStatus("OTRO")
-                .setTrans_type("SERVICE")
-                .setDelivery_date(new Date()));
-
-        tasks.add(new TaskItemModel()
-                .setCustomer_name("Arysmaida")
-                .setDelivery_address("Avenida de los Presidentes")
-                .setTask_id("458")
-                .setStatus("IN PROGRESS")
-                .setTrans_type("SERVICE")
-                .setDelivery_date(new Date()));
         taskListAdapter.add(tasks);
     }
 
     @Override
     public void onRefresh() {
-        taskListPresenter.tasks("2017-12-16");
+        taskListPresenter.tasks(dateFormat.format(mCurrentDate));
+    }
+
+    public void putArguments(Date date) {
+        if (!mCurrentDate.equals(date)) {
+            getArguments().putLong(ARG_CURRENT_DATE, date.getTime());
+            taskListPresenter.tasks(dateFormat.format(date));
+        }
     }
 }

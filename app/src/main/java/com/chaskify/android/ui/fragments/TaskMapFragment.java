@@ -17,6 +17,7 @@ import com.chaskify.android.ui.model.TaskItemSnapModel;
 import com.chaskify.android.ui.base.BaseFragment;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -52,7 +53,7 @@ public class TaskMapFragment extends BaseFragment {
 
 
     // TODO: Rename and change types and number of parameters
-    public static TaskMapFragment newInstance() {
+    public static TaskMapFragment newInstance(Date currentDate) {
         TaskMapFragment fragment = new TaskMapFragment();
         Bundle args = new Bundle();
         /*args.putString(ARG_PARAM1, param1);
@@ -153,6 +154,10 @@ public class TaskMapFragment extends BaseFragment {
     @Override
     protected int getLayout() {
         return R.layout.fragment_task_map;
+    }
+
+    public void putArguments(Date date) {
+
     }
 
     /**

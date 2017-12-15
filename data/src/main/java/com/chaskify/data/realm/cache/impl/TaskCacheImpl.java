@@ -35,6 +35,12 @@ public class TaskCacheImpl implements TaskCache {
     }
 
     @Override
+    public List<RealmTask> findAllByDate(String date) {
+        Realm realm = Realm.getInstance(configuration);
+        return null;
+    }
+
+    @Override
     public Optional<RealmTask> find(String taskId) {
         Realm realm = Realm.getInstance(configuration);
         RealmResults<RealmTask> result = realm.where(RealmTask.class).equalTo(RealmTask.TASK_ID, taskId).findAll();
