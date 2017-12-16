@@ -20,13 +20,13 @@ import io.reactivex.SingleOnSubscribe;
  * Created by alberto on 14/12/17.
  */
 
-public class ChaskifyTaskRepositoryImpl implements TaskRepository {
+public class TaskRepositoryImpl implements TaskRepository {
 
     private TaskRestClient taskRestClient;
 
     private TaskCache taskCache;
 
-    public ChaskifyTaskRepositoryImpl(TaskRestClient taskRestClient, TaskCache taskCache) {
+    public TaskRepositoryImpl(TaskRestClient taskRestClient, TaskCache taskCache) {
         this.taskRestClient = taskRestClient;
         this.taskCache = taskCache;
     }

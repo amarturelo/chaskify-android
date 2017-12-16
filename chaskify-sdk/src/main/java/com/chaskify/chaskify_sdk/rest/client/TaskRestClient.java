@@ -48,9 +48,6 @@ public class TaskRestClient extends RestClient<TaskApi> {
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        Type listTask = new TypeToken<List<ChaskifyTask>>() {
-                        }.getType();
-
                         Type type = new TypeToken<BaseResponse<List<ChaskifyTask>>>() {
                         }.getType();
 

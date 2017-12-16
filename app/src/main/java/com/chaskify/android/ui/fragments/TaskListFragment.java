@@ -16,7 +16,7 @@ import com.chaskify.android.ui.base.BaseFragment;
 import com.chaskify.android.ui.model.TaskItemModel;
 import com.chaskify.android.ui.widget.MultiStateView;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
-import com.chaskify.data.repositories.ChaskifyTaskRepositoryImpl;
+import com.chaskify.data.repositories.TaskRepositoryImpl;
 import com.chaskify.domain.interactors.TaskInteractor;
 
 import java.text.SimpleDateFormat;
@@ -61,7 +61,7 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
         mCurrentDate = new Date(getArguments().getLong(ARG_CURRENT_DATE, new Date().getTime()));
 
         taskListPresenter = new TaskListPresenter(new TaskInteractor(
-                new ChaskifyTaskRepositoryImpl(
+                new TaskRepositoryImpl(
                         Chaskify.getInstance().getDefaultSession().get().getTaskRestClient()
                         , new TaskCacheImpl()
                 )

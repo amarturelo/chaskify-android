@@ -2,6 +2,7 @@ package com.chaskify.chaskify_sdk;
 
 import android.content.Context;
 
+import com.chaskify.chaskify_sdk.rest.client.CalendarTaskRestClient;
 import com.chaskify.chaskify_sdk.rest.client.LoginRestClient;
 import com.chaskify.chaskify_sdk.rest.client.NotificationRestClient;
 import com.chaskify.chaskify_sdk.rest.client.ProfileRestClient;
@@ -21,6 +22,7 @@ public class ChaskifySession {
     private TaskRestClient mTaskRestClient;
     private NotificationRestClient mNotificationRestClient;
     private SettingsRestClient mSettingsRestClient;
+    private CalendarTaskRestClient mCalendarTaskRestClient;
 
     public ChaskifySession(ChaskifyCredentials chaskifyCredentials) {
         this.mChaskifyCredentials = chaskifyCredentials;
@@ -30,6 +32,7 @@ public class ChaskifySession {
         mTaskRestClient = new TaskRestClient(mChaskifyCredentials);
         mNotificationRestClient = new NotificationRestClient(mChaskifyCredentials);
         mSettingsRestClient = new SettingsRestClient(mChaskifyCredentials);
+        mCalendarTaskRestClient = new CalendarTaskRestClient(mChaskifyCredentials);
     }
 
     /**
@@ -63,6 +66,15 @@ public class ChaskifySession {
 
     public SettingsRestClient getSettingsRestClient() {
         return mSettingsRestClient;
+    }
+
+    public CalendarTaskRestClient getCalendarTaskRestClient() {
+        return mCalendarTaskRestClient;
+    }
+
+    public ChaskifySession setCalendarTaskRestClient(CalendarTaskRestClient mCalendarTaskRestClient) {
+        this.mCalendarTaskRestClient = mCalendarTaskRestClient;
+        return this;
     }
 
     @Override

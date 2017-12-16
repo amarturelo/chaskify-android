@@ -1,37 +1,24 @@
-package com.chaskify.chaskify_sdk.rest.model;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+package com.chaskify.android.ui.model;
 
 /**
  * Created by alberto on 15/12/17.
  */
 
-public class ChaskifyCalendarTask {
-    @SerializedName("title")
-    @Expose
+public class CalendarTaskModel {
     public String title;
-    @SerializedName("id")
-    @Expose
     public String id;
-    @SerializedName("year")
-    @Expose
     public String year;
-    @SerializedName("month")
-    @Expose
     public String month;
-    @SerializedName("day")
-    @Expose
     public String day;
 
-    public ChaskifyCalendarTask() {
+    public CalendarTaskModel() {
     }
 
     public String getTitle() {
         return title;
     }
 
-    public ChaskifyCalendarTask setTitle(String title) {
+    public CalendarTaskModel setTitle(String title) {
         this.title = title;
         return this;
     }
@@ -40,7 +27,7 @@ public class ChaskifyCalendarTask {
         return id;
     }
 
-    public ChaskifyCalendarTask setId(String id) {
+    public CalendarTaskModel setId(String id) {
         this.id = id;
         return this;
     }
@@ -49,7 +36,7 @@ public class ChaskifyCalendarTask {
         return year;
     }
 
-    public ChaskifyCalendarTask setYear(String year) {
+    public CalendarTaskModel setYear(String year) {
         this.year = year;
         return this;
     }
@@ -58,7 +45,7 @@ public class ChaskifyCalendarTask {
         return month;
     }
 
-    public ChaskifyCalendarTask setMonth(String month) {
+    public CalendarTaskModel setMonth(String month) {
         this.month = month;
         return this;
     }
@@ -67,7 +54,7 @@ public class ChaskifyCalendarTask {
         return day;
     }
 
-    public ChaskifyCalendarTask setDay(String day) {
+    public CalendarTaskModel setDay(String day) {
         this.day = day;
         return this;
     }
