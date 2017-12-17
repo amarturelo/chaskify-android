@@ -38,7 +38,7 @@ public class TaskRestClient extends RestClient<TaskApi> {
 
     public void taskByDate(Date date, ApiCallback<List<ChaskifyTask>> callback) throws TokenNotFoundException {
         if (mChaskifyCredentials != null)
-            taskByDate(date, mChaskifyCredentials.accessToken, callback);
+            taskByDate(date, mChaskifyCredentials.getAccessToken(), callback);
         else
             throw new TokenNotFoundException();
     }
@@ -70,7 +70,7 @@ public class TaskRestClient extends RestClient<TaskApi> {
 
     public void taskDetails(String task_id, ApiCallback<ChaskifyTask> callback) throws TokenNotFoundException {
         if (mChaskifyCredentials != null)
-            taskDetails(task_id, "300", "en", mChaskifyCredentials.accessToken, callback);
+            taskDetails(task_id, "300", "en", mChaskifyCredentials.getAccessToken(), callback);
         else
             throw new TokenNotFoundException();
     }

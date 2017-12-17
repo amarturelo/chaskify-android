@@ -7,18 +7,18 @@ import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
  * Created by alberto on 7/12/17.
  */
 
-public class ChaskifyServerConfiguration {
+public class ChaskifyConsumerConfiguration {
     private ChaskifyCredentials chaskifyCredentials;
     private ChaskifyIcons chaskifyIcons;
 
-    public ChaskifyServerConfiguration() {
+    public ChaskifyConsumerConfiguration() {
     }
 
     public ChaskifyCredentials getChaskifyCredentials() {
         return chaskifyCredentials;
     }
 
-    public ChaskifyServerConfiguration setChaskifyCredentials(ChaskifyCredentials chaskifyCredentials) {
+    public ChaskifyConsumerConfiguration setChaskifyCredentials(ChaskifyCredentials chaskifyCredentials) {
         this.chaskifyCredentials = chaskifyCredentials;
         return this;
     }
@@ -27,7 +27,7 @@ public class ChaskifyServerConfiguration {
         return chaskifyIcons;
     }
 
-    public ChaskifyServerConfiguration setChaskifyIcons(ChaskifyIcons chaskifyIcons) {
+    public ChaskifyConsumerConfiguration setChaskifyIcons(ChaskifyIcons chaskifyIcons) {
         this.chaskifyIcons = chaskifyIcons;
         return this;
     }

@@ -3,6 +3,7 @@ package com.chaskify.android.store;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
+import android.os.Bundle;
 
 import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
@@ -21,6 +22,7 @@ public class LoginStorage {
     private Context mContext;
 
     private AccountManager mAccountManager;
+    private String DRIVER_ID = "driver_id";
 
     public LoginStorage(Context mContext) {
         this.mContext = mContext;
@@ -31,6 +33,8 @@ public class LoginStorage {
         return Stream.of(mAccountManager.getAccountsByType(mContext.getString(R.string.ACCOUNT_TYPE)))
                 .map(account -> new Credentials()
                         .setUsername(account.name)
+                        .setDriverId(mAccountManager.getUserData(account, DRIVER_ID))
+                        .setDriverId(mAccountManager.getUserData(account, AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS))
                         .setAccessToken(mAccountManager.peekAuthToken(account, AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS)))
                 .toList();
     }
@@ -41,9 +45,11 @@ public class LoginStorage {
                 .findFirst()
                 .isPresent()) {
             Account account = new Account(credentials.getUsername(), mContext.getString(R.string.ACCOUNT_TYPE));
+            Bundle bundle = new Bundle();
+            bundle.putString(DRIVER_ID, credentials.getDriverId());
             if (mAccountManager.addAccountExplicitly(account
                     , password
-                    , null)) {
+                    , bundle)) {
                 mAccountManager.setAuthToken(account, AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS, credentials.getAccessToken());
                 return true;
             }

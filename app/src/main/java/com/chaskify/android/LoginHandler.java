@@ -64,6 +64,7 @@ public class LoginHandler {
     private void onRegistrationDone(ChaskifyCredentials chaskifyCredentials, String password, ApiCallback<Credentials> callback) {
         Credentials credentials = new Credentials()
                 .setUsername(chaskifyCredentials.getUsername())
+                .setDriverId(chaskifyCredentials.getDriverId())
                 .setAccessToken(chaskifyCredentials.getAccessToken());
 
         if (mLoginStorage

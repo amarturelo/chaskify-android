@@ -18,7 +18,7 @@ import retrofit2.Retrofit;
 
 public class RestClient<T> {
 
-    public static final String BASE = "http://customer.chaskify.com/api/";
+    public static final String BASE = "http://dev-customer.chaskify.com/api/";
 
     protected T mApi;
 

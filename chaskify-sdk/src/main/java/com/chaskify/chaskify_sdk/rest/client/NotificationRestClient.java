@@ -29,7 +29,7 @@ public class NotificationRestClient extends RestClient<NotificationApi> {
 
     public void getNotifications(final ApiCallback<List<ChaskifyNotification>> callback) throws TokenNotFoundException {
         if (mChaskifyCredentials != null)
-            getNotifications("300", "en", mChaskifyCredentials.accessToken, callback);
+            getNotifications("300", "en", mChaskifyCredentials.getAccessToken(), callback);
         else
             throw new TokenNotFoundException();
     }

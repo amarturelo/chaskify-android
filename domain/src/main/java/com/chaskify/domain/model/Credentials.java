@@ -10,6 +10,8 @@ import android.os.Parcelable;
 public class Credentials implements Parcelable {
     private String accessToken;
 
+    private String driverId;
+
     private String username;
 
     public Credentials() {
@@ -50,6 +52,14 @@ public class Credentials implements Parcelable {
         return this;
     }
 
+    public String getDriverId() {
+        return driverId;
+    }
+
+    public Credentials setDriverId(String driverId) {
+        this.driverId = driverId;
+        return this;
+    }
 
     @Override
     public String toString() {

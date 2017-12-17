@@ -1,5 +1,5 @@
 #login
-http://customer.chaskify.com/api/login?username=amarturelo&password=demo&remember=on&device_id=86ba6653-00d5-4008-8025-bcd33a8d3a21&device_platform=Android&lang_id=es&token=50e6136270e33c7ce418e9c9581b4d18
+http://customer.chaskify.com/api/login?driver_id=amarturelo&password=demo&remember=on&device_id=86ba6653-00d5-4008-8025-bcd33a8d3a21&device_platform=Android&lang_id=es&token=50e6136270e33c7ce418e9c9581b4d18
 
 #Disponible 1-2
 http://customer.chaskify.com/api/ChangeDutyStatus?onduty=1&lang_id=es&token=50e6136270e33c7ce418e9c9581b4d18

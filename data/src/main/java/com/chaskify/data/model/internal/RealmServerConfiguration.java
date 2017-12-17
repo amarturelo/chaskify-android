@@ -11,9 +11,9 @@ import io.realm.annotations.PrimaryKey;
  */
 
 public class RealmServerConfiguration extends RealmObject {
-    public static String USERNAME = "username";
+    public static String DRIVER_ID = "driver_id";
     @PrimaryKey
-    private String username;
+    private String driver_id;
 
     private RealmIcons realmIcons;
 
@@ -29,12 +29,12 @@ public class RealmServerConfiguration extends RealmObject {
         return this;
     }
 
-    public String getUsername() {
-        return username;
+    public String getDriverId() {
+        return driver_id;
     }
 
-    public RealmServerConfiguration setUsername(String username) {
-        this.username = username;
+    public RealmServerConfiguration setDriverId(String driver_id) {
+        this.driver_id = driver_id;
         return this;
     }
 

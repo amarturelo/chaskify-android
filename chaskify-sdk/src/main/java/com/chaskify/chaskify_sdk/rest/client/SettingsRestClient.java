@@ -22,7 +22,7 @@ public class SettingsRestClient extends RestClient<SettingsApi> {
 
     public void getSettings(ApiCallback<ChaskifySettings> callback) throws TokenNotFoundException {
         if (mChaskifyCredentials != null)
-            getSettings("es", mChaskifyCredentials.accessToken, callback);
+            getSettings("es", mChaskifyCredentials.getAccessToken(), callback);
         else
             throw new TokenNotFoundException();
     }

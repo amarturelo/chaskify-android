@@ -2,7 +2,6 @@ package com.chaskify.android.store;
 
 import com.annimon.stream.Stream;
 import com.chaskify.data.model.internal.RealmServerConfiguration;
-import com.chaskify.data.realm.module.InMemoryModule;
 import com.chaskify.data.realm.module.InternalModule;
 import com.chaskify.domain.model.ServerConfiguration;
 
@@ -39,7 +38,7 @@ public class ConfigurationServerStorage {
     public void addConfiguration(ServerConfiguration serverConfiguration) {
         if (null != serverConfiguration) {
             RealmServerConfiguration realmCredentials = new RealmServerConfiguration()
-                    .setUsername(serverConfiguration.getUsername());
+                    .setDriverId(serverConfiguration.getUsername());
 
             Realm realm = Realm.getInstance(configuration);
             realm.beginTransaction();
@@ -52,7 +51,7 @@ public class ConfigurationServerStorage {
     public void removeConfiguration(String username) {
         Realm realm = Realm.getInstance(configuration);
         realm.where(RealmServerConfiguration.class)
-                .equalTo(RealmServerConfiguration.USERNAME, username)
+                .equalTo(RealmServerConfiguration.DRIVER_ID, username)
                 .findAll()
                 .deleteAllFromRealm();
     }

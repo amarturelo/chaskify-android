@@ -24,7 +24,6 @@ public class RealmNotification extends RealmObject{
     private String dateProcess;
     private String ipAddress;
     private String isRead;
-    private Object message;
 
     public RealmNotification() {
     }
@@ -173,12 +172,4 @@ public class RealmNotification extends RealmObject{
         return this;
     }
 
-    public Object getMessage() {
-        return message;
-    }
-
-    public RealmNotification setMessage(Object message) {
-        this.message = message;
-        return this;
-    }
 }

@@ -1,23 +1,18 @@
 package com.chaskify.chaskify_sdk.rest.client;
 
-import com.chaskify.chaskify_sdk.ChaskifyServerConfiguration;
 import com.chaskify.chaskify_sdk.RestClient;
+import com.chaskify.chaskify_sdk.crypto.Base64;
 import com.chaskify.chaskify_sdk.rest.api.LoginApi;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.model.BaseResponse;
-import com.chaskify.chaskify_sdk.rest.model.ChaskifyError;
 import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
 import com.chaskify.chaskify_sdk.rest.model.login.LoginResponse;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.lang.reflect.Type;
 
 import retrofit2.Call;
@@ -39,7 +34,7 @@ public class LoginRestClient extends RestClient<LoginApi> {
     }
 
     public ChaskifyCredentials loginWithUserExplicitly(final String user, final String password) throws Exception {
-        Response<String> response = mApi.login(user, password).execute();
+        Response<String> response = mApi.login(user, Base64.encodeBytes(password.getBytes())).execute();
         Type type = new TypeToken<BaseResponse<LoginResponse>>() {
         }.getType();
 
@@ -56,7 +51,7 @@ public class LoginRestClient extends RestClient<LoginApi> {
     }
 
     private void login(final String user, final String password, final ApiCallback<ChaskifyCredentials> callback) {
-        mApi.login(user, password)
+        mApi.login(user, Base64.encodeBytes(password.getBytes()))
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {

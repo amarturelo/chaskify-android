@@ -22,7 +22,7 @@ public class ProfileRestClient extends RestClient<ProfileApi> {
 
     public void getProfile(ApiCallback<ChaskifyProfile> callback) throws TokenNotFoundException {
         if (mChaskifyCredentials != null)
-            getProfile("es", mChaskifyCredentials.accessToken, callback);
+            getProfile("es", mChaskifyCredentials.getAccessToken(), callback);
         else
             throw new TokenNotFoundException();
     }

@@ -34,7 +34,7 @@ public class CalendarTaskRestClient extends RestClient<CalendarTaskApi> {
 
     public void calendarRaskByRange(Date start, Date end, ApiCallback<List<ChaskifyCalendarTask>> callback) throws TokenNotFoundException {
         if (mChaskifyCredentials != null)
-            calendarRaskByRange(start, end, mChaskifyCredentials.accessToken, callback);
+            calendarRaskByRange(start, end, mChaskifyCredentials.getAccessToken(), callback);
         else
             throw new TokenNotFoundException();
     }

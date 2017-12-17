@@ -32,6 +32,9 @@ public class LoginResponse {
     @SerializedName("chaskifyIcons")
     @Expose
     private ChaskifyIcons chaskifyIcons;
+    @SerializedName("driver_id")
+    @Expose
+    private String driver_id;
 
     public LoginResponse() {
     }

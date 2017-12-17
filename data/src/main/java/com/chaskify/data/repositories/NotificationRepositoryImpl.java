@@ -76,7 +76,6 @@ public class NotificationRepositoryImpl implements NotificationsRepository {
                                 .setCustomerId(notification.getCustomerId())
                                 .setDriverId(notification.getDriverId())
                                 .setIsRead(notification.getIsRead())
-                                .setMessage(notification.getMessage())
                                 .setTaskId(notification.getTaskId())
                                 .setPushMessage(notification.getPushMessage())
                                 .setPushType(notification.getPushType())

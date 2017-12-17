@@ -4,9 +4,11 @@ package com.chaskify.chaskify_sdk.rest.model.login;
  * The user's credentials.
  */
 public class ChaskifyCredentials {
-    public String accessToken;
+    private String accessToken;
 
-    public String username;
+    private String driver_id;
+
+    private String username;
 
     public String getAccessToken() {
         return accessToken;
@@ -23,6 +25,15 @@ public class ChaskifyCredentials {
 
     public ChaskifyCredentials setUsername(String username) {
         this.username = username;
+        return this;
+    }
+
+    public String getDriverId() {
+        return driver_id;
+    }
+
+    public ChaskifyCredentials setDriverId(String driver_id) {
+        this.driver_id = driver_id;
         return this;
     }
 
