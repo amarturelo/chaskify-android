@@ -76,4 +76,5 @@ dependencies {
     }
 
     implementation 'com.github.sundeepk:compact-calendar-view:2.0.2.2'
+    compile 'com.hannesdorfmann:adapterdelegates3:3.0.2-SNAPSHOT'
 }

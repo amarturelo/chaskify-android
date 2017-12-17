@@ -25,6 +25,8 @@ public class NotificationsPresenter extends BasePresenter<NotificationsContract.
     public void notificationsByDriverId(String driver_id) {
         addSubscription(notificationsInteractor
                 .notifications(driver_id)
+                .doOnSubscribe(disposable -> view.showProgress())
+                .doOnDispose(() -> view.hideProgress())
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(notifications -> view.renderNotifications(notifications)
