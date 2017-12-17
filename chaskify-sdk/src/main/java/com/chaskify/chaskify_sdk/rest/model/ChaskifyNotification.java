@@ -1,5 +1,8 @@
 package com.chaskify.chaskify_sdk.rest.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
 /**
@@ -26,85 +29,121 @@ public class ChaskifyNotification {
             "is_read": "2",
             "message": null
     * */
-    private String push_id;
-    private String customer_id;
-    private String device_platform;
-    private String device_id;
-    private String push_title;
-    private String push_message;
-    private String push_type;
-    private String actions;
-    private String mStatus;
-    private String driver_id;
-    private String task_id;
-    private Date date_created;
-    private Date date_process;
-    private String is_read;
-    private String message;
+    @SerializedName("push_id")
+    @Expose
+    public String pushId;
+    @SerializedName("customer_id")
+    @Expose
+    public String customerId;
+    @SerializedName("device_platform")
+    @Expose
+    public String devicePlatform;
+    @SerializedName("device_id")
+    @Expose
+    public String deviceId;
+    @SerializedName("push_title")
+    @Expose
+    public String pushTitle;
+    @SerializedName("push_message")
+    @Expose
+    public String pushMessage;
+    @SerializedName("push_type")
+    @Expose
+    public String pushType;
+    @SerializedName("actions")
+    @Expose
+    public String actions;
+    @SerializedName("status")
+    @Expose
+    public String status;
+    @SerializedName("json_response")
+    @Expose
+    public String jsonResponse;
+    @SerializedName("driver_id")
+    @Expose
+    public String driverId;
+    @SerializedName("task_id")
+    @Expose
+    public String taskId;
+    @SerializedName("date_created")
+    @Expose
+    public String dateCreated;
+    @SerializedName("date_process")
+    @Expose
+    public String dateProcess;
+    @SerializedName("ip_address")
+    @Expose
+    public String ipAddress;
+    @SerializedName("is_read")
+    @Expose
+    public String isRead;
+    @SerializedName("message")
+    @Expose
+    public Object message;
 
     public ChaskifyNotification() {
     }
 
-    public String getPush_id() {
-        return push_id;
+    public String getPushId() {
+        return pushId;
     }
 
-    public ChaskifyNotification setPush_id(String push_id) {
-        this.push_id = push_id;
+    public ChaskifyNotification setPushId(String pushId) {
+        this.pushId = pushId;
         return this;
     }
 
-    public String getCustomer_id() {
-        return customer_id;
+    public String getCustomerId() {
+        return customerId;
     }
 
-    public ChaskifyNotification setCustomer_id(String customer_id) {
-        this.customer_id = customer_id;
+    public ChaskifyNotification setCustomerId(String customerId) {
+        this.customerId = customerId;
         return this;
     }
 
-    public String getDevice_platform() {
-        return device_platform;
+    public String getDevicePlatform() {
+        return devicePlatform;
     }
 
-    public ChaskifyNotification setDevice_platform(String device_platform) {
-        this.device_platform = device_platform;
+    public ChaskifyNotification setDevicePlatform(String devicePlatform) {
+        this.devicePlatform = devicePlatform;
         return this;
     }
 
-    public String getDevice_id() {
-        return device_id;
+    public String getDeviceId() {
+        return deviceId;
     }
 
-    public ChaskifyNotification setDevice_id(String device_id) {
-        this.device_id = device_id;
+    public ChaskifyNotification setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
         return this;
     }
 
-    public String getPush_title() {
-        return push_title;
+    public String getPushTitle() {
+        return pushTitle;
     }
 
-    public ChaskifyNotification setPush_title(String push_title) {
-        this.push_title = push_title;
+    public ChaskifyNotification setPushTitle(String pushTitle) {
+        this.pushTitle = pushTitle;
         return this;
     }
 
-    public String getPush_message() {
-        return push_message;
+    public String getPushMessage() {
+        return pushMessage;
     }
 
-    public ChaskifyNotification setPush_message(String push_message) {
-        this.push_message = push_message;
+    public ChaskifyNotification setPushMessage(String pushMessage) {
+        this.pushMessage = pushMessage;
         return this;
     }
 
-    public String getPush_type() {
-        return push_type;
+    public String getPushType() {
+        return pushType;
     }
 
-    public ChaskifyNotification setPush_type(String push_type) {
-        this.push_type = push_type;
+    public ChaskifyNotification setPushType(String pushType) {
+        this.pushType = pushType;
         return this;
     }
 
@@ -117,65 +156,83 @@ public class ChaskifyNotification {
         return this;
     }
 
-    public String getmStatus() {
-        return mStatus;
+    public String getStatus() {
+        return status;
     }
 
-    public ChaskifyNotification setmStatus(String mStatus) {
-        this.mStatus = mStatus;
+    public ChaskifyNotification setStatus(String status) {
+        this.status = status;
         return this;
     }
 
-    public String getDriver_id() {
-        return driver_id;
+    public String getJsonResponse() {
+        return jsonResponse;
     }
 
-    public ChaskifyNotification setDriver_id(String driver_id) {
-        this.driver_id = driver_id;
+    public ChaskifyNotification setJsonResponse(String jsonResponse) {
+        this.jsonResponse = jsonResponse;
         return this;
     }
 
-    public String getTask_id() {
-        return task_id;
+    public String getDriverId() {
+        return driverId;
     }
 
-    public ChaskifyNotification setTask_id(String task_id) {
-        this.task_id = task_id;
+    public ChaskifyNotification setDriverId(String driverId) {
+        this.driverId = driverId;
         return this;
     }
 
-    public Date getDate_created() {
-        return date_created;
+    public String getTaskId() {
+        return taskId;
     }
 
-    public ChaskifyNotification setDate_created(Date date_created) {
-        this.date_created = date_created;
+    public ChaskifyNotification setTaskId(String taskId) {
+        this.taskId = taskId;
         return this;
     }
 
-    public Date getDate_process() {
-        return date_process;
+    public String getDateCreated() {
+        return dateCreated;
     }
 
-    public ChaskifyNotification setDate_process(Date date_process) {
-        this.date_process = date_process;
+    public ChaskifyNotification setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
         return this;
     }
 
-    public String getIs_read() {
-        return is_read;
+    public String getDateProcess() {
+        return dateProcess;
     }
 
-    public ChaskifyNotification setIs_read(String is_read) {
-        this.is_read = is_read;
+    public ChaskifyNotification setDateProcess(String dateProcess) {
+        this.dateProcess = dateProcess;
         return this;
     }
 
-    public String getMessage() {
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public ChaskifyNotification setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+        return this;
+    }
+
+    public String getIsRead() {
+        return isRead;
+    }
+
+    public ChaskifyNotification setIsRead(String isRead) {
+        this.isRead = isRead;
+        return this;
+    }
+
+    public Object getMessage() {
         return message;
     }
 
-    public ChaskifyNotification setMessage(String message) {
+    public ChaskifyNotification setMessage(Object message) {
         this.message = message;
         return this;
     }

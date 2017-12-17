@@ -16,7 +16,7 @@ public interface TaskCache {
 
     List<RealmTask> findAllByDate(Date date);
 
-    Optional<RealmTask> find(String taskId);
+    Optional<RealmTask> findById(String taskId);
 
     void put(List<RealmTask> realmTasks);
 

@@ -47,7 +47,7 @@ public class TaskCacheImpl implements TaskCache {
     }
 
     @Override
-    public Optional<RealmTask> find(String taskId) {
+    public Optional<RealmTask> findById(String taskId) {
         Realm realm = Realm.getInstance(configuration);
         RealmResults<RealmTask> result = realm.where(RealmTask.class).equalTo(RealmTask.TASK_ID, taskId).findAll();
         return result.isEmpty() ? Optional.empty() : Optional.of(result.first());
