@@ -38,6 +38,6 @@ public class MainPresenter extends BasePresenter<MainContract.View>
                                         .setYear(calendarTask.getYear())
                                 )
                                 .toList()
-                )));
+                ),throwable -> view.showError(throwable)));
     }
 }

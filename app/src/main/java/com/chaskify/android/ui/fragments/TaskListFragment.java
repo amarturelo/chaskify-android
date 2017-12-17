@@ -131,6 +131,7 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
 
     @Override
     public void renderTaskListView(List<TaskItemModel> tasks) {
+        taskListAdapter.clear();
         taskListAdapter.add(tasks);
     }
 

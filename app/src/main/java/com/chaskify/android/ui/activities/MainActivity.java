@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.annimon.stream.Stream;
 import com.annimon.stream.function.Consumer;
@@ -274,6 +275,11 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
     @Override
     public FragmentAnimator onCreateFragmentAnimator() {
         return new FragmentAnimator();
+    }
+
+    @Override
+    public void showError(Throwable throwable) {
+        Toast.makeText(getApplicationContext(), throwable.toString(), Toast.LENGTH_LONG).show();
     }
 
     @Override

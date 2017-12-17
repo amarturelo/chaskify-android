@@ -50,6 +50,11 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
         return mTaskItemModels.size();
     }
 
+    public void clear() {
+        mTaskItemModels.clear();
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView taskDate;

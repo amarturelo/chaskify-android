@@ -14,6 +14,8 @@ public class MainContract {
     interface View extends BaseContract.View {
 
         void renderEvent(List<CalendarTaskModel> calendarTaskModels);
+
+        void showError(Throwable throwable);
     }
 
     interface Presenter extends BaseContract.Presenter<MainContract.View> {
