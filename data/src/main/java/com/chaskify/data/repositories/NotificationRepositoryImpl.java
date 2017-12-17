@@ -15,6 +15,7 @@ import java.util.List;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Predicate;
 
 /**
  * Created by alberto on 17/12/17.
@@ -56,6 +57,10 @@ public class NotificationRepositoryImpl implements NotificationsRepository {
                         emitter.onError(e);
                     }
                 }))
+                .map(chaskifyNotifications -> Stream
+                        .of(chaskifyNotifications)
+                        .filter(chaskifyNotification -> chaskifyNotification.getDriverId().equals(driver_id))
+                        .toList())
                 .map(chaskifyNotifications -> Stream.of(chaskifyNotifications)
                         .map(chaskifyNotification -> new Notification()
                                 .setDeviceId(chaskifyNotification.getDeviceId())

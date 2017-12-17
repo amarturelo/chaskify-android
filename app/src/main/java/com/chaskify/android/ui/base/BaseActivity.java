@@ -18,6 +18,7 @@ public abstract class BaseActivity extends SwipeBackActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayout());
+        setSwipeBackEnable(false);
     }
 
     protected abstract int getLayout();

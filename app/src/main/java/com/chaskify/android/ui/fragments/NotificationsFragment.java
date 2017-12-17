@@ -16,6 +16,7 @@ import com.chaskify.android.R;
 import com.chaskify.android.adapters.NotificationsListAdapter;
 import com.chaskify.android.ui.base.BaseFragment;
 import com.chaskify.android.ui.model.NotificationItemModel;
+import com.chaskify.android.ui.widget.MultiStateView;
 import com.chaskify.data.realm.cache.impl.NotificationsCacheImpl;
 import com.chaskify.data.repositories.NotificationRepositoryImpl;
 import com.chaskify.domain.interactors.NotificationsInteractor;
@@ -29,6 +30,8 @@ import java.util.List;
 public class NotificationsFragment extends BaseFragment implements NotificationsContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     private SwipeRefreshLayout swipeRefresh;
+
+    private MultiStateView stateView;
 
     private RecyclerView notificationsList;
 
@@ -67,6 +70,7 @@ public class NotificationsFragment extends BaseFragment implements Notifications
 
     private void initView(View view) {
         swipeRefresh = view.findViewById(R.id.swipe_refresh);
+        stateView = view.findViewById(R.id.multi_state);
         swipeRefresh.setOnRefreshListener(this);
         notificationsList = view.findViewById(R.id.notifications_list);
         notificationsList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -90,8 +94,12 @@ public class NotificationsFragment extends BaseFragment implements Notifications
     }
 
     @Override
-    public void renderNotifications(List<Notification> notifications) {
-        Toast.makeText(getContext(), notifications.toString(), Toast.LENGTH_LONG).show();
+    public void renderNotifications(List<NotificationItemModel> notifications) {
+        if (!notifications.isEmpty()) {
+            stateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+            notificationsListAdapter.add(notifications);
+        } else
+            stateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
     }
 
     @Override

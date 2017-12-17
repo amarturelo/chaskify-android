@@ -1,6 +1,7 @@
 package com.chaskify.android.ui.fragments;
 
 import com.chaskify.android.shared.BaseContract;
+import com.chaskify.android.ui.model.NotificationItemModel;
 import com.chaskify.domain.model.Notification;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class NotificationsContract {
 
         void showError(Throwable throwable);
 
-        void renderNotifications(List<Notification> notifications);
+        void renderNotifications(List<NotificationItemModel> notifications);
     }
 
     interface Presenter extends BaseContract.Presenter<NotificationsContract.View> {
