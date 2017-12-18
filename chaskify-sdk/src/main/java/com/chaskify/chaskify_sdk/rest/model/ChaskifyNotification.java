@@ -67,7 +67,7 @@ public class ChaskifyNotification {
     public String taskId;
     @SerializedName("date_created")
     @Expose
-    public String dateCreated;
+    public Date dateCreated;
     @SerializedName("date_process")
     @Expose
     public String dateProcess;
@@ -189,15 +189,6 @@ public class ChaskifyNotification {
 
     public ChaskifyNotification setTaskId(String taskId) {
         this.taskId = taskId;
-        return this;
-    }
-
-    public String getDateCreated() {
-        return dateCreated;
-    }
-
-    public ChaskifyNotification setDateCreated(String dateCreated) {
-        this.dateCreated = dateCreated;
         return this;
     }
 
