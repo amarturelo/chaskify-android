@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static android.text.format.DateUtils.FORMAT_SHOW_TIME;
+
 /**
  * Created by alberto on 15/12/17.
  */
@@ -39,8 +41,10 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
         TaskItemModel taskItemModel = mTaskItemModels.get(position);
 
         holder.taskType.setText(taskItemModel.getTrans_type());
-        holder.taskDate.setText(DateUtils
-                .getRelativeTimeSpanString(holder.itemView.getContext(), taskItemModel.getDelivery_date().getTime()));
+        holder.taskDate.setText(DateUtils.formatDateTime(
+                holder.itemView.getContext()
+                , taskItemModel.getDelivery_date().getTime()
+                , DateUtils.FORMAT_SHOW_TIME));
         holder.taskPlace.setText(taskItemModel.getDelivery_address());
         holder.taskClientName.setText(taskItemModel.getCustomer_name());
         holder.taskId.setText(taskItemModel.getTask_id());
