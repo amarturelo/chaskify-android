@@ -44,7 +44,7 @@
                     android:layout_width="4dp"
                     android:layout_height="match_parent"
                     android:layout_marginRight="4dp"
-                    android:background="@color/task_started"
+                    android:background="@color/task_assigned"
                     android:orientation="vertical" />
 
                 <TextView

@@ -15,6 +15,7 @@ import com.chaskify.android.R;
 import com.chaskify.android.adapters.TaskSnapListAdapter;
 import com.chaskify.android.ui.model.TaskItemSnapModel;
 import com.chaskify.android.ui.base.BaseFragment;
+import com.yarolegovich.discretescrollview.DiscreteScrollView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,10 +32,8 @@ import java.util.List;
  */
 public class TaskMapFragment extends BaseFragment {
 
-    //private MapView mMapView;
-    //private MapboxMap mMapboxMap;
+    private DiscreteScrollView scrollView;
 
-    private RecyclerView mTaskSnapList;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -75,19 +74,14 @@ public class TaskMapFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //mMapView = view.findViewById(R.id.map);
-        mTaskSnapList = view.findViewById(R.id.task_snap_list);
         //mMapView.onCreate(savedInstanceState);
         //mMapView.getMapAsync(this);
 
+        scrollView = view.findViewById(R.id.picker);
         initTaskSnapList();
     }
 
     private void initTaskSnapList() {
-        SnapHelper snapHelper = new LinearSnapHelper();
-        snapHelper.attachToRecyclerView(mTaskSnapList);
-
-        mTaskSnapList.setLayoutManager(new LinearLayoutManager(getContext(),
-                LinearLayoutManager.HORIZONTAL, false));
 
 
         List<TaskItemSnapModel> taskItemSnapModels = new ArrayList<>();
@@ -106,8 +100,7 @@ public class TaskMapFragment extends BaseFragment {
                 .setClientName("Contantinopla de la Luz")
                 .setStatus("started"));
 
-        TaskSnapListAdapter taskSnapListAdapter = new TaskSnapListAdapter(taskItemSnapModels);
-        mTaskSnapList.setAdapter(taskSnapListAdapter);
+        scrollView.setAdapter(new TaskSnapListAdapter(taskItemSnapModels));
 
     }
 

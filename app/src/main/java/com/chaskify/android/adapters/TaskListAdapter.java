@@ -43,6 +43,31 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
                 .getRelativeTimeSpanString(holder.itemView.getContext(), taskItemModel.getDelivery_date().getTime()));
         holder.taskPlace.setText(taskItemModel.getDelivery_address());
         holder.taskClientName.setText(taskItemModel.getCustomer_name());
+        holder.taskId.setText(taskItemModel.getTask_id());
+
+        switch (taskItemModel.getStatus()) {
+            case "ASSIGNED":
+                holder.taskStatus.setBackgroundResource(R.color.task_assigned);
+                break;
+            case "SUCCESSFUL":
+                holder.taskStatus.setBackgroundResource(R.color.task_successful);
+                break;
+            case "COMPLETE":
+                holder.taskStatus.setBackgroundResource(R.color.task_successful);
+                break;
+            case "IN ROUTE":
+                holder.taskStatus.setBackgroundResource(R.color.task_in_route);
+                break;
+            case "ACCEPTED":
+                holder.taskStatus.setBackgroundResource(R.color.task_accepted);
+                break;
+            case "SIGNATURE":
+                holder.taskStatus.setBackgroundResource(R.color.task_signature);
+                break;
+            case "ARRIVED":
+                holder.taskStatus.setBackgroundResource(R.color.task_arrived);
+                break;
+        }
     }
 
     @Override
@@ -58,12 +83,14 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView taskDate;
+        public TextView taskId;
         public TextView taskPlace;
         public TextView taskType;
         public TextView taskClientName;
         public TextView taskDateComing;
         public View formTaskDateComing;
         public View taskTypeColor;
+        public View taskStatus;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -74,6 +101,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
             formTaskDateComing = itemView.findViewById(R.id.form_task_date_coming);
             taskType = itemView.findViewById(R.id.task_type);
             taskTypeColor = itemView.findViewById(R.id.task_type_color);
+            taskId = itemView.findViewById(R.id.task_id);
+            taskStatus = itemView.findViewById(R.id.task_status);
         }
     }
 

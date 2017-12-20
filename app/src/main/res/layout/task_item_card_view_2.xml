@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/task_content"
             android:layout_alignParentTop="true"
-            android:background="@color/task_started"
+            android:background="@color/task_assigned"
             android:orientation="vertical" />
 
 

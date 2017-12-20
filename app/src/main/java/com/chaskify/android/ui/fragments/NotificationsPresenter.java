@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import timber.log.Timber;
 
 /**
  * Created by alberto on 17/12/17.
@@ -30,7 +31,9 @@ public class NotificationsPresenter extends BasePresenter<NotificationsContract.
 
     @Override
     public void notificationsByDriverId(String driver_id) {
-        /*addSubscription(notificationsInteractor
+        Timber.d("::findNotificationsByDriverId " + driver_id + "::");
+
+        addSubscription(notificationsInteractor
                 .notifications(driver_id)
                 .doFinally(() -> view.hideProgress())
                 .doOnSubscribe(disposable -> view.showProgress())
@@ -50,8 +53,8 @@ public class NotificationsPresenter extends BasePresenter<NotificationsContract.
                                         .setPushTitle(notification.getPushTitle())
                                         .setPushMessage(notification.getPushMessage()))
                                 .toList())
-                        , throwable -> view.showError(throwable)));*/
-        List<NotificationItemModel> itemModels = new ArrayList<>();
+                        , throwable -> view.showError(throwable)));
+        /*List<NotificationItemModel> itemModels = new ArrayList<>();
         itemModels.add(new NotificationItemModel()
                 .setDateCreated("2017-12-04 19:00:43")
                 .setDateProcess("2017-12-04 19:00:43")
@@ -73,7 +76,7 @@ public class NotificationsPresenter extends BasePresenter<NotificationsContract.
                 .setPushMessage("You have new assign task 3643"));
 
         view.hideProgress();
-        view.renderNotifications(itemModels);
+        view.renderNotifications(itemModels);*/
     }
 
 
