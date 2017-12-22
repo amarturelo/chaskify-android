@@ -47,9 +47,12 @@ public class TaskCacheImpl implements TaskCache {
     }
 
     @Override
-    public Optional<RealmTask> findById(String taskId) {
+    public Optional<RealmTask> findById(String driverId, String taskId) {
         Realm realm = Realm.getInstance(configuration);
-        RealmResults<RealmTask> result = realm.where(RealmTask.class).equalTo(RealmTask.TASK_ID, taskId).findAll();
+        RealmResults<RealmTask> result = realm.where(RealmTask.class)
+                .equalTo(RealmTask.TASK_ID, taskId)
+                .equalTo(RealmTask.DRIVER_ID, driverId)
+                .findAll();
         return result.isEmpty() ? Optional.empty() : Optional.of(result.first());
     }
 
@@ -59,7 +62,6 @@ public class TaskCacheImpl implements TaskCache {
         realm.beginTransaction();
         realm.insertOrUpdate(realmTasks);
         realm.commitTransaction();
-        realm.close();
     }
 
     @Override
@@ -68,6 +70,5 @@ public class TaskCacheImpl implements TaskCache {
         realm.beginTransaction();
         realm.insertOrUpdate(realmTask);
         realm.commitTransaction();
-        realm.close();
     }
 }

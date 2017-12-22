@@ -10,6 +10,7 @@ import io.realm.RealmObject;
 
 public class RealmTask extends RealmObject {
     public static String TASK_ID = "task_id";
+    public static String DRIVER_ID = "driver_id";
     private String task_id;
     private String customer_id;
     private String task_description;

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.adapters.TaskListAdapter;
+import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.base.BaseFragment;
 import com.chaskify.android.ui.model.TaskItemModel;
 import com.chaskify.android.ui.widget.MultiStateView;
@@ -79,6 +80,13 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
 
     private void initViews(View view) {
         taskListAdapter = new TaskListAdapter();
+        taskListAdapter.setOnItemListened((view1, position) -> {
+            taskListAdapter.getItem(position);
+            Navigator.showTaskDetails(getFragmentManager()
+                    , Chaskify.getInstance().getDefaultSession().get().getCredentials().getDriverId()
+                    , taskListAdapter.getItem(position).getTask_id());
+        });
+
         taskList = view.findViewById(R.id.task_list);
         mSwipeRefresh = view.findViewById(R.id.swipe_refresh);
         mSwipeRefresh.setOnRefreshListener(this);

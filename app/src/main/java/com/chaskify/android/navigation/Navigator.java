@@ -2,10 +2,12 @@ package com.chaskify.android.navigation;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 
 import com.chaskify.android.ui.activities.MainActivity;
 import com.chaskify.android.ui.activities.settings.SettingsProfileActivity;
 import com.chaskify.android.ui.activities.settings.SettingsVehicleActivity;
+import com.chaskify.android.ui.widget.TaskDialogFragment;
 
 /**
  * Created by Alberto on 31/8/2017.
@@ -31,6 +33,13 @@ public class Navigator {
         if (context != null) {
             Intent intentToLaunch = SettingsVehicleActivity.getCallingIntent(context);
             context.startActivity(intentToLaunch);
+        }
+    }
+
+    public static void showTaskDetails(FragmentManager fragmentManager, String driver_id, String task_id) {
+        if (fragmentManager != null) {
+            TaskDialogFragment taskDialogFragment = TaskDialogFragment.getCalling(driver_id, task_id);
+            taskDialogFragment.show(fragmentManager, taskDialogFragment.getTag());
         }
     }
 

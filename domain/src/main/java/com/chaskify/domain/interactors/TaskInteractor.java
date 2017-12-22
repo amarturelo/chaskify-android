@@ -1,5 +1,6 @@
 package com.chaskify.domain.interactors;
 
+import com.annimon.stream.Optional;
 import com.chaskify.domain.model.Task;
 import com.chaskify.domain.repositories.TaskRepository;
 
@@ -21,5 +22,9 @@ public class TaskInteractor {
 
     public Single<List<Task>> tasks(Date date) {
         return taskRepository.tasks(date);
+    }
+
+    public Single<Optional<Task>> taskById(String driver_id, String task_id) {
+        return taskRepository.taskById(driver_id, task_id);
     }
 }

@@ -8,15 +8,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.annimon.stream.Stream;
-import com.annimon.stream.function.Consumer;
 import com.chaskify.android.R;
 import com.chaskify.android.ui.model.TaskItemModel;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import static android.text.format.DateUtils.FORMAT_SHOW_TIME;
 
 /**
  * Created by alberto on 15/12/17.
@@ -30,6 +26,20 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
         this.mTaskItemModels = new ArrayList<>();
     }
 
+    public TaskItemModel getItem(int position) {
+        return mTaskItemModels.get(position);
+    }
+
+    public interface OnItemListened {
+        void onClickItem(View view, int position);
+    }
+
+    private OnItemListened mOnItemListened;
+
+    public void setOnItemListened(OnItemListened onItemListened) {
+        this.mOnItemListened = onItemListened;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_item_view, parent, false);
@@ -39,6 +49,14 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         TaskItemModel taskItemModel = mTaskItemModels.get(position);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnItemListened != null)
+                    mOnItemListened.onClickItem(holder.itemView, position);
+            }
+        });
 
         holder.taskType.setText(taskItemModel.getTrans_type());
         holder.taskDate.setText(DateUtils.formatDateTime(
