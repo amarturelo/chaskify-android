@@ -60,4 +60,6 @@
 </string>
     <string name="title_task_description">Task description</string>
     <string name="title_task_history">Task history</string>
+    <string name="action_task_filter_status">Status</string>
+    <string name="action_task_filter_type">Type</string>
 </resources>

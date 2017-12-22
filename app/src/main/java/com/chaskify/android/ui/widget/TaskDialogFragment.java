@@ -85,7 +85,18 @@ public class TaskDialogFragment extends BottomSheetDialogFragment implements Tas
 
     @Override
     public void showProgress() {
+        /*BottomSheetMenuDialog dialog = new BottomSheetBuilder(getContext(), R.style.AppTheme_BottomSheetDialog)
+                .setMode(BottomSheetBuilder.MODE_LIST)
+                .setMenu(R.menu.menu_bottom_simple_sheet)
+                .setItemClickListener(new BottomSheetItemClickListener() {
+                    @Override
+                    public void onBottomSheetItemClick(MenuItem item) {
 
+                    }
+                })
+                .createDialog();
+
+        dialog.show();*/
     }
 
     @Override

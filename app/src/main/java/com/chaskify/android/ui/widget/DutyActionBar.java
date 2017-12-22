@@ -1,14 +1,19 @@
 package com.chaskify.android.ui.widget;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 
 import com.chaskify.android.R;
+import com.github.rubensousa.bottomsheetbuilder.BottomSheetBuilder;
+import com.github.rubensousa.bottomsheetbuilder.BottomSheetMenuDialog;
+import com.github.rubensousa.bottomsheetbuilder.adapter.BottomSheetItemClickListener;
 
 /**
  * Created by alberto on 14/12/17.
@@ -18,6 +23,7 @@ public class DutyActionBar extends LinearLayout {
 
     private Switch mActionDuty;
     private View mTaskViewMode;
+    private View mTaskFilter;
     private ImageView mIvTaskViewMode;
 
     public interface OnFragmentInteractionListenerDutyActionBar {
@@ -52,7 +58,7 @@ public class DutyActionBar extends LinearLayout {
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         inflate(context, R.layout.widget_action_bar, this);
-
+        mTaskFilter = findViewById(R.id.action_task_filter);
         mActionDuty = findViewById(R.id.switch_action_duty);
         mTaskViewMode = findViewById(R.id.action_task_view_mode);
         mTaskViewMode.setOnClickListener(new OnClickListener() {
@@ -61,7 +67,28 @@ public class DutyActionBar extends LinearLayout {
                 taskViewToggle();
             }
         });
+        mTaskFilter.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFilter();
+            }
+        });
         mIvTaskViewMode = findViewById(R.id.iv_task_view_mode);
+    }
+
+    private void showFilter() {
+        BottomSheetMenuDialog dialog = new BottomSheetBuilder(getContext())
+                .setMode(BottomSheetBuilder.MODE_LIST)
+                .setMenu(R.menu.menu_bottom_sheet_fitler)
+                .setItemClickListener(new BottomSheetItemClickListener() {
+                    @Override
+                    public void onBottomSheetItemClick(MenuItem item) {
+
+                    }
+                })
+                .createDialog();
+        dialog.show();
+
     }
 
     private void taskViewToggle() {
