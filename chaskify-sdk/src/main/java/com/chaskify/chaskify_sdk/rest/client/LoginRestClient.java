@@ -34,7 +34,7 @@ public class LoginRestClient extends RestClient<LoginApi> {
     }
 
     public ChaskifyCredentials loginWithUserExplicitly(final String user, final String password) throws Exception {
-        Response<String> response = mApi.login(user, Base64.encodeBytes(password.getBytes())).execute();
+        Response<String> response = mApi.login(user, password).execute();
         Type type = new TypeToken<BaseResponse<LoginResponse>>() {
         }.getType();
 
@@ -51,7 +51,7 @@ public class LoginRestClient extends RestClient<LoginApi> {
     }
 
     private void login(final String user, final String password, final ApiCallback<ChaskifyCredentials> callback) {
-        mApi.login(user, Base64.encodeBytes(password.getBytes()))
+        mApi.login(user, password)
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {

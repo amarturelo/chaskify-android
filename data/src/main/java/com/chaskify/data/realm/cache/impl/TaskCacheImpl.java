@@ -22,20 +22,14 @@ import io.realm.RealmResults;
 public class TaskCacheImpl implements TaskCache {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", /*Locale.getDefault()*/Locale.getDefault());
 
-    private RealmConfiguration configuration;
 
     public TaskCacheImpl() {
-        configuration = new RealmConfiguration.Builder()
-                .name("inMemory.realm")
-                .inMemory()
-                .modules(new InMemoryModule())
-                .deleteRealmIfMigrationNeeded()
-                .build();
+
     }
 
     @Override
     public List<RealmTask> findAll() {
-        Realm realm = Realm.getInstance(configuration);
+        Realm realm = Realm.getDefaultInstance();
         return realm.where(RealmTask.class).findAll();
     }
 
@@ -48,7 +42,7 @@ public class TaskCacheImpl implements TaskCache {
 
     @Override
     public Optional<RealmTask> findById(String driverId, String taskId) {
-        Realm realm = Realm.getInstance(configuration);
+        Realm realm = Realm.getDefaultInstance();
         RealmResults<RealmTask> result = realm.where(RealmTask.class)
                 .equalTo(RealmTask.TASK_ID, taskId)
                 .equalTo(RealmTask.DRIVER_ID, driverId)
@@ -58,7 +52,7 @@ public class TaskCacheImpl implements TaskCache {
 
     @Override
     public void put(List<RealmTask> realmTasks) {
-        Realm realm = Realm.getInstance(configuration);
+        Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         realm.insertOrUpdate(realmTasks);
         realm.commitTransaction();
@@ -66,7 +60,7 @@ public class TaskCacheImpl implements TaskCache {
 
     @Override
     public void put(RealmTask realmTask) {
-        Realm realm = Realm.getInstance(configuration);
+        Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         realm.insertOrUpdate(realmTask);
         realm.commitTransaction();

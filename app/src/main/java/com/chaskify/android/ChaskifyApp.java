@@ -10,6 +10,8 @@ import android.util.Log;
 import com.chaskify.android.push.ExampleNotificationOpenedHandler;
 import com.chaskify.android.push.ExampleNotificationReceivedHandler;
 import com.chaskify.android.ui.activities.MainActivity;
+import com.chaskify.data.model.chaskify.RealmNotification;
+import com.chaskify.data.realm.module.InMemoryModule;
 import com.chaskify.logger.CrashReportingTree;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.onesignal.OSNotification;
@@ -50,6 +52,15 @@ public class ChaskifyApp extends MultiDexApplication {
 
     private void initRealm() {
         Realm.init(getApplicationContext());
+
+        RealmConfiguration realmNotification = new RealmConfiguration.Builder()
+                .name("inMemory.realm")
+                .inMemory()
+                .modules(new InMemoryModule())
+                .deleteRealmIfMigrationNeeded()
+                .build();
+
+        Realm.setDefaultConfiguration(realmNotification);
     }
 
     private void initPush() {

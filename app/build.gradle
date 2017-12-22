@@ -59,23 +59,17 @@ dependencies {
     implementation project(':logger')
     implementation project(':chaskify-sdk')
     implementation project(':domain')
-
     //push
     // OneSignal SDK
     compile 'com.onesignal:OneSignal:3.6.5@aar'
-
-
     // OneSignal requires at least version 7.0.0 of GMS but the newest version is recommend.
     // Required for OneSignal, even if you have added FCM.
     compile 'com.google.android.gms:play-services-gcm:11.2.2'
-
     // Required for geotagging
     compile 'com.google.android.gms:play-services-location:11.2.2'
-
     //map
-    implementation ('com.mapbox.mapboxsdk:mapbox-android-sdk:5.2.1@aar') {
+    implementation('com.mapbox.mapboxsdk:mapbox-android-sdk:5.2.1@aar') {
         transitive = true
     }
-
-
+    implementation 'com.android.support:design:26.1.0'
 }

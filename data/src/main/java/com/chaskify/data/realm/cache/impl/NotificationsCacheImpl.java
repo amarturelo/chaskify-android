@@ -16,26 +16,19 @@ import io.realm.RealmConfiguration;
 
 public class NotificationsCacheImpl implements NotificationsCache {
 
-    private RealmConfiguration configuration;
 
     public NotificationsCacheImpl() {
-        configuration = new RealmConfiguration.Builder()
-                .name("inMemory.realm")
-                .inMemory()
-                .modules(new InMemoryModule())
-                .deleteRealmIfMigrationNeeded()
-                .build();
     }
 
     @Override
     public List<RealmNotification> getAllByDriverId(String driverId) {
-        Realm realm = Realm.getInstance(configuration);
+        Realm realm = Realm.getDefaultInstance();
         return realm.where(RealmNotification.class).equalTo(RealmNotification.DRIVER_ID, driverId).findAll();
     }
 
     @Override
     public void put(List<RealmNotification> notifications) {
-        Realm realm = Realm.getInstance(configuration);
+        Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         realm.insertOrUpdate(notifications);
         realm.commitTransaction();
@@ -44,7 +37,7 @@ public class NotificationsCacheImpl implements NotificationsCache {
 
     @Override
     public void put(RealmNotification notification) {
-        Realm realm = Realm.getInstance(configuration);
+        Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         realm.insertOrUpdate(notification);
         realm.commitTransaction();
