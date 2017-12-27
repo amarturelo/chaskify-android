@@ -39,6 +39,15 @@ public class LoginResponse {
     public LoginResponse() {
     }
 
+    public String getDriver_id() {
+        return driver_id;
+    }
+
+    public LoginResponse setDriver_id(String driver_id) {
+        this.driver_id = driver_id;
+        return this;
+    }
+
     public String getUsername() {
         return username;
     }

@@ -86,6 +86,7 @@ public class Chaskify {
     public static ChaskifySession createSession(Credentials credentials) {
         return new ChaskifySession(new ChaskifyCredentials()
                 .setAccessToken(credentials.getAccessToken())
+                .setDriverId(credentials.getDriverId())
                 .setUsername(credentials.getUsername()));
     }
 

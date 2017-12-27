@@ -59,6 +59,7 @@ public class TaskDialogFragment extends BottomSheetDialogFragment implements Tas
 
     }
 
+
     private void initComponents(View view) {
         textViewTaskId = view.findViewById(R.id.task_id);
         textViewTaskType = view.findViewById(R.id.task_type);
@@ -148,13 +149,17 @@ public class TaskDialogFragment extends BottomSheetDialogFragment implements Tas
         taskDialogPresenter.release();
     }
 
-    public static TaskDialogFragment getCalling(String driver_id, String task_id) {
+    public static TaskDialogFragment newInstance(String driver_id, String task_id) {
         TaskDialogFragment taskDialogFragment = new TaskDialogFragment();
         Bundle args = new Bundle();
         args.putString(ARG_DRIVER_ID, driver_id);
         args.putString(ARG_TASK_ID, task_id);
         taskDialogFragment.setArguments(args);
         return taskDialogFragment;
+    }
+
+    public static TaskDialogFragment getCalling(String driver_id, String task_id) {
+        return TaskDialogFragment.newInstance(driver_id, task_id);
     }
 
 }

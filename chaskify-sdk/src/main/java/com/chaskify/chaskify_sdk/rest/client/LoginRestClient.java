@@ -64,6 +64,7 @@ public class LoginRestClient extends RestClient<LoginApi> {
 
                             callback.onSuccess(new ChaskifyCredentials()
                                     .setUsername(user)
+                                    .setDriverId(loginRequest.getDetails().getDriver_id())
                                     .setAccessToken(loginRequest.getDetails().getToken())
 
                             );

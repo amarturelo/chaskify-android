@@ -34,7 +34,6 @@ public class LoginStorage {
                 .map(account -> new Credentials()
                         .setUsername(account.name)
                         .setDriverId(mAccountManager.getUserData(account, DRIVER_ID))
-                        .setDriverId(mAccountManager.getUserData(account, AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS))
                         .setAccessToken(mAccountManager.peekAuthToken(account, AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS)))
                 .toList();
     }

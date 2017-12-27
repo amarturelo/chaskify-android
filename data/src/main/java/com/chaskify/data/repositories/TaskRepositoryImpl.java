@@ -35,7 +35,7 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public Single<Optional<Task>> taskById(String driverId, String taskId) {
-        /*return Single.create((SingleOnSubscribe<Optional<RealmTask>>) emitter -> emitter.onSuccess(taskCache.findById(driverId, taskId)))
+        return Single.create((SingleOnSubscribe<Optional<RealmTask>>) emitter -> emitter.onSuccess(taskCache.findById(driverId, taskId)))
                 .map(realmTaskOptional -> realmTaskOptional.isPresent() ? Optional.of(new Task()
                         .setTask_id(realmTaskOptional.get().getTask_id())
                         .setCustomer_id(realmTaskOptional.get().getCustomer_id())
@@ -46,13 +46,13 @@ public class TaskRepositoryImpl implements TaskRepository {
                         .setDelivery_address(realmTaskOptional.get().getDelivery_address())
                         .setDelivery_date(realmTaskOptional.get().getDelivery_date())
                         .setDelivery_time(realmTaskOptional.get().getDelivery_time())
-                        .setCustomer_name(realmTaskOptional.get().getCustomer_name())) : Optional.empty());*/
-        return Single.create(new SingleOnSubscribe<Optional<Task>>() {
+                        .setCustomer_name(realmTaskOptional.get().getCustomer_name())) : Optional.empty());
+       /*return Single.create(new SingleOnSubscribe<Optional<Task>>() {
             @Override
             public void subscribe(SingleEmitter<Optional<Task>> e) throws Exception {
 
             }
-        });
+        });*/
     }
 
     @Override
