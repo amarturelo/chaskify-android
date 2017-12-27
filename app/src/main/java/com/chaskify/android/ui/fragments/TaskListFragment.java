@@ -80,12 +80,9 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
 
     private void initViews(View view) {
         taskListAdapter = new TaskListAdapter();
-        taskListAdapter.setOnItemListened((view1, position) -> {
-            taskListAdapter.getItem(position);
-            Navigator.showTaskDetails(getFragmentManager()
-                    , Chaskify.getInstance().getDefaultSession().get().getCredentials().getDriverId()
-                    , taskListAdapter.getItem(position).getTask_id());
-        });
+        taskListAdapter.setOnItemListened((view1, position) -> Navigator.showTaskDetails(getFragmentManager()
+                , Chaskify.getInstance().getDefaultSession().get().getCredentials().getDriverId()
+                , taskListAdapter.getItem(position).getTask_id()));
 
         taskList = view.findViewById(R.id.task_list);
         mSwipeRefresh = view.findViewById(R.id.swipe_refresh);

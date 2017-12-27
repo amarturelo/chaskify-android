@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.annimon.stream.Stream;
 import com.chaskify.android.R;
+import com.chaskify.android.adapters.listened.OnItemListened;
 import com.chaskify.android.ui.model.TaskItemModel;
 
 import java.util.ArrayList;
@@ -28,10 +29,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
 
     public TaskItemModel getItem(int position) {
         return mTaskItemModels.get(position);
-    }
-
-    public interface OnItemListened {
-        void onClickItem(View view, int position);
     }
 
     private OnItemListened mOnItemListened;
