@@ -1,18 +1,20 @@
 package com.chaskify.android.ui.widget;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.FragmentManager;
-import android.icu.text.UnicodeSetSpanner;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
-import android.text.format.DateUtils;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
+import com.chaskify.android.adapters.TaskHistoryListAdapter;
+import com.chaskify.android.ui.custom.DividerItemDecoration;
 import com.chaskify.android.ui.model.TaskModel;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.repositories.TaskRepositoryImpl;
@@ -33,7 +35,14 @@ public class TaskDialogFragment extends BottomSheetDialogFragment implements Tas
     private TextView textViewTaskDate;
     private TextView textViewTaskAddress;
     private TextView textViewTaskTime;
+    private TextView textViewTaskDescription;
     private View viewTaskStatus;
+
+    private View formTaskDescription;
+
+    private TaskHistoryListAdapter mTaskHistoryListAdapter;
+
+    private RecyclerView mTaskHistoryList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,6 +76,13 @@ public class TaskDialogFragment extends BottomSheetDialogFragment implements Tas
         textViewTaskTime = view.findViewById(R.id.task_time);
         textViewTaskAddress = view.findViewById(R.id.task_address);
         viewTaskStatus = view.findViewById(R.id.task_status);
+        textViewTaskDescription = view.findViewById(R.id.task_description);
+        formTaskDescription = view.findViewById(R.id.form_task_description);
+
+        //history list
+        mTaskHistoryList = view.findViewById(R.id.task_history_list);
+        mTaskHistoryList.setLayoutManager(new LinearLayoutManager(getContext()));
+        mTaskHistoryList.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
     }
 
     @Override
@@ -75,6 +91,7 @@ public class TaskDialogFragment extends BottomSheetDialogFragment implements Tas
         taskDialogPresenter.taskById(mDriverId, mTaskId);
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public void setupDialog(final Dialog dialog, int style) {
         super.setupDialog(dialog, style);
@@ -86,18 +103,7 @@ public class TaskDialogFragment extends BottomSheetDialogFragment implements Tas
 
     @Override
     public void showProgress() {
-        /*BottomSheetMenuDialog dialog = new BottomSheetBuilder(getContext(), R.style.AppTheme_BottomSheetDialog)
-                .setMode(BottomSheetBuilder.MODE_LIST)
-                .setMenu(R.menu.menu_bottom_simple_sheet)
-                .setItemClickListener(new BottomSheetItemClickListener() {
-                    @Override
-                    public void onBottomSheetItemClick(MenuItem item) {
 
-                    }
-                })
-                .createDialog();
-
-        dialog.show();*/
     }
 
     @Override
@@ -110,13 +116,21 @@ public class TaskDialogFragment extends BottomSheetDialogFragment implements Tas
         Toast.makeText(getContext(), throwable.toString(), Toast.LENGTH_LONG).show();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void renderTask(TaskModel taskModel) {
-        textViewTaskId.setText(taskModel.getTaskId());
+        textViewTaskId.setText("#" + taskModel.getTaskId());
         textViewTaskAddress.setText(taskModel.getDeliveryAddress());
         textViewTaskType.setText(taskModel.getTransType());
-        textViewTaskDate.setText(DateUtils.formatDateTime(getContext(), taskModel.getDeliveryDate().getTime(), DateUtils.FORMAT_ABBREV_MONTH));
-        textViewTaskTime.setText(DateUtils.formatDateTime(getContext(), taskModel.getDeliveryDate().getTime(), DateUtils.FORMAT_SHOW_TIME));
+
+        if (taskModel.getDescription() == null)
+            formTaskDescription.setVisibility(View.GONE);
+        else {
+            formTaskDescription.setVisibility(View.VISIBLE);
+            textViewTaskDescription.setText(taskModel.getDescription());
+        }
+        //textViewTaskDate.setText(DateUtils.formatDateTime(getContext(), taskModel.getDeliveryDate().getTime(), DateUtils.FORMAT_ABBREV_MONTH));
+        //textViewTaskTime.setText(DateUtils.formatDateTime(getContext(), taskModel.getDeliveryDate().getTime(), DateUtils.FORMAT_SHOW_TIME));
 
         switch (taskModel.getStatus()) {
             case "ASSIGNED":
@@ -140,6 +154,10 @@ public class TaskDialogFragment extends BottomSheetDialogFragment implements Tas
             case "ARRIVED":
                 viewTaskStatus.setBackgroundResource(R.color.task_arrived);
                 break;
+        }
+
+        if (!taskModel.getTaskHistoryItemModels().isEmpty()) {
+            mTaskHistoryList.setAdapter(new TaskHistoryListAdapter(taskModel.getTaskHistoryItemModels()));
         }
     }
 

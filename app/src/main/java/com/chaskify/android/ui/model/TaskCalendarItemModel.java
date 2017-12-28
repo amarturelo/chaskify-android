@@ -4,21 +4,21 @@ package com.chaskify.android.ui.model;
  * Created by alberto on 15/12/17.
  */
 
-public class CalendarTaskModel {
+public class TaskCalendarItemModel {
     public String title;
     public String id;
     public String year;
     public String month;
     public String day;
 
-    public CalendarTaskModel() {
+    public TaskCalendarItemModel() {
     }
 
     public String getTitle() {
         return title;
     }
 
-    public CalendarTaskModel setTitle(String title) {
+    public TaskCalendarItemModel setTitle(String title) {
         this.title = title;
         return this;
     }
@@ -27,7 +27,7 @@ public class CalendarTaskModel {
         return id;
     }
 
-    public CalendarTaskModel setId(String id) {
+    public TaskCalendarItemModel setId(String id) {
         this.id = id;
         return this;
     }
@@ -36,7 +36,7 @@ public class CalendarTaskModel {
         return year;
     }
 
-    public CalendarTaskModel setYear(String year) {
+    public TaskCalendarItemModel setYear(String year) {
         this.year = year;
         return this;
     }
@@ -45,7 +45,7 @@ public class CalendarTaskModel {
         return month;
     }
 
-    public CalendarTaskModel setMonth(String month) {
+    public TaskCalendarItemModel setMonth(String month) {
         this.month = month;
         return this;
     }
@@ -54,7 +54,7 @@ public class CalendarTaskModel {
         return day;
     }
 
-    public CalendarTaskModel setDay(String day) {
+    public TaskCalendarItemModel setDay(String day) {
         this.day = day;
         return this;
     }

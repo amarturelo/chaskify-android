@@ -19,7 +19,7 @@ import com.chaskify.android.ui.activities.settings.SettingsProfileActivity;
 import com.chaskify.android.ui.base.BaseActivity;
 import com.chaskify.android.ui.fragments.TaskListFragment;
 import com.chaskify.android.ui.fragments.TaskMapFragment;
-import com.chaskify.android.ui.model.CalendarTaskModel;
+import com.chaskify.android.ui.model.TaskCalendarItemModel;
 import com.chaskify.android.ui.widget.AppBarStateChangeListener;
 import com.chaskify.android.ui.widget.DutyActionBar;
 import com.chaskify.data.repositories.CalendarTaskRepositoryImpl;
@@ -279,12 +279,12 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
     }
 
     @Override
-    public void renderEvent(List<CalendarTaskModel> calendarTaskModels) {
-        List<Event> events = Stream.of(calendarTaskModels)
-                .map(calendarTaskModel -> {
+    public void renderEvent(List<TaskCalendarItemModel> taskCalendarItemModels) {
+        List<Event> events = Stream.of(taskCalendarItemModels)
+                .map(taskCalendarItemModel -> {
                     Calendar calendar = Calendar.getInstance();
-                    calendar.set(Integer.valueOf(calendarTaskModel.getYear()), Integer.valueOf(calendarTaskModel.getMonth()) - 1, Integer.valueOf(calendarTaskModel.getDay()));
-                    return new Event(Color.GREEN, calendar.getTimeInMillis(), calendarTaskModel);
+                    calendar.set(Integer.valueOf(taskCalendarItemModel.getYear()), Integer.valueOf(taskCalendarItemModel.getMonth()) - 1, Integer.valueOf(taskCalendarItemModel.getDay()));
+                    return new Event(Color.GREEN, calendar.getTimeInMillis(), taskCalendarItemModel);
                 }).toList();
         compactCalendarView.removeAllEvents();
         compactCalendarView.addEvents(events);

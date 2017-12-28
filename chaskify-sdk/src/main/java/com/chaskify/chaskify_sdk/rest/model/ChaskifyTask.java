@@ -1,155 +1,272 @@
 package com.chaskify.chaskify_sdk.rest.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by alberto on 6/12/17.
  */
 
 public class ChaskifyTask {
-    private String task_id;
-    private String customer_id;
-    private String task_description;
-    private String trans_type; //service
-    private String contact_number;
-    private String email_address;
-    private String customer_name;
-    private Date delivery_date;
-    private String delivery_address;
-    private String team_id;
-    private String driver_id;
-
-    private String task_lat;
-    private String task_lng;
-
+    @SerializedName("task_id")
+    @Expose
+    private String taskId;
+    @SerializedName("customer_id")
+    @Expose
+    private String customerId;
+    @SerializedName("task_description")
+    @Expose
+    private String taskDescription;
+    @SerializedName("trans_type")
+    @Expose
+    private String transType;
+    @SerializedName("contact_number")
+    @Expose
+    private String contactNumber;
+    @SerializedName("email_address")
+    @Expose
+    private String emailAddress;
+    @SerializedName("customer_name")
+    @Expose
+    private String customerName;
+    @SerializedName("delivery_date")
+    @Expose
+    private Date deliveryDate;
+    @SerializedName("delivery_address")
+    @Expose
+    private String deliveryAddress;
+    @SerializedName("team_id")
+    @Expose
+    private String teamId;
+    @SerializedName("driver_id")
+    @Expose
+    private String driverId;
+    @SerializedName("task_lat")
+    @Expose
+    private String taskLat;
+    @SerializedName("task_lng")
+    @Expose
+    private String taskLng;
+    @SerializedName("customer_signature")
+    @Expose
+    private Object customerSignature;
+    @SerializedName("status")
+    @Expose
     private String status;
-    private Date date_created;
-    private Date date_modified;
-    private Date assign_started;
-
-    private String delivery_time;
-
-    private String status_raw;//ASSIGNED
-
-    private String trans_type_raw;
+    @SerializedName("date_created")
+    @Expose
+    private String dateCreated;
+    @SerializedName("date_modified")
+    @Expose
+    private String dateModified;
+    @SerializedName("ip_address")
+    @Expose
+    private String ipAddress;
+    @SerializedName("auto_assign_type")
+    @Expose
+    private String autoAssignType;
+    @SerializedName("assign_started")
+    @Expose
+    private String assignStarted;
+    @SerializedName("assignment_status")
+    @Expose
+    private Object assignmentStatus;
+    @SerializedName("driver_name")
+    @Expose
+    private String driverName;
+    @SerializedName("device_id")
+    @Expose
+    private String deviceId;
+    @SerializedName("driver_phone")
+    @Expose
+    private String driverPhone;
+    @SerializedName("driver_email")
+    @Expose
+    private String driverEmail;
+    @SerializedName("device_platform")
+    @Expose
+    private String devicePlatform;
+    @SerializedName("enabled_push")
+    @Expose
+    private String enabledPush;
+    @SerializedName("team_name")
+    @Expose
+    private String teamName;
+    @SerializedName("customer_picture")
+    @Expose
+    private Object customerPicture;
+    @SerializedName("task_tags")
+    @Expose
+    private String taskTags;
+    @SerializedName("order_number")
+    @Expose
+    private String orderNumber;
+    @SerializedName("delivery_time")
+    @Expose
+    private String deliveryTime;
+    @SerializedName("status_raw")
+    @Expose
+    private String statusRaw;
+    @SerializedName("trans_type_raw")
+    @Expose
+    private String transTypeRaw;
+    @SerializedName("waypoints")
+    @Expose
+    private List<ChaskifyTaskWaypoint> waypoints = null;
+    @SerializedName("history")
+    @Expose
+    private List<ChaskifyTaskHistory> history = null;
+    @SerializedName("customer_signature_url")
+    @Expose
+    private String customerSignatureUrl;
 
     public ChaskifyTask() {
     }
 
-    public String getTask_id() {
-        return task_id;
+    public String getTaskId() {
+        return taskId;
     }
 
-    public ChaskifyTask setTask_id(String task_id) {
-        this.task_id = task_id;
+    public ChaskifyTask setTaskId(String taskId) {
+        this.taskId = taskId;
         return this;
     }
 
-    public String getCustomer_id() {
-        return customer_id;
+    public String getCustomerId() {
+        return customerId;
     }
 
-    public ChaskifyTask setCustomer_id(String customer_id) {
-        this.customer_id = customer_id;
+    public ChaskifyTask setCustomerId(String customerId) {
+        this.customerId = customerId;
         return this;
     }
 
-    public String getTask_description() {
-        return task_description;
+    public String getTaskDescription() {
+        return taskDescription;
     }
 
-    public ChaskifyTask setTask_description(String task_description) {
-        this.task_description = task_description;
+    public ChaskifyTask setTaskDescription(String taskDescription) {
+        this.taskDescription = taskDescription;
         return this;
     }
 
-    public String getTrans_type() {
-        return trans_type;
+    public String getTransType() {
+        return transType;
     }
 
-    public ChaskifyTask setTrans_type(String trans_type) {
-        this.trans_type = trans_type;
+    public ChaskifyTask setTransType(String transType) {
+        this.transType = transType;
         return this;
     }
 
-    public String getContact_number() {
-        return contact_number;
+    public String getContactNumber() {
+        return contactNumber;
     }
 
-    public ChaskifyTask setContact_number(String contact_number) {
-        this.contact_number = contact_number;
+    public ChaskifyTask setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
         return this;
     }
 
-    public String getEmail_address() {
-        return email_address;
+    public String getEmailAddress() {
+        return emailAddress;
     }
 
-    public ChaskifyTask setEmail_address(String email_address) {
-        this.email_address = email_address;
+    public ChaskifyTask setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
         return this;
     }
 
-    public String getCustomer_name() {
-        return customer_name;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public ChaskifyTask setCustomer_name(String customer_name) {
-        this.customer_name = customer_name;
+    public ChaskifyTask setCustomerName(String customerName) {
+        this.customerName = customerName;
         return this;
     }
 
-    public Date getDelivery_date() {
-        return delivery_date;
+    public Date getDeliveryDate() {
+        return deliveryDate;
     }
 
-    public ChaskifyTask setDelivery_date(Date delivery_date) {
-        this.delivery_date = delivery_date;
+    public ChaskifyTask setDeliveryDate(Date deliveryDate) {
+        this.deliveryDate = deliveryDate;
         return this;
     }
 
-    public String getDelivery_address() {
-        return delivery_address;
+    public String getDeliveryAddress() {
+        return deliveryAddress;
     }
 
-    public ChaskifyTask setDelivery_address(String delivery_address) {
-        this.delivery_address = delivery_address;
+    public ChaskifyTask setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
         return this;
     }
 
-    public String getTeam_id() {
-        return team_id;
+    public String getTeamId() {
+        return teamId;
     }
 
-    public ChaskifyTask setTeam_id(String team_id) {
-        this.team_id = team_id;
+    public ChaskifyTask setTeamId(String teamId) {
+        this.teamId = teamId;
         return this;
     }
 
-    public String getDriver_id() {
-        return driver_id;
+    public String getDriverId() {
+        return driverId;
     }
 
-    public ChaskifyTask setDriver_id(String driver_id) {
-        this.driver_id = driver_id;
+    public ChaskifyTask setDriverId(String driverId) {
+        this.driverId = driverId;
         return this;
     }
 
-    public String getTask_lat() {
-        return task_lat;
+    public String getTaskLat() {
+        return taskLat;
     }
 
-    public ChaskifyTask setTask_lat(String task_lat) {
-        this.task_lat = task_lat;
+    public ChaskifyTask setTaskLat(String taskLat) {
+        this.taskLat = taskLat;
         return this;
     }
 
-    public String getTask_lng() {
-        return task_lng;
+    public String getTaskLng() {
+        return taskLng;
     }
 
-    public ChaskifyTask setTask_lng(String task_lng) {
-        this.task_lng = task_lng;
+    public ChaskifyTask setTaskLng(String taskLng) {
+        this.taskLng = taskLng;
+        return this;
+    }
+
+    public List<ChaskifyTaskWaypoint> getWaypoints() {
+        return waypoints;
+    }
+
+    public ChaskifyTask setWaypoints(List<ChaskifyTaskWaypoint> waypoints) {
+        this.waypoints = waypoints;
+        return this;
+    }
+
+    public List<ChaskifyTaskHistory> getHistory() {
+        return history;
+    }
+
+    public ChaskifyTask setHistory(List<ChaskifyTaskHistory> history) {
+        this.history = history;
+        return this;
+    }
+
+    public Object getCustomerSignature() {
+        return customerSignature;
+    }
+
+    public ChaskifyTask setCustomerSignature(Object customerSignature) {
+        this.customerSignature = customerSignature;
         return this;
     }
 
@@ -162,57 +279,201 @@ public class ChaskifyTask {
         return this;
     }
 
-    public Date getDate_created() {
-        return date_created;
+    public String getDateCreated() {
+        return dateCreated;
     }
 
-    public ChaskifyTask setDate_created(Date date_created) {
-        this.date_created = date_created;
+    public ChaskifyTask setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
         return this;
     }
 
-    public Date getDate_modified() {
-        return date_modified;
+    public String getDateModified() {
+        return dateModified;
     }
 
-    public ChaskifyTask setDate_modified(Date date_modified) {
-        this.date_modified = date_modified;
+    public ChaskifyTask setDateModified(String dateModified) {
+        this.dateModified = dateModified;
         return this;
     }
 
-    public Date getAssign_started() {
-        return assign_started;
+    public String getIpAddress() {
+        return ipAddress;
     }
 
-    public ChaskifyTask setAssign_started(Date assign_started) {
-        this.assign_started = assign_started;
+    public ChaskifyTask setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
         return this;
     }
 
-    public String getDelivery_time() {
-        return delivery_time;
+    public String getAutoAssignType() {
+        return autoAssignType;
     }
 
-    public ChaskifyTask setDelivery_time(String delivery_time) {
-        this.delivery_time = delivery_time;
+    public ChaskifyTask setAutoAssignType(String autoAssignType) {
+        this.autoAssignType = autoAssignType;
         return this;
     }
 
-    public String getStatus_raw() {
-        return status_raw;
+    public String getAssignStarted() {
+        return assignStarted;
     }
 
-    public ChaskifyTask setStatus_raw(String status_raw) {
-        this.status_raw = status_raw;
+    public ChaskifyTask setAssignStarted(String assignStarted) {
+        this.assignStarted = assignStarted;
         return this;
     }
 
-    public String getTrans_type_raw() {
-        return trans_type_raw;
+    public Object getAssignmentStatus() {
+        return assignmentStatus;
     }
 
-    public ChaskifyTask setTrans_type_raw(String trans_type_raw) {
-        this.trans_type_raw = trans_type_raw;
+    public ChaskifyTask setAssignmentStatus(Object assignmentStatus) {
+        this.assignmentStatus = assignmentStatus;
         return this;
     }
+
+    public String getDriverName() {
+        return driverName;
+    }
+
+    public ChaskifyTask setDriverName(String driverName) {
+        this.driverName = driverName;
+        return this;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public ChaskifyTask setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+        return this;
+    }
+
+    public String getDriverPhone() {
+        return driverPhone;
+    }
+
+    public ChaskifyTask setDriverPhone(String driverPhone) {
+        this.driverPhone = driverPhone;
+        return this;
+    }
+
+    public String getDriverEmail() {
+        return driverEmail;
+    }
+
+    public ChaskifyTask setDriverEmail(String driverEmail) {
+        this.driverEmail = driverEmail;
+        return this;
+    }
+
+    public String getDevicePlatform() {
+        return devicePlatform;
+    }
+
+    public ChaskifyTask setDevicePlatform(String devicePlatform) {
+        this.devicePlatform = devicePlatform;
+        return this;
+    }
+
+    public String getEnabledPush() {
+        return enabledPush;
+    }
+
+    public ChaskifyTask setEnabledPush(String enabledPush) {
+        this.enabledPush = enabledPush;
+        return this;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public ChaskifyTask setTeamName(String teamName) {
+        this.teamName = teamName;
+        return this;
+    }
+
+    public Object getCustomerPicture() {
+        return customerPicture;
+    }
+
+    public ChaskifyTask setCustomerPicture(Object customerPicture) {
+        this.customerPicture = customerPicture;
+        return this;
+    }
+
+    public String getTaskTags() {
+        return taskTags;
+    }
+
+    public ChaskifyTask setTaskTags(String taskTags) {
+        this.taskTags = taskTags;
+        return this;
+    }
+
+    public String getOrderNumber() {
+        return orderNumber;
+    }
+
+    public ChaskifyTask setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
+        return this;
+    }
+
+    public String getDeliveryTime() {
+        return deliveryTime;
+    }
+
+    public ChaskifyTask setDeliveryTime(String deliveryTime) {
+        this.deliveryTime = deliveryTime;
+        return this;
+    }
+
+    public String getStatusRaw() {
+        return statusRaw;
+    }
+
+    public ChaskifyTask setStatusRaw(String statusRaw) {
+        this.statusRaw = statusRaw;
+        return this;
+    }
+
+    public String getTransTypeRaw() {
+        return transTypeRaw;
+    }
+
+    public ChaskifyTask setTransTypeRaw(String transTypeRaw) {
+        this.transTypeRaw = transTypeRaw;
+        return this;
+    }
+
+    /*public List<ChaskifyTaskHistory> getHistory() {
+        return history;
+    }
+
+    public ChaskifyTask setHistory(List<ChaskifyTaskHistory> history) {
+        this.history = history;
+        return this;
+    }
+*/
+    public String getCustomerSignatureUrl() {
+        return customerSignatureUrl;
+    }
+
+    public ChaskifyTask setCustomerSignatureUrl(String customerSignatureUrl) {
+        this.customerSignatureUrl = customerSignatureUrl;
+        return this;
+    }
+
+   /* public ChaskifyDriverLocation getDriverLocation() {
+        return driverLocation;
+    }
+
+    public ChaskifyTask setDriverLocation(ChaskifyDriverLocation driverLocation) {
+        this.driverLocation = driverLocation;
+        return this;
+    }*/
 }

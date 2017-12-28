@@ -15,5 +15,5 @@ import io.reactivex.Single;
 public interface TaskRepository {
     Single<List<Task>> tasks(Date date);
 
-    Single<Optional<Task>> taskById(String driverId, String taskId);
+    Single<Task> taskById(String driverId, String taskId);
 }

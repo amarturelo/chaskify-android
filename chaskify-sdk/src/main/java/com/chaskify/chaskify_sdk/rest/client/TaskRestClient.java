@@ -70,17 +70,27 @@ public class TaskRestClient extends RestClient<TaskApi> {
 
     public void taskDetails(String task_id, ApiCallback<ChaskifyTask> callback) throws TokenNotFoundException {
         if (mChaskifyCredentials != null)
-            taskDetails(task_id, "300", "en", mChaskifyCredentials.getAccessToken(), callback);
+            taskDetails(task_id, mChaskifyCredentials.getAccessToken(), callback);
         else
             throw new TokenNotFoundException();
     }
 
-    private void taskDetails(String task_id, String timeZone, String lang_id, String accessToken, final ApiCallback<ChaskifyTask> callback) {
-        mApi.taskDetails(task_id, timeZone, accessToken)
+    private void taskDetails(String task_id, String accessToken, final ApiCallback<ChaskifyTask> callback) {
+        mApi.taskDetails(task_id, accessToken)
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
+                        Type type = new TypeToken<BaseResponse<ChaskifyTask>>() {
+                        }.getType();
 
+                        JsonObject baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), JsonObject.class);
+                        if (baseResponse.get("code").getAsInt() == 1) {
+                            BaseResponse<ChaskifyTask> listBaseResponse = getGson().fromJson(baseResponse, type);
+                            callback.onSuccess(listBaseResponse.getDetails());
+
+                        } else {
+                            callback.onChaskifyError(new Exception(baseResponse.get("msg").getAsString()));
+                        }
                     }
 
                     @Override

@@ -1,6 +1,10 @@
 package com.chaskify.android.ui.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by alberto on 20/12/17.
@@ -13,6 +17,11 @@ public class TaskModel {
     private String customerName;
     private Date deliveryDate;
     private String deliveryAddress;
+    private String description;
+    private String contactNumber;
+    private String emailAddress;
+    private List<TaskWaypointItemModel> taskWaypointItemModels;
+    private List<TaskHistoryItemModel> taskHistoryItemModels;
 
     public TaskModel() {
     }
@@ -32,6 +41,24 @@ public class TaskModel {
 
     public TaskModel setStatus(String status) {
         this.status = status;
+        return this;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public TaskModel setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+        return this;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public TaskModel setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
         return this;
     }
 
@@ -69,5 +96,32 @@ public class TaskModel {
     public TaskModel setDeliveryAddress(String deliveryAddress) {
         this.deliveryAddress = deliveryAddress;
         return this;
+    }
+
+    public List<TaskWaypointItemModel> getTaskWaypointItemModels() {
+        return taskWaypointItemModels;
+    }
+
+    public TaskModel setTaskWaypointItemModels(List<TaskWaypointItemModel> taskWaypointItemModels) {
+        this.taskWaypointItemModels = taskWaypointItemModels;
+        return this;
+    }
+
+    public List<TaskHistoryItemModel> getTaskHistoryItemModels() {
+        return taskHistoryItemModels;
+    }
+
+    public TaskModel setTaskHistoryItemModels(List<TaskHistoryItemModel> taskHistoryItemModels) {
+        this.taskHistoryItemModels = taskHistoryItemModels;
+        return this;
+    }
+
+    public TaskModel setDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

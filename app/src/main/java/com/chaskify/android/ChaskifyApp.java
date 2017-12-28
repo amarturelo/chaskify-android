@@ -63,6 +63,12 @@ public class ChaskifyApp extends MultiDexApplication {
         Realm.setDefaultConfiguration(realmNotification);
     }
 
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        Realm.getDefaultInstance().close();
+    }
+
     private void initPush() {
 
         OneSignal.startInit(this)

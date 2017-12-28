@@ -9,7 +9,7 @@ import retrofit2.http.Query;
  */
 
 public interface NotificationApi {
-    @GET("GetNotifications")
+    @GET("GetNotificationsAndroid")
     Call<String> notifications(
             @Query("timeZone") String timeZone
             , @Query("lang_id") String lang_id

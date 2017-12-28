@@ -3,7 +3,7 @@ package com.chaskify.android.ui.activities;
 import com.annimon.stream.Stream;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
-import com.chaskify.android.ui.model.CalendarTaskModel;
+import com.chaskify.android.ui.model.TaskCalendarItemModel;
 import com.chaskify.domain.interactors.CalendarTaskInteractor;
 
 import java.util.Date;
@@ -30,7 +30,7 @@ public class MainPresenter extends BasePresenter<MainContract.View>
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(calendarTasks -> view.renderEvent(
                         Stream.of(calendarTasks)
-                                .map(calendarTask -> new CalendarTaskModel()
+                                .map(calendarTask -> new TaskCalendarItemModel()
                                         .setDay(calendarTask.getDay())
                                         .setId(calendarTask.getId())
                                         .setMonth(calendarTask.getMonth())

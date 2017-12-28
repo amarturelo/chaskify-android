@@ -1,7 +1,9 @@
 package com.chaskify.data.model.chaskify;
 
 import java.util.Date;
+import java.util.List;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 
 /**
@@ -37,6 +39,10 @@ public class RealmTask extends RealmObject {
 
     private String trans_type_raw;
 
+    private RealmList<RealmTaskWaypoint> waypoints = new RealmList<>();
+
+    private RealmList<RealmTaskHistory> history = new RealmList<>();
+
     public RealmTask() {
     }
 
@@ -55,6 +61,24 @@ public class RealmTask extends RealmObject {
 
     public RealmTask setCustomer_id(String customer_id) {
         this.customer_id = customer_id;
+        return this;
+    }
+
+    public RealmList<RealmTaskWaypoint> getWaypoints() {
+        return waypoints;
+    }
+
+    public RealmTask setWaypoints(RealmList<RealmTaskWaypoint> waypoints) {
+        this.waypoints = waypoints;
+        return this;
+    }
+
+    public List<RealmTaskHistory> getHistory() {
+        return history;
+    }
+
+    public RealmTask setHistory(RealmList<RealmTaskHistory> history) {
+        this.history = history;
         return this;
     }
 
