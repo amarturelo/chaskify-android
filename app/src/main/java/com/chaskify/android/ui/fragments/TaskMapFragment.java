@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
@@ -18,6 +19,9 @@ import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.model.TaskItemModel;
 import com.chaskify.android.ui.model.TaskItemSnapModel;
 import com.chaskify.android.ui.base.BaseFragment;
+import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
+import com.chaskify.data.repositories.TaskRepositoryImpl;
+import com.chaskify.domain.interactors.TaskInteractor;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
@@ -34,23 +38,17 @@ import java.util.List;
  * Use the {@link TaskMapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.OnItemChangedListener<RecyclerView.ViewHolder>, DiscreteScrollView.ScrollStateChangeListener<RecyclerView.ViewHolder>, OnItemListened {
+public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.OnItemChangedListener<RecyclerView.ViewHolder>, DiscreteScrollView.ScrollStateChangeListener<RecyclerView.ViewHolder>, OnItemListened, TaskMapContract.View {
+    public static final String ARG_CURRENT_DATE = "CURRENT_DATE";
 
     private DiscreteScrollView taskPicker;
 
     private TaskSnapListAdapter mTaskSnapListAdapter;
 
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
+    private Date mCurrentDate;
+
+    private TaskMapPresenter presenter;
 
     public TaskMapFragment() {
         // Required empty public constructor
@@ -61,8 +59,7 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     public static TaskMapFragment newInstance(Date currentDate) {
         TaskMapFragment fragment = new TaskMapFragment();
         Bundle args = new Bundle();
-        /*args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);*/
+        args.putLong(ARG_CURRENT_DATE, currentDate.getTime());
         fragment.setArguments(args);
         return fragment;
     }
@@ -70,26 +67,19 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+        mCurrentDate = new Date(getArguments().getLong(ARG_CURRENT_DATE, new Date().getTime()));
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        //mMapView = view.findViewById(R.id.map);
-        //mMapView.onCreate(savedInstanceState);
-        //mMapView.getMapAsync(this);
-
-        taskPicker = view.findViewById(R.id.picker);
-        initDiscreteScrollView();
+        presenter = new TaskMapPresenter(new TaskInteractor(
+                new TaskRepositoryImpl(
+                        Chaskify.getInstance().getDefaultSession().get().getTaskRestClient()
+                        , new TaskCacheImpl()
+                )
+        ));
     }
 
     private void initDiscreteScrollView() {
 
-        List<TaskItemSnapModel> taskItemSnapModels = new ArrayList<>();
+        /*List<TaskItemSnapModel> taskItemSnapModels = new ArrayList<>();
         taskItemSnapModels.add(new TaskItemSnapModel()
                 .setTask_id("1145")
                 .setDelivery_address("Edificio 28b apto 7, Pueblo Griffo")
@@ -130,10 +120,10 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
                 .setDelivery_date(new Date())
                 .setTrans_type("service")
                 .setDelivery_address("calle 10 e/ aldabo y carretera, Havana, Cuba")
-                .setStatus("IN ROUTE"));
+                .setStatus("IN ROUTE"));*/
 
         mTaskSnapListAdapter = new TaskSnapListAdapter();
-        mTaskSnapListAdapter.add(taskItemSnapModels);
+        //mTaskSnapListAdapter.add(taskItemSnapModels);
         mTaskSnapListAdapter.setOnItemListened(this);
 
         taskPicker.setSlideOnFling(true);
@@ -158,6 +148,18 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     public void onPause() {
         super.onPause();
         //mMapView.onPause();
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initViews(view);
+        presenter.bindView(this);
+    }
+
+    private void initViews(View view) {
+        taskPicker = view.findViewById(R.id.picker);
+        initDiscreteScrollView();
     }
 
     @Override
@@ -193,8 +195,14 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     }
 
     public void putArguments(Date date) {
+        if (!mCurrentDate.equals(date)) {
+            getArguments().putLong(ARG_CURRENT_DATE, date.getTime());
+            mCurrentDate = date;
 
+            presenter.tasks(mCurrentDate);
+        }
     }
+
 
     @Override
     public void onCurrentItemChanged(@Nullable RecyclerView.ViewHolder viewHolder, int adapterPosition) {
@@ -230,6 +238,26 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
                 , item.getTask_id());
     }
 
+    @Override
+    public void renderTaskListView(List<TaskItemSnapModel> taskItemModels) {
+        mTaskSnapListAdapter.add(taskItemModels);
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void showError(Throwable throwable) {
+        Toast.makeText(getContext(), throwable.toString(), Toast.LENGTH_LONG).show();
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -249,6 +277,7 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     public void onResume() {
         //mMapView.onResume();
         super.onResume();
+        presenter.tasks(mCurrentDate);
     }
 
     @Override

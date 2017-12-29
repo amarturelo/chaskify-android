@@ -49,12 +49,9 @@ public class TaskSnapListAdapter extends RecyclerView.Adapter<TaskSnapListAdapte
     public void onBindViewHolder(TaskSnapListAdapter.ViewHolder holder, int position) {
         TaskItemSnapModel taskItemModel = mTaskItemModels.get(position);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mOnItemListened != null)
-                    mOnItemListened.onClickItem(holder.itemView, position);
-            }
+        holder.itemView.setOnClickListener(v -> {
+            if (mOnItemListened != null)
+                mOnItemListened.onClickItem(holder.itemView, position);
         });
 
         holder.taskType.setText(taskItemModel.getTrans_type());
@@ -63,29 +60,41 @@ public class TaskSnapListAdapter extends RecyclerView.Adapter<TaskSnapListAdapte
                 , taskItemModel.getDelivery_date().getTime()
                 , DateUtils.FORMAT_SHOW_TIME));
         holder.taskPlace.setText(taskItemModel.getDelivery_address());
-        holder.taskId.setText(taskItemModel.getTask_id());
+        holder.taskId.setText(holder.itemView.getResources().getText(R.string.title_task) + " #" + taskItemModel.getTask_id());
 
         switch (taskItemModel.getStatus()) {
             case "ASSIGNED":
+                holder.taskId.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_assigned));
                 holder.taskStatus.setBackgroundResource(R.color.task_assigned);
                 break;
             case "SUCCESSFUL":
+                holder.taskId.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_successful));
                 holder.taskStatus.setBackgroundResource(R.color.task_successful);
                 break;
             case "COMPLETE":
+                holder.taskId.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_successful));
                 holder.taskStatus.setBackgroundResource(R.color.task_successful);
                 break;
             case "IN ROUTE":
+                holder.taskId.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_in_route));
                 holder.taskStatus.setBackgroundResource(R.color.task_in_route);
                 break;
             case "ACCEPTED":
+                holder.taskId.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_accepted));
                 holder.taskStatus.setBackgroundResource(R.color.task_accepted);
                 break;
             case "SIGNATURE":
+                holder.taskId.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_signature));
                 holder.taskStatus.setBackgroundResource(R.color.task_signature);
                 break;
             case "ARRIVED":
+                holder.taskId.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_arrived));
                 holder.taskStatus.setBackgroundResource(R.color.task_arrived);
+                break;
+
+            case "PENDING":
+                holder.taskId.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_pending));
+                holder.taskStatus.setBackgroundResource(R.color.task_pending);
                 break;
         }
     }
@@ -119,7 +128,11 @@ public class TaskSnapListAdapter extends RecyclerView.Adapter<TaskSnapListAdapte
     }
 
     public void add(List<TaskItemSnapModel> taskItemModels) {
-        Stream.of(taskItemModels)
+        mTaskItemModels.clear();
+        mTaskItemModels.addAll(taskItemModels);
+        notifyDataSetChanged();
+
+        /*Stream.of(taskItemModels)
                 .forEach(taskItemModel -> {
                     int pos = mTaskItemModels.indexOf(taskItemModel);
                     if (pos != -1) {
@@ -130,6 +143,6 @@ public class TaskSnapListAdapter extends RecyclerView.Adapter<TaskSnapListAdapte
                         mTaskItemModels.add(taskItemModel);
                         notifyItemInserted(mTaskItemModels.size() - 1);
                     }
-                });
+                });*/
     }
 }
