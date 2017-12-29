@@ -3,27 +3,29 @@ package com.chaskify.android.ui.activities.settings;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.chaskify.android.R;
 import com.chaskify.android.ui.base.AbstractSwipeBackActivity;
-import com.chaskify.android.ui.base.BaseActivity;
+import com.chaskify.android.ui.fragments.settings.SettingsProfileFragment;
 
 public class SettingsProfileActivity extends AbstractSwipeBackActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        initActivity(savedInstanceState);
+    }
+
+    private void initActivity(Bundle savedInstanceState) {
+        if (findFragment(SettingsProfileFragment.class) == null)
+            loadRootFragment(R.id.fragment, SettingsProfileFragment.newInstance());
     }
 
     @Override

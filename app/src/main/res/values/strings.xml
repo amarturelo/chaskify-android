@@ -65,4 +65,7 @@
     <string name="title_task_waypoint_description">Waypoint description</string>
     <string name="title_task">Task</string>
     <string name="title_way_point">Waypoint</string>
+    <string name="key_preference_team_name">key_preference_team_name</string>
+    <string name="key_preference_driver_mail">key_preference_driver_mail</string>
+    <string name="key_preference_driver_phone">key_preference_driver_phone</string>
 </resources>

@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.chaskify.android.ui.widget.ProfilePreference android:key="profile" />
+    <com.chaskify.android.ui.widget.ProfilePreferenceWidget android:key="@string/key_preference_profile" />
 
 
     <PreferenceCategory android:title="@string/title_preference_personal">
 
         <Preference
+            android:key="@string/key_preference_team_name"
             android:summary="Chaskify"
             android:title="@string/title_preference_team" />
 
         <Preference
+            android:key="@string/key_preference_driver_mail"
             android:icon="@drawable/ic_mail_black_24dp"
             android:summary="amarturelo@gmail.com"
             android:title="@string/title_preference_email" />
 
         <Preference
+            android:key="@string/key_preference_driver_phone"
             android:icon="@drawable/ic_sms_black_24dp"
             android:summary="+5352950107"
             android:title="@string/title_preference_contact" />

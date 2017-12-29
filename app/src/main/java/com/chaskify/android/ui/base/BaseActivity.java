@@ -18,10 +18,12 @@ public abstract class BaseActivity extends SwipeBackActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayout());
-        setSwipeBackEnable(false);
+        setSwipeBackEnable(getShippable());
     }
 
     protected abstract int getLayout();
 
-
+    protected boolean getShippable() {
+        return false;
+    }
 }

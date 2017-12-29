@@ -1,37 +1,44 @@
 package com.chaskify.android.ui.fragments.settings;
 
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.annotation.Nullable;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.chaskify.android.R;
-import com.chaskify.android.navigation.Navigator;
+import com.chaskify.android.ui.base.BaseFragment;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class SettingsProfileFragment extends PreferenceFragment {
+public class SettingsProfileFragment extends BaseFragment {
 
-    public SettingsProfileFragment() {
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.profile_preferences);
+    }
 
-        findPreference(getString(R.string.key_preference_vehicle))
-                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        Navigator.goToVehicleSettings(getActivity());
-                        return true;
-                    }
-                });
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initComponents(view);
+    }
+
+    private void initComponents(View view) {
+
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.fragment_settings_profile;
+    }
+
+    public static SettingsProfileFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        SettingsProfileFragment fragment = new SettingsProfileFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 }
