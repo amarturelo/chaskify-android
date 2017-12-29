@@ -40,6 +40,8 @@ public class TaskViewBottomSheetDialogFragment extends BottomSheetDialogFragment
     private View viewTaskStatus;
 
     private View formTaskDescription;
+    private View formTaskWaypoints;
+    private View formTaskHistory;
 
     private RecyclerView mTaskHistoryList;
     private RecyclerView mTaskWaypointList;
@@ -80,6 +82,8 @@ public class TaskViewBottomSheetDialogFragment extends BottomSheetDialogFragment
         viewTaskStatus = view.findViewById(R.id.task_status);
         textViewTaskDescription = view.findViewById(R.id.task_description);
         formTaskDescription = view.findViewById(R.id.form_task_description);
+        formTaskWaypoints = view.findViewById(R.id.form_task_way_points);
+        formTaskHistory = view.findViewById(R.id.form_task_history);
 
         //Waypoint list
         mTaskWaypointList = view.findViewById(R.id.task_way_points_list);
@@ -126,7 +130,7 @@ public class TaskViewBottomSheetDialogFragment extends BottomSheetDialogFragment
     @SuppressLint("SetTextI18n")
     @Override
     public void renderTask(TaskModel taskModel) {
-        textViewTaskId.setText("#" + taskModel.getTaskId());
+        textViewTaskId.setText(getText(R.string.title_task) + " #" + taskModel.getTaskId());
         textViewTaskAddress.setText(taskModel.getDeliveryAddress());
         textViewTaskType.setText(taskModel.getTransType());
 
@@ -141,33 +145,44 @@ public class TaskViewBottomSheetDialogFragment extends BottomSheetDialogFragment
 
         switch (taskModel.getStatus()) {
             case "ASSIGNED":
+                textViewTaskId.setTextColor(getResources().getColor(R.color.task_assigned));
                 viewTaskStatus.setBackgroundResource(R.color.task_assigned);
                 break;
             case "SUCCESSFUL":
+                textViewTaskId.setTextColor(getResources().getColor(R.color.task_successful));
                 viewTaskStatus.setBackgroundResource(R.color.task_successful);
                 break;
             case "COMPLETE":
+                textViewTaskId.setTextColor(getResources().getColor(R.color.task_successful));
                 viewTaskStatus.setBackgroundResource(R.color.task_successful);
                 break;
             case "IN ROUTE":
+                textViewTaskId.setTextColor(getResources().getColor(R.color.task_in_route));
                 viewTaskStatus.setBackgroundResource(R.color.task_in_route);
                 break;
             case "ACCEPTED":
+                textViewTaskId.setTextColor(getResources().getColor(R.color.task_accepted));
                 viewTaskStatus.setBackgroundResource(R.color.task_accepted);
                 break;
             case "SIGNATURE":
+                textViewTaskId.setTextColor(getResources().getColor(R.color.task_signature));
                 viewTaskStatus.setBackgroundResource(R.color.task_signature);
                 break;
             case "ARRIVED":
+                textViewTaskId.setTextColor(getResources().getColor(R.color.task_arrived));
                 viewTaskStatus.setBackgroundResource(R.color.task_arrived);
                 break;
         }
 
         if (!taskModel.getTaskHistoryItemModels().isEmpty()) {
+            formTaskHistory.setVisibility(View.VISIBLE);
             mTaskHistoryList.setAdapter(new TaskHistoryListAdapter(taskModel.getTaskHistoryItemModels()));
-        }
+        } else
+            formTaskHistory.setVisibility(View.GONE);
+
 
         if (!taskModel.getTaskWaypointItemModels().isEmpty()) {
+            formTaskWaypoints.setVisibility(View.VISIBLE);
             taskWaypointListAdapter = new TaskWaypointListAdapter(taskModel.getTaskWaypointItemModels());
             taskWaypointListAdapter.setOnItemListened((view, position) -> {
                 Navigator.showTaskWaypointDetails(getChildFragmentManager()
@@ -176,7 +191,9 @@ public class TaskViewBottomSheetDialogFragment extends BottomSheetDialogFragment
                 taskWaypointListAdapter.getItem(position);
             });
             mTaskWaypointList.setAdapter(taskWaypointListAdapter);
-        }
+        } else
+            formTaskWaypoints.setVisibility(View.GONE);
+
     }
 
     @Override

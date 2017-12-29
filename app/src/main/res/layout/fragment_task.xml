@@ -610,7 +610,8 @@
             android:paddingBottom="@dimen/padding_bottom_button_sheets"
             android:paddingLeft="@dimen/padding_left_button_sheets"
             android:paddingRight="@dimen/padding_right_button_sheets"
-            android:paddingTop="8dp">
+            android:paddingTop="8dp"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -652,6 +653,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/form_task_way_points"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white"
@@ -659,10 +661,10 @@
             android:paddingBottom="@dimen/padding_bottom_button_sheets"
             android:paddingLeft="@dimen/padding_left_button_sheets"
             android:paddingRight="@dimen/padding_right_button_sheets"
-            android:paddingTop="8dp">
+            android:paddingTop="8dp"
+            android:visibility="gone">
 
             <LinearLayout
-                android:id="@+id/form_task_way_points"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -701,6 +703,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/form_task_history"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white"
@@ -708,10 +711,10 @@
             android:paddingBottom="@dimen/padding_bottom_button_sheets"
             android:paddingLeft="@dimen/padding_left_button_sheets"
             android:paddingRight="@dimen/padding_right_button_sheets"
-            android:paddingTop="8dp">
+            android:paddingTop="8dp"
+            android:visibility="gone">
 
             <LinearLayout
-                android:id="@+id/form_task_history"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

@@ -46,7 +46,7 @@ public class TaskDeserializer implements JsonDeserializer<ChaskifyTask> {
         chaskifyTask.setStatus(node.has("status") ? node.get("status").getAsString() : "");
         chaskifyTask.setDeliveryDate(node.has("delivery_date") ? (Date) context.deserialize(node.get("delivery_date"), Date.class) : null);
         chaskifyTask.setDateCreated(node.has("date_created") ? node.get("date_created").getAsString() : "");
-        chaskifyTask.setTeamName(node.has("team_name") ? node.get("team_name").getAsString() : "");
+        chaskifyTask.setTeamName(node.has("team_name") && !node.get("team_name").isJsonNull() ? node.get("team_name").getAsString() : "");
         if (node.has("waypoints")) {
             Type type = new TypeToken<List<ChaskifyTaskWaypoint>>() {
             }.getType();
