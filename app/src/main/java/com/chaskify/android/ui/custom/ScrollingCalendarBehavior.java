@@ -1,4 +1,4 @@
-package com.chaskify.android.ui.widget;
+package com.chaskify.android.ui.custom;
 
 import android.content.Context;
 import android.support.design.widget.AppBarLayout;

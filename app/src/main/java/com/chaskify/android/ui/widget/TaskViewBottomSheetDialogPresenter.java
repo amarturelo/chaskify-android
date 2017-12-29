@@ -2,10 +2,8 @@ package com.chaskify.android.ui.widget;
 
 import android.support.annotation.NonNull;
 
-import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
 import com.chaskify.android.ui.model.TaskHistoryItemModel;
-import com.chaskify.android.ui.model.TaskItemModel;
 import com.chaskify.android.ui.model.TaskModel;
 import com.chaskify.android.ui.model.TaskWaypointItemModel;
 import com.chaskify.domain.interactors.TaskInteractor;
@@ -14,26 +12,24 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
 /**
  * Created by alberto on 20/12/17.
  */
 
-public class TaskDialogPresenter extends BasePresenter<TaskDialogContract.View>
-        implements TaskDialogContract.Presenter {
+public class TaskViewBottomSheetDialogPresenter extends BasePresenter<TaskViewBottomSheetDialogContract.View>
+        implements TaskViewBottomSheetDialogContract.Presenter {
 
     private TaskInteractor taskInteractor;
 
-    public TaskDialogPresenter(TaskInteractor taskInteractor) {
+    public TaskViewBottomSheetDialogPresenter(TaskInteractor taskInteractor) {
         Timber.tag(this.getClass().getSimpleName());
         this.taskInteractor = taskInteractor;
     }
 
     @Override
-    public void bindView(@NonNull TaskDialogContract.View view) {
+    public void bindView(@NonNull TaskViewBottomSheetDialogContract.View view) {
         super.bindView(view);
     }
 
@@ -83,6 +79,22 @@ public class TaskDialogPresenter extends BasePresenter<TaskDialogContract.View>
                 .setStatus("ARRIVED"));
 
         taskModel.setTaskHistoryItemModels(taskHistoryItemModels);
+
+        List<TaskWaypointItemModel> taskWaypointItemModels = new ArrayList<>();
+
+        taskWaypointItemModels.add(new TaskWaypointItemModel()
+                .setId("654")
+                .setDeliveryAddress("Frente a la pizzeria del vedado")
+                .setTaskStatus("ACCEPTED")
+                .setTaskType("service"));
+
+        taskWaypointItemModels.add(new TaskWaypointItemModel()
+                .setId("658")
+                .setDeliveryAddress("Al doblar del Hospital")
+                .setTaskStatus("ARRIVED")
+                .setTaskType("delivery"));
+
+        taskModel.setTaskWaypointItemModels(taskWaypointItemModels);
 
         view.renderTask(taskModel);
         view.hideProgress();

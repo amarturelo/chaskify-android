@@ -14,18 +14,18 @@ import android.widget.Toast;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.adapters.TaskHistoryListAdapter;
-import com.chaskify.android.ui.custom.DividerItemDecoration;
+import com.chaskify.android.adapters.TaskWaypointListAdapter;
 import com.chaskify.android.ui.model.TaskModel;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.repositories.TaskRepositoryImpl;
 import com.chaskify.domain.interactors.TaskInteractor;
 
-public class TaskDialogFragment extends BottomSheetDialogFragment implements TaskDialogContract.View {
+public class TaskViewBottomSheetDialogFragment extends BottomSheetDialogFragment implements TaskViewBottomSheetDialogContract.View {
 
     public static final String ARG_TASK_ID = "task_id";
     public static final String ARG_DRIVER_ID = "driver_id";
 
-    private TaskDialogPresenter taskDialogPresenter;
+    private TaskViewBottomSheetDialogPresenter taskDialogPresenter;
 
     private String mTaskId;
     private String mDriverId;
@@ -40,9 +40,8 @@ public class TaskDialogFragment extends BottomSheetDialogFragment implements Tas
 
     private View formTaskDescription;
 
-    private TaskHistoryListAdapter mTaskHistoryListAdapter;
-
     private RecyclerView mTaskHistoryList;
+    private RecyclerView mTaskWaypointList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +51,7 @@ public class TaskDialogFragment extends BottomSheetDialogFragment implements Tas
             mTaskId = getArguments().getString(ARG_TASK_ID);
             mDriverId = getArguments().getString(ARG_DRIVER_ID);
 
-            taskDialogPresenter = new TaskDialogPresenter(new TaskInteractor(
+            taskDialogPresenter = new TaskViewBottomSheetDialogPresenter(new TaskInteractor(
                     new TaskRepositoryImpl(
                             Chaskify.getInstance().getDefaultSession().get().getTaskRestClient()
                             , new TaskCacheImpl()
@@ -79,10 +78,15 @@ public class TaskDialogFragment extends BottomSheetDialogFragment implements Tas
         textViewTaskDescription = view.findViewById(R.id.task_description);
         formTaskDescription = view.findViewById(R.id.form_task_description);
 
+        //Waypoint list
+        mTaskWaypointList = view.findViewById(R.id.task_way_points_list);
+        mTaskWaypointList.setLayoutManager(new LinearLayoutManager(getContext()));
+        //mTaskWaypointList.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+
         //history list
         mTaskHistoryList = view.findViewById(R.id.task_history_list);
         mTaskHistoryList.setLayoutManager(new LinearLayoutManager(getContext()));
-        mTaskHistoryList.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        //mTaskHistoryList.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
     }
 
     @Override
@@ -159,6 +163,10 @@ public class TaskDialogFragment extends BottomSheetDialogFragment implements Tas
         if (!taskModel.getTaskHistoryItemModels().isEmpty()) {
             mTaskHistoryList.setAdapter(new TaskHistoryListAdapter(taskModel.getTaskHistoryItemModels()));
         }
+
+        if (!taskModel.getTaskWaypointItemModels().isEmpty()) {
+            mTaskWaypointList.setAdapter(new TaskWaypointListAdapter(taskModel.getTaskWaypointItemModels()));
+        }
     }
 
     @Override
@@ -167,8 +175,8 @@ public class TaskDialogFragment extends BottomSheetDialogFragment implements Tas
         taskDialogPresenter.release();
     }
 
-    public static TaskDialogFragment newInstance(String driver_id, String task_id) {
-        TaskDialogFragment taskDialogFragment = new TaskDialogFragment();
+    public static TaskViewBottomSheetDialogFragment newInstance(String driver_id, String task_id) {
+        TaskViewBottomSheetDialogFragment taskDialogFragment = new TaskViewBottomSheetDialogFragment();
         Bundle args = new Bundle();
         args.putString(ARG_DRIVER_ID, driver_id);
         args.putString(ARG_TASK_ID, task_id);
@@ -176,8 +184,8 @@ public class TaskDialogFragment extends BottomSheetDialogFragment implements Tas
         return taskDialogFragment;
     }
 
-    public static TaskDialogFragment getCalling(String driver_id, String task_id) {
-        return TaskDialogFragment.newInstance(driver_id, task_id);
+    public static TaskViewBottomSheetDialogFragment getCalling(String driver_id, String task_id) {
+        return TaskViewBottomSheetDialogFragment.newInstance(driver_id, task_id);
     }
 
 }
