@@ -1,40 +1,56 @@
 package com.chaskify.chaskify_sdk.rest.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by alberto on 7/12/17.
  */
 
 public class ChaskifyProfile {
-    /* "team_name": "Metropolis Team",
-             "email": "amarturelo@gmail.com",
-             "phone": "+5352950107",
-             "transport_type_id": "truck",
-             "transport_type_id2": "Truck",
-             "transport_description": "Hunday Santa Fe, 2016",
-             "licence_plate": "W456t",
-             "color": "Red",
-             "driver_id": "175",
-             "driver_picture": ""*/
-    private String team_name;
-    private String email;
-    private String phone;
-    private String transport_type_id;
-    private String transport_type_id2;
-    private String transport_description;
-    private String licence_plate;
-    private String color;
-    private String driver_id;
-    private String driver_picture;
+    @SerializedName("team_name")
+    @Expose
+    public String teamName;
+    @SerializedName("email")
+    @Expose
+    public String email;
+    @SerializedName("phone")
+    @Expose
+    public String phone;
+    @SerializedName("transport_type_id")
+    @Expose
+    public String transportTypeId;
+    @SerializedName("transport_type_id2")
+    @Expose
+    public String transportTypeId2;
+    @SerializedName("transport_description")
+    @Expose
+    public String transportDescription;
+    @SerializedName("licence_plate")
+    @Expose
+    public String licencePlate;
+    @SerializedName("color")
+    @Expose
+    public String color;
+    @SerializedName("driver_id")
+    @Expose
+    public String driverId;
+    @SerializedName("driver_picture")
+    @Expose
+    public String driverPicture;
+    @SerializedName("username")
+    @Expose
+    public String username;
 
     public ChaskifyProfile() {
     }
 
-    public String getTeam_name() {
-        return team_name;
+    public String getTeamName() {
+        return teamName;
     }
 
-    public ChaskifyProfile setTeam_name(String team_name) {
-        this.team_name = team_name;
+    public ChaskifyProfile setTeamName(String teamName) {
+        this.teamName = teamName;
         return this;
     }
 
@@ -56,39 +72,39 @@ public class ChaskifyProfile {
         return this;
     }
 
-    public String getTransport_type_id() {
-        return transport_type_id;
+    public String getTransportTypeId() {
+        return transportTypeId;
     }
 
-    public ChaskifyProfile setTransport_type_id(String transport_type_id) {
-        this.transport_type_id = transport_type_id;
+    public ChaskifyProfile setTransportTypeId(String transportTypeId) {
+        this.transportTypeId = transportTypeId;
         return this;
     }
 
-    public String getTransport_type_id2() {
-        return transport_type_id2;
+    public String getTransportTypeId2() {
+        return transportTypeId2;
     }
 
-    public ChaskifyProfile setTransport_type_id2(String transport_type_id2) {
-        this.transport_type_id2 = transport_type_id2;
+    public ChaskifyProfile setTransportTypeId2(String transportTypeId2) {
+        this.transportTypeId2 = transportTypeId2;
         return this;
     }
 
-    public String getTransport_description() {
-        return transport_description;
+    public String getTransportDescription() {
+        return transportDescription;
     }
 
-    public ChaskifyProfile setTransport_description(String transport_description) {
-        this.transport_description = transport_description;
+    public ChaskifyProfile setTransportDescription(String transportDescription) {
+        this.transportDescription = transportDescription;
         return this;
     }
 
-    public String getLicence_plate() {
-        return licence_plate;
+    public String getLicencePlate() {
+        return licencePlate;
     }
 
-    public ChaskifyProfile setLicence_plate(String licence_plate) {
-        this.licence_plate = licence_plate;
+    public ChaskifyProfile setLicencePlate(String licencePlate) {
+        this.licencePlate = licencePlate;
         return this;
     }
 
@@ -101,21 +117,30 @@ public class ChaskifyProfile {
         return this;
     }
 
-    public String getDriver_id() {
-        return driver_id;
+    public String getDriverId() {
+        return driverId;
     }
 
-    public ChaskifyProfile setDriver_id(String driver_id) {
-        this.driver_id = driver_id;
+    public ChaskifyProfile setDriverId(String driverId) {
+        this.driverId = driverId;
         return this;
     }
 
-    public String getDriver_picture() {
-        return driver_picture;
+    public String getDriverPicture() {
+        return driverPicture;
     }
 
-    public ChaskifyProfile setDriver_picture(String driver_picture) {
-        this.driver_picture = driver_picture;
+    public ChaskifyProfile setDriverPicture(String driverPicture) {
+        this.driverPicture = driverPicture;
+        return this;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public ChaskifyProfile setUsername(String username) {
+        this.username = username;
         return this;
     }
 }

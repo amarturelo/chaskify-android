@@ -68,4 +68,6 @@
     <string name="key_preference_team_name">key_preference_team_name</string>
     <string name="key_preference_driver_mail">key_preference_driver_mail</string>
     <string name="key_preference_driver_phone">key_preference_driver_phone</string>
+    <string name="action_logout">Logout</string>
+    <string name="action_change_password">Change password</string>
 </resources>

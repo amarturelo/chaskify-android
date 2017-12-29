@@ -4,8 +4,15 @@ import com.chaskify.chaskify_sdk.RestClient;
 import com.chaskify.chaskify_sdk.rest.api.ProfileApi;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.exceptions.TokenNotFoundException;
+import com.chaskify.chaskify_sdk.rest.model.BaseResponse;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyProfile;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifyTask;
 import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,7 +39,17 @@ public class ProfileRestClient extends RestClient<ProfileApi> {
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
+                        Type type = new TypeToken<BaseResponse<ChaskifyProfile>>() {
+                        }.getType();
 
+                        JsonObject baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), JsonObject.class);
+                        if (baseResponse.get("code").getAsInt() == 1) {
+                            BaseResponse<ChaskifyProfile> listBaseResponse = getGson().fromJson(baseResponse, type);
+                            callback.onSuccess(listBaseResponse.getDetails());
+
+                        } else {
+                            callback.onChaskifyError(new Exception(baseResponse.get("msg").getAsString()));
+                        }
                     }
 
                     @Override
