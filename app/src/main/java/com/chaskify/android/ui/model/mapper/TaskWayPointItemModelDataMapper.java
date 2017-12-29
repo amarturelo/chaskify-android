@@ -22,8 +22,8 @@ public class TaskWayPointItemModelDataMapper {
         TaskWaypointItemModel taskWaypointItemModel = new TaskWaypointItemModel();
         taskWaypointItemModel.setId(taskWaypoint.getId())
                 .setDeliveryAddress(taskWaypoint.getDeliveryAddress())
-                .setTaskStatus(taskWaypoint.getTaskStatus())
-                .setTaskType(taskWaypoint.getType());
+                .setStatus(taskWaypoint.getStatus())
+                .setType(taskWaypoint.getType());
         return taskWaypointItemModel;
     }
 }

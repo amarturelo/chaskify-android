@@ -4,10 +4,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.chaskify.android.R;
 import com.chaskify.android.adapters.listened.OnItemListened;
 import com.chaskify.android.ui.model.TaskWaypointItemModel;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -37,6 +40,50 @@ public class TaskWaypointListAdapter extends RecyclerView.Adapter<TaskWaypointLi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        TaskWaypointItemModel taskWaypointItemModel = mTaskWaypointItemModels.get(position);
+
+        switch (taskWaypointItemModel.getStatus()) {
+            case "ASSIGNED":
+                holder.mWayPointStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_assigned));
+                holder.mWayPointStatusColor.setBackgroundResource(R.color.task_assigned);
+                break;
+            case "SUCCESSFUL":
+                holder.mWayPointStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_successful));
+                holder.mWayPointStatusColor.setBackgroundResource(R.color.task_successful);
+                break;
+            case "COMPLETE":
+                holder.mWayPointStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_successful));
+                holder.mWayPointStatusColor.setBackgroundResource(R.color.task_successful);
+                break;
+            case "IN ROUTE":
+                holder.mWayPointStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_in_route));
+                holder.mWayPointStatusColor.setBackgroundResource(R.color.task_in_route);
+                break;
+            case "ACCEPTED":
+                holder.mWayPointStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_accepted));
+                holder.mWayPointStatusColor.setBackgroundResource(R.color.task_accepted);
+                break;
+            case "SIGNATURE":
+                holder.mWayPointStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_signature));
+                holder.mWayPointStatusColor.setBackgroundResource(R.color.task_signature);
+                break;
+            case "ARRIVED":
+                holder.mWayPointStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_arrived));
+                holder.mWayPointStatusColor.setBackgroundResource(R.color.task_arrived);
+                break;
+
+            case "PENDING":
+                holder.mWayPointStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_pending));
+                holder.mWayPointStatusColor.setBackgroundResource(R.color.task_pending);
+                break;
+        }
+
+        holder.mWayPointType.setText(taskWaypointItemModel.getType());
+        holder.mWayPointAddress.setText(taskWaypointItemModel.getDeliveryAddress());
+        holder.mWayPointId.setText(taskWaypointItemModel.getId());
+        holder.mWayPointStatus.setText(taskWaypointItemModel.getStatus());
+
+
         holder.itemView.setOnClickListener(v -> {
             if (mOnItemListened != null)
                 mOnItemListened.onClickItem(v, position);
@@ -49,8 +96,20 @@ public class TaskWaypointListAdapter extends RecyclerView.Adapter<TaskWaypointLi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView mWayPointStatus;
+        public TextView mWayPointId;
+        public TextView mWayPointAddress;
+        public TextView mWayPointType;
+        public View mWayPointStatusColor;
+
         public ViewHolder(View itemView) {
             super(itemView);
+            mWayPointStatus = itemView.findViewById(R.id.way_point_status);
+            mWayPointId = itemView.findViewById(R.id.way_point_id);
+            mWayPointAddress = itemView.findViewById(R.id.way_point_address);
+            mWayPointType = itemView.findViewById(R.id.way_point_type);
+            mWayPointStatusColor = itemView.findViewById(R.id.way_point_status_color);
         }
     }
 

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,12 @@ public class TaskViewBottomSheetDialogFragment extends BottomSheetDialogFragment
     private TextView textViewTaskAddress;
     private TextView textViewTaskTime;
     private TextView textViewTaskDescription;
+
+    private TextView mTextViewTaskClientName;
+    private TextView mTextViewTaskClientNumber;
+    private TextView mTextViewTaskClientMail;
+
+
     private View viewTaskStatus;
 
     private View formTaskDescription;
@@ -84,6 +91,10 @@ public class TaskViewBottomSheetDialogFragment extends BottomSheetDialogFragment
         formTaskDescription = view.findViewById(R.id.form_task_description);
         formTaskWaypoints = view.findViewById(R.id.form_task_way_points);
         formTaskHistory = view.findViewById(R.id.form_task_history);
+
+        mTextViewTaskClientName = view.findViewById(R.id.task_client_name);
+        mTextViewTaskClientNumber = view.findViewById(R.id.task_client_number);
+        mTextViewTaskClientMail = view.findViewById(R.id.task_client_mail);
 
         //Waypoint list
         mTaskWaypointList = view.findViewById(R.id.task_way_points_list);
@@ -134,14 +145,20 @@ public class TaskViewBottomSheetDialogFragment extends BottomSheetDialogFragment
         textViewTaskAddress.setText(taskModel.getDeliveryAddress());
         textViewTaskType.setText(taskModel.getTransType());
 
-        if (taskModel.getDescription() == null)
+        if (taskModel.getDescription() == null||taskModel.getDescription().isEmpty())
             formTaskDescription.setVisibility(View.GONE);
         else {
             formTaskDescription.setVisibility(View.VISIBLE);
             textViewTaskDescription.setText(taskModel.getDescription());
         }
-        //textViewTaskDate.setText(DateUtils.formatDateTime(getContext(), taskModel.getDeliveryDate().getTime(), DateUtils.FORMAT_ABBREV_MONTH));
-        //textViewTaskTime.setText(DateUtils.formatDateTime(getContext(), taskModel.getDeliveryDate().getTime(), DateUtils.FORMAT_SHOW_TIME));
+
+        mTextViewTaskClientName.setText(taskModel.getCustomerName());
+        mTextViewTaskClientNumber.setText(taskModel.getContactNumber());
+        mTextViewTaskClientMail.setText(taskModel.getEmailAddress());
+
+
+        textViewTaskDate.setText(DateUtils.formatDateTime(getContext(), taskModel.getDeliveryDate().getTime(), DateUtils.FORMAT_ABBREV_MONTH));
+        textViewTaskTime.setText(DateUtils.formatDateTime(getContext(), taskModel.getDeliveryDate().getTime(), DateUtils.FORMAT_SHOW_TIME));
 
         switch (taskModel.getStatus()) {
             case "ASSIGNED":

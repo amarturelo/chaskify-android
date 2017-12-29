@@ -48,7 +48,7 @@
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/task_status"
                         android:paddingLeft="4dp"
-                        android:text="#1145"
+                        tools:text="#1145"
                         android:textColor="@color/task_assigned"
                         android:textSize="24sp" />
 
@@ -75,7 +75,7 @@
                             android:layout_gravity="center_vertical"
                             android:drawableLeft="@drawable/bg_task_type_pickup"
                             android:paddingLeft="4dp"
-                            android:text="pickup"
+                            tools:text="pickup"
                             android:textAllCaps="true"
                             android:textColor="@color/purple" />
                     </LinearLayout>
@@ -114,7 +114,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:paddingLeft="16dp"
-                            android:text="Saturday, 9th April 2016"
+                            tools:text="Saturday, 9th April 2016"
                             android:textSize="16sp" />
                     </LinearLayout>
 
@@ -145,7 +145,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:paddingLeft="16dp"
-                            android:text="11 am"
+                            tools:text="11 am"
                             android:textSize="16sp" />
                     </LinearLayout>
 
@@ -177,7 +177,7 @@
                             android:layout_gravity="center_vertical"
                             android:autoLink="map"
                             android:paddingLeft="16dp"
-                            android:text="Blue Jasmine Restaurant, South Jakarta"
+                            tools:text="Blue Jasmine Restaurant, South Jakarta"
                             android:textSize="16sp" />
                     </LinearLayout>
 
@@ -526,7 +526,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:paddingLeft="16dp"
-                            android:text="Arismayda Dorado"
+                            tools:text="Arismayda Dorado"
                             android:textSize="16sp" />
                     </LinearLayout>
 
@@ -558,7 +558,7 @@
                             android:layout_gravity="center_vertical"
                             android:autoLink="phone"
                             android:paddingLeft="16dp"
-                            android:text="+19546825198"
+                            tools:text="+19546825198"
                             android:textSize="16sp" />
                     </LinearLayout>
 
@@ -590,7 +590,7 @@
                             android:layout_gravity="center_vertical"
                             android:autoLink="email"
                             android:paddingLeft="16dp"
-                            android:text="arismayda.dorado@gmail.com"
+                            tools:text="arismayda.dorado@gmail.com"
                             android:textSize="16sp" />
                     </LinearLayout>
 

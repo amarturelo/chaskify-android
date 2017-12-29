@@ -25,6 +25,8 @@ public class TaskModelDataMapper {
         TaskModel taskModel = new TaskModel();
         taskModel.setTaskId(task.getTask_id())
                 .setCustomerName(task.getCustomer_name())
+                .setContactNumber(task.getContact_number())
+                .setEmailAddress(task.getEmail_address())
                 .setDeliveryAddress(task.getDelivery_address())
                 .setDeliveryDate(task.getDelivery_date())
                 .setDescription(task.getTask_description())

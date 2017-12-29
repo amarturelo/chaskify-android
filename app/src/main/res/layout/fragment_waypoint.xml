@@ -35,22 +35,22 @@
                     android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:id="@+id/task_status"
+                        android:id="@+id/task_way_point_status_color"
                         android:layout_width="4dp"
                         android:layout_height="35dp"
                         android:background="@color/task_assigned"
                         android:orientation="horizontal" />
 
                     <TextView
-                        android:id="@+id/task_waypoint_id"
+                        android:id="@+id/task_way_point_id"
                         style="@style/Base.TextAppearance.AppCompat.Title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toRightOf="@+id/task_status"
+                        android:layout_toRightOf="@+id/task_way_point_status_color"
                         android:paddingLeft="4dp"
-                        android:text="#1145"
                         android:textColor="@color/task_assigned"
-                        android:textSize="24sp" />
+                        android:textSize="24sp"
+                        tools:text="#1145" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -69,15 +69,15 @@
                             android:background="@drawable/bg_task_type_pickup" />
 
                         <TextView
-                            android:id="@+id/task_type"
+                            android:id="@+id/way_point_type"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:drawableLeft="@drawable/bg_task_type_pickup"
                             android:paddingLeft="4dp"
-                            android:text="pickup"
                             android:textAllCaps="true"
-                            android:textColor="@color/purple" />
+                            android:textColor="@color/purple"
+                            tools:text="pickup" />
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -109,13 +109,13 @@
                         </FrameLayout>
 
                         <TextView
-                            android:id="@+id/task_date"
+                            android:id="@+id/way_point_date"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:paddingLeft="16dp"
-                            android:text="Saturday, 9th April 2016"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            tools:text="Saturday, 9th April 2016" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -140,13 +140,13 @@
                         </FrameLayout>
 
                         <TextView
-                            android:id="@+id/task_time"
+                            android:id="@+id/way_point_time"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:paddingLeft="16dp"
-                            android:text="11 am"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            tools:text="11 am" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -171,14 +171,14 @@
                         </FrameLayout>
 
                         <TextView
-                            android:id="@+id/task_address"
+                            android:id="@+id/way_point_address"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:autoLink="map"
                             android:paddingLeft="16dp"
-                            android:text="Blue Jasmine Restaurant, South Jakarta"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            tools:text="Blue Jasmine Restaurant, South Jakarta" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -521,13 +521,13 @@
                         </FrameLayout>
 
                         <TextView
-                            android:id="@+id/task_client_name"
+                            android:id="@+id/way_point_client_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:paddingLeft="16dp"
-                            android:text="Arismayda Dorado"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            tools:text="Arismayda Dorado" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -552,14 +552,14 @@
                         </FrameLayout>
 
                         <TextView
-                            android:id="@+id/task_client_number"
+                            android:id="@+id/way_point_client_number"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:autoLink="phone"
                             android:paddingLeft="16dp"
-                            android:text="+19546825198"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            tools:text="+19546825198" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -584,14 +584,14 @@
                         </FrameLayout>
 
                         <TextView
-                            android:id="@+id/task_client_mail"
+                            android:id="@+id/way_point_client_mail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:autoLink="email"
                             android:paddingLeft="16dp"
-                            android:text="arismayda.dorado@gmail.com"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            tools:text="arismayda.dorado@gmail.com" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -647,7 +647,7 @@
                 android:id="@+id/task_waypoint_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/large_text" />
+                tools:text="@string/large_text" />
 
         </LinearLayout>
 

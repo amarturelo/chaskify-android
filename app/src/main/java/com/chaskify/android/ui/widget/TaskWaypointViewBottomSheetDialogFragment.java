@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,14 +28,21 @@ public class TaskWaypointViewBottomSheetDialogFragment extends BottomSheetDialog
     private String mDriverId;
 
     private TextView textViewTaskWaypointId;
-    private TextView textViewTaskType;
-    private TextView textViewTaskDate;
-    private TextView textViewTaskAddress;
-    private TextView textViewTaskTime;
-    private TextView textViewTaskWayPointDescription;
-    private View viewTaskStatus;
+    private TextView textViewWaypointType;
+    private TextView textViewWaypointDate;
+    private TextView textViewWaypointAddress;
+    private TextView textViewWaypointTime;
+    private TextView textViewWayPointDescription;
 
-    private View formTaskWaypointDescription;
+
+    private TextView textViewWayPointClientName;
+    private TextView textViewWayPointClientNumber;
+    private TextView textViewWayPointClientEmail;
+
+
+    private View textViewWaypointStatusColor;
+
+    private View formWaypointDescription;
 
     private TaskWaypointViewBottomSheetDialogPresenter presenter;
 
@@ -68,14 +76,18 @@ public class TaskWaypointViewBottomSheetDialogFragment extends BottomSheetDialog
     }
 
     private void initComponents(View view) {
-        textViewTaskWaypointId = view.findViewById(R.id.task_waypoint_id);
-        textViewTaskType = view.findViewById(R.id.task_type);
-        textViewTaskDate = view.findViewById(R.id.task_date);
-        textViewTaskTime = view.findViewById(R.id.task_time);
-        textViewTaskAddress = view.findViewById(R.id.task_address);
-        viewTaskStatus = view.findViewById(R.id.task_status);
-        textViewTaskWayPointDescription = view.findViewById(R.id.task_waypoint_description);
-        formTaskWaypointDescription = view.findViewById(R.id.form_task_waypoint_description);
+        textViewTaskWaypointId = view.findViewById(R.id.task_way_point_id);
+        textViewWaypointType = view.findViewById(R.id.way_point_type);
+        textViewWaypointDate = view.findViewById(R.id.way_point_date);
+        textViewWaypointTime = view.findViewById(R.id.way_point_time);
+        textViewWaypointAddress = view.findViewById(R.id.way_point_address);
+        textViewWaypointStatusColor = view.findViewById(R.id.task_way_point_status_color);
+        textViewWayPointDescription = view.findViewById(R.id.task_waypoint_description);
+        formWaypointDescription = view.findViewById(R.id.form_task_waypoint_description);
+
+        textViewWayPointClientName = view.findViewById(R.id.way_point_client_name);
+        textViewWayPointClientNumber = view.findViewById(R.id.way_point_client_number);
+        textViewWayPointClientEmail = view.findViewById(R.id.way_point_client_mail);
     }
 
     @Override
@@ -115,6 +127,61 @@ public class TaskWaypointViewBottomSheetDialogFragment extends BottomSheetDialog
     @SuppressLint("SetTextI18n")
     @Override
     public void renderWayPoint(TaskWaypointModel waypointModel) {
-        textViewTaskWaypointId.setText("#" + waypointModel.getId());
+        textViewTaskWaypointId.setText(getResources().getText(R.string.title_way_point) + " #" + waypointModel.getId());
+
+        textViewWaypointAddress.setText(waypointModel.getDeliveryAddress());
+        textViewWaypointType.setText(waypointModel.getType());
+
+        textViewWayPointClientName.setText(waypointModel.getCustomerName());
+        textViewWayPointClientNumber.setText(waypointModel.getContactNumber());
+        textViewWayPointClientEmail.setText(waypointModel.getEmailAddress());
+
+        if (waypointModel.getWaypointDescription() == null || waypointModel.getWaypointDescription().isEmpty())
+            formWaypointDescription.setVisibility(View.GONE);
+        else {
+            formWaypointDescription.setVisibility(View.VISIBLE);
+            textViewWayPointDescription.setText(waypointModel.getWaypointDescription());
+        }
+
+
+        textViewWaypointDate.setText(DateUtils.formatDateTime(getContext(), waypointModel.getDateCreated().getTime(), DateUtils.FORMAT_ABBREV_MONTH));
+        textViewWaypointTime.setText(DateUtils.formatDateTime(getContext(), waypointModel.getDateCreated().getTime(), DateUtils.FORMAT_SHOW_TIME));
+
+
+        switch (waypointModel.getStatus()) {
+            case "ASSIGNED":
+                textViewTaskWaypointId.setTextColor(getResources().getColor(R.color.task_assigned));
+                textViewWaypointStatusColor.setBackgroundResource(R.color.task_assigned);
+                break;
+            case "SUCCESSFUL":
+                textViewTaskWaypointId.setTextColor(getResources().getColor(R.color.task_successful));
+                textViewWaypointStatusColor.setBackgroundResource(R.color.task_successful);
+                break;
+            case "COMPLETE":
+                textViewTaskWaypointId.setTextColor(getResources().getColor(R.color.task_successful));
+                textViewWaypointStatusColor.setBackgroundResource(R.color.task_successful);
+                break;
+            case "IN ROUTE":
+                textViewTaskWaypointId.setTextColor(getResources().getColor(R.color.task_in_route));
+                textViewWaypointStatusColor.setBackgroundResource(R.color.task_in_route);
+                break;
+            case "ACCEPTED":
+                textViewTaskWaypointId.setTextColor(getResources().getColor(R.color.task_accepted));
+                textViewWaypointStatusColor.setBackgroundResource(R.color.task_accepted);
+                break;
+            case "SIGNATURE":
+                textViewTaskWaypointId.setTextColor(getResources().getColor(R.color.task_signature));
+                textViewWaypointStatusColor.setBackgroundResource(R.color.task_signature);
+                break;
+            case "ARRIVED":
+                textViewTaskWaypointId.setTextColor(getResources().getColor(R.color.task_arrived));
+                textViewWaypointStatusColor.setBackgroundResource(R.color.task_arrived);
+                break;
+
+            case "PENDING":
+                textViewTaskWaypointId.setTextColor(getResources().getColor(R.color.task_pending));
+                textViewWaypointStatusColor.setBackgroundResource(R.color.task_pending);
+                break;
+        }
     }
 }

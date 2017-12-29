@@ -5,21 +5,12 @@ package com.chaskify.android.ui.model;
  */
 
 public class TaskWaypointItemModel {
-    private String mTaskStatus;
     private String mId;
-    private String mTaskType;
+    private String mType;
     private String mDeliveryAddress;
+    private String mStatus;
 
     public TaskWaypointItemModel() {
-    }
-
-    public String getTaskStatus() {
-        return mTaskStatus;
-    }
-
-    public TaskWaypointItemModel setTaskStatus(String mTaskStatus) {
-        this.mTaskStatus = mTaskStatus;
-        return this;
     }
 
     public String getId() {
@@ -31,21 +22,31 @@ public class TaskWaypointItemModel {
         return this;
     }
 
-    public String getTaskType() {
-        return mTaskType;
-    }
-
-    public TaskWaypointItemModel setTaskType(String mTaskType) {
-        this.mTaskType = mTaskType;
-        return this;
-    }
-
     public String getDeliveryAddress() {
         return mDeliveryAddress;
     }
 
     public TaskWaypointItemModel setDeliveryAddress(String mDeliveryAddress) {
         this.mDeliveryAddress = mDeliveryAddress;
+        return this;
+    }
+
+    public String getType() {
+        return mType;
+    }
+
+    public TaskWaypointItemModel setType(String mType) {
+        this.mType = mType;
+        return this;
+    }
+
+
+    public String getStatus() {
+        return mStatus;
+    }
+
+    public TaskWaypointItemModel setStatus(String mStatus) {
+        this.mStatus = mStatus;
         return this;
     }
 }

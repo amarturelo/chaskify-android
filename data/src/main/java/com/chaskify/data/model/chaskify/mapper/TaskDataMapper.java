@@ -27,6 +27,7 @@ public class TaskDataMapper {
         task.setTask_id(chaskifyTask.getTaskId())
                 .setCustomer_id(chaskifyTask.getCustomerId())
                 .setDriver_id(chaskifyTask.getDriverId())
+                .setTask_description(chaskifyTask.getTaskDescription())
                 .setTeam_id(chaskifyTask.getTeamId())
                 .setTrans_type(chaskifyTask.getTransType())
                 .setStatus(chaskifyTask.getStatus())
@@ -34,6 +35,8 @@ public class TaskDataMapper {
                 .setDelivery_date(chaskifyTask.getDeliveryDate())
                 .setDelivery_time(chaskifyTask.getDeliveryTime())
                 .setCustomer_name(chaskifyTask.getCustomerName())
+                .setContact_number(chaskifyTask.getContactNumber())
+                .setEmail_address(chaskifyTask.getEmailAddress())
                 .setTaskHistories(TaskHistoryDataMapper.transform(chaskifyTask.getHistory()))
                 .setTaskWaypointList(TaskWaypointDataMapper.transform(chaskifyTask.getWaypoints()));
         return task;
