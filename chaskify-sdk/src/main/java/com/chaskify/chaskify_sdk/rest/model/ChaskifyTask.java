@@ -46,10 +46,10 @@ public class ChaskifyTask {
     private String driverId;
     @SerializedName("task_lat")
     @Expose
-    private String taskLat;
+    private double taskLat;
     @SerializedName("task_lng")
     @Expose
-    private String taskLng;
+    private double taskLng;
     @SerializedName("customer_signature")
     @Expose
     private Object customerSignature;
@@ -225,20 +225,20 @@ public class ChaskifyTask {
         return this;
     }
 
-    public String getTaskLat() {
+    public double getTaskLat() {
         return taskLat;
     }
 
-    public ChaskifyTask setTaskLat(String taskLat) {
+    public ChaskifyTask setTaskLat(double taskLat) {
         this.taskLat = taskLat;
         return this;
     }
 
-    public String getTaskLng() {
+    public double getTaskLng() {
         return taskLng;
     }
 
-    public ChaskifyTask setTaskLng(String taskLng) {
+    public ChaskifyTask setTaskLng(double taskLng) {
         this.taskLng = taskLng;
         return this;
     }

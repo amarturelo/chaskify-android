@@ -9,6 +9,8 @@ import com.chaskify.data.model.chaskify.RealmTask;
 import com.chaskify.data.model.chaskify.mapper.TaskDataMapper;
 import com.chaskify.data.realm.cache.TaskCache;
 import com.chaskify.domain.model.Task;
+import com.chaskify.domain.model.TaskHistory;
+import com.chaskify.domain.model.TaskWaypoint;
 import com.chaskify.domain.repositories.TaskRepository;
 
 import java.util.Date;
@@ -68,8 +70,7 @@ public class TaskRepositoryImpl implements TaskRepository {
             public void onUnexpectedError(Exception e) {
                 emitter.onError(e);
             }
-        }))
-                .map(TaskDataMapper::transform);
+        })).map(TaskDataMapper::transform);
     }
 
     @Override
@@ -94,32 +95,6 @@ public class TaskRepositoryImpl implements TaskRepository {
             public void onUnexpectedError(Exception e) {
                 emitter.onError(e);
             }
-        })).map(chaskifyTasks -> Stream.of(chaskifyTasks)
-                .map(chaskifyTask -> new Task()
-                        .setTask_id(chaskifyTask.getTaskId())
-                        .setCustomer_id(chaskifyTask.getCustomerId())
-                        .setDriver_id(chaskifyTask.getDriverId())
-                        .setTeam_id(chaskifyTask.getTeamId())
-                        .setTrans_type(chaskifyTask.getTransType())
-                        .setStatus(chaskifyTask.getStatus())
-                        .setDelivery_address(chaskifyTask.getDeliveryAddress())
-                        .setDelivery_date(chaskifyTask.getDeliveryDate())
-                        .setDelivery_time(chaskifyTask.getDeliveryTime())
-                        .setCustomer_name(chaskifyTask.getCustomerName()))
-                .toList())
-                .doOnSuccess(tasks -> taskCache.put(Stream.of(tasks)
-                        .map(task -> new RealmTask()
-                                .setTask_id(task.getTask_id())
-                                .setCustomer_id(task.getCustomer_id())
-                                .setDriver_id(task.getDriver_id())
-                                .setTeam_id(task.getTeam_id())
-                                .setTrans_type(task.getTrans_type())
-                                .setStatus(task.getStatus())
-                                .setDelivery_address(task.getDelivery_address())
-                                .setDelivery_date(task.getDelivery_date())
-                                .setDelivery_time(task.getDelivery_time())
-                                .setCustomer_name(task.getCustomer_name()))
-                        .toList()
-                ));
+        })).map(TaskDataMapper::transform);
     }
 }

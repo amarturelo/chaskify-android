@@ -1,6 +1,7 @@
 package com.chaskify.domain.model;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by alberto on 14/12/17.
@@ -33,6 +34,9 @@ public class Task {
 
     private String trans_type_raw;
 
+    private List<TaskWaypoint> taskWaypointList;
+
+    private List<TaskHistory> taskHistories;
 
     public Task() {
     }
@@ -43,6 +47,24 @@ public class Task {
 
     public Task setTask_id(String task_id) {
         this.task_id = task_id;
+        return this;
+    }
+
+    public List<TaskWaypoint> getTaskWaypointList() {
+        return taskWaypointList;
+    }
+
+    public Task setTaskWaypointList(List<TaskWaypoint> taskWaypointList) {
+        this.taskWaypointList = taskWaypointList;
+        return this;
+    }
+
+    public List<TaskHistory> getTaskHistories() {
+        return taskHistories;
+    }
+
+    public Task setTaskHistories(List<TaskHistory> taskHistories) {
+        this.taskHistories = taskHistories;
         return this;
     }
 

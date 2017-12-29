@@ -8,6 +8,7 @@ import com.chaskify.chaskify_sdk.rest.client.NotificationRestClient;
 import com.chaskify.chaskify_sdk.rest.client.ProfileRestClient;
 import com.chaskify.chaskify_sdk.rest.client.SettingsRestClient;
 import com.chaskify.chaskify_sdk.rest.client.TaskRestClient;
+import com.chaskify.chaskify_sdk.rest.client.TaskWaypointRestClient;
 import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
 
 /**
@@ -23,6 +24,7 @@ public class ChaskifySession {
     private NotificationRestClient mNotificationRestClient;
     private SettingsRestClient mSettingsRestClient;
     private CalendarTaskRestClient mCalendarTaskRestClient;
+    private TaskWaypointRestClient mTaskWaypointRestClient;
 
     public ChaskifySession(ChaskifyCredentials chaskifyCredentials) {
         this.mChaskifyCredentials = chaskifyCredentials;
@@ -33,6 +35,7 @@ public class ChaskifySession {
         mNotificationRestClient = new NotificationRestClient(mChaskifyCredentials);
         mSettingsRestClient = new SettingsRestClient(mChaskifyCredentials);
         mCalendarTaskRestClient = new CalendarTaskRestClient(mChaskifyCredentials);
+        mTaskWaypointRestClient = new TaskWaypointRestClient(mChaskifyCredentials);
     }
 
     /**
@@ -75,6 +78,10 @@ public class ChaskifySession {
     public ChaskifySession setCalendarTaskRestClient(CalendarTaskRestClient mCalendarTaskRestClient) {
         this.mCalendarTaskRestClient = mCalendarTaskRestClient;
         return this;
+    }
+
+    public TaskWaypointRestClient getTaskWaypointRestClient() {
+        return mTaskWaypointRestClient;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.chaskify.domain.repositories;
 
-import com.annimon.stream.Optional;
 import com.chaskify.domain.model.Task;
 
 import java.util.Date;

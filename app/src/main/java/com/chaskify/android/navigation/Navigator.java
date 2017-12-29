@@ -8,6 +8,7 @@ import com.chaskify.android.ui.activities.MainActivity;
 import com.chaskify.android.ui.activities.settings.SettingsProfileActivity;
 import com.chaskify.android.ui.activities.settings.SettingsVehicleActivity;
 import com.chaskify.android.ui.widget.TaskViewBottomSheetDialogFragment;
+import com.chaskify.android.ui.widget.TaskWaypointViewBottomSheetDialogFragment;
 
 /**
  * Created by Alberto on 31/8/2017.
@@ -39,6 +40,13 @@ public class Navigator {
     public static void showTaskDetails(FragmentManager fragmentManager, String driver_id, String task_id) {
         if (fragmentManager != null) {
             TaskViewBottomSheetDialogFragment taskDialogFragment = TaskViewBottomSheetDialogFragment.getCalling(driver_id, task_id);
+            taskDialogFragment.show(fragmentManager, taskDialogFragment.getTag());
+        }
+    }
+
+    public static void showTaskWaypointDetails(FragmentManager fragmentManager, String driver_id, String task_id) {
+        if (fragmentManager != null) {
+            TaskWaypointViewBottomSheetDialogFragment taskDialogFragment = TaskWaypointViewBottomSheetDialogFragment.getCalling(driver_id, task_id);
             taskDialogFragment.show(fragmentManager, taskDialogFragment.getTag());
         }
     }

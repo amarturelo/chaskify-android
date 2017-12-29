@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chaskify.android.R;
+import com.chaskify.android.adapters.listened.OnItemListened;
 import com.chaskify.android.ui.model.TaskWaypointItemModel;
 
 import java.util.List;
@@ -16,10 +17,16 @@ import java.util.List;
 
 public class TaskWaypointListAdapter extends RecyclerView.Adapter<TaskWaypointListAdapter.ViewHolder> {
 
-    private List<TaskWaypointItemModel> taskWaypointItemModels;
+    private List<TaskWaypointItemModel> mTaskWaypointItemModels;
+
+    private OnItemListened mOnItemListened;
+
+    public void setOnItemListened(OnItemListened onItemListened) {
+        this.mOnItemListened = onItemListened;
+    }
 
     public TaskWaypointListAdapter(List<TaskWaypointItemModel> taskWaypointItemModels) {
-        this.taskWaypointItemModels = taskWaypointItemModels;
+        this.mTaskWaypointItemModels = taskWaypointItemModels;
     }
 
     @Override
@@ -30,12 +37,15 @@ public class TaskWaypointListAdapter extends RecyclerView.Adapter<TaskWaypointLi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        holder.itemView.setOnClickListener(v -> {
+            if (mOnItemListened != null)
+                mOnItemListened.onClickItem(v, position);
+        });
     }
 
     @Override
     public int getItemCount() {
-        return taskWaypointItemModels.size();
+        return mTaskWaypointItemModels.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -43,4 +53,9 @@ public class TaskWaypointListAdapter extends RecyclerView.Adapter<TaskWaypointLi
             super(itemView);
         }
     }
+
+    public TaskWaypointItemModel getItem(int position) {
+        return mTaskWaypointItemModels.get(position);
+    }
+
 }

@@ -15,6 +15,7 @@ import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.adapters.TaskHistoryListAdapter;
 import com.chaskify.android.adapters.TaskWaypointListAdapter;
+import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.model.TaskModel;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.repositories.TaskRepositoryImpl;
@@ -42,6 +43,8 @@ public class TaskViewBottomSheetDialogFragment extends BottomSheetDialogFragment
 
     private RecyclerView mTaskHistoryList;
     private RecyclerView mTaskWaypointList;
+
+    private TaskWaypointListAdapter taskWaypointListAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,7 +102,7 @@ public class TaskViewBottomSheetDialogFragment extends BottomSheetDialogFragment
     @Override
     public void setupDialog(final Dialog dialog, int style) {
         super.setupDialog(dialog, style);
-        View contentView = View.inflate(getContext(), R.layout.buttom_sheet_task, null);
+        View contentView = View.inflate(getContext(), R.layout.fragment_task, null);
         dialog.setContentView(contentView);
         initComponents(contentView);
         taskDialogPresenter.bindView(this);
@@ -165,7 +168,14 @@ public class TaskViewBottomSheetDialogFragment extends BottomSheetDialogFragment
         }
 
         if (!taskModel.getTaskWaypointItemModels().isEmpty()) {
-            mTaskWaypointList.setAdapter(new TaskWaypointListAdapter(taskModel.getTaskWaypointItemModels()));
+            taskWaypointListAdapter = new TaskWaypointListAdapter(taskModel.getTaskWaypointItemModels());
+            taskWaypointListAdapter.setOnItemListened((view, position) -> {
+                Navigator.showTaskWaypointDetails(getChildFragmentManager()
+                        , mDriverId
+                        , taskWaypointListAdapter.getItem(position).getId());
+                taskWaypointListAdapter.getItem(position);
+            });
+            mTaskWaypointList.setAdapter(taskWaypointListAdapter);
         }
     }
 
@@ -187,5 +197,6 @@ public class TaskViewBottomSheetDialogFragment extends BottomSheetDialogFragment
     public static TaskViewBottomSheetDialogFragment getCalling(String driver_id, String task_id) {
         return TaskViewBottomSheetDialogFragment.newInstance(driver_id, task_id);
     }
+
 
 }

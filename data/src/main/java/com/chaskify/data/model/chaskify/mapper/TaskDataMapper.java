@@ -5,6 +5,8 @@ import com.chaskify.chaskify_sdk.rest.model.ChaskifyTask;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyTaskHistory;
 import com.chaskify.data.model.chaskify.RealmTaskHistory;
 import com.chaskify.domain.model.Task;
+import com.chaskify.domain.model.TaskHistory;
+import com.chaskify.domain.model.TaskWaypoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ public class TaskDataMapper {
     public static Task transform(ChaskifyTask chaskifyTask) {
         Task task = new Task();
         task.setTask_id(chaskifyTask.getTaskId())
+                .setCustomer_id(chaskifyTask.getCustomerId())
                 .setDriver_id(chaskifyTask.getDriverId())
                 .setTeam_id(chaskifyTask.getTeamId())
                 .setTrans_type(chaskifyTask.getTransType())
@@ -30,8 +33,9 @@ public class TaskDataMapper {
                 .setDelivery_address(chaskifyTask.getDeliveryAddress())
                 .setDelivery_date(chaskifyTask.getDeliveryDate())
                 .setDelivery_time(chaskifyTask.getDeliveryTime())
-                .setContact_number(chaskifyTask.getContactNumber())
-                .setEmail_address(chaskifyTask.getEmailAddress());
+                .setCustomer_name(chaskifyTask.getCustomerName())
+                .setTaskHistories(TaskHistoryDataMapper.transform(chaskifyTask.getHistory()))
+                .setTaskWaypointList(TaskWaypointDataMapper.transform(chaskifyTask.getWaypoints()));
         return task;
     }
 }

@@ -15,7 +15,7 @@ public interface TaskApi {
             , @Query("timeZone") String timeZone
             , @Query("token") String token);
 
-    @GET("TaskDetails")
+    @GET("TaskDetailsAndroid")
     Call<String> taskDetails(
             @Query("task_id") String task_id
             , @Query("token") String token);

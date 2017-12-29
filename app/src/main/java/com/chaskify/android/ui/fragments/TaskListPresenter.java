@@ -30,7 +30,7 @@ public class TaskListPresenter extends BasePresenter<TaskListContract.View>
 
     @Override
     public void tasks(Date date) {
-        /*addSubscription(taskInteractor.tasks(date)
+        addSubscription(taskInteractor.tasks(date)
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> view.showProgress())
@@ -50,9 +50,9 @@ public class TaskListPresenter extends BasePresenter<TaskListContract.View>
                                         .setCustomer_name(task.getCustomer_name()))
                                 .toList());
                     }
-                }, throwable -> view.showError(throwable)));*/
+                }, throwable -> view.showError(throwable)));
 
-        List<TaskItemModel> taskItemModels = new ArrayList<>();
+        /*List<TaskItemModel> taskItemModels = new ArrayList<>();
         taskItemModels.add(new TaskItemModel()
                 .setTask_id("1145")
                 .setTrans_type("service")
@@ -62,7 +62,7 @@ public class TaskListPresenter extends BasePresenter<TaskListContract.View>
                 .setCustomer_name("Alberto Marturelo Lorenzo"));
         view.showContentView();
         view.renderTaskListView(taskItemModels);
-        view.hideProgress();
+        view.hideProgress();*/
 
     }
 }

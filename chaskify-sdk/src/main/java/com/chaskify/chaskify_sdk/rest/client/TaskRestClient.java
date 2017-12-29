@@ -1,6 +1,7 @@
 package com.chaskify.chaskify_sdk.rest.client;
 
 import com.chaskify.chaskify_sdk.RestClient;
+import com.chaskify.chaskify_sdk.mapper.TaskDeserializer;
 import com.chaskify.chaskify_sdk.rest.api.TaskApi;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.exceptions.TokenNotFoundException;
@@ -105,6 +106,7 @@ public class TaskRestClient extends RestClient<TaskApi> {
         return new GsonBuilder()
                 .setLenient()
                 .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                .registerTypeAdapter(ChaskifyTask.class, new TaskDeserializer())
                 .create();
     }
 }
