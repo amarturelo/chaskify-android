@@ -13,7 +13,7 @@
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:expanded="false"
-        app:layout_behavior="com.chaskify.android.ui.widget.ScrollingCalendarBehavior">
+        app:layout_behavior="com.chaskify.android.ui.custom.ScrollingCalendarBehavior">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsingToolbarLayout"

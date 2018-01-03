@@ -1,25 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.chaskify.android.ui.widget.ProfilePreferenceWidget android:key="@string/key_preference_profile" />
-
-
     <PreferenceCategory android:title="@string/title_preference_personal">
 
         <Preference
-            android:key="@string/key_preference_team_name"
-            android:summary="Chaskify"
-            android:title="@string/title_preference_team" />
-
-        <Preference
-            android:key="@string/key_preference_driver_mail"
             android:icon="@drawable/ic_mail_black_24dp"
+            android:key="@string/key_preference_driver_mail"
             android:summary="amarturelo@gmail.com"
             android:title="@string/title_preference_email" />
 
         <Preference
-            android:key="@string/key_preference_driver_phone"
             android:icon="@drawable/ic_sms_black_24dp"
+            android:key="@string/key_preference_driver_phone"
             android:summary="+5352950107"
             android:title="@string/title_preference_contact" />
 
@@ -35,26 +27,14 @@
         <Preference
             android:summary="default"
             android:title="@string/title_preference_language" />
-    </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/title_preference_notifications">
         <SwitchPreference
             android:key="@string/key_preference_enable_push"
             android:title="@string/title_preference_enable_push" />
         <Preference
             android:dependency="@string/key_preference_enable_push"
-            android:summary="la ballmesa"
+            android:summary="ring ring"
             android:title="@string/title_preference_notification_sound" />
     </PreferenceCategory>
-
-
-    <Preference
-        android:icon="@drawable/ic_change_password_black_24dp"
-        android:summary=""
-        android:title="@string/title_preference_change_password" />
-
-    <Preference
-        android:summary=""
-        android:title="@string/title_preference_logout" />
 
 </PreferenceScreen>

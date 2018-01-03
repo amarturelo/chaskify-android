@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <fragment
+                android:id="@+id/fragment_profile_information"
+                android:name="com.chaskify.android.ui.fragments.settings.PreferenceProfileFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <fragment
+                android:id="@+id/fragment_vehicle_information"
+                android:name="com.chaskify.android.ui.fragments.settings.PreferenceVehicleFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

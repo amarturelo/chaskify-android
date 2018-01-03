@@ -7,7 +7,7 @@ import com.chaskify.android.ui.model.ProfileModel;
  * Created by alberto on 29/12/17.
  */
 
-public class SettingsProfileContract {
+public class ProfileContract {
     interface View extends BaseContract.View {
 
         void showProgress();
@@ -19,7 +19,7 @@ public class SettingsProfileContract {
         void renderProfile(ProfileModel taskModel);
     }
 
-    interface Presenter extends BaseContract.Presenter<SettingsProfileContract.View> {
+    interface Presenter extends BaseContract.Presenter<ProfileContract.View> {
         void findProfile();
     }
 }

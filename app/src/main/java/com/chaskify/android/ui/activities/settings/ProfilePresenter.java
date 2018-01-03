@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
-import com.chaskify.android.ui.model.ProfileModel;
 import com.chaskify.android.ui.model.mapper.ProfileModelDataMapper;
 import com.chaskify.domain.interactors.ProfileInteractor;
 
@@ -14,17 +13,17 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * Created by alberto on 29/12/17.
  */
 
-public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContract.View>
-        implements SettingsProfileContract.Presenter {
+public class ProfilePresenter extends BasePresenter<ProfileContract.View>
+        implements ProfileContract.Presenter {
 
     private ProfileInteractor profileInteractor;
 
-    public SettingsProfilePresenter(ProfileInteractor profileInteractor) {
+    public ProfilePresenter(ProfileInteractor profileInteractor) {
         this.profileInteractor = profileInteractor;
     }
 
     @Override
-    public void bindView(@NonNull SettingsProfileContract.View view) {
+    public void bindView(@NonNull ProfileContract.View view) {
         super.bindView(view);
         findProfile();
     }

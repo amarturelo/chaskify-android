@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.ui.base.AbstractSwipeBackActivity;
-import com.chaskify.android.ui.fragments.settings.SettingsProfileFragment;
 import com.chaskify.android.ui.model.ProfileModel;
 import com.chaskify.data.repositories.ProfileRepositoryImpl;
 import com.chaskify.domain.interactors.ProfileInteractor;
@@ -20,9 +19,9 @@ import com.chaskify.domain.interactors.ProfileInteractor;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
-public class SettingsProfileActivity extends AbstractSwipeBackActivity implements SettingsProfileContract.View {
+public class ProfileActivity extends AbstractSwipeBackActivity implements ProfileContract.View {
 
-    private SettingsProfilePresenter presenter;
+    private ProfilePresenter presenter;
 
 
     private CircleImageView profileImage;
@@ -34,7 +33,7 @@ public class SettingsProfileActivity extends AbstractSwipeBackActivity implement
         super.onCreate(savedInstanceState);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initActivity(savedInstanceState);
@@ -49,10 +48,8 @@ public class SettingsProfileActivity extends AbstractSwipeBackActivity implement
     }
 
     private void initActivity(Bundle savedInstanceState) {
-        if (findFragment(SettingsProfileFragment.class) == null) {
-            loadRootFragment(R.id.fragment, SettingsProfileFragment.newInstance());
-
-            presenter = new SettingsProfilePresenter(
+        if (savedInstanceState == null) {
+            presenter = new ProfilePresenter(
                     new ProfileInteractor(
                             new ProfileRepositoryImpl(Chaskify
                                     .getInstance()
@@ -74,11 +71,11 @@ public class SettingsProfileActivity extends AbstractSwipeBackActivity implement
 
     @Override
     protected int getLayout() {
-        return R.layout.activity_settings_profile;
+        return R.layout.activity_profile;
     }
 
     public static Intent getCallingIntent(Context context) {
-        return new Intent(context, SettingsProfileActivity.class);
+        return new Intent(context, ProfileActivity.class);
     }
 
     @Override

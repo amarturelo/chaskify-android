@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 
 import com.chaskify.android.ui.activities.MainActivity;
-import com.chaskify.android.ui.activities.settings.SettingsProfileActivity;
+import com.chaskify.android.ui.activities.settings.ProfileActivity;
 import com.chaskify.android.ui.activities.settings.SettingsVehicleActivity;
 import com.chaskify.android.ui.widget.TaskViewBottomSheetDialogFragment;
 import com.chaskify.android.ui.widget.TaskWaypointViewBottomSheetDialogFragment;
@@ -25,7 +25,7 @@ public class Navigator {
 
     public static void goToProfileSettings(Context context) {
         if (context != null) {
-            Intent intentToLaunch = SettingsProfileActivity.getCallingIntent(context);
+            Intent intentToLaunch = ProfileActivity.getCallingIntent(context);
             context.startActivity(intentToLaunch);
         }
     }
