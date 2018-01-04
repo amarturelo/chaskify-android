@@ -119,4 +119,31 @@ public class ProfileRestClient extends RestClient<ProfileApi> {
                     }
                 });
     }
+
+    public void updateVehicle(String transport_type_id, String transport_description, String licence_plate, String color, ApiCallbackSuccess callback) throws TokenNotFoundException {
+        if (mChaskifyCredentials != null)
+            updateProfile(mChaskifyCredentials.getAccessToken(), transport_type_id, transport_description, licence_plate, color, callback);
+        else
+            throw new TokenNotFoundException();
+    }
+
+    private void updateProfile(String accessToken, String transport_type_id, String transport_description, String licence_plate, String color, final ApiCallbackSuccess callback) {
+        mApi.updateVehicle(accessToken, transport_type_id, transport_description, licence_plate, color)
+                .enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        JsonObject baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), JsonObject.class);
+                        if (baseResponse.get("code").getAsInt() == 1) {
+                            callback.onSuccess();
+                        } else {
+                            callback.onChaskifyError(new Exception(baseResponse.get("msg").getAsString()));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        callback.onNetworkError((Exception) t);
+                    }
+                });
+    }
 }

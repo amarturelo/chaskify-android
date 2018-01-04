@@ -28,4 +28,13 @@ public interface ProfileApi {
             @Query("token") String token
             , @Query("phone") String phone
     );
+
+    @GET("updateVehicle")
+    Call<String> updateVehicle(
+            @Query("token") String token
+            , @Query("transport_type_id") String transportTypeId
+            , @Query("transport_description") String transportDescription
+            , @Query("licence_plate") String licencePlate
+            , @Query("color") String color
+    );
 }
