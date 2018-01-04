@@ -93,4 +93,30 @@ public class ProfileRestClient extends RestClient<ProfileApi> {
                 });
     }
 
+    public void updateProfile(String phone, ApiCallbackSuccess callback) throws TokenNotFoundException {
+        if (mChaskifyCredentials != null)
+            updateProfile(mChaskifyCredentials.getAccessToken(), phone, callback);
+        else
+            throw new TokenNotFoundException();
+    }
+
+    private void updateProfile(String accessToken, String phone, final ApiCallbackSuccess callback) {
+        mApi.updateProfile(accessToken, phone)
+                .enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        JsonObject baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), JsonObject.class);
+                        if (baseResponse.get("code").getAsInt() == 1) {
+                            callback.onSuccess();
+                        } else {
+                            callback.onChaskifyError(new Exception(baseResponse.get("msg").getAsString()));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        callback.onNetworkError((Exception) t);
+                    }
+                });
+    }
 }

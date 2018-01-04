@@ -9,13 +9,11 @@
     <PreferenceCategory android:title="@string/title_preference_personal">
 
         <Preference
-            android:icon="@drawable/ic_mail_black_24dp"
             android:key="@string/key_preference_driver_mail"
             android:summary="amarturelo@gmail.com"
             android:title="@string/title_preference_email" />
 
-        <Preference
-            android:icon="@drawable/ic_sms_black_24dp"
+        <EditTextPreference
             android:key="@string/key_preference_driver_phone"
             android:summary="+5352950107"
             android:title="@string/title_preference_contact" />
@@ -23,22 +21,24 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/title_preference_vehicle">
 
-        <Preference
+        <ListPreference
+            android:entries="@array/vehicle_type"
+            android:entryValues="@array/vehicle_type_values"
             android:key="@string/key_preference_vehicle_type"
             android:summary="Bicycle"
             android:title="@string/title_preference_vehicle_type" />
 
-        <Preference
+        <EditTextPreference
             android:key="@string/key_preference_vehicle_description"
             android:summary="shimano"
             android:title="@string/title_preference_vehicle_description" />
 
-        <Preference
+        <EditTextPreference
             android:key="@string/key_preference_vehicle_license"
             android:summary="444"
             android:title="@string/title_preference_vehicle_license_plate" />
 
-        <Preference
+        <EditTextPreference
             android:key="@string/key_preference_vehicle_color"
             android:summary="blue"
             android:title="@string/title_preference_vehicle_color" />

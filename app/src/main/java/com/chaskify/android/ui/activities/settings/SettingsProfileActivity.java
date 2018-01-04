@@ -59,6 +59,9 @@ public class SettingsProfileActivity extends AbstractSwipeBackActivity {
             return true;
         }
 
+        if (id == android.R.id.home)
+            onBackPressed();
+
         return super.onOptionsItemSelected(item);
     }
 

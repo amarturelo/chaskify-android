@@ -22,4 +22,10 @@ public interface ProfileApi {
             , @Query("new_pass") String new_pass
             , @Query("confirm_pass") String confirm_pass
     );
+
+    @GET("updateProfile")
+    Call<String> updateProfile(
+            @Query("token") String token
+            , @Query("phone") String phone
+    );
 }

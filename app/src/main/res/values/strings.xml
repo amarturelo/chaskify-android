@@ -129,6 +129,25 @@
         <item>3</item>
     </string-array>
 
+    <string-array name="vehicle_type">
+        <item>Truck</item>
+        <item>Car</item>
+        <item>Bike</item>
+        <item>Bicycle</item>
+        <item>Scooter</item>
+        <item>Walk</item>
+    </string-array>
+
+    <string-array name="vehicle_type_values">
+        <item>truck</item>
+        <item>car</item>
+        <item>bike</item>
+        <item>bicycle</item>
+        <item>scooter</item>
+        <item>walk</item>
+    </string-array>
+
+
     <string-array name="multi_select_list_preference_default_value" />
 
     <string name="pref_title_system_sync_settings">System sync settings</string>

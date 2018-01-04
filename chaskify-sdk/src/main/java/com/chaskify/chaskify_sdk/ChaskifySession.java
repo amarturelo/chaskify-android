@@ -86,8 +86,13 @@ public class ChaskifySession {
         return mTaskWaypointRestClient;
     }
 
-    public void updatePassword(String oldPassword, String newPassword, String confirmNewPassword, ApiCallbackSuccess callback) throws TokenNotFoundException {
+    public void updatePasswordProfile(String oldPassword, String newPassword, String confirmNewPassword, ApiCallbackSuccess callback) throws TokenNotFoundException {
         mProfileRestClient.updatePassword(oldPassword, newPassword, confirmNewPassword, callback);
+    }
+
+    public void updateProfile(String phone
+            , ApiCallbackSuccess callback) throws TokenNotFoundException {
+        mProfileRestClient.updateProfile(phone, callback);
     }
 
     @Override
