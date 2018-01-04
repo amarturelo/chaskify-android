@@ -22,8 +22,13 @@ public interface SettingsProfileContract {
     }
 
     interface Presenter extends BaseContract.Presenter<SettingsProfileContract.View> {
-        void profile(String driver_id);
+        void profile(String driverId);
 
         void updateProfile(String newPhone);
+
+        void updateProfileVehicle(String transportTypeTd
+                , String transportDescription
+                , String licencePlate
+                , String color);
     }
 }

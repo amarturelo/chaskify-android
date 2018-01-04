@@ -31,6 +31,41 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
     }
 
     @Override
+    public void updateProfileVehicle(String transportTypeTd, String transportDescription, String licencePlate, String color) {
+        addSubscription(doUpdateProfileVehicle(transportTypeTd, transportDescription, licencePlate, color)
+                .doOnSubscribe(disposable -> view.showProgress())
+                .doFinally(() -> view.hideProgress())
+                .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
+                .unsubscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> view.complete(), throwable -> view.showError(throwable)));
+    }
+
+    private Completable doUpdateProfileVehicle(String transportTypeTd, String transportDescription, String licencePlate, String color) {
+        return Completable.create(emitter -> mChaskifySession.updateVehicle(transportTypeTd, transportDescription, licencePlate, color, new ApiCallbackSuccess() {
+            @Override
+            public void onSuccess() {
+                emitter.onComplete();
+            }
+
+            @Override
+            public void onNetworkError(Exception e) {
+                emitter.onError(e);
+            }
+
+            @Override
+            public void onChaskifyError(Exception e) {
+                emitter.onError(e);
+            }
+
+            @Override
+            public void onUnexpectedError(Exception e) {
+                emitter.onError(e);
+            }
+        }));
+    }
+
+    @Override
     public void updateProfile(String newPhone) {
         addSubscription(doUpdateProfile(newPhone)
                 .doOnSubscribe(disposable -> view.showProgress())
@@ -66,9 +101,9 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
     }
 
     @Override
-    public void profile(String driver_id) {
+    public void profile(String driverId) {
         addSubscription(profileInteractor
-                .profileByDriverId(driver_id)
+                .profileByDriverId(driverId)
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .unsubscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())

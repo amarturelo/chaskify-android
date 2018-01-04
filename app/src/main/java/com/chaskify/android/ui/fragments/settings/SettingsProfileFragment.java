@@ -83,17 +83,42 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
     private void initComponents() {
         mPreferenceEmail = findPreference(getResources().getString(R.string.key_preference_driver_mail));
         mPreferenceContact = findPreference(getResources().getString(R.string.key_preference_driver_phone));
-        mPreferenceContact.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                presenter.updateProfile(newValue.toString());
-                return false;
-            }
+        mPreferenceContact.setOnPreferenceChangeListener((preference, newValue) -> {
+            presenter.updateProfile(newValue.toString());
+            return false;
         });
         mPreferenceVehicleType = findPreference(getResources().getString(R.string.key_preference_vehicle_type));
+        mPreferenceVehicleType.setOnPreferenceChangeListener((preference, newValue) -> {
+            presenter.updateProfileVehicle(newValue.toString()
+                    , mPreferenceVehicleDescription.getSummary().toString()
+                    , mPreferenceVehicleLicense.getSummary().toString()
+                    , mPreferenceVehicleColor.getSummary().toString());
+            return false;
+        });
         mPreferenceVehicleDescription = findPreference(getResources().getString(R.string.key_preference_vehicle_description));
+        mPreferenceVehicleDescription.setOnPreferenceChangeListener((preference, newValue) -> {
+            presenter.updateProfileVehicle(mPreferenceVehicleType.getSummary().toString()
+                    , newValue.toString()
+                    , mPreferenceVehicleLicense.getSummary().toString()
+                    , mPreferenceVehicleColor.getSummary().toString());
+            return false;
+        });
         mPreferenceVehicleLicense = findPreference(getResources().getString(R.string.key_preference_vehicle_license));
+        mPreferenceVehicleLicense.setOnPreferenceChangeListener((preference, newValue) -> {
+            presenter.updateProfileVehicle(mPreferenceVehicleType.getSummary().toString()
+                    , mPreferenceVehicleDescription.getSummary().toString()
+                    , newValue.toString()
+                    , mPreferenceVehicleColor.getSummary().toString());
+            return false;
+        });
         mPreferenceVehicleColor = findPreference(getResources().getString(R.string.key_preference_vehicle_color));
+        mPreferenceVehicleColor.setOnPreferenceChangeListener((preference, newValue) -> {
+            presenter.updateProfileVehicle(mPreferenceVehicleType.getSummary().toString()
+                    , mPreferenceVehicleDescription.getSummary().toString()
+                    , mPreferenceVehicleLicense.getSummary().toString()
+                    , newValue.toString());
+            return false;
+        });
 
         mProfilePreferenceWidget = (ProfilePreferenceWidget) findPreference(getResources().getString(R.string.key_preference_profile));
     }
