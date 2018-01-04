@@ -50,7 +50,7 @@
                 <TextView
                     android:id="@+id/push_title"
                     style="@style/TextAppearance.Compat.Notification.Title"
-                    android:layout_width="match_parent"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:lines="1"

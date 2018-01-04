@@ -1,9 +1,9 @@
 package com.chaskify.android.ui.fragments.settings;
 
-import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
+import android.os.Bundle;
 
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
@@ -15,17 +15,17 @@ import com.chaskify.data.repositories.datasource.cloud.CloudProfileDataStore;
 import com.chaskify.data.repositories.datasource.disk.DiskProfileDataStore;
 import com.chaskify.domain.interactors.ProfileInteractor;
 
+import timber.log.Timber;
+
 /**
- * Created by alberto on 3/01/18.
+ * A placeholder fragment containing a simple view.
  */
+public class SettingsProfileFragment extends PreferenceFragment implements SettingsProfileContract.View {
 
-public class PreferenceProfileFragment extends PreferenceFragment implements PreferenceProfileContract.View {
+    public SettingsProfileFragment() {
+    }
 
-
-    private static final String ARG_PROFILE = "arg_profile";
-    private ProfileModel mProfileModel;
-
-    private PreferenceProfilePresenter presenter;
+    private SettingsProfilePresenter presenter;
 
     private Preference mPreferenceEmail;
     private Preference mPreferenceContact;
@@ -34,8 +34,10 @@ public class PreferenceProfileFragment extends PreferenceFragment implements Pre
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         initComponents();
-        presenter = new PreferenceProfilePresenter(
+
+        presenter = new SettingsProfilePresenter(
                 new ProfileInteractor(
                         new ProfileRepositoryImpl(
                                 new DiskProfileDataStore(
@@ -53,29 +55,17 @@ public class PreferenceProfileFragment extends PreferenceFragment implements Pre
 
         presenter.bindView(this);
 
-        addPreferencesFromResource(R.xml.profile_preferences);
+        addPreferencesFromResource(R.xml.preference_profile_preferences);
+
+        initFragment(savedInstanceState);
     }
 
-    @Override
-    public void showProgress() {
-
-    }
-
-    @Override
-    public void hideProgress() {
-
-    }
-
-    @Override
-    public void showError(Throwable throwable) {
-
-    }
-
-    @Override
-    public void renderProfile(ProfileModel profileModel) {
-        mPreferenceEmail.setSummary(mProfileModel.getEmail());
-        mPreferenceContact.setSummary(mProfileModel.getPhone());
-        mPreferenceVehicle.setSummary(mProfileModel.getTransportTypeId());
+    private void initFragment(Bundle savedInstanceState) {
+        presenter.profile(Chaskify.getInstance()
+                .getDefaultSession()
+                .get()
+                .getCredentials()
+                .getDriverId());
     }
 
     private void initComponents() {
@@ -90,4 +80,23 @@ public class PreferenceProfileFragment extends PreferenceFragment implements Pre
                 });
     }
 
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void showError(Throwable throwable) {
+        Timber.d(throwable);
+    }
+
+    @Override
+    public void renderProfile(ProfileModel profileModel) {
+
+    }
 }

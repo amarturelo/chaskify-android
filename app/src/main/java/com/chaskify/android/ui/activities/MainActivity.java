@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.annimon.stream.Stream;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
-import com.chaskify.android.ui.activities.settings.ProfileActivity;
+import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.base.BaseActivity;
 import com.chaskify.android.ui.fragments.TaskListFragment;
 import com.chaskify.android.ui.fragments.TaskMapFragment;
@@ -231,12 +231,12 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_profile) {
-            Intent intent = new Intent(this, ProfileActivity.class);
-            startActivity(intent);
+            Navigator.goToProfileSettings(this);
             return true;
         }
 
         if (id == R.id.action_notification) {
+            Navigator.goToNotificationsActivity(this);
             Intent intent = new Intent(this, NotificationsActivity.class);
             startActivity(intent);
             return true;

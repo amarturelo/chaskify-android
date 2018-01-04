@@ -49,6 +49,33 @@ public class NotificationsListAdapter extends RecyclerView.Adapter<Notifications
                 holder.task_status.setVisibility(View.GONE);
                 break;
         }
+
+        switch (itemModel.getStatus()) {
+            case "ASSIGNED":
+                holder.task_status.setBackgroundResource(R.color.task_assigned);
+                break;
+            case "SUCCESSFUL":
+                holder.task_status.setBackgroundResource(R.color.task_successful);
+                break;
+            case "COMPLETE":
+                holder.task_status.setBackgroundResource(R.color.task_successful);
+                break;
+            case "IN ROUTE":
+                holder.task_status.setBackgroundResource(R.color.task_in_route);
+                break;
+            case "ACCEPTED":
+                holder.task_status.setBackgroundResource(R.color.task_accepted);
+                break;
+            case "SIGNATURE":
+                holder.task_status.setBackgroundResource(R.color.task_signature);
+                break;
+            case "ARRIVED":
+                holder.task_status.setBackgroundResource(R.color.task_arrived);
+                break;
+            case "PENDING":
+                holder.task_status.setBackgroundResource(R.color.task_pending);
+                break;
+        }
     }
 
     public void add(List<NotificationItemModel> notificationItemModels) {

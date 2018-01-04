@@ -1,5 +1,7 @@
 package com.chaskify.android.ui.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -43,4 +45,7 @@ public class NotificationsActivity extends AbstractSwipeBackActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public static Intent getCallingIntent(Context context) {
+        return new Intent(context, NotificationsActivity.class);
+    }
 }

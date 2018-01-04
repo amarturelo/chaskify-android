@@ -3,6 +3,9 @@ package com.chaskify.android.ui.widget;
 import android.content.Context;
 import android.preference.Preference;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.chaskify.android.R;
 import com.chaskify.android.ui.model.ProfileModel;
@@ -17,31 +20,25 @@ public class ProfilePreferenceWidget extends Preference {
 
     public ProfilePreferenceWidget(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context, attrs, defStyleAttr);
+        //setWidgetLayoutResource(R.layout.widget_profile_preference);
     }
 
     public ProfilePreferenceWidget(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context, attrs, 0);
+        this(context, attrs, 0);
     }
 
     public ProfilePreferenceWidget(Context context) {
-        super(context);
-        init(context, null, 0);
-    }
-
-    private void init(Context context, AttributeSet attrs, int defStyleAttr) {
-        setWidgetLayoutResource(R.layout.widget_profile_preference);
+        this(context, null, 0);
     }
 
     public void setProfileWidgetModel(ProfileModel profileWidgetModel) {
         this.mProfileWidgetModel = profileWidgetModel;
-
-        render();
     }
 
-    private void render() {
-
+    @Override
+    public View getView(View convertView, ViewGroup parent) {
+        LayoutInflater li = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        return li.inflate(R.layout.widget_profile_preference, parent, false);
     }
 
 }

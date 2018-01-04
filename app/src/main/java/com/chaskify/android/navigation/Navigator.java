@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 
 import com.chaskify.android.ui.activities.MainActivity;
-import com.chaskify.android.ui.activities.settings.ProfileActivity;
-import com.chaskify.android.ui.activities.settings.VehicleActivity;
+import com.chaskify.android.ui.activities.NotificationsActivity;
+import com.chaskify.android.ui.activities.settings.SettingsProfileActivity;
 import com.chaskify.android.ui.widget.TaskViewDialogFragment;
 import com.chaskify.android.ui.widget.TaskWaypointViewDialogFragment;
 
@@ -25,16 +25,16 @@ public class Navigator {
 
     public static void goToProfileSettings(Context context) {
         if (context != null) {
-            Intent intentToLaunch = ProfileActivity.getCallingIntent(context);
+            Intent intentToLaunch = SettingsProfileActivity.getCallingIntent(context);
             context.startActivity(intentToLaunch);
         }
     }
 
     public static void goToVehicleSettings(Context context) {
-        if (context != null) {
-            Intent intentToLaunch = VehicleActivity.getCallingIntent(context);
+        /*if (context != null) {
+            Intent intentToLaunch = Settings.getCallingIntent(context);
             context.startActivity(intentToLaunch);
-        }
+        }*/
     }
 
     public static void showTaskDetails(FragmentManager fragmentManager, String driver_id, String task_id) {
@@ -51,4 +51,10 @@ public class Navigator {
         }
     }
 
+    public static void goToNotificationsActivity(Context context) {
+        if (context != null) {
+            Intent intent = NotificationsActivity.getCallingIntent(context);
+            context.startActivity(intent);
+        }
+    }
 }
