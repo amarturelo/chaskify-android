@@ -86,7 +86,10 @@ public class ChaskifySession {
         return mTaskWaypointRestClient;
     }
 
-    public void updatePasswordProfile(String oldPassword, String newPassword, String confirmNewPassword, ApiCallbackSuccess callback) throws TokenNotFoundException {
+    public void updatePasswordProfile(String oldPassword
+            , String newPassword
+            , String confirmNewPassword
+            , ApiCallbackSuccess callback) throws TokenNotFoundException {
         mProfileRestClient.updatePassword(oldPassword, newPassword, confirmNewPassword, callback);
     }
 
@@ -94,7 +97,7 @@ public class ChaskifySession {
             , String transport_description
             , String licence_plate
             , String color
-            , ApiCallbackSuccess callback) {
+            , ApiCallbackSuccess callback) throws TokenNotFoundException {
         mProfileRestClient.updateVehicle(transport_type_id, transport_description, licence_plate, color, callback);
     }
 
