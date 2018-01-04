@@ -63,6 +63,10 @@
         <activity
             android:name=".ui.activities.settings.SettingsProfileActivity"
             android:label="@string/title_activity_settings_profile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activities.settings.SettingsVehicleActivity"
+            android:label="@string/title_activity_settings_vehicle"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

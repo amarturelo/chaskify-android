@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.chaskify.android.ui.widget.ProfilePreferenceWidget android:key="profile" />
+
+    <com.chaskify.android.ui.widget.ProfilePreferenceWidget
+        android:key="@string/key_preference_profile"
+        android:layout="@layout/widget_profile_preference" />
 
     <PreferenceCategory android:title="@string/title_preference_personal">
 
@@ -18,12 +21,29 @@
             android:title="@string/title_preference_contact" />
 
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/title_preference_vehicle">
 
-    <Preference
-        android:icon="@drawable/ic_bike_black_24dp"
-        android:key="@string/key_preference_driver_vehicle"
-        android:summary="Bicycle"
-        android:title="@string/title_preference_vehicle" />
+        <Preference
+            android:key="@string/key_preference_vehicle_type"
+            android:summary="Bicycle"
+            android:title="@string/title_preference_vehicle_type" />
+
+        <Preference
+            android:key="@string/key_preference_vehicle_description"
+            android:summary="shimano"
+            android:title="@string/title_preference_vehicle_description" />
+
+        <Preference
+            android:key="@string/key_preference_vehicle_license"
+            android:summary="444"
+            android:title="@string/title_preference_vehicle_license_plate" />
+
+        <Preference
+            android:key="@string/key_preference_vehicle_color"
+            android:summary="blue"
+            android:title="@string/title_preference_vehicle_color" />
+
+    </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/title_preference">
         <Preference

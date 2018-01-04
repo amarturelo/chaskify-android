@@ -79,7 +79,7 @@ public class LoginHandler {
         callback.onSuccess(credentials);
     }
 
-    public void changePassword(String newPassword, String confirmNewPassword, ApiCallbackSuccess callback) {
+    public void changePassword(String currentPassword, String newPassword, String confirmNewPassword, ApiCallbackSuccess callback) {
         ApiCallbackSuccess callbackSuccess = new ApiCallbackSuccess() {
             @Override
             public void onSuccess() {
@@ -102,14 +102,14 @@ public class LoginHandler {
             }
         };
 
-        callChangePassword(newPassword, confirmNewPassword, callbackSuccess);
+        callChangePassword(currentPassword, newPassword, confirmNewPassword, callbackSuccess);
     }
 
     private void onChangePasswordDone(String newPassword, ApiCallbackSuccess callback) {
 
     }
 
-    private void callChangePassword(String newPassword, String confirmNewPassword, ApiCallbackSuccess callbackSuccess) {
+    private void callChangePassword(String currentPassword, String newPassword, String confirmNewPassword, ApiCallbackSuccess callbackSuccess) {
         LoginRestClient loginRestClient = new LoginRestClient(null);
     }
 

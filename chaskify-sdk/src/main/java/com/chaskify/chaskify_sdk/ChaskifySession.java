@@ -2,6 +2,7 @@ package com.chaskify.chaskify_sdk;
 
 import android.content.Context;
 
+import com.chaskify.chaskify_sdk.rest.callback.ApiCallbackSuccess;
 import com.chaskify.chaskify_sdk.rest.client.CalendarTaskRestClient;
 import com.chaskify.chaskify_sdk.rest.client.LoginRestClient;
 import com.chaskify.chaskify_sdk.rest.client.NotificationRestClient;
@@ -9,6 +10,7 @@ import com.chaskify.chaskify_sdk.rest.client.ProfileRestClient;
 import com.chaskify.chaskify_sdk.rest.client.SettingsRestClient;
 import com.chaskify.chaskify_sdk.rest.client.TaskRestClient;
 import com.chaskify.chaskify_sdk.rest.client.TaskWaypointRestClient;
+import com.chaskify.chaskify_sdk.rest.exceptions.TokenNotFoundException;
 import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
 
 /**
@@ -82,6 +84,10 @@ public class ChaskifySession {
 
     public TaskWaypointRestClient getTaskWaypointRestClient() {
         return mTaskWaypointRestClient;
+    }
+
+    public void updatePassword(String oldPassword, String newPassword, String confirmNewPassword, ApiCallbackSuccess callback) throws TokenNotFoundException {
+        mProfileRestClient.updatePassword(oldPassword, newPassword, confirmNewPassword, callback);
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import com.chaskify.android.ui.activities.MainActivity;
 import com.chaskify.android.ui.activities.NotificationsActivity;
 import com.chaskify.android.ui.activities.settings.SettingsProfileActivity;
+import com.chaskify.android.ui.activities.settings.SettingsVehicleActivity;
 import com.chaskify.android.ui.widget.TaskViewDialogFragment;
 import com.chaskify.android.ui.widget.TaskWaypointViewDialogFragment;
 
@@ -31,10 +32,10 @@ public class Navigator {
     }
 
     public static void goToVehicleSettings(Context context) {
-        /*if (context != null) {
-            Intent intentToLaunch = Settings.getCallingIntent(context);
+        if (context != null) {
+            Intent intentToLaunch = SettingsVehicleActivity.getCallingIntent(context);
             context.startActivity(intentToLaunch);
-        }*/
+        }
     }
 
     public static void showTaskDetails(FragmentManager fragmentManager, String driver_id, String task_id) {

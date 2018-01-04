@@ -9,6 +9,7 @@ import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.model.ProfileModel;
+import com.chaskify.android.ui.widget.ProfilePreferenceWidget;
 import com.chaskify.data.realm.cache.impl.ProfileCacheImpl;
 import com.chaskify.data.repositories.ProfileRepositoryImpl;
 import com.chaskify.data.repositories.datasource.cloud.CloudProfileDataStore;
@@ -29,13 +30,19 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
 
     private Preference mPreferenceEmail;
     private Preference mPreferenceContact;
-    private Preference mPreferenceVehicle;
+
+
+    private Preference mPreferenceVehicleType;
+    private Preference mPreferenceVehicleDescription;
+    private Preference mPreferenceVehicleLicense;
+    private Preference mPreferenceVehicleColor;
+
+    private ProfilePreferenceWidget mProfilePreferenceWidget;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        initComponents();
 
         presenter = new SettingsProfilePresenter(
                 new ProfileInteractor(
@@ -56,6 +63,7 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
         presenter.bindView(this);
 
         addPreferencesFromResource(R.xml.preference_profile_preferences);
+        initComponents();
 
         initFragment(savedInstanceState);
     }
@@ -69,15 +77,15 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
     }
 
     private void initComponents() {
-        mPreferenceEmail = findPreference(getString(R.string.key_preference_driver_mail));
-        mPreferenceContact = findPreference(getString(R.string.key_preference_driver_phone));
-        mPreferenceVehicle = findPreference(getString(R.string.key_preference_driver_vehicle));
+        mPreferenceEmail = findPreference(getResources().getString(R.string.key_preference_driver_mail));
+        mPreferenceContact = findPreference(getResources().getString(R.string.key_preference_driver_phone));
 
-        mPreferenceVehicle
-                .setOnPreferenceClickListener(preference -> {
-                    Navigator.goToVehicleSettings(getActivity());
-                    return true;
-                });
+        mPreferenceVehicleType = findPreference(getResources().getString(R.string.key_preference_vehicle_type));
+        mPreferenceVehicleDescription = findPreference(getResources().getString(R.string.key_preference_vehicle_description));
+        mPreferenceVehicleLicense = findPreference(getResources().getString(R.string.key_preference_vehicle_license));
+        mPreferenceVehicleColor = findPreference(getResources().getString(R.string.key_preference_vehicle_color));
+
+        mProfilePreferenceWidget = (ProfilePreferenceWidget) findPreference(getResources().getString(R.string.key_preference_profile));
     }
 
     @Override
@@ -97,6 +105,13 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
 
     @Override
     public void renderProfile(ProfileModel profileModel) {
+        mPreferenceEmail.setSummary(profileModel.getEmail());
+        mPreferenceContact.setSummary(profileModel.getPhone());
+        mPreferenceVehicleType.setSummary(profileModel.getTransportTypeId());
+        mPreferenceVehicleDescription.setSummary(profileModel.getTransportDescription());
+        mPreferenceVehicleLicense.setSummary(profileModel.getLicencePlate());
+        mPreferenceVehicleColor.setSummary(profileModel.getColor());
 
+        mProfilePreferenceWidget.setProfileWidgetModel(profileModel);
     }
 }

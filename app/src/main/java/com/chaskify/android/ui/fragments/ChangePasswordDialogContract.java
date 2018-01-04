@@ -14,9 +14,11 @@ public interface ChangePasswordDialogContract {
         void hideProgress();
 
         void showError(Throwable throwable);
+
+        void complete();
     }
 
     interface Presenter extends BaseContract.Presenter<ChangePasswordDialogContract.View> {
-        void changePassword(String newPassword, String confirmNewPassword);
+        void changePassword(String currentPassword, String newPassword, String confirmNewPassword);
     }
 }

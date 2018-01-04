@@ -145,5 +145,9 @@
     <string name="prompt_current_password">Current password</string>
     <string name="prompt_new_password">New password</string>
     <string name="prompt_confirm_new_password">Confirm password</string>
-    <string name="text_change_password">Change Password</string>
+    <string name="key_preference_vehicle_type">key_vehicle_type</string>
+    <string name="key_preference_vehicle_description">key_vehicle_description</string>
+    <string name="key_preference_vehicle_license">key_preference_vehicle_license</string>
+    <string name="key_preference_vehicle_color">key_preference_vehicle_color</string>
+    <string name="error_password_not_match">The new password not match with the confirm</string>
 </resources>
