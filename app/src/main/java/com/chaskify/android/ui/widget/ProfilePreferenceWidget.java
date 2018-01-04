@@ -1,8 +1,8 @@
 package com.chaskify.android.ui.widget;
 
 import android.content.Context;
+import android.preference.Preference;
 import android.util.AttributeSet;
-import android.widget.FrameLayout;
 
 import com.chaskify.android.R;
 import com.chaskify.android.ui.model.ProfileModel;
@@ -11,7 +11,7 @@ import com.chaskify.android.ui.model.ProfileModel;
  * Created by alberto on 12/12/17.
  */
 
-public class ProfilePreferenceWidget extends FrameLayout {
+public class ProfilePreferenceWidget extends Preference {
 
     private ProfileModel mProfileWidgetModel;
 
@@ -31,7 +31,7 @@ public class ProfilePreferenceWidget extends FrameLayout {
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
-        inflate(context, R.layout.profile_preference_widget, this);
+        setWidgetLayoutResource(R.layout.widget_profile_preference);
     }
 
     public void setProfileWidgetModel(ProfileModel profileWidgetModel) {

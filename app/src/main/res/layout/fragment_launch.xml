@@ -44,7 +44,7 @@
                     android:layout_below="@+id/title"
                     android:paddingBottom="8dp"
                     android:paddingTop="8dp"
-                    tools:listitem="@layout/chaskify_session_cache_widget" />
+                    tools:listitem="@layout/widget_chaskify_session_cache" />
 
                 <LinearLayout
                     android:id="@+id/action_create_session"

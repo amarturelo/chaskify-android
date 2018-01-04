@@ -2,18 +2,10 @@ package com.chaskify.android.ui.widget;
 
 import android.support.annotation.NonNull;
 
-import com.annimon.stream.Stream;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
-import com.chaskify.android.ui.model.TaskHistoryItemModel;
-import com.chaskify.android.ui.model.TaskModel;
-import com.chaskify.android.ui.model.TaskWaypointItemModel;
 import com.chaskify.android.ui.model.mapper.TaskModelDataMapper;
 import com.chaskify.domain.interactors.TaskInteractor;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
@@ -22,18 +14,18 @@ import timber.log.Timber;
  * Created by alberto on 20/12/17.
  */
 
-public class TaskViewBottomSheetDialogPresenter extends BasePresenter<TaskViewBottomSheetDialogContract.View>
-        implements TaskViewBottomSheetDialogContract.Presenter {
+public class TaskViewDialogPresenter extends BasePresenter<TaskViewDialogContract.View>
+        implements TaskViewDialogContract.Presenter {
 
     private TaskInteractor taskInteractor;
 
-    public TaskViewBottomSheetDialogPresenter(TaskInteractor taskInteractor) {
+    public TaskViewDialogPresenter(TaskInteractor taskInteractor) {
         Timber.tag(this.getClass().getSimpleName());
         this.taskInteractor = taskInteractor;
     }
 
     @Override
-    public void bindView(@NonNull TaskViewBottomSheetDialogContract.View view) {
+    public void bindView(@NonNull TaskViewDialogContract.View view) {
         super.bindView(view);
     }
 

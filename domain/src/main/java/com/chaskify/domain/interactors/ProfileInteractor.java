@@ -3,6 +3,7 @@ package com.chaskify.domain.interactors;
 import com.chaskify.domain.model.Profile;
 import com.chaskify.domain.repositories.ProfileRepository;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 /**
@@ -17,7 +18,7 @@ public class ProfileInteractor {
         this.profileRepository = profileRepository;
     }
 
-    public Single<Profile> profile() {
-        return profileRepository.profile();
+    public Observable<Profile> profileByDriverId(String driver_id) {
+        return profileRepository.profileByDriverId(driver_id);
     }
 }

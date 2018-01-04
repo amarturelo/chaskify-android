@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import me.yokeyword.fragmentation.SupportActivity;
 import me.yokeyword.fragmentation_swipeback.*;
+import timber.log.Timber;
 
 /**
  * Created by alberto on 9/12/17.
@@ -17,6 +18,7 @@ public abstract class BaseActivity extends SwipeBackActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Timber.tag(this.getClass().getSimpleName());
         setContentView(getLayout());
         setSwipeBackEnable(getShippable());
     }

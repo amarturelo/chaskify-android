@@ -7,6 +7,7 @@ import com.chaskify.android.store.LoginStorage;
 import com.chaskify.android.store.PreferenceStorage;
 import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
+import com.chaskify.chaskify_sdk.rest.callback.ApiCallbackSuccess;
 import com.chaskify.chaskify_sdk.rest.client.LoginRestClient;
 import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
 import com.chaskify.domain.model.Credentials;
@@ -78,5 +79,38 @@ public class LoginHandler {
         callback.onSuccess(credentials);
     }
 
+    public void changePassword(String newPassword, String confirmNewPassword, ApiCallbackSuccess callback) {
+        ApiCallbackSuccess callbackSuccess = new ApiCallbackSuccess() {
+            @Override
+            public void onSuccess() {
+                onChangePasswordDone(newPassword, callback);
+            }
+
+            @Override
+            public void onNetworkError(Exception e) {
+
+            }
+
+            @Override
+            public void onChaskifyError(Exception e) {
+
+            }
+
+            @Override
+            public void onUnexpectedError(Exception e) {
+
+            }
+        };
+
+        callChangePassword(newPassword, confirmNewPassword, callbackSuccess);
+    }
+
+    private void onChangePasswordDone(String newPassword, ApiCallbackSuccess callback) {
+
+    }
+
+    private void callChangePassword(String newPassword, String confirmNewPassword, ApiCallbackSuccess callbackSuccess) {
+        LoginRestClient loginRestClient = new LoginRestClient(null);
+    }
 
 }

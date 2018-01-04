@@ -20,7 +20,7 @@ import com.chaskify.domain.interactors.TaskWaypointInteractor;
  * Created by alberto on 28/12/17.
  */
 
-public class TaskWaypointViewBottomSheetDialogFragment extends BottomSheetDialogFragment implements TaskWaypointViewBottomSheetDialogContract.View {
+public class TaskWaypointViewDialogFragment extends BottomSheetDialogFragment implements TaskWaypointViewDialogContract.View {
     public static final String ARG_TASK_WAY_POINT_ID = "task_id";
     public static final String ARG_DRIVER_ID = "driver_id";
 
@@ -44,7 +44,7 @@ public class TaskWaypointViewBottomSheetDialogFragment extends BottomSheetDialog
 
     private View formWaypointDescription;
 
-    private TaskWaypointViewBottomSheetDialogPresenter presenter;
+    private TaskWaypointViewDialogPresenter presenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class TaskWaypointViewBottomSheetDialogFragment extends BottomSheetDialog
             mTaskWaypointId = getArguments().getString(ARG_TASK_WAY_POINT_ID);
             mDriverId = getArguments().getString(ARG_DRIVER_ID);
 
-            presenter = new TaskWaypointViewBottomSheetDialogPresenter(
+            presenter = new TaskWaypointViewDialogPresenter(
                     new TaskWaypointInteractor(
                             new TaskWaypointRepositoryImpl(
                                     Chaskify.getInstance().getDefaultSession().get().getTaskWaypointRestClient()
@@ -96,8 +96,8 @@ public class TaskWaypointViewBottomSheetDialogFragment extends BottomSheetDialog
         presenter.wayPointById(mDriverId, mTaskWaypointId);
     }
 
-    public static TaskWaypointViewBottomSheetDialogFragment newInstance(String driver_id, String task_id) {
-        TaskWaypointViewBottomSheetDialogFragment taskDialogFragment = new TaskWaypointViewBottomSheetDialogFragment();
+    public static TaskWaypointViewDialogFragment newInstance(String driver_id, String task_id) {
+        TaskWaypointViewDialogFragment taskDialogFragment = new TaskWaypointViewDialogFragment();
         Bundle args = new Bundle();
         args.putString(ARG_DRIVER_ID, driver_id);
         args.putString(ARG_TASK_WAY_POINT_ID, task_id);
@@ -105,8 +105,8 @@ public class TaskWaypointViewBottomSheetDialogFragment extends BottomSheetDialog
         return taskDialogFragment;
     }
 
-    public static TaskWaypointViewBottomSheetDialogFragment getCalling(String driver_id, String task_id) {
-        return TaskWaypointViewBottomSheetDialogFragment.newInstance(driver_id, task_id);
+    public static TaskWaypointViewDialogFragment getCalling(String driver_id, String task_id) {
+        return TaskWaypointViewDialogFragment.newInstance(driver_id, task_id);
     }
 
     @Override

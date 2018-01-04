@@ -22,12 +22,12 @@ import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.repositories.TaskRepositoryImpl;
 import com.chaskify.domain.interactors.TaskInteractor;
 
-public class TaskViewBottomSheetDialogFragment extends BottomSheetDialogFragment implements TaskViewBottomSheetDialogContract.View {
+public class TaskViewDialogFragment extends BottomSheetDialogFragment implements TaskViewDialogContract.View {
 
     public static final String ARG_TASK_ID = "task_id";
     public static final String ARG_DRIVER_ID = "driver_id";
 
-    private TaskViewBottomSheetDialogPresenter taskDialogPresenter;
+    private TaskViewDialogPresenter taskDialogPresenter;
 
     private String mTaskId;
     private String mDriverId;
@@ -63,7 +63,7 @@ public class TaskViewBottomSheetDialogFragment extends BottomSheetDialogFragment
             mTaskId = getArguments().getString(ARG_TASK_ID);
             mDriverId = getArguments().getString(ARG_DRIVER_ID);
 
-            taskDialogPresenter = new TaskViewBottomSheetDialogPresenter(new TaskInteractor(
+            taskDialogPresenter = new TaskViewDialogPresenter(new TaskInteractor(
                     new TaskRepositoryImpl(
                             Chaskify.getInstance().getDefaultSession().get().getTaskRestClient()
                             , new TaskCacheImpl()
@@ -219,8 +219,8 @@ public class TaskViewBottomSheetDialogFragment extends BottomSheetDialogFragment
         taskDialogPresenter.release();
     }
 
-    public static TaskViewBottomSheetDialogFragment newInstance(String driver_id, String task_id) {
-        TaskViewBottomSheetDialogFragment taskDialogFragment = new TaskViewBottomSheetDialogFragment();
+    public static TaskViewDialogFragment newInstance(String driver_id, String task_id) {
+        TaskViewDialogFragment taskDialogFragment = new TaskViewDialogFragment();
         Bundle args = new Bundle();
         args.putString(ARG_DRIVER_ID, driver_id);
         args.putString(ARG_TASK_ID, task_id);
@@ -228,8 +228,8 @@ public class TaskViewBottomSheetDialogFragment extends BottomSheetDialogFragment
         return taskDialogFragment;
     }
 
-    public static TaskViewBottomSheetDialogFragment getCalling(String driver_id, String task_id) {
-        return TaskViewBottomSheetDialogFragment.newInstance(driver_id, task_id);
+    public static TaskViewDialogFragment getCalling(String driver_id, String task_id) {
+        return TaskViewDialogFragment.newInstance(driver_id, task_id);
     }
 
 

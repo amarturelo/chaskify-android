@@ -1,10 +1,13 @@
 package com.chaskify.android.ui.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by alberto on 29/12/17.
  */
 
-public class ProfileModel {
+public class ProfileModel implements Parcelable {
     private String teamName;
     private String email;
     private String phone;
@@ -19,6 +22,32 @@ public class ProfileModel {
 
     public ProfileModel() {
     }
+
+    protected ProfileModel(Parcel in) {
+        teamName = in.readString();
+        email = in.readString();
+        phone = in.readString();
+        transportTypeId = in.readString();
+        transportTypeId2 = in.readString();
+        transportDescription = in.readString();
+        licencePlate = in.readString();
+        color = in.readString();
+        driverId = in.readString();
+        driverPicture = in.readString();
+        username = in.readString();
+    }
+
+    public static final Creator<ProfileModel> CREATOR = new Creator<ProfileModel>() {
+        @Override
+        public ProfileModel createFromParcel(Parcel in) {
+            return new ProfileModel(in);
+        }
+
+        @Override
+        public ProfileModel[] newArray(int size) {
+            return new ProfileModel[size];
+        }
+    };
 
     public String getTeamName() {
         return teamName;
@@ -134,5 +163,25 @@ public class ProfileModel {
                 ", driverPicture='" + driverPicture + '\'' +
                 ", username='" + username + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(teamName);
+        dest.writeString(email);
+        dest.writeString(phone);
+        dest.writeString(transportTypeId);
+        dest.writeString(transportTypeId2);
+        dest.writeString(transportDescription);
+        dest.writeString(licencePlate);
+        dest.writeString(color);
+        dest.writeString(driverId);
+        dest.writeString(driverPicture);
+        dest.writeString(username);
     }
 }

@@ -11,12 +11,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * Created by alberto on 28/12/17.
  */
 
-public class TaskWaypointViewBottomSheetDialogPresenter extends BasePresenter<TaskWaypointViewBottomSheetDialogContract.View>
-        implements TaskWaypointViewBottomSheetDialogContract.Presenter {
+public class TaskWaypointViewDialogPresenter extends BasePresenter<TaskWaypointViewDialogContract.View>
+        implements TaskWaypointViewDialogContract.Presenter {
 
     private TaskWaypointInteractor taskWaypointInteractor;
 
-    public TaskWaypointViewBottomSheetDialogPresenter(TaskWaypointInteractor taskWaypointInteractor) {
+    public TaskWaypointViewDialogPresenter(TaskWaypointInteractor taskWaypointInteractor) {
         this.taskWaypointInteractor = taskWaypointInteractor;
     }
 

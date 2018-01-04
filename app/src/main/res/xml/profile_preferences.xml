@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <com.chaskify.android.ui.widget.ProfilePreferenceWidget android:key="profile" />
+
     <PreferenceCategory android:title="@string/title_preference_personal">
 
         <Preference
@@ -19,7 +21,7 @@
 
     <Preference
         android:icon="@drawable/ic_bike_black_24dp"
-        android:key="@string/key_preference_vehicle"
+        android:key="@string/key_preference_driver_vehicle"
         android:summary="Bicycle"
         android:title="@string/title_preference_vehicle" />
 

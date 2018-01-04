@@ -7,7 +7,7 @@ import com.chaskify.android.ui.model.TaskModel;
  * Created by alberto on 20/12/17.
  */
 
-public class TaskViewBottomSheetDialogContract {
+public class TaskViewDialogContract {
     interface View extends BaseContract.View {
 
         void showProgress();
@@ -19,7 +19,7 @@ public class TaskViewBottomSheetDialogContract {
         void renderTask(TaskModel taskModel);
     }
 
-    interface Presenter extends BaseContract.Presenter<TaskViewBottomSheetDialogContract.View> {
+    interface Presenter extends BaseContract.Presenter<TaskViewDialogContract.View> {
         void taskById(String driver_id, String task_id);
     }
 }

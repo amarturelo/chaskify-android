@@ -2,6 +2,7 @@ package com.chaskify.domain.repositories;
 
 import com.chaskify.domain.model.Profile;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 /**
@@ -9,5 +10,5 @@ import io.reactivex.Single;
  */
 
 public interface ProfileRepository {
-    Single<Profile> profile();
+    Observable<Profile> profileByDriverId(String driver_id);
 }
