@@ -4,6 +4,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
@@ -58,6 +59,9 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
                         )
                         )
                 )
+                , Chaskify.getInstance()
+                .getDefaultSession()
+                .get()
         );
 
         presenter.bindView(this);
@@ -79,7 +83,13 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
     private void initComponents() {
         mPreferenceEmail = findPreference(getResources().getString(R.string.key_preference_driver_mail));
         mPreferenceContact = findPreference(getResources().getString(R.string.key_preference_driver_phone));
-
+        mPreferenceContact.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                presenter.updateProfile(newValue.toString());
+                return false;
+            }
+        });
         mPreferenceVehicleType = findPreference(getResources().getString(R.string.key_preference_vehicle_type));
         mPreferenceVehicleDescription = findPreference(getResources().getString(R.string.key_preference_vehicle_description));
         mPreferenceVehicleLicense = findPreference(getResources().getString(R.string.key_preference_vehicle_license));
@@ -99,8 +109,16 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
     }
 
     @Override
+    public void complete() {
+        Toast.makeText(getActivity(), "Update complete", Toast.LENGTH_LONG)
+                .show();
+    }
+
+    @Override
     public void showError(Throwable throwable) {
         Timber.d(throwable);
+        Toast.makeText(getActivity(), throwable.toString(), Toast.LENGTH_LONG)
+                .show();
     }
 
     @Override

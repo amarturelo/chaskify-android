@@ -17,9 +17,13 @@ public interface SettingsProfileContract {
         void showError(Throwable throwable);
 
         void renderProfile(ProfileModel profileModel);
+
+        void complete();
     }
 
     interface Presenter extends BaseContract.Presenter<SettingsProfileContract.View> {
         void profile(String driver_id);
+
+        void updateProfile(String newPhone);
     }
 }

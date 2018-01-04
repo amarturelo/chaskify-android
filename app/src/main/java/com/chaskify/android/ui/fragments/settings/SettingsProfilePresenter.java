@@ -3,9 +3,14 @@ package com.chaskify.android.ui.fragments.settings;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
 import com.chaskify.android.ui.model.mapper.ProfileModelDataMapper;
+import com.chaskify.chaskify_sdk.ChaskifySession;
+import com.chaskify.chaskify_sdk.rest.callback.ApiCallbackSuccess;
 import com.chaskify.domain.interactors.ProfileInteractor;
 import com.chaskify.domain.model.Profile;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableEmitter;
+import io.reactivex.CompletableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 
@@ -18,8 +23,46 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
 
     private ProfileInteractor profileInteractor;
 
-    public SettingsProfilePresenter(ProfileInteractor profileInteractor) {
+    private ChaskifySession mChaskifySession;
+
+    public SettingsProfilePresenter(ProfileInteractor profileInteractor, ChaskifySession chaskifySession) {
         this.profileInteractor = profileInteractor;
+        this.mChaskifySession = chaskifySession;
+    }
+
+    @Override
+    public void updateProfile(String newPhone) {
+        addSubscription(doUpdateProfile(newPhone)
+                .doOnSubscribe(disposable -> view.showProgress())
+                .doFinally(() -> view.hideProgress())
+                .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
+                .unsubscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> view.complete(), throwable -> view.showError(throwable)));
+    }
+
+    private Completable doUpdateProfile(String newPhone) {
+        return Completable.create(emitter -> mChaskifySession.updateProfile(newPhone, new ApiCallbackSuccess() {
+            @Override
+            public void onSuccess() {
+                emitter.onComplete();
+            }
+
+            @Override
+            public void onNetworkError(Exception e) {
+                emitter.onError(e);
+            }
+
+            @Override
+            public void onChaskifyError(Exception e) {
+                emitter.onError(e);
+            }
+
+            @Override
+            public void onUnexpectedError(Exception e) {
+                emitter.onError(e);
+            }
+        }));
     }
 
     @Override
