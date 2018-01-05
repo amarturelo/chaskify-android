@@ -23,6 +23,6 @@ public class TaskMapContract {
     }
 
     interface Presenter extends BaseContract.Presenter<TaskMapContract.View> {
-        void tasks(Date date);
+        void tasks(String id, Date date);
     }
 }

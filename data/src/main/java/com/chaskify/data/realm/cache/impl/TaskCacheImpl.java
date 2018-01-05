@@ -1,19 +1,23 @@
 package com.chaskify.data.realm.cache.impl;
 
-import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
-import com.chaskify.data.realm.cache.TaskCache;
 import com.chaskify.data.model.chaskify.RealmTask;
-import com.chaskify.data.realm.module.InMemoryModule;
+import com.chaskify.data.realm.cache.TaskCache;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.Disposables;
+import io.reactivex.functions.Consumer;
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
+import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
+import timber.log.Timber;
 
 /**
  * Created by alberto on 14/12/17.
@@ -24,45 +28,86 @@ public class TaskCacheImpl implements TaskCache {
 
 
     public TaskCacheImpl() {
-
+        Timber.tag(this.getClass().getSimpleName());
     }
 
     @Override
-    public List<RealmTask> findAll() {
-        Realm realm = Realm.getDefaultInstance();
-        return realm.where(RealmTask.class).findAll();
+    public Single<List<RealmTask>> findAll(String driverId) {
+        return Single.create(emitter -> {
+            final Realm observableRealm = Realm.getDefaultInstance();
+            final RealmResults<RealmTask> results = observableRealm.where(RealmTask.class)
+                    .equalTo(RealmTask.DRIVER_ID, driverId)
+                    .findAll();
+
+            if (results.isLoaded() && results.isValid())
+                emitter.onSuccess(results);
+
+            emitter.setDisposable(new Disposable() {
+                @Override
+                public void dispose() {
+                    Disposables.fromRunnable(observableRealm::close);
+                }
+
+                @Override
+                public boolean isDisposed() {
+                    return false;
+                }
+            });
+        });
     }
 
     @Override
-    public List<RealmTask> findAllByDate(Date date) {
-        return Stream.of(findAll())
-                .filter(value -> dateFormat.format(value.getDelivery_date()).equals(dateFormat.format(date)))
-                .toList();
+    public Single<List<RealmTask>> findAllByDate(String driverId, Date date) {
+        return findAll(driverId)
+                .map(realmTasks -> Stream.of(realmTasks)
+                        .filter(value -> dateFormat.format(value.getDelivery_date()).equals(dateFormat.format(date)))
+                        .toList())
+                .doOnSuccess(realmTasks -> Timber.d(realmTasks.toString()));
     }
 
     @Override
-    public Optional<RealmTask> findById(String driverId, String taskId) {
-        Realm realm = Realm.getDefaultInstance();
-        RealmResults<RealmTask> result = realm.where(RealmTask.class)
-                .equalTo(RealmTask.TASK_ID, taskId)
-                .equalTo(RealmTask.DRIVER_ID, driverId)
-                .findAll();
-        return result.isEmpty() ? Optional.empty() : Optional.of(result.first());
+    public Single<RealmTask> findById(String driverId, String taskId) {
+        return Single.create(emitter -> {
+            final Realm observableRealm = Realm.getDefaultInstance();
+            final RealmResults<RealmTask> results = observableRealm.where(RealmTask.class)
+                    .equalTo(RealmTask.DRIVER_ID, driverId)
+                    .equalTo(RealmTask.TASK_ID, taskId)
+                    .findAll();
+
+            if (results.isLoaded() && results.isValid() && results.first() != null)
+                emitter.onSuccess(results.first());
+
+            emitter.setDisposable(new Disposable() {
+                @Override
+                public void dispose() {
+                    Disposables.fromRunnable(observableRealm::close);
+                }
+
+                @Override
+                public boolean isDisposed() {
+                    return false;
+                }
+            });
+        });
     }
 
     @Override
     public void put(List<RealmTask> realmTasks) {
+        Timber.d("::put array " + realmTasks.toString() + " ::");
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         realm.insertOrUpdate(realmTasks);
         realm.commitTransaction();
+        realm.close();
     }
 
     @Override
     public void put(RealmTask realmTask) {
+        Timber.d("::put " + realmTask.toString() + " ::");
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         realm.insertOrUpdate(realmTask);
         realm.commitTransaction();
+        realm.close();
     }
 }

@@ -2,7 +2,6 @@ package com.chaskify.android.ui.model.mapper;
 
 import com.annimon.stream.Stream;
 import com.chaskify.android.ui.model.TaskItemSnapModel;
-import com.chaskify.android.ui.model.TaskModel;
 import com.chaskify.domain.model.Task;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ public class TaskSnapItemModelDataMapper {
 
     public static TaskItemSnapModel transform(Task task) {
         TaskItemSnapModel taskItemSnapModel = new TaskItemSnapModel();
-        taskItemSnapModel.setTask_id(task.getTask_id())
+        taskItemSnapModel.setTask_id(task.getTaskId())
                 .setTrans_type(task.getTrans_type())
                 .setStatus(task.getStatus())
                 .setDelivery_address(task.getDelivery_address())

@@ -30,6 +30,8 @@ public class RealmTaskWaypoint extends RealmObject {
     private String orderNumber;
     private String waypointDescription;
     private String customerSignatureUrl;
+    private String taskStatus;
+
 
     public RealmTaskWaypoint() {
     }
@@ -139,6 +141,15 @@ public class RealmTaskWaypoint extends RealmObject {
 
     public RealmTaskWaypoint setType(String type) {
         this.type = type;
+        return this;
+    }
+
+    public String getTaskStatus() {
+        return taskStatus;
+    }
+
+    public RealmTaskWaypoint setTaskStatus(String taskStatus) {
+        this.taskStatus = taskStatus;
         return this;
     }
 

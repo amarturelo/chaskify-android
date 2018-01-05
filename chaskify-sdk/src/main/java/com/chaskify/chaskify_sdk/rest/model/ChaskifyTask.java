@@ -468,6 +468,14 @@ public class ChaskifyTask {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "ChaskifyTask{" +
+                "taskId='" + taskId + '\'' +
+                ", driverId='" + driverId + '\'' +
+                '}';
+    }
+
    /* public ChaskifyDriverLocation getDriverLocation() {
         return driverLocation;
     }

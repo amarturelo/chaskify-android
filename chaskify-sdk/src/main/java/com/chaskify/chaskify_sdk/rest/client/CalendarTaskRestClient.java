@@ -13,6 +13,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -49,8 +50,12 @@ public class CalendarTaskRestClient extends RestClient<CalendarTaskApi> {
 
                         JsonObject baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), JsonObject.class);
                         if (baseResponse.get("code").getAsInt() == 1) {
-                            BaseResponse<List<ChaskifyCalendarTask>> listBaseResponse = getGson().fromJson(baseResponse, type);
-                            callback.onSuccess(listBaseResponse.getDetails());
+                            if (baseResponse.get("details").isJsonArray()) {
+                                BaseResponse<List<ChaskifyCalendarTask>> listBaseResponse = getGson().fromJson(baseResponse, type);
+                                callback.onSuccess(listBaseResponse.getDetails());
+                            } else {
+                                callback.onSuccess(new ArrayList<ChaskifyCalendarTask>());
+                            }
                         } else {
                             callback.onChaskifyError(new Exception(baseResponse.get("msg").getAsString()));
                         }

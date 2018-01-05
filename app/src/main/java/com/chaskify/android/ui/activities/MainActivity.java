@@ -288,8 +288,5 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
                 }).toList();
         compactCalendarView.removeAllEvents();
         compactCalendarView.addEvents(events);
-
-        List<Event> test = compactCalendarView.getEventsForMonth(events.get(0).getTimeInMillis());
-        Timber.d(test.toString());
     }
 }

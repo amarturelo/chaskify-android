@@ -18,6 +18,7 @@ import com.chaskify.android.adapters.TaskHistoryListAdapter;
 import com.chaskify.android.adapters.TaskWaypointListAdapter;
 import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.model.TaskModel;
+import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.repositories.TaskRepositoryImpl;
 import com.chaskify.domain.interactors.TaskInteractor;
@@ -54,19 +55,20 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
     private RecyclerView mTaskWaypointList;
 
     private TaskWaypointListAdapter taskWaypointListAdapter;
+    private ChaskifySession mChaskifySession;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mChaskifySession = Chaskify.getInstance().getDefaultSession().get();
         if (getArguments() != null) {
             mTaskId = getArguments().getString(ARG_TASK_ID);
             mDriverId = getArguments().getString(ARG_DRIVER_ID);
 
             taskDialogPresenter = new TaskViewDialogPresenter(new TaskInteractor(
                     new TaskRepositoryImpl(
-                            Chaskify.getInstance().getDefaultSession().get().getTaskRestClient()
-                            , new TaskCacheImpl()
+                            new TaskCacheImpl()
+                            , mChaskifySession.getTaskRestClient()
                     )
             ));
         } else
@@ -145,7 +147,7 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
         textViewTaskAddress.setText(taskModel.getDeliveryAddress());
         textViewTaskType.setText(taskModel.getTransType());
 
-        if (taskModel.getDescription() == null||taskModel.getDescription().isEmpty())
+        if (taskModel.getDescription() == null || taskModel.getDescription().isEmpty())
             formTaskDescription.setVisibility(View.GONE);
         else {
             formTaskDescription.setVisibility(View.VISIBLE);

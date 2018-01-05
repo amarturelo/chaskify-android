@@ -26,6 +26,6 @@ public class TaskListContract {
     }
 
     interface Presenter extends BaseContract.Presenter<TaskListContract.View> {
-        void tasks(Date date);
+        void tasks(String driverId, Date date);
     }
 }

@@ -30,12 +30,12 @@ public class TaskMapPresenter extends BasePresenter<TaskMapContract.View>
     }
 
     @Override
-    public void tasks(Date date) {
-        addSubscription(taskInteractor.tasks(date)
+    public void tasks(String driverId, Date date) {
+        addSubscription(taskInteractor.tasks(driverId, date)
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> view.showProgress())
-                .doFinally(() -> view.hideProgress())
+                .doOnNext(tasks -> view.hideProgress())
                 .subscribe(tasks -> view.renderTaskListView(TaskSnapItemModelDataMapper.transform(tasks))
                         , throwable -> view.showError(throwable)));
 

@@ -1,10 +1,12 @@
 package com.chaskify.data.realm.cache;
 
-import com.annimon.stream.Optional;
 import com.chaskify.data.model.chaskify.RealmTask;
 
 import java.util.Date;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.Single;
 
 
 /**
@@ -12,11 +14,11 @@ import java.util.List;
  */
 
 public interface TaskCache {
-    List<RealmTask> findAll();
+    Single<List<RealmTask>> findAll(String driverId);
 
-    List<RealmTask> findAllByDate(Date date);
+    Single<List<RealmTask>> findAllByDate(String driverId, Date date);
 
-    Optional<RealmTask> findById(String driverId, String taskId);
+    Single<RealmTask> findById(String driverId, String taskId);
 
     void put(List<RealmTask> realmTasks);
 

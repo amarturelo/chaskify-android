@@ -77,7 +77,7 @@ public class TaskRestClient extends RestClient<TaskApi> {
     }
 
     private void taskDetails(String task_id, String accessToken, final ApiCallback<ChaskifyTask> callback) {
-        mApi.taskDetails(task_id, accessToken)
+        mApi.taskDetails(task_id, String.valueOf(new Date().getTimezoneOffset()), accessToken)
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {

@@ -9,7 +9,7 @@ import retrofit2.http.Query;
  */
 
 public interface TaskApi {
-    @GET("getTaskByDate")
+    @GET("getTaskByDateAndroid")
     Call<String> taskByDate(
             @Query("date") String date
             , @Query("timeZone") String timeZone
@@ -18,6 +18,7 @@ public interface TaskApi {
     @GET("TaskDetailsAndroid")
     Call<String> taskDetails(
             @Query("task_id") String task_id
+            , @Query("timeZone") String timeZone
             , @Query("token") String token);
 
 }

@@ -19,6 +19,7 @@ import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.model.TaskItemModel;
 import com.chaskify.android.ui.model.TaskItemSnapModel;
 import com.chaskify.android.ui.base.BaseFragment;
+import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.repositories.TaskRepositoryImpl;
 import com.chaskify.domain.interactors.TaskInteractor;
@@ -49,6 +50,8 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     private Date mCurrentDate;
 
     private TaskMapPresenter presenter;
+    private ChaskifySession mChaskifySession;
+
 
     public TaskMapFragment() {
         // Required empty public constructor
@@ -67,12 +70,14 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mChaskifySession = Chaskify.getInstance().getDefaultSession().get();
+
         mCurrentDate = new Date(getArguments().getLong(ARG_CURRENT_DATE, new Date().getTime()));
 
         presenter = new TaskMapPresenter(new TaskInteractor(
                 new TaskRepositoryImpl(
-                        Chaskify.getInstance().getDefaultSession().get().getTaskRestClient()
-                        , new TaskCacheImpl()
+                        new TaskCacheImpl()
+                        , mChaskifySession.getTaskRestClient()
                 )
         ));
     }
@@ -199,7 +204,7 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
             getArguments().putLong(ARG_CURRENT_DATE, date.getTime());
             mCurrentDate = date;
 
-            presenter.tasks(mCurrentDate);
+            //presenter.tasks(mChaskifySession.getCredentials().getDriverId(), mCurrentDate);
         }
     }
 
@@ -277,7 +282,7 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     public void onResume() {
         //mMapView.onResume();
         super.onResume();
-        presenter.tasks(mCurrentDate);
+        //presenter.tasks(mChaskifySession.getCredentials().getDriverId(), mCurrentDate);
     }
 
     @Override

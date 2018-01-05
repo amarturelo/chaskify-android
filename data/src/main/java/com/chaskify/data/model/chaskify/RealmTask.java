@@ -268,4 +268,12 @@ public class RealmTask extends RealmObject {
         result = 31 * result + (driver_id != null ? driver_id.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "RealmTask{" +
+                "task_id='" + task_id + '\'' +
+                ", delivery_date=" + delivery_date +
+                '}';
+    }
 }

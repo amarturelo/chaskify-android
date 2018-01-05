@@ -1,12 +1,7 @@
 package com.chaskify.android.ui.model.mapper;
 
 import com.annimon.stream.Stream;
-import com.chaskify.android.ui.model.TaskHistoryItemModel;
 import com.chaskify.android.ui.model.TaskModel;
-import com.chaskify.android.ui.model.TaskWaypointItemModel;
-import com.chaskify.chaskify_sdk.rest.model.ChaskifyTask;
-import com.chaskify.data.model.chaskify.mapper.TaskHistoryDataMapper;
-import com.chaskify.data.model.chaskify.mapper.TaskWaypointDataMapper;
 import com.chaskify.domain.model.Task;
 
 import java.util.ArrayList;
@@ -23,7 +18,7 @@ public class TaskModelDataMapper {
 
     public static TaskModel transform(Task task) {
         TaskModel taskModel = new TaskModel();
-        taskModel.setTaskId(task.getTask_id())
+        taskModel.setTaskId(task.getTaskId())
                 .setCustomerName(task.getCustomer_name())
                 .setContactNumber(task.getContact_number())
                 .setEmailAddress(task.getEmail_address())
