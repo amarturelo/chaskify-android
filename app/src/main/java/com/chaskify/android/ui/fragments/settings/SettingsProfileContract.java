@@ -30,5 +30,7 @@ public interface SettingsProfileContract {
                 , String transportDescription
                 , String licencePlate
                 , String color);
+
+        void updateImageProfile(String base64);
     }
 }

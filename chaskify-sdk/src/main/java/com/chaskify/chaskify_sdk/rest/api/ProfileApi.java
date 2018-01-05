@@ -1,7 +1,11 @@
 package com.chaskify.chaskify_sdk.rest.api;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
@@ -37,4 +41,10 @@ public interface ProfileApi {
             , @Query("licence_plate") String licencePlate
             , @Query("color") String color
     );
+
+    @FormUrlEncoded
+    @POST("AddPhotoToPerfil")
+    Call<String> updateImageProfile(
+            @Query("token") String accessToken
+            , @Field("image") String image);
 }

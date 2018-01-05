@@ -75,5 +75,8 @@ dependencies {
         transitive = true
     }
 
+    compile 'com.github.marchinram:RxGallery:0.6.0'
+    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
+
     compile 'com.github.rubensousa:bottomsheetbuilder:1.6.0'
 }

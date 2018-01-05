@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="picker_image_values">
+        <item>From camera</item>
+        <item>From gallery</item>
+        <item>Remove image</item>
+    </string-array>
+</resources>

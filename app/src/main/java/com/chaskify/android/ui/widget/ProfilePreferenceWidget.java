@@ -1,6 +1,7 @@
 package com.chaskify.android.ui.widget;
 
 import android.content.Context;
+import android.content.Intent;
 import android.preference.Preference;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -27,6 +28,17 @@ public class ProfilePreferenceWidget extends Preference {
 
     private TextView mProfileTeam;
 
+    public interface Listened {
+        void onClickImage();
+    }
+
+    private Listened mListened;
+
+    public ProfilePreferenceWidget setListened(Listened mListened) {
+        this.mListened = mListened;
+        return this;
+    }
+
     public ProfilePreferenceWidget(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
@@ -49,6 +61,13 @@ public class ProfilePreferenceWidget extends Preference {
     protected void onBindView(View view) {
         super.onBindView(view);
         mProfileImage = view.findViewById(R.id.profile_image);
+        mProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListened != null)
+                    mListened.onClickImage();
+            }
+        });
         mProfileName = view.findViewById(R.id.profile_name);
         mProfileTeam = view.findViewById(R.id.profile_team);
 

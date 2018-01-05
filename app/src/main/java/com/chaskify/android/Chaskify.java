@@ -100,4 +100,7 @@ public class Chaskify {
         }
         return sessions;
     }
+
+    public void logout(ChaskifySession chaskifySession) {
+    }
 }

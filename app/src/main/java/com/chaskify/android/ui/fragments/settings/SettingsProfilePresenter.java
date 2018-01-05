@@ -31,6 +31,39 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
     }
 
     @Override
+    public void updateImageProfile(String base64) {
+        addSubscription(doUpdateImageProfile(base64)
+                .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
+                .unsubscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> view.complete(), throwable -> view.showError(throwable)));
+    }
+
+    private Completable doUpdateImageProfile(String base64) {
+        return Completable.create(emitter -> mChaskifySession.updateImageProfile(base64, new ApiCallbackSuccess() {
+            @Override
+            public void onSuccess() {
+                emitter.onComplete();
+            }
+
+            @Override
+            public void onNetworkError(Exception e) {
+                emitter.onError(e);
+            }
+
+            @Override
+            public void onChaskifyError(Exception e) {
+                emitter.onError(e);
+            }
+
+            @Override
+            public void onUnexpectedError(Exception e) {
+                emitter.onError(e);
+            }
+        }));
+    }
+
+    @Override
     public void updateProfileVehicle(String transportTypeTd, String transportDescription, String licencePlate, String color) {
         addSubscription(doUpdateProfileVehicle(transportTypeTd, transportDescription, licencePlate, color)
                 .doOnSubscribe(disposable -> view.showProgress())
