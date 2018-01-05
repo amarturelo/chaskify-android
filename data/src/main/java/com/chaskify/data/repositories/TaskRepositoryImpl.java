@@ -32,7 +32,9 @@ public class TaskRepositoryImpl implements TaskRepository {
 
     @Override
     public Observable<Task> taskById(String driverId, String taskId) {
-        return null;
+        return Observable.concatArrayDelayError(diskTaskDataStore.taskById(driverId, taskId).toObservable()
+                , cloudTaskDataStore.taskById(driverId, taskId).toObservable())
+                ;
     }
 
     @Override
