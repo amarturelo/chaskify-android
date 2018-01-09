@@ -18,7 +18,7 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class LaunchFragment extends BaseFragment implements LaunchContract.View {
+public class LaunchFragment extends BaseFragment implements LaunchContract.View, View.OnClickListener {
 
     private LaunchPresenter launchPresenter;
 
@@ -27,6 +27,8 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View 
     private RecyclerView mListProfile;
 
     private ProfileListAdapter profileListAdapter;
+
+    private View signInButton;
 
     public LaunchFragment() {
         // Required empty public constructor
@@ -52,6 +54,8 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        signInButton = view.findViewById(R.id.sign_in_button);
+        signInButton.setOnClickListener(this);
         multiStateView = view.findViewById(R.id.multi_state_profile_cache);
         mListProfile = multiStateView.getView(MultiStateView.VIEW_STATE_CONTENT).findViewById(R.id.list_profile_cache);
         mListProfile.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -120,4 +124,16 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View 
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.sign_in_button:
+                launchLoginAndBack();
+                break;
+        }
+    }
+
+    private void launchLoginAndBack() {
+        start(LoginFragment.newInstance());
+    }
 }

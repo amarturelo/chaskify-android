@@ -77,7 +77,7 @@ public class LoginStorage {
         if (account.isPresent()) {
             mAccountManager.setPassword(account.get()
                     , password);
-            mAccountManager.setAuthToken(account.get(), mContext.getString(R.string.ACCOUNT_TYPE), credentials.getAccessToken());
+            mAccountManager.setAuthToken(account.get(), AccountGeneral.AUTHTOKEN_TYPE_FULL_ACCESS, credentials.getAccessToken());
         }
     }
 

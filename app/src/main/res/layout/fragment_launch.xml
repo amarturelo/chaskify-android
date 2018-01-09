@@ -40,14 +40,14 @@
                     android:id="@+id/list_profile_cache"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_above="@+id/action_create_session"
+                    android:layout_above="@+id/action_sign_in"
                     android:layout_below="@+id/title"
                     android:paddingBottom="8dp"
                     android:paddingTop="8dp"
                     tools:listitem="@layout/session_cache_item_view" />
 
                 <LinearLayout
-                    android:id="@+id/action_create_session"
+                    android:id="@+id/action_sign_in"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
@@ -62,7 +62,7 @@
                         android:visibility="gone" />
 
                     <Button
-                        android:id="@+id/change_password_bottom"
+                        android:id="@+id/sign_in_button"
                         style="@style/ChaskifyButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
