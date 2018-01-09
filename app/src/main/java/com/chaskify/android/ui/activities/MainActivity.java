@@ -237,8 +237,6 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
 
         if (id == R.id.action_notification) {
             Navigator.goToNotificationsActivity(this);
-            Intent intent = new Intent(this, NotificationsActivity.class);
-            startActivity(intent);
             return true;
         }
 
