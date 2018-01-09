@@ -1,5 +1,6 @@
 package com.chaskify.data.repositories.datasource.cloud;
 
+import com.annimon.stream.Optional;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.client.ProfileRestClient;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyProfile;
@@ -9,6 +10,7 @@ import com.chaskify.data.realm.cache.ProfileCache;
 import com.chaskify.data.repositories.datasource.ProfileDataStore;
 import com.chaskify.domain.model.Profile;
 
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 
@@ -28,7 +30,7 @@ public class CloudProfileDataStore implements ProfileDataStore {
     }
 
     @Override
-    public Single<Profile> getProfileByDriverId(String driverId) {
+    public Flowable<Optional<Profile>> getProfileByDriverId(String driverId) {
         return Single
                 .create((SingleOnSubscribe<ChaskifyProfile>) emitter -> profileRestClient.getProfile(new ApiCallback<ChaskifyProfile>() {
                     @Override
@@ -53,17 +55,19 @@ public class CloudProfileDataStore implements ProfileDataStore {
                 }))
                 .map(ProfileDataMapper::transform)
                 .doOnSuccess(profile -> profileCache.put(new RealmProfile()
-                        .setDriverId(profile.getDriver_id())
+                        .setDriverId(profile.getDriverId())
                         .setColor(profile.getColor())
                         .setDriverPicture(profile.getDriverPicture())
                         .setEmail(profile.getEmail())
                         .setLicencePlate(profile.getLicence_plate())
                         .setPhone(profile.getPhone())
                         .setTeamName(profile.getTeamName())
-                        .setTransportDescription(profile.getTransport_description())
-                        .setTransportTypeId(profile.getTransport_type_id())
-                        .setTransportTypeId2(profile.getTransport_type_id2())
+                        .setTransportDescription(profile.getTransportDescription())
+                        .setTransportTypeId(profile.getTransportTypeId())
+                        .setTransportTypeId2(profile.getTransportTypeId2())
                         .setUsername(profile.getUsername())
-                ));
+                ))
+                .map(Optional::of)
+                .toFlowable();
     }
 }

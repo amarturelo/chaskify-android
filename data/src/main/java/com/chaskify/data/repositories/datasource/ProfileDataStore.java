@@ -1,7 +1,10 @@
 package com.chaskify.data.repositories.datasource;
 
+import com.annimon.stream.Optional;
+import com.chaskify.data.model.chaskify.RealmProfile;
 import com.chaskify.domain.model.Profile;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -11,6 +14,6 @@ import io.reactivex.Single;
 
 public interface ProfileDataStore {
 
-    Single<Profile> getProfileByDriverId(String driverId);
+    Flowable<Optional<Profile>> getProfileByDriverId(String driverId);
 
 }

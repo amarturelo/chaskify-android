@@ -1,8 +1,10 @@
 package com.chaskify.domain.interactors;
 
+import com.annimon.stream.Optional;
 import com.chaskify.domain.model.Profile;
 import com.chaskify.domain.repositories.ProfileRepository;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -18,7 +20,7 @@ public class ProfileInteractor {
         this.profileRepository = profileRepository;
     }
 
-    public Observable<Profile> profileByDriverId(String driver_id) {
+    public Flowable<Optional<Profile>> profileByDriverId(String driver_id) {
         return profileRepository.profileByDriverId(driver_id);
     }
 }

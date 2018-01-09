@@ -21,7 +21,7 @@ public class ProfileModelDataMapper {
 
     public static ProfileModel transform(Profile profile) {
         ProfileModel taskModel = new ProfileModel();
-        taskModel.setDriverId(profile.getDriver_id())
+        taskModel.setDriverId(profile.getDriverId())
                 .setUsername(profile.getUsername())
                 .setColor(profile.getColor())
                 .setDriverPicture(profile.getDriverPicture())
@@ -29,9 +29,9 @@ public class ProfileModelDataMapper {
                 .setLicencePlate(profile.getLicence_plate())
                 .setPhone(profile.getPhone())
                 .setTeamName(profile.getTeamName())
-                .setTransportDescription(profile.getTransport_description())
-                .setTransportTypeId(profile.getTransport_type_id())
-                .setTransportTypeId2(profile.getTransport_type_id2());
+                .setTransportDescription(profile.getTransportDescription())
+                .setTransportTypeId(profile.getTransportTypeId())
+                .setTransportTypeId2(profile.getTransportTypeId2());
         return taskModel;
     }
 }

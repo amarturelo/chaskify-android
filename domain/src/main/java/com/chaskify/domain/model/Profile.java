@@ -56,7 +56,7 @@ public class Profile {
         return this;
     }
 
-    public String getTransport_type_id() {
+    public String getTransportTypeId() {
         return transport_type_id;
     }
 
@@ -65,7 +65,7 @@ public class Profile {
         return this;
     }
 
-    public String getTransport_type_id2() {
+    public String getTransportTypeId2() {
         return transport_type_id2;
     }
 
@@ -74,7 +74,7 @@ public class Profile {
         return this;
     }
 
-    public String getTransport_description() {
+    public String getTransportDescription() {
         return transport_description;
     }
 
@@ -101,7 +101,7 @@ public class Profile {
         return this;
     }
 
-    public String getDriver_id() {
+    public String getDriverId() {
         return driver_id;
     }
 

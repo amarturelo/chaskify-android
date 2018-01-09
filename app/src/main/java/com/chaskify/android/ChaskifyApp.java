@@ -45,7 +45,7 @@ public class ChaskifyApp extends MultiDexApplication {
         initBugReport();
         initFragmentation();
         initMaps();
-        initPush();
+        //initPush();
         Chaskify.getInstance(getApplicationContext());
 
     }

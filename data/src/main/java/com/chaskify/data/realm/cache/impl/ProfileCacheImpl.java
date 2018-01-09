@@ -1,16 +1,17 @@
 package com.chaskify.data.realm.cache.impl;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Pair;
+
+import com.annimon.stream.Optional;
 import com.chaskify.data.model.chaskify.RealmProfile;
 import com.chaskify.data.realm.cache.ProfileCache;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Single;
-import io.reactivex.disposables.Disposables;
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
-import io.realm.RealmChangeListener;
-import io.realm.RealmResults;
+import timber.log.Timber;
 
 /**
  * Created by alberto on 3/01/18.
@@ -19,6 +20,7 @@ import io.realm.RealmResults;
 public class ProfileCacheImpl implements ProfileCache {
 
     public ProfileCacheImpl() {
+        Timber.tag(this.getClass().getSimpleName());
     }
 
     @Override
@@ -31,18 +33,37 @@ public class ProfileCacheImpl implements ProfileCache {
     }
 
     @Override
-    public Single<RealmProfile> getByDriverId(String driverId) {
-        return Single.create(emitter -> {
-            final Realm observableRealm = Realm.getDefaultInstance();
-            final RealmResults<RealmProfile> results = observableRealm.where(RealmProfile.class)
-                    .equalTo(RealmProfile.DRIVER_ID, driverId)
-                    .findAll();
+    public Flowable<Optional<RealmProfile>> getByDriverId(String driverId) {
+        return Flowable.defer(() -> Flowable.using(() -> new Pair<>(Realm.getDefaultInstance(), Looper.myLooper()), pair -> {
+                    RealmProfile realmRoom = pair.first.where(RealmProfile.class)
+                            .equalTo(RealmProfile.DRIVER_ID, driverId)
+                            .findFirst();
 
-            if (results.size() != 0)
-                emitter.onSuccess(results.first());
+                    if (realmRoom == null) {
+                        return Flowable.just(com.annimon.stream.Optional.empty());
+                    }
 
-            emitter.setDisposable(Disposables.fromRunnable(observableRealm::close));
+                    return realmRoom.<RealmProfile>asFlowable()
+                            .filter(
+                                    profile -> profile.isLoaded()
+                                            && profile.isValid())
+                            .map(Optional::of);
+                }
+                , pair -> close(pair.first, pair.second)))
+                .unsubscribeOn(AndroidSchedulers.from(Looper.myLooper()))
+                .map(optional -> {
+                    if (optional.isPresent()) {
+                        return Optional.of((RealmProfile) optional.get());
+                    }
+                    return Optional.empty();
+                });
+    }
 
-        });
+    protected void close(Realm realm, Looper looper) {
+        if (realm == null || looper == null) {
+            return;
+        }
+        Timber.d("::closing realm getByDriverId::");
+        new Handler(looper).post(realm::close);
     }
 }

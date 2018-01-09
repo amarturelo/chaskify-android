@@ -1,5 +1,6 @@
 package com.chaskify.android.adapters.viewholder;
 
+import com.annimon.stream.Optional;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
 import com.chaskify.android.ui.model.ProfileItemModel;
@@ -23,8 +24,9 @@ public class ProfileItemPresenter extends BasePresenter<ProfileItemContract.View
     @Override
     public void profile(String driverId) {
         addSubscription(profileInteractor.profileByDriverId(driverId)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
-                .unsubscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(profile -> view.renderProfile(new ProfileItemModel()
                                 .setTeamName(profile.getTeamName())
