@@ -29,7 +29,7 @@ public class Profile {
         return this;
     }
 
-    public String getTeam_name() {
+    public String getTeamName() {
         return team_name;
     }
 
@@ -110,7 +110,7 @@ public class Profile {
         return this;
     }
 
-    public String getDriver_picture() {
+    public String getDriverPicture() {
         return driver_picture;
     }
 

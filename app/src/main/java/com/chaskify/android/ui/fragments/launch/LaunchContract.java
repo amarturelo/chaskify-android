@@ -1,6 +1,6 @@
 package com.chaskify.android.ui.fragments.launch;
 
-import com.chaskify.android.ui.model.ServerConfigurationListCacheModel;
+import com.chaskify.android.ui.model.CredentialsCacheItemModel;
 import com.chaskify.android.shared.BaseContract;
 
 import java.util.List;
@@ -10,7 +10,7 @@ class LaunchContract {
 
         void launchLogin();
 
-        void renderCredentials(List<ServerConfigurationListCacheModel> crendetials);
+        void renderCredentials(List<CredentialsCacheItemModel> driversId);
 
         void launchSplash();
 

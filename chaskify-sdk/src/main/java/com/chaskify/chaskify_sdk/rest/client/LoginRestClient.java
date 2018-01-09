@@ -4,6 +4,8 @@ import com.chaskify.chaskify_sdk.RestClient;
 import com.chaskify.chaskify_sdk.crypto.Base64;
 import com.chaskify.chaskify_sdk.rest.api.LoginApi;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
+import com.chaskify.chaskify_sdk.rest.callback.ApiCallbackSuccess;
+import com.chaskify.chaskify_sdk.rest.exceptions.TokenNotFoundException;
 import com.chaskify.chaskify_sdk.rest.model.BaseResponse;
 import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
 import com.chaskify.chaskify_sdk.rest.model.login.LoginResponse;
@@ -80,6 +82,32 @@ public class LoginRestClient extends RestClient<LoginApi> {
                 });
 
 
+    }
+
+    public void logout(ApiCallbackSuccess callback) throws TokenNotFoundException {
+        if (mChaskifyCredentials != null)
+            logout(mChaskifyCredentials.getAccessToken(), callback);
+        else
+            throw new TokenNotFoundException();
+    }
+
+    private void logout(String accessToken, final ApiCallbackSuccess callback) {
+        mApi.logout(accessToken).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                JsonObject baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), JsonObject.class);
+                if (baseResponse.get("code").getAsInt() == 1) {
+                    callback.onSuccess();
+                } else {
+                    callback.onChaskifyError(new Exception(baseResponse.get("msg").getAsString()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                callback.onNetworkError((Exception) t);
+            }
+        });
     }
 
     @Override

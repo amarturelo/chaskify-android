@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 
+import com.chaskify.android.ui.activities.LaunchActivity;
 import com.chaskify.android.ui.activities.MainActivity;
 import com.chaskify.android.ui.activities.NotificationsActivity;
 import com.chaskify.android.ui.activities.settings.SettingsProfileActivity;
 import com.chaskify.android.ui.activities.settings.SettingsVehicleActivity;
+import com.chaskify.android.ui.fragments.settings.SettingsProfileFragment;
 import com.chaskify.android.ui.widget.TaskViewDialogFragment;
 import com.chaskify.android.ui.widget.TaskWaypointViewDialogFragment;
 
@@ -55,6 +57,13 @@ public class Navigator {
     public static void goToNotificationsActivity(Context context) {
         if (context != null) {
             Intent intent = NotificationsActivity.getCallingIntent(context);
+            context.startActivity(intent);
+        }
+    }
+
+    public static void goToLaunchActivity(Context context) {
+        if (context != null) {
+            Intent intent = LaunchActivity.getCallingIntent(context);
             context.startActivity(intent);
         }
     }

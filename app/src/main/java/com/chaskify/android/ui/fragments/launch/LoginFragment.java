@@ -25,6 +25,8 @@ import com.chaskify.android.store.PreferenceStorage;
 import com.chaskify.android.ui.activities.LaunchActivity;
 import com.chaskify.android.ui.base.BaseFragment;
 
+import static com.chaskify.android.ui.activities.LaunchActivity.ARG_ACCOUNT_NAME;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -35,21 +37,19 @@ import com.chaskify.android.ui.base.BaseFragment;
  */
 public class LoginFragment extends BaseFragment implements LoginContract.View {
 
+    public static final String MODE = "arg_login_mode";
+
+    //mode
+    public static final int LOGIN_MODE = 0;
+    public static final int RE_LOGIN_MODE = 1;
+
+
 
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mEmailLoginFormView;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -66,34 +66,25 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
         return fragment;
     }
 
-    public static LoginFragment newInstance(String name) {
+    public static LoginFragment newInstance(String username) {
         LoginFragment fragment = new LoginFragment();
         Bundle args = new Bundle();
-        args.putString(LaunchActivity.ARG_ACCOUNT_NAME, name);
+        args.putString(ARG_ACCOUNT_NAME, username);
         fragment.setArguments(args);
         return fragment;
     }
 
     public String getArgAccountName() {
-        return getArguments().getString(LaunchActivity.ARG_ACCOUNT_NAME);
+        return getArguments().getString(ARG_ACCOUNT_NAME);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+
         mLoginPresenter = new LoginPresenter(
-                new LoginHandler(
-                        new LoginStorage(
-                                getContext()
-                        )
-                        , new PreferenceStorage(
-                        getContext()
-                )
-                )
+                new LoginHandler()
         );
     }
 

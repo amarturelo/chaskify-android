@@ -19,6 +19,8 @@ public interface SettingsProfileContract {
         void renderProfile(ProfileModel profileModel);
 
         void complete();
+
+        void logoutComplete();
     }
 
     interface Presenter extends BaseContract.Presenter<SettingsProfileContract.View> {
@@ -32,5 +34,7 @@ public interface SettingsProfileContract {
                 , String color);
 
         void updateImageProfile(String base64);
+
+        void logout();
     }
 }

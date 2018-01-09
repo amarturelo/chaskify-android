@@ -1,18 +1,17 @@
 package com.chaskify.android;
 
-import android.accounts.AccountManager;
 import android.text.TextUtils;
 
+import com.annimon.stream.Stream;
 import com.chaskify.android.store.LoginStorage;
 import com.chaskify.android.store.PreferenceStorage;
 import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
-import com.chaskify.chaskify_sdk.rest.callback.ApiCallbackSuccess;
 import com.chaskify.chaskify_sdk.rest.client.LoginRestClient;
 import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
 import com.chaskify.domain.model.Credentials;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Created by alberto on 11/12/17.
@@ -20,13 +19,8 @@ import java.util.List;
 
 public class LoginHandler {
 
-    private LoginStorage mLoginStorage;
 
-    private PreferenceStorage mPreferenceStorage;
-
-    public LoginHandler(LoginStorage mLoginStorage, PreferenceStorage preferenceStorage) {
-        this.mLoginStorage = mLoginStorage;
-        this.mPreferenceStorage = preferenceStorage;
+    public LoginHandler() {
     }
 
     public void login(String username, String password, ApiCallback<Credentials> callback) {
@@ -68,49 +62,15 @@ public class LoginHandler {
                 .setDriverId(chaskifyCredentials.getDriverId())
                 .setAccessToken(chaskifyCredentials.getAccessToken());
 
-        if (mLoginStorage
-                .addCredentials(credentials
-                        , password
-                )) {
+        Collection<ChaskifySession> sessions = Chaskify.getInstance().getSessions();
+
+        if (Stream.of(sessions)
+                .filter(value -> TextUtils.equals(credentials.getDriverId(), value.getCredentials().getDriverId()))
+                .toList().isEmpty()) {
             ChaskifySession session = Chaskify.createSession(credentials);
-            Chaskify.getInstance().addSession(session);
+            Chaskify.getInstance().addSession(session, password);
         }
-        mPreferenceStorage.setDefault(credentials.getUsername());
         callback.onSuccess(credentials);
-    }
-
-    public void changePassword(String currentPassword, String newPassword, String confirmNewPassword, ApiCallbackSuccess callback) {
-        ApiCallbackSuccess callbackSuccess = new ApiCallbackSuccess() {
-            @Override
-            public void onSuccess() {
-                onChangePasswordDone(newPassword, callback);
-            }
-
-            @Override
-            public void onNetworkError(Exception e) {
-
-            }
-
-            @Override
-            public void onChaskifyError(Exception e) {
-
-            }
-
-            @Override
-            public void onUnexpectedError(Exception e) {
-
-            }
-        };
-
-        callChangePassword(currentPassword, newPassword, confirmNewPassword, callbackSuccess);
-    }
-
-    private void onChangePasswordDone(String newPassword, ApiCallbackSuccess callback) {
-
-    }
-
-    private void callChangePassword(String currentPassword, String newPassword, String confirmNewPassword, ApiCallbackSuccess callbackSuccess) {
-        LoginRestClient loginRestClient = new LoginRestClient(null);
     }
 
 }

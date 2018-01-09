@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.annimon.stream.Stream;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.looper.BackgroundLooper;
-import com.chaskify.android.ui.model.ServerConfigurationListCacheModel;
+import com.chaskify.android.ui.model.CredentialsCacheItemModel;
 import com.chaskify.android.shared.BasePresenter;
 
 import io.reactivex.Single;
@@ -16,6 +16,7 @@ public class LaunchPresenter extends BasePresenter<LaunchContract.View>
         implements LaunchContract.Presenter {
 
     public LaunchPresenter() {
+        Timber.tag(this.getClass().getSimpleName());
     }
 
     @Override
@@ -45,20 +46,23 @@ public class LaunchPresenter extends BasePresenter<LaunchContract.View>
                                 Timber.d("::ChaskifyCredentials is empty::");
                                 view.launchLogin();
                             } else {
-                                if (value.getDefaultSession().isPresent()) {
-                                    Timber.d("::ChaskifyCredentials " + value.getDefaultSession().get().getCredentials().getUsername() + " as default::");
-                                    view.launchSplash();
-                                } else {
-                                    view.showProgress();
-                                    Timber.d("::ChaskifyCredentials is present but not things is default::");
-                                    view.renderCredentials(Stream.of(value.getSessions())
-                                            .map(chaskifySession ->
-                                                    new ServerConfigurationListCacheModel()
-                                                            .setUserName(chaskifySession.getCredentials().getUsername())
-                                            )
-                                            .toList());
-                                    view.hideProgress();
-                                }
+                                value.getDefaultSession()
+                                        .executeIfPresent(chaskifySession -> {
+                                            Timber.d("::ChaskifyCredentials " + value.getDefaultSession().get().getCredentials().getUsername() + " as default::");
+                                            view.launchSplash();
+                                        })
+                                        .executeIfAbsent(() -> {
+                                            view.showProgress();
+                                            Timber.d("::ChaskifyCredentials is present but not things is default::");
+                                            view.renderCredentials(Stream.of(value.getSessions())
+                                                    .map(chaskifySession ->
+                                                            new CredentialsCacheItemModel()
+                                                                    .setDriverId(chaskifySession.getCredentials().getDriverId())
+                                                                    .setDriverUsername(chaskifySession.getCredentials().getUsername())
+                                                    )
+                                                    .toList());
+                                            view.hideProgress();
+                                        });
                             }
                         }
                 ));

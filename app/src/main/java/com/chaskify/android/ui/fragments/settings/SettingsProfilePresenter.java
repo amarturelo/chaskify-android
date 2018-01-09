@@ -1,5 +1,6 @@
 package com.chaskify.android.ui.fragments.settings;
 
+import com.chaskify.android.Chaskify;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
 import com.chaskify.android.ui.model.mapper.ProfileModelDataMapper;
@@ -28,6 +29,40 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
     public SettingsProfilePresenter(ProfileInteractor profileInteractor, ChaskifySession chaskifySession) {
         this.profileInteractor = profileInteractor;
         this.mChaskifySession = chaskifySession;
+    }
+
+    @Override
+    public void logout() {
+        addSubscription(doLogout()
+                .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
+                .unsubscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally(() -> view.logoutComplete())
+                .subscribe(() -> view.complete(), throwable -> view.showError(throwable)));
+    }
+
+    private Completable doLogout() {
+        return Completable.create(emitter -> Chaskify.getInstance().logout(mChaskifySession, new ApiCallbackSuccess() {
+            @Override
+            public void onSuccess() {
+                emitter.onComplete();
+            }
+
+            @Override
+            public void onNetworkError(Exception e) {
+                emitter.onError(e);
+            }
+
+            @Override
+            public void onChaskifyError(Exception e) {
+                emitter.onError(e);
+            }
+
+            @Override
+            public void onUnexpectedError(Exception e) {
+                emitter.onError(e);
+            }
+        }));
     }
 
     @Override

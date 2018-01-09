@@ -81,4 +81,12 @@ public class LoginStorage {
         }
     }
 
+    public void invalidateCredentials(String username) {
+        Stream.of(getCredentials())
+                .filter(value -> value.getUsername().equals(username))
+                .forEach(credentials -> {
+                    mAccountManager.invalidateAuthToken(mContext.getString(R.string.ACCOUNT_TYPE), credentials.getAccessToken());
+                    mAccountManager.clearPassword(new Account(username, mContext.getString(R.string.ACCOUNT_TYPE)));
+                });
+    }
 }

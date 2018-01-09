@@ -26,11 +26,21 @@ public class PreferenceStorage {
     }
 
     public Optional<String> getDefault() {
-        return prefs.getString(PREFS_KEY_DEFAULT, "").isEmpty()?Optional.empty(): Optional.of(prefs.getString(PREFS_KEY_DEFAULT, ""));
+        return prefs.getString(PREFS_KEY_DEFAULT, "").isEmpty() ? Optional.empty() : Optional.of(prefs.getString(PREFS_KEY_DEFAULT, ""));
     }
 
     public void setDefault(String username) {
         editor.putString(PREFS_KEY_DEFAULT, username);
+        editor.apply();
+    }
+
+    public void removeDefault(String username) {
+        getDefault().filter(value -> value.equals(username))
+                .ifPresent(s -> clearDefault());
+    }
+
+    public void clearDefault() {
+        editor.remove(PREFS_KEY_DEFAULT);
         editor.apply();
     }
 }

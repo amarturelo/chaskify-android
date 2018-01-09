@@ -1,21 +1,22 @@
 package com.chaskify.android.ui.fragments.settings;
 
-import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.annimon.stream.Stream;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
+import com.chaskify.android.navigation.Navigator;
+import com.chaskify.android.ui.fragments.ChangePasswordDialogFragment;
 import com.chaskify.android.ui.model.ProfileModel;
 import com.chaskify.android.ui.widget.ProfilePreferenceWidget;
 import com.chaskify.chaskify_sdk.crypto.Base64;
@@ -38,9 +39,9 @@ import timber.log.Timber;
  */
 public class SettingsProfileFragment extends PreferenceFragment implements SettingsProfileContract.View, ProfilePreferenceWidget.Listened {
 
-    private static final int PHOTO_SELECTED = 100;
 
     public SettingsProfileFragment() {
+        setHasOptionsMenu(true);
     }
 
     private SettingsProfilePresenter presenter;
@@ -55,6 +56,7 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
     private Preference mPreferenceVehicleColor;
 
     private ProfilePreferenceWidget mProfilePreferenceWidget;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -150,6 +152,11 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
     }
 
     @Override
+    public void logoutComplete() {
+        Navigator.goToLaunchActivity(getActivity());
+    }
+
+    @Override
     public void complete() {
         Toast.makeText(getActivity(), "Update complete", Toast.LENGTH_LONG)
                 .show();
@@ -200,34 +207,53 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
 
         RxGallery.gallery(getActivity(), false, RxGallery.MimeType.IMAGE)
                 .filter(uris -> !uris.isEmpty())
-                .map(new Function<List<Uri>, Bitmap>() {
-                    @Override
-                    public Bitmap apply(List<Uri> uris) throws Exception {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Stream.of(uris).findFirst().get());
-                        return bitmap;
-                    }
+                .map(uris -> {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Stream.of(uris).findFirst().get());
+                    return bitmap;
                 })
-                .map(new Function<Bitmap, String>() {
-                    @Override
-                    public String apply(Bitmap bitmap) throws Exception {
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                        byte[] byteArray = byteArrayOutputStream.toByteArray();
+                .map(bitmap -> {
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                    byte[] byteArray = byteArrayOutputStream.toByteArray();
 
-                        return Base64.encodeBytes(byteArray);
-                    }
+                    return Base64.encodeBytes(byteArray);
                 })
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String s) throws Exception {
-                        presenter.updateImageProfile(s);
-                    }
-                }, new Consumer<Throwable>() {
+                .subscribe(s -> presenter.updateImageProfile(s), new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         Toast.makeText(getActivity(), throwable.toString(), Toast.LENGTH_LONG).show();
                     }
                 });
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_change_password) {
+            doChangePassword();
+        }
+
+        if (id == R.id.action_logout) {
+            doLogout();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void doLogout() {
+        presenter.logout();
+    }
+
+    private void doChangePassword() {
+        ChangePasswordDialogFragment changePasswordDialogFragment = ChangePasswordDialogFragment.newInstance(Chaskify
+                .getInstance()
+                .getDefaultSession()
+                .get()
+                .getCredentials()
+                .getUsername());
+        changePasswordDialogFragment.show(((AppCompatActivity) getActivity()).getSupportFragmentManager(), ChangePasswordDialogFragment.class.getSimpleName());
     }
 
     private void pickFromCamera() {

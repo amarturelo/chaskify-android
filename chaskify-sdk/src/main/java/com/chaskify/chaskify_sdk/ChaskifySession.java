@@ -1,7 +1,10 @@
 package com.chaskify.chaskify_sdk;
 
 import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Looper;
 
+import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallbackSuccess;
 import com.chaskify.chaskify_sdk.rest.client.CalendarTaskRestClient;
 import com.chaskify.chaskify_sdk.rest.client.LoginRestClient;
@@ -110,6 +113,10 @@ public class ChaskifySession {
         mProfileRestClient.updateProfile(phone, callback);
     }
 
+    public void logout(final ApiCallbackSuccess callback) throws TokenNotFoundException {
+        mLoginRestClient.logout(callback);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -118,6 +125,13 @@ public class ChaskifySession {
         ChaskifySession that = (ChaskifySession) o;
 
         return mChaskifyCredentials != null ? mChaskifyCredentials.equals(that.mChaskifyCredentials) : that.mChaskifyCredentials == null;
+    }
+
+    @Override
+    public String toString() {
+        return "ChaskifySession{" +
+                "mChaskifyCredentials=" + mChaskifyCredentials +
+                '}';
     }
 
     @Override

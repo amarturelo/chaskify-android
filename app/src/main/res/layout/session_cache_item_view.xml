@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -10,33 +11,37 @@
         android:id="@+id/profile_image"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@drawable/default_avatar" />
+        tools:src="@drawable/default_avatar" />
 
     <LinearLayout
         android:id="@+id/form_profile_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/action_more"
+        android:layout_toLeftOf="@+id/action_menu"
         android:layout_toRightOf="@+id/profile_image"
         android:orientation="vertical"
         android:paddingLeft="8dp">
 
 
         <TextView
+            android:id="@+id/profile_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Alberto Marturelo Lorenzo" />
+            android:textColor="@color/yellow"
+            android:textSize="16sp"
+            tools:text="Alberto Marturelo Lorenzo" />
 
         <TextView
+            android:id="@+id/profile_team_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="1 notificacion nueva" />
+            tools:text="Chaskify" />
 
     </LinearLayout>
 
     <FrameLayout
-        android:id="@+id/action_more"
+        android:id="@+id/action_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

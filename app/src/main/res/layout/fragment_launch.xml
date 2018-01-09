@@ -19,7 +19,7 @@
             android:src="@drawable/logo" />
 
         <com.chaskify.android.ui.widget.MultiStateView
-            android:id="@+id/multistate_profile_cache"
+            android:id="@+id/multi_state_profile_cache"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
@@ -44,32 +44,32 @@
                     android:layout_below="@+id/title"
                     android:paddingBottom="8dp"
                     android:paddingTop="8dp"
-                    tools:listitem="@layout/widget_chaskify_session_cache" />
+                    tools:listitem="@layout/session_cache_item_view" />
 
                 <LinearLayout
                     android:id="@+id/action_create_session"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:orientation="horizontal"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical"
                     android:padding="8dp">
 
-                    <ImageButton
-                        style="@style/ChaskifyButton"
+                    <ProgressBar
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:tint="@android:color/white"
-                        app:srcCompat="@drawable/ic_person_add_black_24dp" />
+                        android:layout_gravity="center_horizontal"
+                        android:visibility="gone" />
 
-                    <TextView
+                    <Button
+                        android:id="@+id/change_password_bottom"
+                        style="@style/ChaskifyButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:padding="8dp"
-                        android:text="Iniciar session en otra cuenta" />
+                        android:text="@string/action_sign_in_short" />
 
                 </LinearLayout>
+
             </RelativeLayout>
 
 

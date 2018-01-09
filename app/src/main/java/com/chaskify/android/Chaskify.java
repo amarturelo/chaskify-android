@@ -4,11 +4,12 @@ import android.content.Context;
 
 import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
-import com.annimon.stream.function.Consumer;
 import com.chaskify.android.store.LoginStorage;
 import com.chaskify.android.store.ConfigurationServerStorage;
 import com.chaskify.android.store.PreferenceStorage;
 import com.chaskify.chaskify_sdk.ChaskifySession;
+import com.chaskify.chaskify_sdk.rest.callback.ApiCallbackSuccess;
+import com.chaskify.chaskify_sdk.rest.exceptions.TokenNotFoundException;
 import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
 import com.chaskify.domain.model.Credentials;
 
@@ -16,8 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.functions.Action;
+import timber.log.Timber;
 
 /**
  * Created by alberto on 9/12/17.
@@ -74,13 +74,26 @@ public class Chaskify {
             emitter.onComplete();
         })
                 .doOnComplete(() -> Stream.of(mAccountStorage.getCredentials())
-                        .forEach(credentials -> addSession(createSession(credentials))));
+                        .forEach(credentials -> mChaskifySessions.add(createSession(credentials))));
     }
 
-    public synchronized void addSession(ChaskifySession chaskifySession) {
+    public synchronized void addSession(ChaskifySession chaskifySession, String password) {
         synchronized (LOG_TAG) {
-            mChaskifySessions.add(chaskifySession);
+            if (mAccountStorage
+                    .addCredentials(new Credentials()
+                                    .setUsername(chaskifySession.getCredentials().getUsername())
+                                    .setDriverId(chaskifySession.getCredentials().getDriverId())
+                                    .setAccessToken(chaskifySession.getCredentials().getAccessToken())
+                            , password
+                    )) {
+                mChaskifySessions.add(chaskifySession);
+                setDefault(chaskifySession);
+            }
         }
+    }
+
+    public void setDefault(ChaskifySession chaskifySession) {
+        mPreferenceStorage.setDefault(chaskifySession.getCredentials().getUsername());
     }
 
     public static ChaskifySession createSession(Credentials credentials) {
@@ -101,6 +114,44 @@ public class Chaskify {
         return sessions;
     }
 
-    public void logout(ChaskifySession chaskifySession) {
+    public void logout(ChaskifySession chaskifySession, ApiCallbackSuccess callback) throws TokenNotFoundException {
+        Timber.d("::logout " + chaskifySession.toString() + " ::");
+
+        ApiCallbackSuccess c = new ApiCallbackSuccess() {
+            @Override
+            public void onSuccess() {
+                invalidateSession(chaskifySession);
+                callback.onSuccess();
+            }
+
+            @Override
+            public void onNetworkError(Exception e) {
+                invalidateSession(chaskifySession);
+                callback.onNetworkError(e);
+            }
+
+            @Override
+            public void onChaskifyError(Exception e) {
+                invalidateSession(chaskifySession);
+                callback.onChaskifyError(e);
+            }
+
+            @Override
+            public void onUnexpectedError(Exception e) {
+                invalidateSession(chaskifySession);
+                callback.onUnexpectedError(e);
+            }
+        };
+
+        chaskifySession.logout(c);
+    }
+
+    private void invalidateSession(ChaskifySession chaskifySession) {
+        mAccountStorage.invalidateCredentials(chaskifySession.getCredentials().getUsername());
+        mPreferenceStorage.removeDefault(chaskifySession.getCredentials().getUsername());
+    }
+
+    private void clear(ChaskifySession chaskifySession) {
+
     }
 }

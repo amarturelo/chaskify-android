@@ -9,7 +9,6 @@ import com.chaskify.data.realm.cache.ProfileCache;
 import com.chaskify.data.repositories.datasource.ProfileDataStore;
 import com.chaskify.domain.model.Profile;
 
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 
@@ -56,11 +55,11 @@ public class CloudProfileDataStore implements ProfileDataStore {
                 .doOnSuccess(profile -> profileCache.put(new RealmProfile()
                         .setDriverId(profile.getDriver_id())
                         .setColor(profile.getColor())
-                        .setDriverPicture(profile.getDriver_picture())
+                        .setDriverPicture(profile.getDriverPicture())
                         .setEmail(profile.getEmail())
                         .setLicencePlate(profile.getLicence_plate())
                         .setPhone(profile.getPhone())
-                        .setTeamName(profile.getTeam_name())
+                        .setTeamName(profile.getTeamName())
                         .setTransportDescription(profile.getTransport_description())
                         .setTransportTypeId(profile.getTransport_type_id())
                         .setTransportTypeId2(profile.getTransport_type_id2())

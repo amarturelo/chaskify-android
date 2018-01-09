@@ -48,34 +48,11 @@ public class SettingsProfileActivity extends AbstractSwipeBackActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_change_password) {
-            doChangePassword();
-            return true;
-        }
-
-        if (id == R.id.action_logout) {
-            doLogout();
-            return true;
-        }
-
         if (id == android.R.id.home)
             onBackPressed();
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void doLogout() {
 
-    }
-
-    private void doChangePassword() {
-        ChangePasswordDialogFragment changePasswordDialogFragment = ChangePasswordDialogFragment.newInstance(Chaskify
-                .getInstance()
-                .getDefaultSession()
-                .get()
-                .getCredentials()
-                .getUsername());
-        changePasswordDialogFragment.show(getSupportFragmentManager(), ChangePasswordDialogFragment.class.getSimpleName());
-    }
 }
