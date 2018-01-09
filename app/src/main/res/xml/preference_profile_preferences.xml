@@ -54,7 +54,7 @@
             android:key="@string/key_preference_enable_push"
             android:title="@string/title_preference_enable_push" />
         <Preference
-            android:dependency="@string/key_preference_enable_push"
+            android:dependency="@string/key_preference_notifications_sound"
             android:summary="ring ring"
             android:title="@string/title_preference_notification_sound" />
     </PreferenceCategory>

@@ -1,10 +1,10 @@
 package com.chaskify.android.ui.fragments.settings;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.SwitchPreference;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -28,10 +28,8 @@ import com.chaskify.domain.interactors.ProfileInteractor;
 import com.marchinram.rxgallery.RxGallery;
 
 import java.io.ByteArrayOutputStream;
-import java.util.List;
 
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import timber.log.Timber;
 
 /**
@@ -54,6 +52,10 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
     private Preference mPreferenceVehicleDescription;
     private Preference mPreferenceVehicleLicense;
     private Preference mPreferenceVehicleColor;
+
+    private SwitchPreference mPreferencePushNotifications;
+
+    private Preference mPreferenceNotificationsSound;
 
     private ProfilePreferenceWidget mProfilePreferenceWidget;
 
@@ -138,6 +140,18 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
             return false;
         });
 
+        mPreferencePushNotifications = (SwitchPreference) findPreference(getResources().getString(R.string.key_preference_enable_push));
+        mPreferencePushNotifications.setOnPreferenceChangeListener((preference, newValue) -> {
+            presenter.updateSettingsPush((Boolean) newValue);
+            return true;
+        });
+
+        mPreferenceNotificationsSound = findPreference(getResources().getString(R.string.key_preference_notifications_sound));
+        mPreferenceNotificationsSound.setOnPreferenceChangeListener((preference, newValue) -> {
+            presenter.updateSettingsSound((String) newValue);
+            return false;
+        });
+
         mProfilePreferenceWidget = (ProfilePreferenceWidget) findPreference(getResources().getString(R.string.key_preference_profile));
     }
 
@@ -150,7 +164,6 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
     public void hideProgress() {
 
     }
-
 
     @Override
     public void logoutComplete() {
@@ -191,7 +204,7 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
 
     private void pickImageDialog() {
         new AlertDialog.Builder(getActivity())
-                .setItems(R.array.picker_image_values, (dialog, which) -> {
+                .setItems(R.array.array_picker_image_values, (dialog, which) -> {
                     switch (which) {
                         case 0:
                             pickFromCamera();

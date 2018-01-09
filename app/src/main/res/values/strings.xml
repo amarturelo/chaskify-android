@@ -171,4 +171,5 @@
     <string name="error_password_not_match">The new password not match with the confirm</string>
     <string name="title_init_session">Touch for init session</string>
     <string name="title_input_password">Input your password</string>
+    <string name="key_preference_notifications_sound">key_preference_notifications_sound</string>
 </resources>

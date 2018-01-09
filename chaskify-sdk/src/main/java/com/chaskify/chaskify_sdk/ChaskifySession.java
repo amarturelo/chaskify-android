@@ -104,6 +104,14 @@ public class ChaskifySession {
         mProfileRestClient.updateVehicle(transport_type_id, transport_description, licence_plate, color, callback);
     }
 
+    public void updateSettingsPush(boolean enable, ApiCallbackSuccess callback) throws TokenNotFoundException {
+        mSettingsRestClient.updateSettingsPush(enable, callback);
+    }
+
+    public void updateSettingsSound(String sound, ApiCallbackSuccess callback) throws TokenNotFoundException {
+        mSettingsRestClient.updateSettingsSound(sound, callback);
+    }
+
     public void updateImageProfile(String base64, ApiCallbackSuccess callback) throws TokenNotFoundException {
         mProfileRestClient.updateImageProfileBase64(base64, callback);
     }

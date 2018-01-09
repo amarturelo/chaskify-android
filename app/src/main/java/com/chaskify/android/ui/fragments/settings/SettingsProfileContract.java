@@ -36,5 +36,9 @@ public interface SettingsProfileContract {
         void updateImageProfile(String base64);
 
         void logout();
+
+        void updateSettingsPush(boolean enable);
+
+        void updateSettingsSound(String sound);
     }
 }

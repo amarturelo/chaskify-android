@@ -33,12 +33,76 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
     }
 
     @Override
+    public void updateSettingsSound(String sound) {
+        addSubscription(doUpdateSettingsSound(sound)
+                .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> view.complete(), throwable -> view.showError(throwable)));
+    }
+
+    private Completable doUpdateSettingsSound(String sound) {
+        return Completable.create(emitter -> mChaskifySession.updateSettingsSound(sound, new ApiCallbackSuccess() {
+            @Override
+            public void onSuccess() {
+                emitter.onComplete();
+            }
+
+            @Override
+            public void onNetworkError(Exception e) {
+                emitter.onError(e);
+            }
+
+            @Override
+            public void onChaskifyError(Exception e) {
+                emitter.onError(e);
+            }
+
+            @Override
+            public void onUnexpectedError(Exception e) {
+                emitter.onError(e);
+            }
+        }));
+    }
+
+    @Override
+    public void updateSettingsPush(boolean enable) {
+        addSubscription(doUpdateSettingsPush(enable)
+                .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally(() -> view.logoutComplete())
+                .subscribe(() -> view.complete(), throwable -> view.showError(throwable)));
+    }
+
+    private Completable doUpdateSettingsPush(boolean enable) {
+        return Completable.create(emitter -> mChaskifySession.updateSettingsPush(enable, new ApiCallbackSuccess() {
+            @Override
+            public void onSuccess() {
+                emitter.onComplete();
+            }
+
+            @Override
+            public void onNetworkError(Exception e) {
+                emitter.onError(e);
+            }
+
+            @Override
+            public void onChaskifyError(Exception e) {
+                emitter.onError(e);
+            }
+
+            @Override
+            public void onUnexpectedError(Exception e) {
+                emitter.onError(e);
+            }
+        }));
+    }
+
+    @Override
     public void logout() {
         addSubscription(doLogout()
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .unsubscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
-                .doFinally(() -> view.logoutComplete())
                 .subscribe(() -> view.complete(), throwable -> view.showError(throwable)));
     }
 
