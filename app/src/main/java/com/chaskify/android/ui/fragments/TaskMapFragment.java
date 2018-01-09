@@ -181,7 +181,7 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        presenter.release();
     }
 
     /*@Override

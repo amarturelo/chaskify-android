@@ -64,6 +64,7 @@ public class Navigator {
     public static void goToLaunchActivity(Context context) {
         if (context != null) {
             Intent intent = LaunchActivity.getCallingIntent(context);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             context.startActivity(intent);
         }
     }

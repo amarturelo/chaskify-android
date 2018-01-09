@@ -8,10 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chaskify.android.R;
-import com.chaskify.android.adapters.CredentialsCacheListAdapter;
+import com.chaskify.android.adapters.ProfileListAdapter;
 import com.chaskify.android.adapters.listened.OnItemListened;
-import com.chaskify.android.ui.model.CredentialsCacheItemModel;
 import com.chaskify.android.ui.base.BaseFragment;
+import com.chaskify.android.ui.model.ProfileItemModel;
 import com.chaskify.android.ui.widget.MultiStateView;
 
 import java.util.List;
@@ -24,9 +24,9 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View 
 
     private MultiStateView multiStateView;
 
-    private RecyclerView mListCredentialsCache;
+    private RecyclerView mListProfile;
 
-    private CredentialsCacheListAdapter cacheListAdapter;
+    private ProfileListAdapter profileListAdapter;
 
     public LaunchFragment() {
         // Required empty public constructor
@@ -53,11 +53,18 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         multiStateView = view.findViewById(R.id.multi_state_profile_cache);
-        mListCredentialsCache = multiStateView.getView(MultiStateView.VIEW_STATE_CONTENT).findViewById(R.id.list_profile_cache);
-        mListCredentialsCache.setLayoutManager(new LinearLayoutManager(getContext()));
-        cacheListAdapter = new CredentialsCacheListAdapter();
-        mListCredentialsCache.setAdapter(cacheListAdapter);
+        mListProfile = multiStateView.getView(MultiStateView.VIEW_STATE_CONTENT).findViewById(R.id.list_profile_cache);
+        mListProfile.setLayoutManager(new LinearLayoutManager(getContext()));
+        profileListAdapter = new ProfileListAdapter();
+
+        profileListAdapter.setOnListened((view1, position) -> launchLogin(profileListAdapter.getItem(position)));
+
+        mListProfile.setAdapter(profileListAdapter);
         launchPresenter.bindView(this);
+    }
+
+    private void launchLogin(ProfileItemModel item) {
+        start(LoginFragment.newInstance(item));
     }
 
     @Override
@@ -89,9 +96,9 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View 
     }
 
     @Override
-    public void renderCredentials(List<CredentialsCacheItemModel> cacheItemModels) {
+    public void renderCredentials(List<ProfileItemModel> cacheItemModels) {
         Timber.d("::Render credentials " + cacheItemModels + "::");
-        cacheListAdapter.render(cacheItemModels);
+        profileListAdapter.render(cacheItemModels);
     }
 
 

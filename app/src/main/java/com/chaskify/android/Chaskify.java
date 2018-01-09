@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
-import com.chaskify.android.store.LoginStorage;
 import com.chaskify.android.store.ConfigurationServerStorage;
+import com.chaskify.android.store.LoginStorage;
 import com.chaskify.android.store.PreferenceStorage;
 import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallbackSuccess;
@@ -92,6 +92,22 @@ public class Chaskify {
         }
     }
 
+    public void replaceSession(ChaskifySession session, String password) {
+        synchronized (LOG_TAG) {
+            mAccountStorage
+                    .replaceCredentials(new Credentials()
+                                    .setUsername(session.getCredentials().getUsername())
+                                    .setDriverId(session.getCredentials().getDriverId())
+                                    .setAccessToken(session.getCredentials().getAccessToken())
+                            , password);
+            Stream.of(mChaskifySessions)
+                    .filter(value -> value.getCredentials().getDriverId().equals(session.getCredentials().getDriverId())).findFirst()
+                    .ifPresent(chaskifySession -> mChaskifySessions.remove(chaskifySession));
+            mChaskifySessions.add(session);
+            setDefault(session);
+        }
+    }
+
     public void setDefault(ChaskifySession chaskifySession) {
         mPreferenceStorage.setDefault(chaskifySession.getCredentials().getUsername());
     }
@@ -154,4 +170,6 @@ public class Chaskify {
     private void clear(ChaskifySession chaskifySession) {
 
     }
+
+
 }

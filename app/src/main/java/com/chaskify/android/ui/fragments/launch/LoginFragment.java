@@ -4,11 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -20,29 +18,14 @@ import android.widget.Toast;
 import com.chaskify.android.LoginHandler;
 import com.chaskify.android.R;
 import com.chaskify.android.navigation.Navigator;
-import com.chaskify.android.store.LoginStorage;
-import com.chaskify.android.store.PreferenceStorage;
-import com.chaskify.android.ui.activities.LaunchActivity;
 import com.chaskify.android.ui.base.BaseFragment;
+import com.chaskify.android.ui.model.ProfileItemModel;
 
 import static com.chaskify.android.ui.activities.LaunchActivity.ARG_ACCOUNT_NAME;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link LoginFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link LoginFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class LoginFragment extends BaseFragment implements LoginContract.View {
 
-    public static final String MODE = "arg_login_mode";
-
-    //mode
-    public static final int LOGIN_MODE = 0;
-    public static final int RE_LOGIN_MODE = 1;
-
+    public static final String PROFILE_ITEM = "arg_profile_item";
 
 
     // UI references.
@@ -50,8 +33,9 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
     private EditText mPasswordView;
     private View mProgressView;
     private View mEmailLoginFormView;
+    private View mSignInButton;
 
-    private OnFragmentInteractionListener mListener;
+    private View mFormUsername;
 
     private LoginPresenter mLoginPresenter;
 
@@ -66,22 +50,21 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
         return fragment;
     }
 
-    public static LoginFragment newInstance(String username) {
+    public static LoginFragment newInstance(ProfileItemModel profileItemModel) {
         LoginFragment fragment = new LoginFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_ACCOUNT_NAME, username);
+        args.putParcelable(PROFILE_ITEM, profileItemModel);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public String getArgAccountName() {
-        return getArguments().getString(ARG_ACCOUNT_NAME);
+    public ProfileItemModel getArgProfile() {
+        return getArguments().getParcelable(PROFILE_ITEM);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         mLoginPresenter = new LoginPresenter(
                 new LoginHandler()
@@ -93,28 +76,14 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
         return R.layout.fragment_login;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            /*throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentLaunchInteractionListener");*/
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
         mLoginPresenter.release();
     }
 
@@ -143,22 +112,6 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
         showProgress(false);
     }
 
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mLoginPresenter.bindView(this);
@@ -167,15 +120,20 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
     }
 
     private void init() {
-        if (getArgAccountName() != null) {
-            mEmailView.setText(getArgAccountName());
+        if (getArgProfile() != null) {
+            mFormUsername.setVisibility(View.VISIBLE);
+            mEmailView.setVisibility(View.GONE);
+            mEmailView.setText(getArgProfile().getDriverUsername());
+        } else {
+            mFormUsername.setVisibility(View.GONE);
+            mEmailView.setVisibility(View.VISIBLE);
         }
     }
 
     private void initView(View view) {
         // Set up the login form.
         mEmailView = view.findViewById(R.id.email);
-
+        mFormUsername = view.findViewById(R.id.form_username);
         mPasswordView = view.findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
             if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
@@ -185,8 +143,8 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
             return false;
         });
 
-        Button mEmailSignInButton = view.findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(v -> login());
+        mSignInButton = view.findViewById(R.id.email_sign_in_button);
+        mSignInButton.setOnClickListener(v -> login());
 
         mEmailLoginFormView = view.findViewById(R.id.email_login_form);
         mProgressView = view.findViewById(R.id.login_progress);
@@ -198,11 +156,6 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
         }
     }
 
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
     private boolean attemptLogin() {
 
         // Reset errors.
@@ -237,7 +190,6 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
             focusView.requestFocus();
 
         return cancel;
-
 
     }
 

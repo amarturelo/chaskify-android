@@ -169,4 +169,6 @@
     <string name="key_preference_vehicle_license">key_preference_vehicle_license</string>
     <string name="key_preference_vehicle_color">key_preference_vehicle_color</string>
     <string name="error_password_not_match">The new password not match with the confirm</string>
+    <string name="title_init_session">Touch for init session</string>
+    <string name="title_input_password">Input your password</string>
 </resources>

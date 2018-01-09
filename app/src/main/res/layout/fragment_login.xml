@@ -10,15 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.chaskify.android.ui.activities.LaunchActivity">
 
-    <ImageView
-        android:id="@+id/company_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/login_form"
-        android:layout_centerHorizontal="true"
-        android:padding="32dp"
-        android:src="@drawable/logo" />
-
 
     <LinearLayout
         android:id="@+id/login_form"
@@ -42,18 +33,46 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
-            <AutoCompleteTextView
-                android:id="@+id/email"
-                style="@style/ChaskifyEditText"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="@string/prompt_email"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:text="vane" />
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/form_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="16dp"
+                        android:src="@drawable/default_avatar" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/title_input_password" />
+                </LinearLayout>
+
+
+                <AutoCompleteTextView
+                    android:id="@+id/email"
+                    style="@style/ChaskifyEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:hint="@string/prompt_email"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="vane"
+                    android:visibility="gone" />
+            </LinearLayout>
 
 
             <EditText
@@ -69,7 +88,7 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="demo" />
+                tools:text="demo" />
 
             <Button
                 android:id="@+id/email_sign_in_button"

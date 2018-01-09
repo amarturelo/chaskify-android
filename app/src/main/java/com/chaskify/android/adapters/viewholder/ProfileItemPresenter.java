@@ -11,12 +11,12 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
  * Created by alberto on 8/01/18.
  */
 
-public class CredentialsCacheItemPresenter extends BasePresenter<CredentialsCacheItemContract.View>
-        implements CredentialsCacheItemContract.Presenter {
+public class ProfileItemPresenter extends BasePresenter<ProfileItemContract.View>
+        implements ProfileItemContract.Presenter {
 
     private ProfileInteractor profileInteractor;
 
-    public CredentialsCacheItemPresenter(ProfileInteractor profileInteractor) {
+    public ProfileItemPresenter(ProfileInteractor profileInteractor) {
         this.profileInteractor = profileInteractor;
     }
 
@@ -27,8 +27,8 @@ public class CredentialsCacheItemPresenter extends BasePresenter<CredentialsCach
                 .unsubscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(profile -> view.renderProfile(new ProfileItemModel()
-                                .setmTeamName(profile.getTeamName())
-                                .setmProfileImage(profile.getDriverPicture()))
+                                .setTeamName(profile.getTeamName())
+                                .setProfileImage(profile.getDriverPicture()))
                         , throwable -> view.showError(throwable))
         );
     }

@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.chaskify.android.R;
-import com.chaskify.android.ui.model.CredentialsCacheItemModel;
+import com.chaskify.android.adapters.listened.OnItemListened;
 import com.chaskify.android.ui.model.ProfileItemModel;
 import com.chaskify.data.realm.cache.impl.ProfileCacheImpl;
 import com.chaskify.data.repositories.RealmProfileRepositoryImpl;
@@ -18,24 +18,26 @@ import com.chaskify.domain.interactors.ProfileInteractor;
  * Created by alberto on 8/01/18.
  */
 
-public class CredentialsCacheItemViewHolder extends RecyclerView.ViewHolder implements CredentialsCacheItemContract.View {
+public class ProfileItemViewHolder extends RecyclerView.ViewHolder implements ProfileItemContract.View, View.OnClickListener {
+
+    private OnItemListened mListened;
 
     public ImageView mProfileImage;
     public TextView mProfileUsername;
     public TextView mProfileTeamName;
     public View mActionMenu;
 
-    private CredentialsCacheItemModel mCredentialsCacheItemModel;
+    private ProfileItemModel mProfileItemModel;
 
-    private CredentialsCacheItemPresenter presenter;
+    private ProfileItemPresenter presenter;
 
-    public CredentialsCacheItemViewHolder(View itemView) {
+    public ProfileItemViewHolder(View itemView) {
         super(itemView);
         mProfileImage = itemView.findViewById(R.id.profile_image);
         mProfileUsername = itemView.findViewById(R.id.profile_username);
         mProfileTeamName = itemView.findViewById(R.id.profile_team_name);
         mActionMenu = itemView.findViewById(R.id.action_menu);
-        presenter = new CredentialsCacheItemPresenter(
+        presenter = new ProfileItemPresenter(
                 new ProfileInteractor(
                         new RealmProfileRepositoryImpl(
                                 new DiskProfileDataStore(
@@ -43,19 +45,26 @@ public class CredentialsCacheItemViewHolder extends RecyclerView.ViewHolder impl
                                 )
                         )
                 ));
+
+        itemView.setOnClickListener(this);
     }
 
-    public void onBind(CredentialsCacheItemModel itemModel) {
+    public ProfileItemViewHolder setListened(OnItemListened mListened) {
+        this.mListened = mListened;
+        return this;
+    }
+
+    public void onBind(ProfileItemModel itemModel) {
         presenter.release();
 
-        this.mCredentialsCacheItemModel = itemModel;
+        this.mProfileItemModel = itemModel;
         presenter.bindView(this);
         mProfileUsername.setText(itemModel.getDriverUsername());
         presenter.profile(itemModel.getDriverId());
     }
 
-    public CredentialsCacheItemModel getCredentialsCacheItemModel() {
-        return mCredentialsCacheItemModel;
+    public ProfileItemModel getProfileItemModel() {
+        return mProfileItemModel;
     }
 
     @Override
@@ -75,10 +84,16 @@ public class CredentialsCacheItemViewHolder extends RecyclerView.ViewHolder impl
 
     @Override
     public void renderProfile(ProfileItemModel profileItemModel) {
-        mProfileTeamName.setText(profileItemModel.getmTeamName());
-
+        this.mProfileItemModel.setProfileImage(profileItemModel.getProfileImage());
+        mProfileTeamName.setText(profileItemModel.getTeamName());
         Glide.with(itemView.getContext())
-                .load(profileItemModel.getmProfileImage())
+                .load(profileItemModel.getProfileImage())
                 .into(mProfileImage);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (mListened != null)
+            mListened.onClickItem(v, getAdapterPosition());
     }
 }

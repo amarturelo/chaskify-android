@@ -151,8 +151,10 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
 
     }
 
+
     @Override
     public void logoutComplete() {
+        getActivity().finish();
         Navigator.goToLaunchActivity(getActivity());
     }
 
@@ -240,6 +242,12 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
             doLogout();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        presenter.release();
     }
 
     private void doLogout() {

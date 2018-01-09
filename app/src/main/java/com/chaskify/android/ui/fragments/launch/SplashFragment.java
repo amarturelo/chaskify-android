@@ -83,7 +83,7 @@ public class SplashFragment extends BaseFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+
 
     }
 

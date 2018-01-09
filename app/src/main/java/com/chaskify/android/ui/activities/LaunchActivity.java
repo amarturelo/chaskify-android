@@ -45,7 +45,7 @@ public class LaunchActivity extends BaseActivity {
             if (getArgAddingNewAccount())
                 loadRootFragment(R.id.fragment, LoginFragment.newInstance());
             else if (getArgAccountName().isPresent())
-                loadRootFragment(R.id.fragment, LoginFragment.newInstance(getArgAccountName().get()));
+                loadRootFragment(R.id.fragment, LoginFragment.newInstance());
             else
                 loadRootFragment(R.id.fragment, LaunchFragment.newInstance());
     }
@@ -62,7 +62,6 @@ public class LaunchActivity extends BaseActivity {
 
     private Optional<String> getArgAccountName() {
         return getIntent().getStringExtra(ARG_ACCOUNT_NAME) == null ? Optional.empty() : Optional.of(getIntent().getStringExtra(ARG_ACCOUNT_NAME));
-
     }
 
     @Override

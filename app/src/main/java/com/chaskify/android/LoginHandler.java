@@ -63,12 +63,14 @@ public class LoginHandler {
                 .setAccessToken(chaskifyCredentials.getAccessToken());
 
         Collection<ChaskifySession> sessions = Chaskify.getInstance().getSessions();
+        ChaskifySession session = Chaskify.createSession(credentials);
 
         if (Stream.of(sessions)
                 .filter(value -> TextUtils.equals(credentials.getDriverId(), value.getCredentials().getDriverId()))
                 .toList().isEmpty()) {
-            ChaskifySession session = Chaskify.createSession(credentials);
             Chaskify.getInstance().addSession(session, password);
+        }else{
+            Chaskify.getInstance().replaceSession(session, password);
         }
         callback.onSuccess(credentials);
     }

@@ -7,7 +7,7 @@ import com.chaskify.android.ui.model.ProfileItemModel;
  * Created by alberto on 8/01/18.
  */
 
-public interface CredentialsCacheItemContract {
+public interface ProfileItemContract {
     interface View extends BaseContract.View {
 
         void showProgress();
@@ -19,7 +19,7 @@ public interface CredentialsCacheItemContract {
         void renderProfile(ProfileItemModel profileItemModel);
     }
 
-    interface Presenter extends BaseContract.Presenter<CredentialsCacheItemContract.View> {
+    interface Presenter extends BaseContract.Presenter<ProfileItemContract.View> {
         void profile(String driverId);
         //void changePassword();
     }
