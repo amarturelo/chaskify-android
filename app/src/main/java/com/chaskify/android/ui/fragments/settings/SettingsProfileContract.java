@@ -2,6 +2,7 @@ package com.chaskify.android.ui.fragments.settings;
 
 import com.chaskify.android.shared.BaseContract;
 import com.chaskify.android.ui.model.ProfileModel;
+import com.chaskify.android.ui.model.SettingsModel;
 
 /**
  * Created by alberto on 3/01/18.
@@ -21,6 +22,8 @@ public interface SettingsProfileContract {
         void complete();
 
         void logoutComplete();
+
+        void renderSettings(SettingsModel settingsModel);
     }
 
     interface Presenter extends BaseContract.Presenter<SettingsProfileContract.View> {
@@ -40,5 +43,7 @@ public interface SettingsProfileContract {
         void updateSettingsPush(boolean enable);
 
         void updateSettingsSound(String sound);
+
+        void settings(String driverId);
     }
 }

@@ -5,18 +5,18 @@ package com.chaskify.domain.model;
  */
 
 public class Settings {
-    public String enabledPush;
+    public boolean enabledPush;
     public String driverId;
     public Icons icons;
 
     public Settings() {
     }
 
-    public String getEnabledPush() {
+    public boolean isEnabledPush() {
         return enabledPush;
     }
 
-    public Settings setEnabledPush(String enabledPush) {
+    public Settings setEnabledPush(boolean enabledPush) {
         this.enabledPush = enabledPush;
         return this;
     }

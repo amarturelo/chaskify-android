@@ -36,22 +36,26 @@ public class CloudSettingsDataStore implements SettingsDataStore {
         return Single.create((SingleOnSubscribe<ChaskifySettings>) emitter -> mSettingsRestClient.getSettings(new ApiCallback<ChaskifySettings>() {
             @Override
             public void onSuccess(ChaskifySettings chaskifySettings) {
-                emitter.onSuccess(chaskifySettings);
+                if (emitter != null && !emitter.isDisposed())
+                    emitter.onSuccess(chaskifySettings);
             }
 
             @Override
             public void onNetworkError(Exception e) {
-                emitter.onError(e);
+                if (emitter != null && !emitter.isDisposed())
+                    emitter.onError(e);
             }
 
             @Override
             public void onChaskifyError(Exception e) {
-                emitter.onError(e);
+                if (emitter != null && !emitter.isDisposed())
+                    emitter.onError(e);
             }
 
             @Override
             public void onUnexpectedError(Exception e) {
-                emitter.onError(e);
+                if (emitter != null && !emitter.isDisposed())
+                    emitter.onError(e);
             }
         }))
                 .map(SettingsDataMapper::transform)

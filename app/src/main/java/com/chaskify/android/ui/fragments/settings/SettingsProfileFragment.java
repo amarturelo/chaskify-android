@@ -2,6 +2,7 @@ package com.chaskify.android.ui.fragments.settings;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Looper;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
@@ -18,13 +19,15 @@ import com.chaskify.android.R;
 import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.fragments.ChangePasswordDialogFragment;
 import com.chaskify.android.ui.model.ProfileModel;
+import com.chaskify.android.ui.model.SettingsModel;
 import com.chaskify.android.ui.widget.ProfilePreferenceWidget;
 import com.chaskify.chaskify_sdk.crypto.Base64;
 import com.chaskify.data.realm.cache.impl.ProfileCacheImpl;
+import com.chaskify.data.realm.cache.impl.SettingsCacheImpl;
 import com.chaskify.data.repositories.ProfileRepositoryImpl;
-import com.chaskify.data.repositories.datasource.cloud.CloudProfileDataStore;
-import com.chaskify.data.repositories.datasource.disk.DiskProfileDataStore;
+import com.chaskify.data.repositories.SettingsRepositoryImpl;
 import com.chaskify.domain.interactors.ProfileInteractor;
+import com.chaskify.domain.interactors.SettingsInteractor;
 import com.marchinram.rxgallery.RxGallery;
 
 import java.io.ByteArrayOutputStream;
@@ -66,44 +69,44 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
         super.onCreate(savedInstanceState);
         Timber.tag(this.getClass().getSimpleName());
 
-        presenter = new SettingsProfilePresenter(
-                new ProfileInteractor(
-                        new ProfileRepositoryImpl(
-                                new ProfileCacheImpl()
-                                , Chaskify.getInstance()
-                                .getDefaultSession()
-                                .get().getProfileRestClient()
-                        )
-                )
-                , Chaskify.getInstance()
-                .getDefaultSession()
-                .get()
-        );
-
-        presenter.bindView(this);
 
         addPreferencesFromResource(R.xml.preference_profile_preferences);
         initComponents();
 
-        initFragment(savedInstanceState);
+        Chaskify.getInstance().getDefaultSession()
+                .executeIfAbsent(this::goToLaunch)
+                .ifPresent(chaskifySession -> {
+                    presenter = new SettingsProfilePresenter(
+                            new ProfileInteractor(
+                                    new ProfileRepositoryImpl(
+                                            new ProfileCacheImpl()
+                                            , chaskifySession.getProfileRestClient()
+                                    )
+                            )
+                            , new SettingsInteractor(
+                            new SettingsRepositoryImpl(
+                                    new SettingsCacheImpl()
+                                    , chaskifySession.getSettingsRestClient())
+                    )
+                            , Chaskify.getInstance()
+                            .getDefaultSession()
+                            .get()
+                    );
+                    presenter.bindView(this);
+                    initListenedPreferenceChange();
+
+                    presenter.profile(chaskifySession.getCredentials().getDriverId());
+                    presenter.settings(chaskifySession.getCredentials().getDriverId());
+                });
+
     }
 
-    private void initFragment(Bundle savedInstanceState) {
-        presenter.profile(Chaskify.getInstance()
-                .getDefaultSession()
-                .get()
-                .getCredentials()
-                .getDriverId());
-    }
-
-    private void initComponents() {
-        mPreferenceEmail = findPreference(getResources().getString(R.string.key_preference_driver_mail));
-        mPreferenceContact = findPreference(getResources().getString(R.string.key_preference_driver_phone));
+    private void initListenedPreferenceChange() {
         mPreferenceContact.setOnPreferenceChangeListener((preference, newValue) -> {
             presenter.updateProfile(newValue.toString());
             return false;
         });
-        mPreferenceVehicleType = findPreference(getResources().getString(R.string.key_preference_vehicle_type));
+
         mPreferenceVehicleType.setOnPreferenceChangeListener((preference, newValue) -> {
             presenter.updateProfileVehicle(newValue.toString()
                     , mPreferenceVehicleDescription.getSummary().toString()
@@ -111,7 +114,7 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
                     , mPreferenceVehicleColor.getSummary().toString());
             return false;
         });
-        mPreferenceVehicleDescription = findPreference(getResources().getString(R.string.key_preference_vehicle_description));
+
         mPreferenceVehicleDescription.setOnPreferenceChangeListener((preference, newValue) -> {
             presenter.updateProfileVehicle(mPreferenceVehicleType.getSummary().toString()
                     , newValue.toString()
@@ -119,7 +122,7 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
                     , mPreferenceVehicleColor.getSummary().toString());
             return false;
         });
-        mPreferenceVehicleLicense = findPreference(getResources().getString(R.string.key_preference_vehicle_license));
+
         mPreferenceVehicleLicense.setOnPreferenceChangeListener((preference, newValue) -> {
             presenter.updateProfileVehicle(mPreferenceVehicleType.getSummary().toString()
                     , mPreferenceVehicleDescription.getSummary().toString()
@@ -127,7 +130,7 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
                     , mPreferenceVehicleColor.getSummary().toString());
             return false;
         });
-        mPreferenceVehicleColor = findPreference(getResources().getString(R.string.key_preference_vehicle_color));
+
         mPreferenceVehicleColor.setOnPreferenceChangeListener((preference, newValue) -> {
             presenter.updateProfileVehicle(mPreferenceVehicleType.getSummary().toString()
                     , mPreferenceVehicleDescription.getSummary().toString()
@@ -136,24 +139,31 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
             return false;
         });
 
-        mPreferencePushNotifications = (SwitchPreference) findPreference(getResources().getString(R.string.key_preference_enable_push));
         mPreferencePushNotifications.setOnPreferenceChangeListener((preference, newValue) -> {
             presenter.updateSettingsPush((Boolean) newValue);
-            return true;
+            return false;
         });
 
-        mPreferenceNotificationsSound = findPreference(getResources().getString(R.string.key_preference_notifications_sound));
         mPreferenceNotificationsSound.setOnPreferenceChangeListener((preference, newValue) -> {
             presenter.updateSettingsSound((String) newValue);
             return false;
         });
+    }
 
+    private void initComponents() {
+        mPreferenceEmail = findPreference(getResources().getString(R.string.key_preference_driver_mail));
+        mPreferenceContact = findPreference(getResources().getString(R.string.key_preference_driver_phone));
+        mPreferenceVehicleType = findPreference(getResources().getString(R.string.key_preference_vehicle_type));
+        mPreferenceVehicleDescription = findPreference(getResources().getString(R.string.key_preference_vehicle_description));
+        mPreferenceVehicleLicense = findPreference(getResources().getString(R.string.key_preference_vehicle_license));
+        mPreferenceVehicleColor = findPreference(getResources().getString(R.string.key_preference_vehicle_color));
+        mPreferencePushNotifications = (SwitchPreference) findPreference(getResources().getString(R.string.key_preference_enable_push));
+        mPreferenceNotificationsSound = findPreference(getResources().getString(R.string.key_preference_notifications_sound));
         mProfilePreferenceWidget = (ProfilePreferenceWidget) findPreference(getResources().getString(R.string.key_preference_profile));
     }
 
     @Override
     public void showProgress() {
-
     }
 
     @Override
@@ -162,9 +172,19 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
     }
 
     @Override
+    public void renderSettings(SettingsModel settingsModel) {
+        mPreferencePushNotifications.setChecked(settingsModel.isEnabledPush());
+    }
+
+    @Override
     public void logoutComplete() {
         getActivity().finish();
         Navigator.goToLaunchActivity(getActivity());
+    }
+
+    private void goToLaunch() {
+        Navigator.goToLaunchActivity(getActivity());
+        getActivity().finish();
     }
 
     @Override
@@ -287,17 +307,7 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
                     byte[] byteArray = byteArrayOutputStream.toByteArray();
                     return Base64.encodeBytes(byteArray);
                 })
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String s) throws Exception {
-                        presenter.updateImageProfile(s);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getActivity(), throwable.toString(), Toast.LENGTH_LONG).show();
-                    }
-                });
+                .subscribe(s -> presenter.updateImageProfile(s), throwable -> Toast.makeText(getActivity(), throwable.toString(), Toast.LENGTH_LONG).show());
     }
 
 }

@@ -5,14 +5,15 @@ import com.chaskify.android.Chaskify;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
 import com.chaskify.android.ui.model.mapper.ProfileModelDataMapper;
+import com.chaskify.android.ui.model.mapper.SettingsModelDataMapper;
 import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallbackSuccess;
 import com.chaskify.domain.interactors.ProfileInteractor;
+import com.chaskify.domain.interactors.SettingsInteractor;
 import com.chaskify.domain.model.Profile;
+import com.chaskify.domain.model.Settings;
 
 import io.reactivex.Completable;
-import io.reactivex.CompletableEmitter;
-import io.reactivex.CompletableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 
@@ -25,11 +26,14 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
 
     private ProfileInteractor profileInteractor;
 
+    private SettingsInteractor settingsInteractor;
+
     private ChaskifySession mChaskifySession;
 
-    public SettingsProfilePresenter(ProfileInteractor profileInteractor, ChaskifySession chaskifySession) {
+    public SettingsProfilePresenter(ProfileInteractor profileInteractor, SettingsInteractor settingsInteractor, ChaskifySession mChaskifySession) {
         this.profileInteractor = profileInteractor;
-        this.mChaskifySession = chaskifySession;
+        this.settingsInteractor = settingsInteractor;
+        this.mChaskifySession = mChaskifySession;
     }
 
     @Override
@@ -69,7 +73,6 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
         addSubscription(doUpdateSettingsPush(enable)
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
-                .doFinally(() -> view.logoutComplete())
                 .subscribe(() -> view.complete(), throwable -> view.showError(throwable)));
     }
 
@@ -131,10 +134,19 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
     }
 
     @Override
+    public void settings(String driverId) {
+        addSubscription(settingsInteractor.settingsByDriverId(driverId)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(consumerSuccessSettings, error));
+    }
+
+    @Override
     public void updateImageProfile(String base64) {
         addSubscription(doUpdateImageProfile(base64)
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
-                .unsubscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> view.complete(), throwable -> view.showError(throwable)));
     }
@@ -143,22 +155,26 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
         return Completable.create(emitter -> mChaskifySession.updateImageProfile(base64, new ApiCallbackSuccess() {
             @Override
             public void onSuccess() {
-                emitter.onComplete();
+                if (emitter != null && !emitter.isDisposed())
+                    emitter.onComplete();
             }
 
             @Override
             public void onNetworkError(Exception e) {
-                emitter.onError(e);
+                if (emitter != null && !emitter.isDisposed())
+                    emitter.onError(e);
             }
 
             @Override
             public void onChaskifyError(Exception e) {
-                emitter.onError(e);
+                if (emitter != null && !emitter.isDisposed())
+                    emitter.onError(e);
             }
 
             @Override
             public void onUnexpectedError(Exception e) {
-                emitter.onError(e);
+                if (emitter != null && !emitter.isDisposed())
+                    emitter.onError(e);
             }
         }));
     }
@@ -169,7 +185,6 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
                 .doOnSubscribe(disposable -> view.showProgress())
                 .doFinally(() -> view.hideProgress())
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
-                .unsubscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> view.complete(), throwable -> view.showError(throwable)));
     }
@@ -241,11 +256,13 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
                 .map(Optional::get)
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(success, error));
+                .subscribe(consumerSuccessProfile, error));
     }
 
     private Consumer<Throwable> error = throwable -> view
             .showError(throwable);
-    private Consumer<Profile> success = profile -> view
+    private Consumer<Profile> consumerSuccessProfile = profile -> view
             .renderProfile(ProfileModelDataMapper.transform(profile));
+    private Consumer<Settings> consumerSuccessSettings = profile -> view
+            .renderSettings(SettingsModelDataMapper.transform(profile));
 }

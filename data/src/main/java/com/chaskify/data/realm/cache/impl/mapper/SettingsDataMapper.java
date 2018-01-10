@@ -23,7 +23,7 @@ public class SettingsDataMapper {
     public static RealmSettings transform(Settings settings) {
         RealmSettings realmSettings = new RealmSettings();
         realmSettings.setDriverId(realmSettings.getDriverId());
-        realmSettings.setEnabledPush(realmSettings.getEnabledPush());
+        realmSettings.setEnabledPush(realmSettings.isEnabledPush());
         realmSettings.setIcons(IconsDataMapper.transform(settings.getIcons()));
         return realmSettings;
     }

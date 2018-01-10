@@ -8,18 +8,18 @@ import io.realm.RealmObject;
 
 public class RealmSettings extends RealmObject {
     public static final String DRIVER_ID = "driverId";
-    public String enabledPush;
+    public boolean enabledPush;
     public String driverId;
     public RealmIcons icons;
 
     public RealmSettings() {
     }
 
-    public String getEnabledPush() {
+    public boolean isEnabledPush() {
         return enabledPush;
     }
 
-    public RealmSettings setEnabledPush(String enabledPush) {
+    public RealmSettings setEnabledPush(boolean enabledPush) {
         this.enabledPush = enabledPush;
         return this;
     }

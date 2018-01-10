@@ -22,7 +22,7 @@ public class SettingsDataMapper {
     public static Settings transform(ChaskifySettings chaskifySettings) {
         Settings settings = new Settings();
         settings.setDriverId(chaskifySettings.getDriverId());
-        settings.setEnabledPush(chaskifySettings.getEnabledPush());
+        settings.setEnabledPush(chaskifySettings.getEnabledPush().equals("1"));
         settings.setIcons(IconsDataMapper.transform(chaskifySettings.getIcons()));
         return settings;
     }
