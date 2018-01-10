@@ -28,7 +28,7 @@ public class DiskProfileDataStore implements ProfileDataStore {
         return profileCache.getByDriverId(driverId)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .map(profile -> Optional.of(new Profile()
+                .map(profile -> new Profile()
                         .setDriver_id(profile.getDriverId())
                         .setColor(profile.getColor())
                         .setDriver_picture(profile.getDriverPicture())
@@ -40,6 +40,7 @@ public class DiskProfileDataStore implements ProfileDataStore {
                         .setTransport_type_id(profile.getTransportTypeId())
                         .setTransport_type_id2(profile.getTransportTypeId2())
                         .setUsername(profile.getUsername()
-                        )));
+                        ))
+                .map(Optional::of);
     }
 }

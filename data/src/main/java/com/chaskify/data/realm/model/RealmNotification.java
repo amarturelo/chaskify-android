@@ -1,4 +1,4 @@
-package com.chaskify.data.model.chaskify;
+package com.chaskify.data.realm.model;
 
 import io.realm.RealmObject;
 

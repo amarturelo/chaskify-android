@@ -2,13 +2,10 @@ package com.chaskify.data.model.chaskify.mapper;
 
 import com.annimon.stream.Stream;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyTask;
-import com.chaskify.data.model.chaskify.RealmTask;
-import com.chaskify.data.model.chaskify.RealmTaskHistory;
+import com.chaskify.data.realm.model.RealmTask;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.realm.RealmList;
 
 public class ChaskifyTaskToRealmTaskDataMapper {
 

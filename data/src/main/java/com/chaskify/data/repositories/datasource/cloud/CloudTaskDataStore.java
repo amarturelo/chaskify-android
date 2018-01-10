@@ -1,30 +1,22 @@
 package com.chaskify.data.repositories.datasource.cloud;
 
 import com.annimon.stream.Stream;
-import com.annimon.stream.function.Function;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.client.TaskRestClient;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyTask;
-import com.chaskify.data.model.chaskify.RealmTask;
-import com.chaskify.data.model.chaskify.RealmTaskHistory;
-import com.chaskify.data.model.chaskify.RealmTaskWaypoint;
+import com.chaskify.data.realm.model.RealmTask;
+import com.chaskify.data.realm.model.RealmTaskHistory;
+import com.chaskify.data.realm.model.RealmTaskWaypoint;
 import com.chaskify.data.model.chaskify.mapper.TaskDataMapper;
 import com.chaskify.data.realm.cache.TaskCache;
 import com.chaskify.data.repositories.datasource.TaskDataStore;
 import com.chaskify.domain.model.Task;
-import com.chaskify.domain.model.TaskHistory;
-import com.chaskify.domain.model.TaskWaypoint;
 
 import java.util.Date;
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Single;
-import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
-import io.reactivex.functions.Consumer;
 import io.realm.RealmList;
 import timber.log.Timber;
 

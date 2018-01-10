@@ -1,7 +1,7 @@
 package com.chaskify.data.realm.mapper;
 
 import com.annimon.stream.Stream;
-import com.chaskify.data.model.chaskify.RealmTask;
+import com.chaskify.data.realm.model.RealmTask;
 import com.chaskify.domain.model.Task;
 
 import java.util.ArrayList;

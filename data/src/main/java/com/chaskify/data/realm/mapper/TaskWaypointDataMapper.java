@@ -1,8 +1,7 @@
 package com.chaskify.data.realm.mapper;
 
 import com.annimon.stream.Stream;
-import com.chaskify.chaskify_sdk.rest.model.ChaskifyTaskWaypoint;
-import com.chaskify.data.model.chaskify.RealmTaskWaypoint;
+import com.chaskify.data.realm.model.RealmTaskWaypoint;
 import com.chaskify.domain.model.TaskWaypoint;
 
 import java.util.ArrayList;

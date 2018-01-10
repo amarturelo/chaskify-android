@@ -5,56 +5,58 @@ import android.util.Pair;
 
 import com.annimon.stream.Optional;
 import com.chaskify.data.realm.model.RealmProfile;
-import com.chaskify.data.realm.cache.ProfileCache;
+import com.chaskify.data.realm.model.RealmSettings;
+import com.chaskify.data.realm.cache.SettingsCache;
+import com.chaskify.domain.model.Settings;
 
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
-import timber.log.Timber;
 
 /**
- * Created by alberto on 3/01/18.
+ * Created by alberto on 9/01/18.
  */
 
-public class ProfileCacheImpl extends RealmCache implements ProfileCache {
+public class SettingsCacheImpl extends RealmCache implements SettingsCache {
 
-    public ProfileCacheImpl() {
-        Timber.tag(this.getClass().getSimpleName());
+    public SettingsCacheImpl() {
     }
 
     @Override
-    public void put(RealmProfile realmProfile) {
+    public void put(RealmSettings settings) {
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-        realm.insertOrUpdate(realmProfile);
+        realm.insertOrUpdate(settings);
         realm.commitTransaction();
         realm.close();
     }
 
     @Override
-    public Flowable<Optional<RealmProfile>> getByDriverId(String driverId) {
+    public Flowable<Optional<RealmSettings>> getByDriverId(String driverId) {
         return Flowable.defer(() -> Flowable.using(() -> new Pair<>(Realm.getDefaultInstance(), Looper.myLooper()), pair -> {
-                    RealmProfile realmRoom = pair.first.where(RealmProfile.class)
-                            .equalTo(RealmProfile.DRIVER_ID, driverId)
+                    RealmSettings realmSettings = pair.first.where(RealmSettings.class)
+                            .equalTo(RealmSettings.DRIVER_ID, driverId)
                             .findFirst();
 
-                    if (realmRoom == null) {
+                    if (realmSettings == null) {
                         return Flowable.just(com.annimon.stream.Optional.empty());
                     }
 
-                    return realmRoom.<RealmProfile>asFlowable()
+                    return realmSettings.<RealmProfile>asFlowable()
                             .filter(
-                                    profile -> profile.isLoaded()
-                                            && profile.isValid())
+                                    value -> value.isLoaded()
+                                            && value.isValid())
                             .map(Optional::of);
                 }
                 , pair -> close(pair.first, pair.second)))
                 .unsubscribeOn(AndroidSchedulers.from(Looper.myLooper()))
                 .map(optional -> {
                     if (optional.isPresent()) {
-                        return Optional.of((RealmProfile) optional.get());
+                        return Optional.of((RealmSettings) optional.get());
                     }
                     return Optional.empty();
                 });
     }
+
 }
+

@@ -1,11 +1,10 @@
 package com.chaskify.data.repositories;
 
 import com.annimon.stream.Stream;
-import com.annimon.stream.function.Function;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.client.NotificationRestClient;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyNotification;
-import com.chaskify.data.model.chaskify.RealmNotification;
+import com.chaskify.data.realm.model.RealmNotification;
 import com.chaskify.data.realm.cache.NotificationsCache;
 import com.chaskify.domain.model.Notification;
 import com.chaskify.domain.repositories.NotificationsRepository;
@@ -14,8 +13,6 @@ import java.util.List;
 
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Predicate;
 
 /**
  * Created by alberto on 17/12/17.

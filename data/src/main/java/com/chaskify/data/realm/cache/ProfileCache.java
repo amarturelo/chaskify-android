@@ -1,7 +1,7 @@
 package com.chaskify.data.realm.cache;
 
 import com.annimon.stream.Optional;
-import com.chaskify.data.model.chaskify.RealmProfile;
+import com.chaskify.data.realm.model.RealmProfile;
 
 import io.reactivex.Flowable;
 

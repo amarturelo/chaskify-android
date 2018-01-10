@@ -1,7 +1,7 @@
 package com.chaskify.android.store;
 
 import com.annimon.stream.Stream;
-import com.chaskify.data.model.internal.RealmServerConfiguration;
+import com.chaskify.data.realm.model.internal.RealmServerConfiguration;
 import com.chaskify.data.realm.module.InternalModule;
 import com.chaskify.domain.model.ServerConfiguration;
 

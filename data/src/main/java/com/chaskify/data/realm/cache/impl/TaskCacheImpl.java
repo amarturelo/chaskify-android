@@ -1,7 +1,7 @@
 package com.chaskify.data.realm.cache.impl;
 
 import com.annimon.stream.Stream;
-import com.chaskify.data.model.chaskify.RealmTask;
+import com.chaskify.data.realm.model.RealmTask;
 import com.chaskify.data.realm.cache.TaskCache;
 
 import java.text.SimpleDateFormat;
@@ -9,13 +9,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
-import io.reactivex.functions.Consumer;
 import io.realm.Realm;
-import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 import timber.log.Timber;
 

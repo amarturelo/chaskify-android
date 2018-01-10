@@ -4,7 +4,7 @@ import com.annimon.stream.Optional;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.client.ProfileRestClient;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyProfile;
-import com.chaskify.data.model.chaskify.RealmProfile;
+import com.chaskify.data.realm.model.RealmProfile;
 import com.chaskify.data.model.chaskify.mapper.ProfileDataMapper;
 import com.chaskify.data.realm.cache.ProfileCache;
 import com.chaskify.data.repositories.datasource.ProfileDataStore;

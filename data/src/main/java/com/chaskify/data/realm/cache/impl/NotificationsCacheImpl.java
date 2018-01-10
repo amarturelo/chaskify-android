@@ -1,14 +1,11 @@
 package com.chaskify.data.realm.cache.impl;
 
-import com.chaskify.data.model.chaskify.RealmNotification;
-import com.chaskify.data.model.chaskify.RealmTask;
+import com.chaskify.data.realm.model.RealmNotification;
 import com.chaskify.data.realm.cache.NotificationsCache;
-import com.chaskify.data.realm.module.InMemoryModule;
 
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 /**
  * Created by alberto on 17/12/17.

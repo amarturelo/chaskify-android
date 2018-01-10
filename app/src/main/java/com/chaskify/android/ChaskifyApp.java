@@ -1,31 +1,20 @@
 package com.chaskify.android;
 
-import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AppCompatDelegate;
-import android.util.Log;
 
 import com.chaskify.android.push.ExampleNotificationOpenedHandler;
 import com.chaskify.android.push.ExampleNotificationReceivedHandler;
-import com.chaskify.android.ui.activities.MainActivity;
-import com.chaskify.data.model.chaskify.RealmNotification;
 import com.chaskify.data.realm.module.InMemoryModule;
 import com.chaskify.logger.CrashReportingTree;
 import com.mapbox.mapboxsdk.Mapbox;
-import com.onesignal.OSNotification;
-import com.onesignal.OSNotificationAction;
-import com.onesignal.OSNotificationOpenResult;
 import com.onesignal.OneSignal;
 
-
-import org.json.JSONObject;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import me.yokeyword.fragmentation.Fragmentation;
-import me.yokeyword.fragmentation.helper.ExceptionHandler;
 import timber.log.Timber;
 
 /**

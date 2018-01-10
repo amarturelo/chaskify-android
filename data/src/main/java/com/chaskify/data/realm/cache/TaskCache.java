@@ -1,11 +1,10 @@
 package com.chaskify.data.realm.cache;
 
-import com.chaskify.data.model.chaskify.RealmTask;
+import com.chaskify.data.realm.model.RealmTask;
 
 import java.util.Date;
 import java.util.List;
 
-import io.reactivex.Observable;
 import io.reactivex.Single;
 
 

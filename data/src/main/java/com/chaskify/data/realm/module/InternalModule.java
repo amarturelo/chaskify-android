@@ -1,7 +1,7 @@
 package com.chaskify.data.realm.module;
 
-import com.chaskify.data.model.chaskify.RealmIcons;
-import com.chaskify.data.model.internal.RealmServerConfiguration;
+import com.chaskify.data.realm.model.RealmIcons;
+import com.chaskify.data.realm.model.internal.RealmServerConfiguration;
 
 import io.realm.annotations.RealmModule;
 

@@ -1,6 +1,6 @@
 package com.chaskify.data.realm.cache;
 
-import com.chaskify.data.model.chaskify.RealmNotification;
+import com.chaskify.data.realm.model.RealmNotification;
 
 import java.util.List;
 

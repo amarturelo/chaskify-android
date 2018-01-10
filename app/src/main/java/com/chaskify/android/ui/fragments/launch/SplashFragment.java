@@ -9,10 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.annimon.stream.Optional;
+import com.annimon.stream.function.Consumer;
+import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.service.ChaskifyService;
 import com.chaskify.android.ui.base.BaseFragment;
+import com.chaskify.chaskify_sdk.ChaskifySession;
+import com.chaskify.data.realm.cache.impl.ProfileCacheImpl;
+import com.chaskify.data.repositories.ProfileRepositoryImpl;
+import com.chaskify.domain.interactors.ProfileInteractor;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,27 +30,19 @@ import com.chaskify.android.ui.base.BaseFragment;
  * create an instance of this fragment.
  */
 public class SplashFragment extends BaseFragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
+    private SplashPresenter presenter;
 
     public SplashFragment() {
         // Required empty public constructor
     }
 
+    private Optional<ChaskifySession> mChaskifySession;
+
 
     public static SplashFragment newInstance() {
         SplashFragment fragment = new SplashFragment();
         Bundle args = new Bundle();
-/*        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);*/
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,10 +50,22 @@ public class SplashFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+        Chaskify.getInstance().getDefaultSession()
+                .executeIfAbsent(this::goToLaunch)
+                .ifPresent(chaskifySession -> {
+                    this.mChaskifySession = Chaskify.getInstance().getDefaultSession();
+                    presenter = new SplashPresenter(new ProfileInteractor(
+                            new ProfileRepositoryImpl(
+                                    new ProfileCacheImpl()
+                                    , mChaskifySession.get().getProfileRestClient()
+                            )
+                    ));
+                });
+    }
+
+    private void goToLaunch() {
+        startWithPop(LaunchFragment.newInstance());
     }
 
     @Override
@@ -62,28 +73,15 @@ public class SplashFragment extends BaseFragment {
         return R.layout.fragment_splash;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            /*throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");*/
-        }
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-
 
     }
 
@@ -106,9 +104,9 @@ public class SplashFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ChaskifyService.start(getActivity());
+        mChaskifySession.ifPresent(chaskifySession -> presenter.profile(chaskifySession.getCredentials().getDriverId()));
 
-        Navigator.goToMainActivity(getContext());
+        //Navigator.goToMainActivity(getContext());
     }
 
 
