@@ -16,6 +16,7 @@ public class RealmCache {
             return;
         }
         Timber.d("::closing realm getByDriverId::");
-        new Handler(looper).post(realm::close);
+        //new Handler(looper).post(realm::close);
+        realm.close();
     }
 }

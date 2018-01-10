@@ -39,6 +39,7 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
 
 
     public SettingsProfileFragment() {
+        Timber.tag(this.getClass().getSimpleName());
         setHasOptionsMenu(true);
     }
 
@@ -68,15 +69,10 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
         presenter = new SettingsProfilePresenter(
                 new ProfileInteractor(
                         new ProfileRepositoryImpl(
-                                new DiskProfileDataStore(
-                                        new ProfileCacheImpl()
-                                )
-                                , new CloudProfileDataStore(
-                                Chaskify.getInstance()
-                                        .getDefaultSession()
-                                        .get().getProfileRestClient()
-                                , new ProfileCacheImpl()
-                        )
+                                new ProfileCacheImpl()
+                                , Chaskify.getInstance()
+                                .getDefaultSession()
+                                .get().getProfileRestClient()
                         )
                 )
                 , Chaskify.getInstance()

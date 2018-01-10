@@ -15,6 +15,8 @@ public class SplashContract {
         void hideProgress();
 
         void showError(Throwable throwable);
+
+        void complete();
     }
 
     interface Presenter extends BaseContract.Presenter<SplashContract.View> {

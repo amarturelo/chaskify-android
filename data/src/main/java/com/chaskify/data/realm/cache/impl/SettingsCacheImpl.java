@@ -48,8 +48,8 @@ public class SettingsCacheImpl extends RealmCache implements SettingsCache {
                                             && value.isValid())
                             .map(Optional::of);
                 }
-                , pair -> close(pair.first, pair.second)))
-                .unsubscribeOn(AndroidSchedulers.from(Looper.myLooper()))
+                , pair -> close(pair.first, pair.second))
+                .unsubscribeOn(AndroidSchedulers.from(Looper.myLooper())))
                 .map(optional -> {
                     if (optional.isPresent()) {
                         return Optional.of((RealmSettings) optional.get());

@@ -14,6 +14,10 @@ public class SettingsInteractor {
 
     private SettingsRepository settingsRepository;
 
+    public SettingsInteractor(SettingsRepository settingsRepository) {
+        this.settingsRepository = settingsRepository;
+    }
+
     public Flowable<Optional<Settings>> settingsByDriverId(String driverId) {
         return settingsRepository.settingsByDriverId(driverId);
     }

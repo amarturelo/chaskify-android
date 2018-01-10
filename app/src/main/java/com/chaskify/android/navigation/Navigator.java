@@ -21,8 +21,9 @@ public class Navigator {
 
     public static void goToMainActivity(Context context) {
         if (context != null) {
-            Intent intentToLaunch = MainActivity.getCallingIntent(context);
-            context.startActivity(intentToLaunch);
+            Intent intent = MainActivity.getCallingIntent(context);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            context.startActivity(intent);
         }
     }
 

@@ -109,7 +109,6 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View,
     @Override
     public void launchSplash() {
         startWithPop(SplashFragment.newInstance());
-        getActivity().finish();
     }
 
     @Override

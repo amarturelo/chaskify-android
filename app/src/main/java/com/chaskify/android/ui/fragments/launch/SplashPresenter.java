@@ -7,6 +7,7 @@ import com.chaskify.domain.interactors.ProfileInteractor;
 import com.chaskify.domain.interactors.SettingsInteractor;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
@@ -27,11 +28,18 @@ public class SplashPresenter extends BasePresenter<SplashContract.View>
 
     @Override
     public void init(String driverId) {
-        addSubscription(Flowable.concatArray(profileInteractor
+        addSubscription(Single.concatArray(profileInteractor
                         .profileByDriverId(driverId)
+                        .firstOrError()
+                        .doOnSubscribe(subscription -> view.showProgressStatus("Loading profile"))
                 , settingsInteractor
-                        .settingsByDriverId(driverId))
-                .subscribe());
+                        .settingsByDriverId(driverId)
+                        .firstOrError()
+                        .doOnSubscribe(subscription -> view.showProgressStatus("Loading settings"))
+        )
+                .map(Optional::get)
+                .subscribe(o -> view.complete()
+                        , throwable -> view.showError(throwable)));
     }
 
     @Override

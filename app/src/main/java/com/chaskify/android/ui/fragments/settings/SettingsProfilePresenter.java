@@ -240,7 +240,6 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
-                .unsubscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(success, error));
     }

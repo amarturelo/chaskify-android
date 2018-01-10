@@ -18,27 +18,23 @@ import com.chaskify.android.service.ChaskifyService;
 import com.chaskify.android.ui.base.BaseFragment;
 import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.data.realm.cache.impl.ProfileCacheImpl;
+import com.chaskify.data.realm.cache.impl.SettingsCacheImpl;
 import com.chaskify.data.repositories.ProfileRepositoryImpl;
+import com.chaskify.data.repositories.SettingsRepositoryImpl;
 import com.chaskify.domain.interactors.ProfileInteractor;
+import com.chaskify.domain.interactors.SettingsInteractor;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SplashFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SplashFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class SplashFragment extends BaseFragment {
+import timber.log.Timber;
+
+public class SplashFragment extends BaseFragment implements SplashContract.View {
 
     private SplashPresenter presenter;
 
     public SplashFragment() {
-        // Required empty public constructor
+        Timber.d(this.getClass().getSimpleName());
     }
 
     private Optional<ChaskifySession> mChaskifySession;
-
 
     public static SplashFragment newInstance() {
         SplashFragment fragment = new SplashFragment();
@@ -60,6 +56,12 @@ public class SplashFragment extends BaseFragment {
                                     new ProfileCacheImpl()
                                     , mChaskifySession.get().getProfileRestClient()
                             )
+                    )
+                            , new SettingsInteractor(
+                            new SettingsRepositoryImpl(
+                                    new SettingsCacheImpl()
+                                    , mChaskifySession.get().getSettingsRestClient()
+                            )
                     ));
                 });
     }
@@ -76,38 +78,49 @@ public class SplashFragment extends BaseFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        presenter.release();
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        mChaskifySession.ifPresent(chaskifySession -> presenter.profile(chaskifySession.getCredentials().getDriverId()));
-
+        mChaskifySession.ifPresent(chaskifySession -> {
+                    presenter.bindView(this);
+                    presenter.init(chaskifySession.getCredentials().getDriverId());
+                }
+        );
         //Navigator.goToMainActivity(getContext());
     }
 
 
+    @Override
+    public void showProgressStatus(String status) {
+        Timber.d("::Status Splash " + status + "::");
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void showError(Throwable throwable) {
+        Timber.d(throwable);
+    }
+
+    @Override
+    public void complete() {
+        Navigator.goToMainActivity(getActivity());
+        getActivity().finish();
+    }
 }

@@ -39,7 +39,7 @@ public class ProfileCacheImpl extends RealmCache implements ProfileCache {
                             .findFirst();
 
                     if (realmRoom == null) {
-                        return Flowable.just(com.annimon.stream.Optional.empty());
+                        return Flowable.just(Optional.empty());
                     }
 
                     return realmRoom.<RealmProfile>asFlowable()
@@ -48,8 +48,8 @@ public class ProfileCacheImpl extends RealmCache implements ProfileCache {
                                             && profile.isValid())
                             .map(Optional::of);
                 }
-                , pair -> close(pair.first, pair.second)))
-                .unsubscribeOn(AndroidSchedulers.from(Looper.myLooper()))
+                , pair -> close(pair.first, pair.second))
+                        .unsubscribeOn(AndroidSchedulers.from(Looper.myLooper())))
                 .map(optional -> {
                     if (optional.isPresent()) {
                         return Optional.of((RealmProfile) optional.get());
