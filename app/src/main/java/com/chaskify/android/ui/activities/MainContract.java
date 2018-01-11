@@ -20,5 +20,6 @@ public class MainContract {
 
     interface Presenter extends BaseContract.Presenter<MainContract.View> {
         void calendarTasks(Date start, Date end);
+
     }
 }

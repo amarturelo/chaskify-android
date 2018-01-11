@@ -59,7 +59,7 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
 
     private Date currentDate;
 
-    private MainPresenter mainPresenter;
+    private MainPresenter presenter;
 
     @Override
     protected int getLayout() {
@@ -72,7 +72,7 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
 
         Timber.tag(this.getClass().getSimpleName());
 
-        mainPresenter = new MainPresenter(
+        presenter = new MainPresenter(
                 new CalendarTaskInteractor(
                         new CalendarTaskRepositoryImpl(
                                 Chaskify.getInstance().getDefaultSession().get().getCalendarTaskRestClient()
@@ -87,7 +87,7 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
 
         initView();
 
-        mainPresenter.bindView(this);
+        presenter.bindView(this);
 
         initToolBar();
 
@@ -114,7 +114,7 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
                     cal.setTime(compactCalendarView.getFirstDayOfCurrentMonth());
                     cal.add(Calendar.MONTH, 1);
 
-                    mainPresenter.calendarTasks(compactCalendarView.getFirstDayOfCurrentMonth(), cal.getTime());
+                    presenter.calendarTasks(compactCalendarView.getFirstDayOfCurrentMonth(), cal.getTime());
                 } else if (state == State.COLLAPSED)
                     isExpanded = false;
             }
@@ -164,7 +164,6 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
                         ((TaskMapFragment) supportFragment).putArguments(date);
                     else if (supportFragment instanceof TaskListFragment)
                         ((TaskListFragment) supportFragment).putArguments(date);
-
                 });
     }
 

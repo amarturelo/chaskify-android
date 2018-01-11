@@ -4,7 +4,9 @@ import com.annimon.stream.Stream;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
 import com.chaskify.android.ui.model.TaskCalendarItemModel;
+import com.chaskify.android.ui.model.TaskItemModel;
 import com.chaskify.domain.interactors.CalendarTaskInteractor;
+import com.chaskify.domain.interactors.TaskInteractor;
 
 import java.util.Date;
 
@@ -18,6 +20,8 @@ public class MainPresenter extends BasePresenter<MainContract.View>
         implements MainContract.Presenter {
 
     private CalendarTaskInteractor calendarTaskInteractor;
+
+    private TaskInteractor mTaskInteractor;
 
     public MainPresenter(CalendarTaskInteractor calendarTaskInteractor) {
         this.calendarTaskInteractor = calendarTaskInteractor;
@@ -38,6 +42,7 @@ public class MainPresenter extends BasePresenter<MainContract.View>
                                         .setYear(calendarTask.getYear())
                                 )
                                 .toList()
-                ),throwable -> view.showError(throwable)));
+                ), throwable -> view.showError(throwable)));
     }
+
 }
