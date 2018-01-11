@@ -22,13 +22,14 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View,
 
     private LaunchPresenter launchPresenter;
 
-    private MultiStateView multiStateView;
 
     private RecyclerView mListProfile;
 
     private ProfileListAdapter profileListAdapter;
 
     private View signInButton;
+
+    private View formHasCredentials;
 
     public LaunchFragment() {
         // Required empty public constructor
@@ -56,8 +57,8 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View,
         super.onViewCreated(view, savedInstanceState);
         signInButton = view.findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(this);
-        multiStateView = view.findViewById(R.id.multi_state_profile_cache);
-        mListProfile = multiStateView.getView(MultiStateView.VIEW_STATE_CONTENT).findViewById(R.id.list_profile_cache);
+        formHasCredentials = view.findViewById(R.id.form_has_credentials);
+        mListProfile = view.findViewById(R.id.list_profile_cache);
         mListProfile.setLayoutManager(new LinearLayoutManager(getContext()));
         profileListAdapter = new ProfileListAdapter();
 
@@ -101,6 +102,7 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View,
 
     @Override
     public void renderCredentials(List<ProfileItemModel> cacheItemModels) {
+        formHasCredentials.setVisibility(View.VISIBLE);
         Timber.d("::Render credentials " + cacheItemModels + "::");
         profileListAdapter.render(cacheItemModels);
     }
@@ -113,13 +115,12 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View,
 
     @Override
     public void showProgress() {
-        multiStateView.setVisibility(View.VISIBLE);
-        multiStateView.setViewState(MultiStateView.VIEW_STATE_LOADING);
+
     }
 
     @Override
     public void hideProgress() {
-        multiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+
     }
 
 

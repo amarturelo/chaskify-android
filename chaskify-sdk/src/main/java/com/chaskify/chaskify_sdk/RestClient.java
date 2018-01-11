@@ -37,7 +37,7 @@ public class RestClient<T> {
         this.mChaskifyCredentials = chaskifyCredentials;
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
 
         mOkHttpClient = new OkHttpClient.Builder()
                 .addNetworkInterceptor(logging)

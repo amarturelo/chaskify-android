@@ -1,11 +1,14 @@
 package com.chaskify.android;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.chaskify.android.push.ExampleNotificationOpenedHandler;
 import com.chaskify.android.push.ExampleNotificationReceivedHandler;
+import com.chaskify.android.ui.activities.MainActivity;
 import com.chaskify.data.realm.module.InMemoryModule;
 import com.chaskify.logger.CrashReportingTree;
 import com.mapbox.mapboxsdk.Mapbox;
@@ -37,6 +40,53 @@ public class ChaskifyApp extends MultiDexApplication {
         //initPush();
         Chaskify.getInstance(getApplicationContext());
 
+
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+               /* if (activity instanceof MainActivity)
+                    clearCache();*/
+            }
+        });
+
+    }
+
+    private void clearCache() {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        Realm.getDefaultInstance().deleteAll();
+        realm.commitTransaction();
+        realm.close();
     }
 
     private void initRealm() {
@@ -50,12 +100,6 @@ public class ChaskifyApp extends MultiDexApplication {
                 .build();
 
         Realm.setDefaultConfiguration(realmNotification);
-    }
-
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-        Realm.getDefaultInstance().close();
     }
 
     private void initPush() {

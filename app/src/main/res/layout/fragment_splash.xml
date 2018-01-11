@@ -4,5 +4,40 @@
     android:layout_height="match_parent"
     tools:context="com.chaskify.android.ui.fragments.launch.SplashFragment">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/logo" />
+
+        <com.chaskify.android.ui.widget.MultiStateView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </com.chaskify.android.ui.widget.MultiStateView>
+
+        <LinearLayout
+            android:id="@+id/form_actions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ProgressBar
+                android:id="@+id/progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminateOnly="true"
+                android:visibility="visible" />
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 </FrameLayout>

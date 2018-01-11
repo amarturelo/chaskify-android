@@ -9,6 +9,8 @@ import com.chaskify.domain.interactors.SettingsInteractor;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Action;
+import timber.log.Timber;
 
 /**
  * Created by alberto on 12/12/17.
@@ -22,23 +24,25 @@ public class SplashPresenter extends BasePresenter<SplashContract.View>
     private SettingsInteractor settingsInteractor;
 
     public SplashPresenter(ProfileInteractor profileInteractor, SettingsInteractor settingsInteractor) {
+        Timber.tag(this.getClass().getSimpleName());
         this.profileInteractor = profileInteractor;
         this.settingsInteractor = settingsInteractor;
     }
 
     @Override
     public void init(String driverId) {
-        addSubscription(Single.concatArray(profileInteractor
-                        .profileByDriverId(driverId)
-                        .firstOrError()
-                        .doOnSubscribe(subscription -> view.showProgressStatus("Loading profile"))
-                , settingsInteractor
-                        .settingsByDriverId(driverId)
-                        .firstOrError()
-                        .doOnSubscribe(subscription -> view.showProgressStatus("Loading settings"))
-        )
-                .map(Optional::get)
-                .subscribe(o -> view.complete()
+        addSubscription(Flowable.concat(profileInteractor.profileByDriverId(driverId)
+                        .map(Optional::isPresent)
+                , settingsInteractor.settingsByDriverId(driverId)
+                        .map(Optional::isPresent))
+                .doOnSubscribe(subscription -> view.showProgress())
+                .doOnComplete(() -> {
+                    view.hideProgress();
+                    view.complete();
+                })
+                .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aBoolean -> Timber.d("::onNext " + aBoolean + " ::")
                         , throwable -> view.showError(throwable)));
     }
 

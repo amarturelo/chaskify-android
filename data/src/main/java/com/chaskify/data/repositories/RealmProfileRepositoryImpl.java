@@ -21,7 +21,6 @@ public class RealmProfileRepositoryImpl implements ProfileRepository {
 
     @Override
     public Flowable<Optional<Profile>> profileByDriverId(String driver_id) {
-        return diskProfileDataStore.getProfileByDriverId(driver_id)
-                ;
+        return diskProfileDataStore.getProfileByDriverId(driver_id);
     }
 }

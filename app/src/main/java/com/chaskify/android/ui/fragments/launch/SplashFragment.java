@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.annimon.stream.Optional;
 import com.annimon.stream.function.Consumer;
@@ -35,6 +36,8 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
     }
 
     private Optional<ChaskifySession> mChaskifySession;
+
+    private ProgressBar progressBar;
 
     public static SplashFragment newInstance() {
         SplashFragment fragment = new SplashFragment();
@@ -89,14 +92,15 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        progressBar = view.findViewById(R.id.progress);
+
         mChaskifySession.ifPresent(chaskifySession -> {
                     presenter.bindView(this);
                     presenter.init(chaskifySession.getCredentials().getDriverId());
                 }
         );
-        //Navigator.goToMainActivity(getContext());
     }
-
 
     @Override
     public void showProgressStatus(String status) {
@@ -105,12 +109,12 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
 
     @Override
     public void showProgress() {
-
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideProgress() {
-
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

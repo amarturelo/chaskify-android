@@ -13,6 +13,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import timber.log.Timber;
 
 /**
  * Created by alberto on 29/12/17.
@@ -21,20 +22,21 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 public class ProfileRepositoryImpl implements ProfileRepository {
 
     private DiskProfileDataStore diskProfileDataStore;
-
     private CloudProfileDataStore cloudProfileDataStore;
 
     public ProfileRepositoryImpl(ProfileCache profileCache, ProfileRestClient profileRestClient) {
+        Timber.tag(this.getClass().getSimpleName());
         this.diskProfileDataStore = new DiskProfileDataStore(profileCache);
         this.cloudProfileDataStore = new CloudProfileDataStore(profileRestClient, profileCache);
     }
 
     @Override
     public Flowable<Optional<Profile>> profileByDriverId(String driver_id) {
-        return Flowable.concatArrayDelayError(
+        return Flowable.concat(
                 diskProfileDataStore.getProfileByDriverId(driver_id)
                 , cloudProfileDataStore
-                        .getProfileByDriverId(driver_id));
+                        .getProfileByDriverId(driver_id)
+                        .doOnNext(profileOptional -> Timber.d("doOnNext " + profileOptional)));
     }
 
 }

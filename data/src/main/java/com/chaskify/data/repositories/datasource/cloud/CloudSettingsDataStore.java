@@ -33,35 +33,35 @@ public class CloudSettingsDataStore implements SettingsDataStore {
 
     @Override
     public Flowable<Optional<Settings>> getByDriverId(String driverId) {
-        return Single.create((SingleOnSubscribe<ChaskifySettings>) emitter -> mSettingsRestClient.getSettings(new ApiCallback<ChaskifySettings>() {
-            @Override
-            public void onSuccess(ChaskifySettings chaskifySettings) {
-                if (emitter != null && !emitter.isDisposed())
-                    emitter.onSuccess(chaskifySettings);
-            }
+        return Single
+                .create((SingleOnSubscribe<ChaskifySettings>) emitter -> mSettingsRestClient.getSettings(new ApiCallback<ChaskifySettings>() {
+                    @Override
+                    public void onSuccess(ChaskifySettings chaskifySettings) {
+                        if (emitter != null && !emitter.isDisposed())
+                            emitter.onSuccess(chaskifySettings);
+                    }
 
-            @Override
-            public void onNetworkError(Exception e) {
-                if (emitter != null && !emitter.isDisposed())
-                    emitter.onError(e);
-            }
+                    @Override
+                    public void onNetworkError(Exception e) {
+                        if (emitter != null && !emitter.isDisposed())
+                            emitter.onError(e);
+                    }
 
-            @Override
-            public void onChaskifyError(Exception e) {
-                if (emitter != null && !emitter.isDisposed())
-                    emitter.onError(e);
-            }
+                    @Override
+                    public void onChaskifyError(Exception e) {
+                        if (emitter != null && !emitter.isDisposed())
+                            emitter.onError(e);
+                    }
 
-            @Override
-            public void onUnexpectedError(Exception e) {
-                if (emitter != null && !emitter.isDisposed())
-                    emitter.onError(e);
-            }
-        }))
+                    @Override
+                    public void onUnexpectedError(Exception e) {
+                        if (emitter != null && !emitter.isDisposed())
+                            emitter.onError(e);
+                    }
+                }))
                 .map(SettingsDataMapper::transform)
                 .doOnSuccess(settings -> mSettingsCache.put(com.chaskify.data.realm.cache.impl.mapper.SettingsDataMapper.transform(settings)))
                 .map(Optional::of)
-                .toFlowable()
-                ;
+                .toFlowable();
     }
 }

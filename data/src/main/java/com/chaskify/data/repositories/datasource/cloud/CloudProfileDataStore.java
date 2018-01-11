@@ -35,38 +35,30 @@ public class CloudProfileDataStore implements ProfileDataStore {
                 .create((SingleOnSubscribe<ChaskifyProfile>) emitter -> profileRestClient.getProfile(new ApiCallback<ChaskifyProfile>() {
                     @Override
                     public void onSuccess(ChaskifyProfile chaskifyProfile) {
-                        emitter.onSuccess(chaskifyProfile);
+                        if (emitter != null && !emitter.isDisposed())
+                            emitter.onSuccess(chaskifyProfile);
                     }
 
                     @Override
                     public void onNetworkError(Exception e) {
-                        emitter.onError(e);
+                        if (emitter != null && !emitter.isDisposed())
+                            emitter.onError(e);
                     }
 
                     @Override
                     public void onChaskifyError(Exception e) {
-                        emitter.onError(e);
+                        if (emitter != null && !emitter.isDisposed())
+                            emitter.onError(e);
                     }
 
                     @Override
                     public void onUnexpectedError(Exception e) {
-                        emitter.onError(e);
+                        if (emitter != null && !emitter.isDisposed())
+                            emitter.onError(e);
                     }
                 }))
                 .map(ProfileDataMapper::transform)
-                .doOnSuccess(profile -> profileCache.put(new RealmProfile()
-                        .setDriverId(profile.getDriverId())
-                        .setColor(profile.getColor())
-                        .setDriverPicture(profile.getDriverPicture())
-                        .setEmail(profile.getEmail())
-                        .setLicencePlate(profile.getLicence_plate())
-                        .setPhone(profile.getPhone())
-                        .setTeamName(profile.getTeamName())
-                        .setTransportDescription(profile.getTransportDescription())
-                        .setTransportTypeId(profile.getTransportTypeId())
-                        .setTransportTypeId2(profile.getTransportTypeId2())
-                        .setUsername(profile.getUsername())
-                ))
+                .doOnSuccess(com.chaskify.data.realm.cache.impl.mapper.ProfileDataMapper::transform)
                 .map(Optional::of)
                 .toFlowable();
     }

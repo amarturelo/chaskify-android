@@ -89,12 +89,11 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
 
     @Override
     public void loginComplete() {
-        goToMain();
+        goToSplash();
     }
 
-    private void goToMain() {
-        getActivity().finish();
-        Navigator.goToMainActivity(getContext());
+    private void goToSplash() {
+        startWithPop(SplashFragment.newInstance());
     }
 
     @Override

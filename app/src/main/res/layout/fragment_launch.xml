@@ -13,68 +13,59 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/logo" />
 
-        <com.chaskify.android.ui.widget.MultiStateView
-            android:id="@+id/multi_state_profile_cache"
+
+        <RelativeLayout
+            android:id="@+id/form_has_credentials"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            app:msv_loadingView="@layout/view_loading"
-            app:msv_viewState="content">
+            android:padding="16dp">
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:text="@string/title_init_session" />
 
-                <TextView
-                    android:id="@+id/title"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list_profile_cache"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/action_sign_in"
+                android:layout_below="@+id/title"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                tools:listitem="@layout/session_cache_item_view" />
+
+            <LinearLayout
+                android:id="@+id/action_sign_in"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/sign_in_button"
+                    style="@style/ChaskifyButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/title_init_session" />
+                    android:text="@string/action_sign_in_short" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/list_profile_cache"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/action_sign_in"
-                    android:layout_below="@+id/title"
-                    android:paddingBottom="8dp"
-                    android:paddingTop="8dp"
-                    tools:listitem="@layout/session_cache_item_view" />
+            </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/action_sign_in"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginTop="16dp"
-                    android:orientation="vertical"
-                    android:padding="8dp">
-
-                    <ProgressBar
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:visibility="gone" />
-
-                    <Button
-                        android:id="@+id/sign_in_button"
-                        style="@style/ChaskifyButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/action_sign_in_short" />
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-
-        </com.chaskify.android.ui.widget.MultiStateView>
-
+        </RelativeLayout>
 
     </LinearLayout>
 

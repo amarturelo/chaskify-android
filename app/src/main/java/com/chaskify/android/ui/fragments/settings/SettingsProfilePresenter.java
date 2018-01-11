@@ -106,6 +106,7 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .unsubscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
+                .doFinally(() -> view.logoutComplete())
                 .subscribe(() -> view.complete(), throwable -> view.showError(throwable)));
     }
 
@@ -133,15 +134,6 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
         }));
     }
 
-    @Override
-    public void settings(String driverId) {
-        addSubscription(settingsInteractor.settingsByDriverId(driverId)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(consumerSuccessSettings, error));
-    }
 
     @Override
     public void updateImageProfile(String base64) {
@@ -256,13 +248,21 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
                 .map(Optional::get)
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(consumerSuccessProfile, error));
+                .subscribe(profile -> view.renderProfile(ProfileModelDataMapper.transform(profile)), error));
+    }
+
+    @Override
+    public void settings(String driverId) {
+        addSubscription(settingsInteractor
+                .settingsByDriverId(driverId)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(settings -> view.renderSettings(SettingsModelDataMapper.transform(settings)), error));
     }
 
     private Consumer<Throwable> error = throwable -> view
             .showError(throwable);
-    private Consumer<Profile> consumerSuccessProfile = profile -> view
-            .renderProfile(ProfileModelDataMapper.transform(profile));
-    private Consumer<Settings> consumerSuccessSettings = profile -> view
-            .renderSettings(SettingsModelDataMapper.transform(profile));
+
 }

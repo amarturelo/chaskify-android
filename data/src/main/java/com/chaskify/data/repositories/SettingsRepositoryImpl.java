@@ -26,7 +26,9 @@ public class SettingsRepositoryImpl implements SettingsRepository {
 
     @Override
     public Flowable<Optional<Settings>> settingsByDriverId(String driverId) {
-        return Flowable.concatArrayDelayError(diskSettingsDataStore.getByDriverId(driverId)
-                , cloudSettingsDataStore.getByDriverId(driverId));
+        return Flowable.concatArrayDelayError(
+                diskSettingsDataStore.getByDriverId(driverId)
+                , cloudSettingsDataStore
+                        .getByDriverId(driverId));
     }
 }
