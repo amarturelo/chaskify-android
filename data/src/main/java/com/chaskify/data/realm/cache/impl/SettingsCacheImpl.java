@@ -42,7 +42,7 @@ public class SettingsCacheImpl extends RealmCache implements SettingsCache {
                         return Flowable.just(com.annimon.stream.Optional.empty());
                     }
 
-                    return realmSettings.<RealmProfile>asFlowable()
+                    return realmSettings.<RealmSettings>asFlowable()
                             .filter(
                                     value -> value.isLoaded()
                                             && value.isValid())

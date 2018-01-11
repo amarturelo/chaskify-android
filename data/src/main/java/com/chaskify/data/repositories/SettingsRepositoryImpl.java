@@ -9,6 +9,7 @@ import com.chaskify.domain.model.Settings;
 import com.chaskify.domain.repositories.SettingsRepository;
 
 import io.reactivex.Flowable;
+import timber.log.Timber;
 
 /**
  * Created by alberto on 9/01/18.
@@ -20,15 +21,19 @@ public class SettingsRepositoryImpl implements SettingsRepository {
     private CloudSettingsDataStore cloudSettingsDataStore;
 
     public SettingsRepositoryImpl(SettingsCache settingsCache, SettingsRestClient settingsRestClient) {
+        Timber.tag(this.getClass().getSimpleName());
         this.diskSettingsDataStore = new DiskSettingsDataStore(settingsCache);
         this.cloudSettingsDataStore = new CloudSettingsDataStore(settingsRestClient, settingsCache);
     }
 
     @Override
     public Flowable<Optional<Settings>> settingsByDriverId(String driverId) {
-        return Flowable.concatArrayDelayError(
+        return Flowable.concat(
                 diskSettingsDataStore.getByDriverId(driverId)
+                        .doOnNext(settingsOptional -> Timber.d("::diskSettingsDataStore " + settingsOptional.toString()))
                 , cloudSettingsDataStore
-                        .getByDriverId(driverId));
+                        .getByDriverId(driverId)
+                        .doOnNext(settingsOptional -> Timber.d("::cloudSettingsDataStore " + settingsOptional.toString()))
+        );
     }
 }

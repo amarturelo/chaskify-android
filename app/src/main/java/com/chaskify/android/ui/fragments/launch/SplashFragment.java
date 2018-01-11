@@ -1,21 +1,16 @@
 package com.chaskify.android.ui.fragments.launch;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.annimon.stream.Optional;
-import com.annimon.stream.function.Consumer;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.navigation.Navigator;
-import com.chaskify.android.service.ChaskifyService;
 import com.chaskify.android.ui.base.BaseFragment;
 import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.data.realm.cache.impl.ProfileCacheImpl;
@@ -27,9 +22,10 @@ import com.chaskify.domain.interactors.SettingsInteractor;
 
 import timber.log.Timber;
 
-public class SplashFragment extends BaseFragment implements SplashContract.View {
+public class SplashFragment extends BaseFragment implements SplashContract.View, View.OnClickListener {
 
     private SplashPresenter presenter;
+    private View mActionTryAgain;
 
     public SplashFragment() {
         Timber.d(this.getClass().getSimpleName());
@@ -94,10 +90,11 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
         super.onViewCreated(view, savedInstanceState);
 
         progressBar = view.findViewById(R.id.progress);
-
+        mActionTryAgain = view.findViewById(R.id.action_retry);
+        mActionTryAgain.setOnClickListener(this);
         mChaskifySession.ifPresent(chaskifySession -> {
                     presenter.bindView(this);
-                    presenter.init(chaskifySession.getCredentials().getDriverId());
+                    actionRetry();
                 }
         );
     }
@@ -109,6 +106,7 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
 
     @Override
     public void showProgress() {
+        mActionTryAgain.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
     }
 
@@ -119,12 +117,26 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
 
     @Override
     public void showError(Throwable throwable) {
-        Timber.d(throwable);
+        hideProgress();
+        Toast.makeText(getActivity(), throwable.toString(), Toast.LENGTH_LONG).show();
+        mActionTryAgain.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void complete() {
         Navigator.goToMainActivity(getActivity());
         getActivity().finish();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.action_retry:
+                actionRetry();
+        }
+    }
+
+    private void actionRetry() {
+        mChaskifySession.ifPresent(chaskifySession -> presenter.init(chaskifySession.getCredentials().getDriverId()));
     }
 }

@@ -1,6 +1,7 @@
 package com.chaskify.data.realm.model;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by alberto on 9/01/18.
@@ -9,6 +10,7 @@ import io.realm.RealmObject;
 public class RealmSettings extends RealmObject {
     public static final String DRIVER_ID = "driverId";
     public boolean enabledPush;
+    @PrimaryKey
     public String driverId;
     public RealmIcons icons;
 

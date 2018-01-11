@@ -1,13 +1,15 @@
 package com.chaskify.data.realm.model;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by alberto on 17/12/17.
  */
 
-public class RealmNotification extends RealmObject{
+public class RealmNotification extends RealmObject {
     public static String DRIVER_ID = "driverId";
+    @PrimaryKey
     private String pushId;
     private String customerId;
     private String devicePlatform;

@@ -5,11 +5,14 @@ import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
 import com.chaskify.domain.interactors.ProfileInteractor;
 import com.chaskify.domain.interactors.SettingsInteractor;
+import com.chaskify.domain.model.Profile;
+import com.chaskify.domain.model.Settings;
 
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
+import io.reactivex.functions.Function;
 import timber.log.Timber;
 
 /**
@@ -31,19 +34,22 @@ public class SplashPresenter extends BasePresenter<SplashContract.View>
 
     @Override
     public void init(String driverId) {
-        addSubscription(Flowable.concat(profileInteractor.profileByDriverId(driverId)
+        view.showProgress();
+        addSubscription(Single.concat(
+                profileInteractor.profileByDriverId(driverId)
+                        .firstOrError()
                         .map(Optional::isPresent)
                 , settingsInteractor.settingsByDriverId(driverId)
+                        .firstOrError()
                         .map(Optional::isPresent))
-                .doOnSubscribe(subscription -> view.showProgress())
+                .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete(() -> {
                     view.hideProgress();
                     view.complete();
                 })
-                .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aBoolean -> Timber.d("::onNext " + aBoolean + " ::")
-                        , throwable -> view.showError(throwable)));
+                        ));
     }
 
     @Override

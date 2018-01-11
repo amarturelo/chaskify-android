@@ -172,4 +172,6 @@
     <string name="title_init_session">Touch for init session</string>
     <string name="title_input_password">Input your password</string>
     <string name="key_preference_notifications_sound">key_preference_notifications_sound</string>
+    <string name="error_not_internet_connection">Not connected to internet</string>
+    <string name="action_retry">Try again</string>
 </resources>

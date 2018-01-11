@@ -58,7 +58,7 @@ public class CloudProfileDataStore implements ProfileDataStore {
                     }
                 }))
                 .map(ProfileDataMapper::transform)
-                .doOnSuccess(com.chaskify.data.realm.cache.impl.mapper.ProfileDataMapper::transform)
+                .doOnSuccess(profile -> profileCache.put(com.chaskify.data.realm.cache.impl.mapper.ProfileDataMapper.transform(profile)))
                 .map(Optional::of)
                 .toFlowable();
     }

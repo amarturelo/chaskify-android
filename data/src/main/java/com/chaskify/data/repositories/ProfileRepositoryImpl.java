@@ -34,9 +34,11 @@ public class ProfileRepositoryImpl implements ProfileRepository {
     public Flowable<Optional<Profile>> profileByDriverId(String driver_id) {
         return Flowable.concat(
                 diskProfileDataStore.getProfileByDriverId(driver_id)
+                        .doOnNext(profileOptional -> Timber.d("::diskProfileDataStore " + profileOptional.toString()))
                 , cloudProfileDataStore
                         .getProfileByDriverId(driver_id)
-                        .doOnNext(profileOptional -> Timber.d("doOnNext " + profileOptional)));
+                        .doOnNext(profileOptional -> Timber.d("::cloudProfileDataStore " + profileOptional.toString()))
+        );
     }
 
 }
