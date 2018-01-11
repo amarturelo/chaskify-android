@@ -174,4 +174,5 @@
     <string name="key_preference_notifications_sound">key_preference_notifications_sound</string>
     <string name="error_not_internet_connection">Not connected to internet</string>
     <string name="action_retry">Try again</string>
+    <string name="action_remove_account">Remove account from device</string>
 </resources>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.annimon.stream.Stream;
 import com.chaskify.android.R;
 import com.chaskify.android.adapters.listened.OnItemListened;
 import com.chaskify.android.adapters.viewholder.ProfileItemViewHolder;
@@ -25,7 +26,7 @@ public class ProfileListAdapter extends RecyclerView.Adapter<ProfileItemViewHold
         mProfileItemModels = new ArrayList<>();
     }
 
-    private OnItemListened onListened;
+    private ProfileItemViewHolder.OnProfileItemListened onListened;
 
     @Override
     public ProfileItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -40,7 +41,7 @@ public class ProfileListAdapter extends RecyclerView.Adapter<ProfileItemViewHold
         holder.setListened(onListened);
     }
 
-    public void setOnListened(OnItemListened onListened) {
+    public void setOnListened(ProfileItemViewHolder.OnProfileItemListened onListened) {
         this.onListened = onListened;
     }
 
@@ -57,5 +58,17 @@ public class ProfileListAdapter extends RecyclerView.Adapter<ProfileItemViewHold
 
     public ProfileItemModel getItem(int position) {
         return mProfileItemModels.get(position);
+    }
+
+    public void remove(String driverId) {
+        Stream.of(mProfileItemModels)
+                .filter(value -> value.getDriverId().equals(driverId))
+                .findFirst()
+                .ifPresent(profileItemModel -> {
+                    int index = mProfileItemModels.lastIndexOf(profileItemModel);
+                    mProfileItemModels.remove(index);
+                    notifyItemRemoved(index);
+                });
+
     }
 }

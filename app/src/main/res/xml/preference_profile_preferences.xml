@@ -50,7 +50,6 @@
             android:summary="default"
             android:title="@string/title_preference_language" />
         <SwitchPreference
-            android:widgetLayout="@layout/view_loading"
             android:key="@string/key_preference_enable_push"
             android:title="@string/title_preference_enable_push" />
         <Preference

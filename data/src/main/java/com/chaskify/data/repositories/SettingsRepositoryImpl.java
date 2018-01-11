@@ -28,7 +28,7 @@ public class SettingsRepositoryImpl implements SettingsRepository {
 
     @Override
     public Flowable<Optional<Settings>> settingsByDriverId(String driverId) {
-        return Flowable.concat(
+        return Flowable.concatArrayDelayError(
                 diskSettingsDataStore.getByDriverId(driverId)
                         .doOnNext(settingsOptional -> Timber.d("::diskSettingsDataStore " + settingsOptional.toString()))
                 , cloudSettingsDataStore

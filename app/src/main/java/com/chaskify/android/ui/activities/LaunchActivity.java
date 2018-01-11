@@ -41,20 +41,22 @@ public class LaunchActivity extends BaseActivity {
     }
 
     private void initActivity(Bundle savedInstanceState) {
-        if (savedInstanceState == null)
+        if(findFragment(LaunchFragment.class)==null){
+            loadRootFragment(R.id.fragment, LaunchFragment.newInstance());
+        }
+        /*if (savedInstanceState == null)
             if (getArgAddingNewAccount())
                 loadRootFragment(R.id.fragment, LoginFragment.newInstance());
             else if (getArgAccountName().isPresent())
                 loadRootFragment(R.id.fragment, LoginFragment.newInstance());
             else
-                loadRootFragment(R.id.fragment, LaunchFragment.newInstance());
+                loadRootFragment(R.id.fragment, LaunchFragment.newInstance());*/
     }
 
     @Override
     protected int getLayout() {
         return R.layout.activity_launch;
     }
-
 
     private boolean getArgAddingNewAccount() {
         return getIntent().getBooleanExtra(ARG_IS_ADDING_NEW_ACCOUNT, false);

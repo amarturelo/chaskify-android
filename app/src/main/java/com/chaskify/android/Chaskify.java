@@ -167,9 +167,18 @@ public class Chaskify {
         mPreferenceStorage.removeDefault(chaskifySession.getCredentials().getUsername());
     }
 
-    private void clear(ChaskifySession chaskifySession) {
-
+    public Optional<ChaskifySession> getSessionByDriverId(String driverId) {
+        return Stream.of(mChaskifySessions)
+                .filter(value -> value.getCredentials().getDriverId().equals(driverId))
+                .findFirst();
     }
 
+    public void remove(ChaskifySession chaskifySession) {
+        mAccountStorage.removeCredentials(new Credentials()
+                .setUsername(chaskifySession.getCredentials().getUsername())
+                .setAccessToken(chaskifySession.getCredentials().getAccessToken())
+                .setDriverId(chaskifySession.getCredentials().getDriverId()));
+        mPreferenceStorage.removeDefault(chaskifySession.getCredentials().getUsername());
 
+    }
 }

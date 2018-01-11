@@ -9,10 +9,9 @@ import android.view.View;
 
 import com.chaskify.android.R;
 import com.chaskify.android.adapters.ProfileListAdapter;
-import com.chaskify.android.adapters.listened.OnItemListened;
+import com.chaskify.android.adapters.viewholder.ProfileItemViewHolder;
 import com.chaskify.android.ui.base.BaseFragment;
 import com.chaskify.android.ui.model.ProfileItemModel;
-import com.chaskify.android.ui.widget.MultiStateView;
 
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View,
 
     private RecyclerView mListProfile;
 
-    private ProfileListAdapter profileListAdapter;
+    private ProfileListAdapter mProfileListAdapter;
 
     private View signInButton;
 
@@ -60,11 +59,21 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View,
         formHasCredentials = view.findViewById(R.id.form_has_credentials);
         mListProfile = view.findViewById(R.id.list_profile_cache);
         mListProfile.setLayoutManager(new LinearLayoutManager(getContext()));
-        profileListAdapter = new ProfileListAdapter();
+        mProfileListAdapter = new ProfileListAdapter();
 
-        profileListAdapter.setOnListened((view1, position) -> launchLogin(profileListAdapter.getItem(position)));
+        mProfileListAdapter.setOnListened(new ProfileItemViewHolder.OnProfileItemListened() {
+            @Override
+            public void onClickItem(View view, int position) {
+                launchLogin(mProfileListAdapter.getItem(position));
+            }
 
-        mListProfile.setAdapter(profileListAdapter);
+            @Override
+            public void onRemove(ProfileItemModel profileItemModel) {
+                launchPresenter.remove(profileItemModel.getDriverId());
+            }
+        });
+
+        mListProfile.setAdapter(mProfileListAdapter);
         launchPresenter.bindView(this);
     }
 
@@ -104,7 +113,7 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View,
     public void renderCredentials(List<ProfileItemModel> cacheItemModels) {
         formHasCredentials.setVisibility(View.VISIBLE);
         Timber.d("::Render credentials " + cacheItemModels + "::");
-        profileListAdapter.render(cacheItemModels);
+        mProfileListAdapter.render(cacheItemModels);
     }
 
 
@@ -123,6 +132,10 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View,
 
     }
 
+    @Override
+    public void profileRemove(String driverId) {
+        mProfileListAdapter.remove(driverId);
+    }
 
     @Override
     public void onClick(View v) {

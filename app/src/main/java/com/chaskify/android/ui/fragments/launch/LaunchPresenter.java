@@ -3,11 +3,16 @@ package com.chaskify.android.ui.fragments.launch;
 import android.support.annotation.NonNull;
 
 import com.annimon.stream.Stream;
+import com.annimon.stream.function.Consumer;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
 import com.chaskify.android.ui.model.ProfileItemModel;
+import com.chaskify.chaskify_sdk.ChaskifySession;
 
+import io.reactivex.Completable;
+import io.reactivex.CompletableEmitter;
+import io.reactivex.CompletableOnSubscribe;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
@@ -34,6 +39,23 @@ public class LaunchPresenter extends BasePresenter<LaunchContract.View>
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe());
+    }
+
+    @Override
+    public void remove(String driverId) {
+        addSubscription(doRemove(driverId)
+                .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> view.profileRemove(driverId)));
+    }
+
+    private Completable doRemove(String driverId) {
+        return Completable.create(e -> Chaskify.getInstance().getSessionByDriverId(driverId)
+                .ifPresent(chaskifySession -> {
+                            Chaskify.getInstance().remove(chaskifySession);
+                            e.onComplete();
+                        }
+                ));
     }
 
     @Override

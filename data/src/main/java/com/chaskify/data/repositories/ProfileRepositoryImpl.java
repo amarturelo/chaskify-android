@@ -32,7 +32,7 @@ public class ProfileRepositoryImpl implements ProfileRepository {
 
     @Override
     public Flowable<Optional<Profile>> profileByDriverId(String driver_id) {
-        return Flowable.concat(
+        return Flowable.concatArrayDelayError(
                 diskProfileDataStore.getProfileByDriverId(driver_id)
                         .doOnNext(profileOptional -> Timber.d("::diskProfileDataStore " + profileOptional.toString()))
                 , cloudProfileDataStore

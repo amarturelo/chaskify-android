@@ -1,6 +1,8 @@
 package com.chaskify.android.adapters.viewholder;
 
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,9 +20,13 @@ import com.chaskify.domain.interactors.ProfileInteractor;
  * Created by alberto on 8/01/18.
  */
 
-public class ProfileItemViewHolder extends RecyclerView.ViewHolder implements ProfileItemContract.View, View.OnClickListener {
+public class ProfileItemViewHolder extends RecyclerView.ViewHolder implements ProfileItemContract.View, View.OnClickListener, PopupMenu.OnMenuItemClickListener {
 
-    private OnItemListened mListened;
+    private OnProfileItemListened mListened;
+
+    public interface OnProfileItemListened extends OnItemListened {
+        void onRemove(ProfileItemModel profileItemModel);
+    }
 
     public ImageView mProfileImage;
     public TextView mProfileUsername;
@@ -37,6 +43,7 @@ public class ProfileItemViewHolder extends RecyclerView.ViewHolder implements Pr
         mProfileUsername = itemView.findViewById(R.id.profile_username);
         mProfileTeamName = itemView.findViewById(R.id.profile_team_name);
         mActionMenu = itemView.findViewById(R.id.action_menu);
+        mActionMenu.setOnClickListener(this);
         presenter = new ProfileItemPresenter(
                 new ProfileInteractor(
                         new RealmProfileRepositoryImpl(
@@ -49,7 +56,7 @@ public class ProfileItemViewHolder extends RecyclerView.ViewHolder implements Pr
         itemView.setOnClickListener(this);
     }
 
-    public ProfileItemViewHolder setListened(OnItemListened mListened) {
+    public ProfileItemViewHolder setListened(OnProfileItemListened mListened) {
         this.mListened = mListened;
         return this;
     }
@@ -93,7 +100,33 @@ public class ProfileItemViewHolder extends RecyclerView.ViewHolder implements Pr
 
     @Override
     public void onClick(View v) {
-        if (mListened != null)
-            mListened.onClickItem(v, getAdapterPosition());
+        switch (v.getId()) {
+            case R.id.action_menu:
+                showPopupMenu(v);
+                break;
+            default:
+                if (mListened != null)
+                    mListened.onClickItem(v, getAdapterPosition());
+                break;
+        }
+
+    }
+
+    private void showPopupMenu(View v) {
+        PopupMenu popup = new PopupMenu(itemView.getContext(), v);
+        popup.setOnMenuItemClickListener(this);
+        popup.inflate(R.menu.popup_menu_item_profile);
+        popup.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_remove:
+                if (mListened != null)
+                    mListened.onRemove(this.mProfileItemModel);
+                break;
+        }
+        return true;
     }
 }

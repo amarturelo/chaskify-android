@@ -17,9 +17,13 @@ class LaunchContract {
         void showProgress();
 
         void hideProgress();
+
+        void profileRemove(String driverId);
     }
 
     interface Presenter extends BaseContract.Presenter<LaunchContract.View> {
         void hasCredentials();
+
+        void remove(String driverId);
     }
 }
