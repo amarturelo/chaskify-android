@@ -6,7 +6,6 @@ import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.exceptions.TokenNotFoundException;
 import com.chaskify.chaskify_sdk.rest.model.BaseResponse;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyCalendarTask;
-import com.chaskify.chaskify_sdk.rest.model.ChaskifyTask;
 import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -33,14 +32,14 @@ public class CalendarTaskRestClient extends RestClient<CalendarTaskApi> {
         super(chaskifyCredentials, CalendarTaskApi.class);
     }
 
-    public void calendarRaskByRange(Date start, Date end, ApiCallback<List<ChaskifyCalendarTask>> callback) throws TokenNotFoundException {
+    public void getCalendarTaskByRangeOfDate(Date start, Date end, ApiCallback<List<ChaskifyCalendarTask>> callback) throws TokenNotFoundException {
         if (mChaskifyCredentials != null)
-            calendarRaskByRange(start, end, mChaskifyCredentials.getAccessToken(), callback);
+            getCalendarTaskByRangeOfDate(start, end, mChaskifyCredentials.getAccessToken(), callback);
         else
             throw new TokenNotFoundException();
     }
 
-    private void calendarRaskByRange(Date start, Date end, String accessToken, final ApiCallback<List<ChaskifyCalendarTask>> callback) {
+    private void getCalendarTaskByRangeOfDate(Date start, Date end, String accessToken, final ApiCallback<List<ChaskifyCalendarTask>> callback) {
         mApi.calendarTaskByRange(dateFormat.format(start), dateFormat.format(end), String.valueOf(new Date().getTimezoneOffset()), accessToken)
                 .enqueue(new Callback<String>() {
                     @Override

@@ -1,6 +1,7 @@
 package com.chaskify.data.realm.cache.impl.mapper;
 
 import com.annimon.stream.Stream;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifyProfile;
 import com.chaskify.data.realm.model.RealmProfile;
 import com.chaskify.data.realm.model.RealmSettings;
 import com.chaskify.domain.model.Profile;
@@ -15,20 +16,20 @@ import io.realm.RealmList;
  */
 
 public class ProfileDataMapper {
-    public static List<RealmProfile> transform(List<Profile> entities) {
+    public static List<RealmProfile> transform(List<ChaskifyProfile> entities) {
         final RealmList<RealmProfile> list = new RealmList<>();
         Stream.of(entities).withoutNulls()
                 .forEach(realmEvent -> list.add(transform(realmEvent)));
         return list;
     }
 
-    public static RealmProfile transform(Profile profile) {
+    public static RealmProfile transform(ChaskifyProfile profile) {
         RealmProfile realmProfile = new RealmProfile()
                 .setDriverId(profile.getDriverId())
                 .setColor(profile.getColor())
                 .setDriverPicture(profile.getDriverPicture())
                 .setEmail(profile.getEmail())
-                .setLicencePlate(profile.getLicence_plate())
+                .setLicencePlate(profile.getLicencePlate())
                 .setPhone(profile.getPhone())
                 .setTeamName(profile.getTeamName())
                 .setTransportDescription(profile.getTransportDescription())

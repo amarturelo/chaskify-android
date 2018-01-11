@@ -11,9 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Single;
-import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
-import io.reactivex.functions.Function;
 
 /**
  * Created by alberto on 15/12/17.
@@ -29,7 +27,7 @@ public class CalendarTaskRepositoryImpl implements CalendarTaskRepository {
 
     @Override
     public Single<List<CalendarTask>> calendarTasks(Date start, Date end) {
-        return Single.create((SingleOnSubscribe<List<ChaskifyCalendarTask>>) emitter -> calendarTaskRestClient.calendarRaskByRange(start, end, new ApiCallback<List<ChaskifyCalendarTask>>() {
+        return Single.create((SingleOnSubscribe<List<ChaskifyCalendarTask>>) emitter -> calendarTaskRestClient.getCalendarTaskByRangeOfDate(start, end, new ApiCallback<List<ChaskifyCalendarTask>>() {
             @Override
             public void onSuccess(List<ChaskifyCalendarTask> chaskifyCalendarTasks) {
                 emitter.onSuccess(chaskifyCalendarTasks);

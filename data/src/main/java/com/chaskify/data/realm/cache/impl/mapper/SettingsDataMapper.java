@@ -1,6 +1,7 @@
 package com.chaskify.data.realm.cache.impl.mapper;
 
 import com.annimon.stream.Stream;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifySettings;
 import com.chaskify.data.realm.model.RealmSettings;
 import com.chaskify.domain.model.Settings;
 
@@ -13,17 +14,17 @@ import io.realm.RealmList;
  */
 
 public class SettingsDataMapper {
-    public static List<RealmSettings> transform(List<Settings> entities) {
+    public static List<RealmSettings> transform(List<ChaskifySettings> entities) {
         final RealmList<RealmSettings> list = new RealmList<>();
         Stream.of(entities).withoutNulls()
                 .forEach(realmEvent -> list.add(transform(realmEvent)));
         return list;
     }
 
-    public static RealmSettings transform(Settings settings) {
+    public static RealmSettings transform(ChaskifySettings settings) {
         RealmSettings realmSettings = new RealmSettings();
         realmSettings.setDriverId(settings.getDriverId());
-        realmSettings.setEnabledPush(settings.isEnabledPush());
+        realmSettings.setEnabledPush(settings.getEnabledPush().equals("1"));
         realmSettings.setIcons(IconsDataMapper.transform(settings.getIcons()));
         return realmSettings;
     }

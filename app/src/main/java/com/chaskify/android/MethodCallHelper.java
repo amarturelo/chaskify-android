@@ -1,17 +1,27 @@
 package com.chaskify.android;
 
+import android.provider.CalendarContract;
+
 import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.exceptions.TokenNotFoundException;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifyCalendarTask;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifyProfile;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifySettings;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyTask;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifyTaskWaypoint;
 import com.chaskify.data.realm.cache.NotificationsCache;
 import com.chaskify.data.realm.cache.ProfileCache;
 import com.chaskify.data.realm.cache.SettingsCache;
 import com.chaskify.data.realm.cache.TaskCache;
+import com.chaskify.data.realm.cache.impl.mapper.ProfileDataMapper;
+import com.chaskify.data.realm.cache.impl.mapper.SettingsDataMapper;
+import com.chaskify.data.realm.cache.impl.mapper.TaskDataMapper;
 
 import java.util.Date;
 import java.util.List;
 
+import bolts.Continuation;
 import bolts.Task;
 import bolts.TaskCompletionSource;
 import timber.log.Timber;
@@ -37,8 +47,121 @@ public class MethodCallHelper {
         this.mSettingsCache = mSettingsCache;
     }
 
+
+    public Task<Void> getWaypointById(String id) {
+        TaskCompletionSource<ChaskifyTaskWaypoint> task = new TaskCompletionSource<>();
+        try {
+            mChaskifySession.getTaskWaypointRestClient().wayPointById(id, new ApiCallback<ChaskifyTaskWaypoint>() {
+                @Override
+                public void onSuccess(ChaskifyTaskWaypoint info) {
+                    task.trySetResult(info);
+                }
+
+                @Override
+                public void onNetworkError(Exception e) {
+                    task.trySetError(e);
+                }
+
+                @Override
+                public void onChaskifyError(Exception e) {
+                    task.trySetError(e);
+                }
+
+                @Override
+                public void onUnexpectedError(Exception e) {
+                    task.trySetError(e);
+                }
+            });
+        } catch (TokenNotFoundException e) {
+            task.trySetError(e);
+        }
+        return task.getTask()
+                .onSuccessTask(value -> {
+                    //TODO save to cacheWayPoint
+                    return null;
+                });
+    }
+
+    public Task<Void> getSettings() {
+        TaskCompletionSource<ChaskifySettings> task = new TaskCompletionSource<>();
+        return task.getTask()
+                .onSuccessTask(task1 -> {
+                    mSettingsCache.put(SettingsDataMapper.transform(task1.getResult()));
+                    return null;
+                });
+    }
+
+    public Task<Void> getProfile() {
+        TaskCompletionSource<ChaskifyProfile> task = new TaskCompletionSource<>();
+        try {
+            mChaskifySession.getProfileRestClient()
+                    .getProfile(new ApiCallback<ChaskifyProfile>() {
+                        @Override
+                        public void onSuccess(ChaskifyProfile info) {
+                            task.setResult(info);
+                        }
+
+                        @Override
+                        public void onNetworkError(Exception e) {
+                            task.setError(e);
+                        }
+
+                        @Override
+                        public void onChaskifyError(Exception e) {
+                            task.setError(e);
+                        }
+
+                        @Override
+                        public void onUnexpectedError(Exception e) {
+                            task.setError(e);
+                        }
+                    });
+        } catch (TokenNotFoundException e) {
+            task.setError(e);
+        }
+        return task.getTask()
+                .onSuccessTask(task1 -> {
+                    mProfileCache.put(ProfileDataMapper.transform(task1.getResult()));
+                    return null;
+                });
+    }
+
+    public Task<Void> getCalendarTaskByRangeOfDate(Date start, Date end) {
+        TaskCompletionSource<List<ChaskifyCalendarTask>> task = new TaskCompletionSource<>();
+        try {
+            mChaskifySession.getCalendarTaskRestClient().getCalendarTaskByRangeOfDate(start, end, new ApiCallback<List<ChaskifyCalendarTask>>() {
+                @Override
+                public void onSuccess(List<ChaskifyCalendarTask> info) {
+                    task.trySetResult(info);
+                }
+
+                @Override
+                public void onNetworkError(Exception e) {
+                    task.trySetError(e);
+                }
+
+                @Override
+                public void onChaskifyError(Exception e) {
+                    task.trySetError(e);
+                }
+
+                @Override
+                public void onUnexpectedError(Exception e) {
+                    task.trySetError(e);
+                }
+            });
+        } catch (TokenNotFoundException e) {
+            task.trySetError(e);
+        }
+        return task.getTask()
+                .onSuccessTask(value -> {
+                    //TODO save to cacheCalendar
+                    return null;
+                });
+    }
+
     public Task<Void> getTasksByDate(Date date) {
-        TaskCompletionSource<Void> task = new TaskCompletionSource<>();
+        TaskCompletionSource<List<ChaskifyTask>> task = new TaskCompletionSource<>();
         try {
             mChaskifySession.getTaskRestClient().taskByDate(date, new ApiCallback<List<ChaskifyTask>>() {
                 @Override
@@ -64,6 +187,50 @@ public class MethodCallHelper {
         } catch (TokenNotFoundException e) {
             task.trySetError(e);
         }
-        return task.getTask();
+        return task
+                .getTask()
+                .onSuccessTask(value -> {
+                    mTaskCache.put(TaskDataMapper.transform(value.getResult()));
+                    return null;
+                });
     }
+
+    public Task<Void> getTaskDetails(String taskId) {
+        TaskCompletionSource<ChaskifyTask> task = new TaskCompletionSource<>();
+
+        try {
+            mChaskifySession.getTaskRestClient().taskDetails(taskId, new ApiCallback<ChaskifyTask>() {
+                @Override
+                public void onSuccess(ChaskifyTask info) {
+                    task.trySetResult(info);
+                }
+
+                @Override
+                public void onNetworkError(Exception e) {
+                    task.trySetError(e);
+                }
+
+                @Override
+                public void onChaskifyError(Exception e) {
+                    task.trySetError(e);
+                }
+
+                @Override
+                public void onUnexpectedError(Exception e) {
+                    task.trySetError(e);
+                }
+            });
+        } catch (TokenNotFoundException e) {
+            task.trySetError(e);
+        }
+
+        return task
+                .getTask()
+                .onSuccessTask(value -> {
+                    mTaskCache.put(TaskDataMapper.transform(value.getResult()));
+                    return null;
+                });
+    }
+
+
 }
