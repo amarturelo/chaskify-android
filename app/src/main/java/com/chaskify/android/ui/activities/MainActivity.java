@@ -50,10 +50,6 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
     private boolean isExpanded = false;
 
     private Toolbar toolbar;
-    private SupportFragment[] mFragments = new SupportFragment[4];
-
-    public static final int LIST = 0;
-    public static final int MAP = 1;
 
     private DutyActionBar dutyActionBar;
 
@@ -98,8 +94,6 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putLong(ARG_CURRENT_DATE, currentDate.getTime());
-        outState.putInt(ARG_TASK_VIEW_MODE, dutyActionBar.getTaskView() == DutyActionBar.TASK_VIEW_MODE.LIST ? LIST : MAP);
     }
 
     private void initView() {
@@ -158,13 +152,13 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
     }
 
     private void findTask(Date date) {
-        Stream.of(mFragments)
+        /*Stream.of(mFragments)
                 .forEach(supportFragment -> {
                     if (supportFragment instanceof TaskMapFragment)
                         ((TaskMapFragment) supportFragment).putArguments(date);
                     else if (supportFragment instanceof TaskListFragment)
                         ((TaskListFragment) supportFragment).putArguments(date);
-                });
+                });*/
     }
 
     private void setCurrentDate(Date date) {
@@ -184,27 +178,10 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
     }
 
     private void initActivity(Bundle savedInstanceState) {
-        SupportFragment firstFragment = findFragment(TaskListFragment.class);
+        SupportFragment firstFragment = findFragment(TaskMapFragment.class);
         if (firstFragment == null) {
-            mFragments[LIST] = TaskListFragment.newInstance(currentDate);
-            mFragments[MAP] = TaskMapFragment.newInstance(currentDate);
-
-            loadMultipleRootFragment(R.id.container, savedInstanceState != null ? savedInstanceState.getInt(ARG_TASK_VIEW_MODE, LIST) : LIST,
-                    mFragments[LIST],
-                    mFragments[MAP]
-            );
-        } else {
-            mFragments[LIST] = firstFragment;
-            mFragments[MAP] = findFragment(TaskMapFragment.class);
+            loadRootFragment(R.id.container, TaskMapFragment.newInstance(currentDate));
         }
-    }
-
-    private void renderTaskMap() {
-        showHideFragment(mFragments[MAP], mFragments[LIST]);
-    }
-
-    private void renderTaskList() {
-        showHideFragment(mFragments[LIST], mFragments[MAP]);
     }
 
     private void initToolBar() {
@@ -254,10 +231,10 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
 
     @Override
     public void onTaskView(DutyActionBar.TASK_VIEW_MODE taskView) {
-        if (taskView == DutyActionBar.TASK_VIEW_MODE.LIST)
+        /*if (taskView == DutyActionBar.TASK_VIEW_MODE.LIST)
             renderTaskList();
         else
-            renderTaskMap();
+            renderTaskMap();*/
     }
 
     @Override

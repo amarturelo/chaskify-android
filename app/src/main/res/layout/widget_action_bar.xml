@@ -15,6 +15,7 @@
         android:layout_centerVertical="true"
         android:orientation="horizontal">
 
+
         <Switch
             android:id="@+id/switch_action_duty"
             android:layout_width="wrap_content"
@@ -22,8 +23,7 @@
             android:checked="true"
             android:text="@string/action_on_duty"
             android:textOff="@string/action_off_duty"
-            android:textOn="@string/action_on_duty"
-             />
+            android:textOn="@string/action_on_duty" />
     </LinearLayout>
 
     <LinearLayout
@@ -32,10 +32,20 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true">
 
+
+        <com.polyak.iconswitch.IconSwitch
+            android:id="@+id/icon_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            app:isw_icon_left="@drawable/ic_map_black_24dp"
+            app:isw_icon_right="@drawable/ic_view_list_black_24dp" />
+
         <FrameLayout
             android:id="@+id/action_task_filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:padding="10dp">
 
             <ImageView
@@ -49,7 +59,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/iv_task_view_mode"
