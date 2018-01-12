@@ -1,5 +1,7 @@
 package com.chaskify.android;
 
+import com.annimon.stream.Optional;
+import com.annimon.stream.function.Consumer;
 import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallbackSuccess;
@@ -16,6 +18,7 @@ import com.chaskify.data.realm.cache.TaskCache;
 import com.chaskify.data.realm.cache.impl.mapper.ProfileDataMapper;
 import com.chaskify.data.realm.cache.impl.mapper.SettingsDataMapper;
 import com.chaskify.data.realm.cache.impl.mapper.TaskDataMapper;
+import com.chaskify.data.realm.model.RealmSettings;
 
 import java.util.Date;
 import java.util.List;
@@ -379,16 +382,24 @@ public class MethodCallHelper {
         }
         return task.getTask()
                 .onSuccessTask(value -> {
-                    mProfileCache.getByDriverId(mChaskifySession
+                    mProfileCache.getByDriverIdAsObservable(mChaskifySession
                             .getCredentials()
                             .getDriverId()
                     )
+                            .firstOrError()
+                            .blockingGet()
                             .ifPresent(realmProfile -> mProfileCache.put(realmProfile
                                     .setDriverPicture(value.getResult())));
                     return null;
                 });
     }
 
+    /**
+     * update settings
+     *
+     * @param enable
+     * @return
+     */
     public Task<Void> updateSettings(boolean enable) {
         TaskCompletionSource<Void> task = new TaskCompletionSource<>();
 
@@ -418,7 +429,16 @@ public class MethodCallHelper {
             task.trySetError(e);
         }
 
-        return task.getTask();
+        return task.getTask()
+                .onSuccessTask(task1 -> {
+                    mSettingsCache.getByDriverIdAsObservable(mChaskifySession
+                            .getCredentials()
+                            .getDriverId())
+                            .firstOrError()
+                            .blockingGet()
+                            .ifPresent(realmSettings -> mSettingsCache.put(realmSettings.setEnabledPush(enable)));
+                    return null;
+                });
     }
 
 }

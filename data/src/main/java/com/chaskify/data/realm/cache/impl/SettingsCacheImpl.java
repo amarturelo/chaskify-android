@@ -34,7 +34,7 @@ public class SettingsCacheImpl extends RealmCache implements SettingsCache {
     }
 
     @Override
-    public Flowable<Optional<RealmSettings>> getByDriverId(String driverId) {
+    public Flowable<Optional<RealmSettings>> getByDriverIdAsObservable(String driverId) {
         return Flowable.defer(() -> Flowable.using(() -> new Pair<>(Realm.getDefaultInstance(), Looper.myLooper()), pair -> {
                     RealmResults<RealmSettings> realmResults = pair.first.where(RealmSettings.class)
                             .equalTo(RealmSettings.DRIVER_ID, driverId)
@@ -45,7 +45,7 @@ public class SettingsCacheImpl extends RealmCache implements SettingsCache {
                                 if (value.isEmpty())
                                     return Flowable.just(Optional.empty());
                                 else
-                                    return Flowable.just(Optional.of(value))
+                                    return Flowable.just(Optional.of(pair.first.copyFromRealm(value)))
                                             .map(Optional::get)
                                             .map(v -> v.get(0))
                                             .filter(

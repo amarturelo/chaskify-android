@@ -11,7 +11,7 @@ import io.reactivex.Flowable;
  */
 
 public interface SettingsCache {
-    Flowable<Optional<RealmSettings>> getByDriverId(String driver_id);
+    Flowable<Optional<RealmSettings>> getByDriverIdAsObservable(String driver_id);
 
     void put(RealmSettings settings);
 }
