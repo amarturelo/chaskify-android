@@ -11,6 +11,5 @@ import io.reactivex.Flowable;
  */
 
 public interface SettingsRepository {
-
     Flowable<Optional<Settings>> settingsByDriverId(String driverId);
 }

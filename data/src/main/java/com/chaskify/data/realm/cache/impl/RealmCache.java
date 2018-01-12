@@ -15,7 +15,7 @@ public class RealmCache {
         if (realm == null || looper == null) {
             return;
         }
-        Timber.d("::closing realm getByDriverId::");
+        Timber.d("::closing realm getByDriverIdAsObservable::");
         //new Handler(looper).post(realm::close);
         realm.close();
     }

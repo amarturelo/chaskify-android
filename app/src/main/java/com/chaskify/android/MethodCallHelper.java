@@ -2,8 +2,11 @@ package com.chaskify.android;
 
 import android.provider.CalendarContract;
 
+import com.annimon.stream.function.Consumer;
+import com.chaskify.android.helper.LogIfError;
 import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
+import com.chaskify.chaskify_sdk.rest.callback.ApiCallbackSuccess;
 import com.chaskify.chaskify_sdk.rest.exceptions.TokenNotFoundException;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyCalendarTask;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyProfile;
@@ -17,9 +20,11 @@ import com.chaskify.data.realm.cache.TaskCache;
 import com.chaskify.data.realm.cache.impl.mapper.ProfileDataMapper;
 import com.chaskify.data.realm.cache.impl.mapper.SettingsDataMapper;
 import com.chaskify.data.realm.cache.impl.mapper.TaskDataMapper;
+import com.chaskify.data.realm.model.RealmProfile;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import bolts.Continuation;
 import bolts.Task;
@@ -232,5 +237,141 @@ public class MethodCallHelper {
                 });
     }
 
+    public Task<Void> updateProfile(String newPhone) {
+        TaskCompletionSource<Void> task = new TaskCompletionSource<>();
 
+        try {
+            mChaskifySession.updateProfile(newPhone, new ApiCallbackSuccess() {
+                @Override
+                public void onSuccess() {
+                    task.trySetResult(null);
+                }
+
+                @Override
+                public void onNetworkError(Exception e) {
+                    task.trySetError(e);
+                }
+
+                @Override
+                public void onChaskifyError(Exception e) {
+                    task.trySetError(e);
+                }
+
+                @Override
+                public void onUnexpectedError(Exception e) {
+                    task.trySetError(e);
+                }
+            });
+        } catch (TokenNotFoundException e) {
+            task.trySetError(e);
+        }
+        return task.getTask()
+                .onSuccessTask(value -> {
+                    mProfileCache.getByDriverId(mChaskifySession
+                            .getCredentials()
+                            .getDriverId()
+                    )
+                            .ifPresent(realmProfile -> {
+                                realmProfile.setPhone(newPhone);
+                                mProfileCache.put(realmProfile);
+                            });
+                    return null;
+                });
+    }
+
+    public Task<Void> updateProfileVehicle(String transportTypeTd, String transportDescription, String licencePlate, String color) {
+        TaskCompletionSource<Void> task = new TaskCompletionSource<>();
+        try {
+            mChaskifySession.updateVehicle(transportTypeTd, transportDescription, licencePlate, color, new ApiCallbackSuccess() {
+                @Override
+                public void onSuccess() {
+                    task.trySetResult(null);
+                }
+
+                @Override
+                public void onNetworkError(Exception e) {
+                    task.trySetError(e);
+                }
+
+                @Override
+                public void onChaskifyError(Exception e) {
+                    task.trySetError(e);
+                }
+
+                @Override
+                public void onUnexpectedError(Exception e) {
+                    task.trySetError(e);
+                }
+            });
+        } catch (TokenNotFoundException e) {
+            task.trySetError(e);
+        }
+        return task.getTask()
+                .onSuccessTask(value -> {
+                    mProfileCache.getByDriverId(mChaskifySession
+                            .getCredentials()
+                            .getDriverId()
+                    )
+                            .ifPresent(realmProfile -> {
+                                realmProfile.setTransportTypeId(transportTypeTd)
+                                        .setTransportDescription(transportDescription)
+                                        .setLicencePlate(licencePlate)
+                                        .setColor(color);
+                                mProfileCache.put(realmProfile);
+                            });
+
+                    return null;
+                });
+    }
+
+    /**
+     * update image profile and if complete success save in db
+     *
+     * @param base64
+     * @return
+     */
+    public Task<Void> updateProfileImage(String base64) {
+        TaskCompletionSource<Void> task = new TaskCompletionSource<>();
+        try {
+            mChaskifySession.updateImageProfile(base64, new ApiCallbackSuccess() {
+                @Override
+                public void onSuccess() {
+                    task.trySetResult(null);
+                }
+
+                @Override
+                public void onNetworkError(Exception e) {
+                    task.trySetError(e);
+                }
+
+                @Override
+                public void onChaskifyError(Exception e) {
+                    task.trySetError(e);
+                }
+
+                @Override
+                public void onUnexpectedError(Exception e) {
+                    task.trySetError(e);
+                }
+            });
+        } catch (TokenNotFoundException e) {
+            task.trySetError(e);
+        }
+        return task.getTask()
+                .onSuccessTask(new Continuation<Void, Task<Void>>() {
+                    @Override
+                    public Task<Void> then(Task<Void> task) throws Exception {
+                        mProfileCache.getByDriverId(mChaskifySession
+                                .getCredentials()
+                                .getDriverId()
+                        )
+                                .ifPresent(realmProfile -> {
+
+                                    mProfileCache.put(realmProfile);
+                                });
+                        return null;
+                    }
+                })
+                ;
+    }
 }

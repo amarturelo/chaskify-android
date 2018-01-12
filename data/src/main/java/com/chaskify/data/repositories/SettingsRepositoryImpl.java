@@ -18,22 +18,17 @@ import timber.log.Timber;
 public class SettingsRepositoryImpl implements SettingsRepository {
 
     private DiskSettingsDataStore diskSettingsDataStore;
-    private CloudSettingsDataStore cloudSettingsDataStore;
 
-    public SettingsRepositoryImpl(SettingsCache settingsCache, SettingsRestClient settingsRestClient) {
+    public SettingsRepositoryImpl(SettingsCache settingsCache) {
         Timber.tag(this.getClass().getSimpleName());
         this.diskSettingsDataStore = new DiskSettingsDataStore(settingsCache);
-        this.cloudSettingsDataStore = new CloudSettingsDataStore(settingsRestClient, settingsCache);
     }
 
     @Override
     public Flowable<Optional<Settings>> settingsByDriverId(String driverId) {
-        return Flowable.concatArrayDelayError(
+        return
                 diskSettingsDataStore.getByDriverId(driverId)
-                        .doOnNext(settingsOptional -> Timber.d("::diskSettingsDataStore " + settingsOptional.toString()))
-                , cloudSettingsDataStore
-                        .getByDriverId(driverId)
-                        .doOnNext(settingsOptional -> Timber.d("::cloudSettingsDataStore " + settingsOptional.toString()))
-        );
+                        .doOnNext(settingsOptional -> Timber.d("::diskSettingsDataStore " + settingsOptional.toString()));
+
     }
 }

@@ -80,18 +80,13 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
                             new ProfileInteractor(
                                     new ProfileRepositoryImpl(
                                             new ProfileCacheImpl()
-                                            , chaskifySession.getProfileRestClient()
                                     )
                             )
                             , new SettingsInteractor(
                             new SettingsRepositoryImpl(
                                     new SettingsCacheImpl()
-                                    , chaskifySession.getSettingsRestClient())
-                    )
-                            , Chaskify.getInstance()
-                            .getDefaultSession()
-                            .get()
-                    );
+                            ))
+                            , chaskifySession);
                     presenter.bindView(this);
                     initListenedPreferenceChange();
 

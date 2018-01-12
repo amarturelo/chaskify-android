@@ -1,5 +1,6 @@
 package com.chaskify.data.realm.cache.impl;
 
+import android.graphics.Path;
 import android.os.Looper;
 import android.util.Pair;
 
@@ -7,9 +8,14 @@ import com.annimon.stream.Optional;
 import com.chaskify.data.realm.model.RealmProfile;
 import com.chaskify.data.realm.cache.ProfileCache;
 
+import org.reactivestreams.Publisher;
+
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
 import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmResults;
 import timber.log.Timber;
 
 /**
@@ -32,27 +38,40 @@ public class ProfileCacheImpl extends RealmCache implements ProfileCache {
     }
 
     @Override
-    public Flowable<Optional<RealmProfile>> getByDriverId(String driverId) {
+    public Optional<RealmProfile> getByDriverId(String driverId) {
+        Realm realm = Realm.getDefaultInstance();
+        RealmProfile result = realm.where(RealmProfile.class)
+                .equalTo(RealmProfile.DRIVER_ID, driverId)
+                .findFirst();
+        return result == null ? Optional.empty() : Optional.of(realm.copyFromRealm(result));
+    }
+
+    @Override
+    public Flowable<Optional<RealmProfile>> getByDriverIdAsObservable(String driverId) {
         return Flowable.defer(() -> Flowable.using(() -> new Pair<>(Realm.getDefaultInstance(), Looper.myLooper()), pair -> {
-                    RealmProfile realmRoom = pair.first.where(RealmProfile.class)
+                    RealmResults<RealmProfile> realmProfiles = pair.first.where(RealmProfile.class)
                             .equalTo(RealmProfile.DRIVER_ID, driverId)
-                            .findFirst();
+                            .findAll();
 
-                    if (realmRoom == null) {
-                        return Flowable.just(Optional.empty());
-                    }
-
-                    return realmRoom.<RealmProfile>asFlowable()
-                            .filter(
-                                    profile -> profile.isLoaded()
-                                            && profile.isValid())
-                            .map(Optional::of);
+                    return realmProfiles.<RealmProfile>asFlowable()
+                            .switchMap((Function<RealmResults<RealmProfile>, Publisher<Optional<RealmProfile>>>) realmProfiles1 -> {
+                                if (realmProfiles1.isEmpty())
+                                    return Flowable.just(Optional.empty());
+                                else
+                                    return Flowable.just(Optional.of(realmProfiles1))
+                                            .map(Optional::get)
+                                            .map(value -> value.get(0))
+                                            .filter(
+                                                    profile -> profile.isLoaded()
+                                                            && profile.isValid())
+                                            .map(Optional::of);
+                            });
                 }
                 , pair -> close(pair.first, pair.second))
-                        .unsubscribeOn(AndroidSchedulers.from(Looper.myLooper())))
+                .unsubscribeOn(AndroidSchedulers.from(Looper.myLooper())))
                 .map(optional -> {
                     if (optional.isPresent()) {
-                        return Optional.of((RealmProfile) optional.get());
+                        return Optional.of(optional.get());
                     }
                     return Optional.empty();
                 });

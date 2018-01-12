@@ -60,7 +60,6 @@ public class CloudSettingsDataStore implements SettingsDataStore {
                     }
                 }))
                 .map(SettingsDataMapper::transform)
-                .doOnSuccess(settings -> mSettingsCache.put(com.chaskify.data.realm.cache.impl.mapper.SettingsDataMapper.transform(settings)))
                 .map(Optional::of)
                 .toFlowable();
     }

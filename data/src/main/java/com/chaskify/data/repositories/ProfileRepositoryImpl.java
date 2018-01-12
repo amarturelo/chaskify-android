@@ -22,23 +22,17 @@ import timber.log.Timber;
 public class ProfileRepositoryImpl implements ProfileRepository {
 
     private DiskProfileDataStore diskProfileDataStore;
-    private CloudProfileDataStore cloudProfileDataStore;
 
-    public ProfileRepositoryImpl(ProfileCache profileCache, ProfileRestClient profileRestClient) {
+    public ProfileRepositoryImpl(ProfileCache profileCache) {
         Timber.tag(this.getClass().getSimpleName());
         this.diskProfileDataStore = new DiskProfileDataStore(profileCache);
-        this.cloudProfileDataStore = new CloudProfileDataStore(profileRestClient, profileCache);
     }
 
     @Override
     public Flowable<Optional<Profile>> profileByDriverId(String driver_id) {
-        return Flowable.concatArrayDelayError(
+        return
                 diskProfileDataStore.getProfileByDriverId(driver_id)
-                        .doOnNext(profileOptional -> Timber.d("::diskProfileDataStore " + profileOptional.toString()))
-                , cloudProfileDataStore
-                        .getProfileByDriverId(driver_id)
-                        .doOnNext(profileOptional -> Timber.d("::cloudProfileDataStore " + profileOptional.toString()))
-        );
+                        .doOnNext(profileOptional -> Timber.d("::diskProfileDataStore " + profileOptional.toString()));
     }
 
 }

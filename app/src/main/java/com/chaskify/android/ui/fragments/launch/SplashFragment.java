@@ -50,16 +50,14 @@ public class SplashFragment extends BaseFragment implements SplashContract.View,
                 .executeIfAbsent(this::goToLaunch)
                 .ifPresent(chaskifySession -> {
                     this.mChaskifySession = Chaskify.getInstance().getDefaultSession();
-                    presenter = new SplashPresenter(new ProfileInteractor(
+                    presenter = new SplashPresenter(mChaskifySession.get(), new ProfileInteractor(
                             new ProfileRepositoryImpl(
                                     new ProfileCacheImpl()
-                                    , mChaskifySession.get().getProfileRestClient()
                             )
                     )
                             , new SettingsInteractor(
                             new SettingsRepositoryImpl(
                                     new SettingsCacheImpl()
-                                    , mChaskifySession.get().getSettingsRestClient()
                             )
                     ));
                 });

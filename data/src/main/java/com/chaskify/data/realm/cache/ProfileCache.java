@@ -13,5 +13,7 @@ public interface ProfileCache {
 
     void put(RealmProfile realmProfile);
 
-    Flowable<Optional<RealmProfile>> getByDriverId(String driver_id);
+    Flowable<Optional<RealmProfile>> getByDriverIdAsObservable(String driver_id);
+
+    Optional<RealmProfile> getByDriverId(String driverId);
 }
