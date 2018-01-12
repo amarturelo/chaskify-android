@@ -198,11 +198,17 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
     @Override
     public void renderProfile(ProfileModel profileModel) {
         mPreferenceEmail.setSummary(profileModel.getEmail());
+        mPreferenceEmail.setDefaultValue(profileModel.getEmail());
         mPreferenceContact.setSummary(profileModel.getPhone());
+        mPreferenceContact.setDefaultValue(profileModel.getPhone());
         mPreferenceVehicleType.setSummary(profileModel.getTransportTypeId());
+        mPreferenceVehicleType.setDefaultValue(profileModel.getTransportTypeId());
         mPreferenceVehicleDescription.setSummary(profileModel.getTransportDescription());
+        mPreferenceVehicleDescription.setDefaultValue(profileModel.getTransportDescription());
         mPreferenceVehicleLicense.setSummary(profileModel.getLicencePlate());
+        mPreferenceVehicleLicense.setDefaultValue(profileModel.getLicencePlate());
         mPreferenceVehicleColor.setSummary(profileModel.getColor());
+        mPreferenceVehicleColor.setDefaultValue(profileModel.getColor());
 
         mProfilePreferenceWidget.setProfileWidgetModel(profileModel);
         mProfilePreferenceWidget.setListened(this);

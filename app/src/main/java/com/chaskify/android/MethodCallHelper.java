@@ -1,9 +1,5 @@
 package com.chaskify.android;
 
-import android.provider.CalendarContract;
-
-import com.annimon.stream.function.Consumer;
-import com.chaskify.android.helper.LogIfError;
 import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallbackSuccess;
@@ -20,13 +16,10 @@ import com.chaskify.data.realm.cache.TaskCache;
 import com.chaskify.data.realm.cache.impl.mapper.ProfileDataMapper;
 import com.chaskify.data.realm.cache.impl.mapper.SettingsDataMapper;
 import com.chaskify.data.realm.cache.impl.mapper.TaskDataMapper;
-import com.chaskify.data.realm.model.RealmProfile;
 
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-import bolts.Continuation;
 import bolts.Task;
 import bolts.TaskCompletionSource;
 import timber.log.Timber;
@@ -331,12 +324,13 @@ public class MethodCallHelper {
      * @return
      */
     public Task<Void> updateProfileImage(String base64) {
-        TaskCompletionSource<Void> task = new TaskCompletionSource<>();
+        TaskCompletionSource<String> task = new TaskCompletionSource<>();
         try {
-            mChaskifySession.updateImageProfile(base64, new ApiCallbackSuccess() {
+            mChaskifySession.updateImageProfile(base64, new ApiCallback<String>() {
                 @Override
-                public void onSuccess() {
-                    task.trySetResult(null);
+                public void onSuccess(String info) {
+                    task.trySetResult(info);
+
                 }
 
                 @Override
@@ -358,20 +352,14 @@ public class MethodCallHelper {
             task.trySetError(e);
         }
         return task.getTask()
-                .onSuccessTask(new Continuation<Void, Task<Void>>() {
-                    @Override
-                    public Task<Void> then(Task<Void> task) throws Exception {
-                        mProfileCache.getByDriverId(mChaskifySession
-                                .getCredentials()
-                                .getDriverId()
-                        )
-                                .ifPresent(realmProfile -> {
-
-                                    mProfileCache.put(realmProfile);
-                                });
-                        return null;
-                    }
-                })
-                ;
+                .onSuccessTask(value -> {
+                    mProfileCache.getByDriverId(mChaskifySession
+                            .getCredentials()
+                            .getDriverId()
+                    )
+                            .ifPresent(realmProfile -> mProfileCache.put(realmProfile
+                                    .setDriverPicture(value.getResult())));
+                    return null;
+                });
     }
 }

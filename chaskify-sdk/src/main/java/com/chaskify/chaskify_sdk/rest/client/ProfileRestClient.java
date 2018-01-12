@@ -145,20 +145,25 @@ public class ProfileRestClient extends RestClient<ProfileApi> {
                 });
     }
 
-    public void updateImageProfileBase64(String base64, ApiCallbackSuccess callback) throws TokenNotFoundException {
+    public void updateImageProfileBase64(String base64, ApiCallback<String> callback) throws TokenNotFoundException {
         if (mChaskifyCredentials != null)
             updateImageProfileBase64(mChaskifyCredentials.getAccessToken(), base64, callback);
         else
             throw new TokenNotFoundException();
     }
 
-    private void updateImageProfileBase64(String accessToken, String base64, final ApiCallbackSuccess callback) {
+    private void updateImageProfileBase64(String accessToken, String base64, final ApiCallback<String> callback) {
         mApi.updateImageProfile(accessToken, base64).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
+                Type type = new TypeToken<BaseResponse<String>>() {
+                }.getType();
+
                 JsonObject baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), JsonObject.class);
                 if (baseResponse.get("code").getAsInt() == 1) {
-                    callback.onSuccess();
+                    BaseResponse<String> listBaseResponse = getGson().fromJson(baseResponse, type);
+                    callback.onSuccess(listBaseResponse.getDetails());
+
                 } else {
                     callback.onChaskifyError(new Exception(baseResponse.get("msg").getAsString()));
                 }
