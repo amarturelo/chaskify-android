@@ -45,7 +45,6 @@ public class MethodCallHelper {
         this.mSettingsCache = mSettingsCache;
     }
 
-
     public Task<Void> getWaypointById(String id) {
         TaskCompletionSource<ChaskifyTaskWaypoint> task = new TaskCompletionSource<>();
         try {
@@ -362,4 +361,37 @@ public class MethodCallHelper {
                     return null;
                 });
     }
+
+    public Task<Void> updateSettings(boolean enable) {
+        TaskCompletionSource<Void> task = new TaskCompletionSource<>();
+
+        try {
+            mChaskifySession.updateSettingsPush(enable, new ApiCallbackSuccess() {
+                @Override
+                public void onSuccess() {
+                    task.setResult(null);
+                }
+
+                @Override
+                public void onNetworkError(Exception e) {
+                    task.trySetError(e);
+                }
+
+                @Override
+                public void onChaskifyError(Exception e) {
+                    task.trySetError(e);
+                }
+
+                @Override
+                public void onUnexpectedError(Exception e) {
+                    task.trySetError(e);
+                }
+            });
+        } catch (TokenNotFoundException e) {
+            task.trySetError(e);
+        }
+
+        return task.getTask();
+    }
+
 }

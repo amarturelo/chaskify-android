@@ -87,34 +87,9 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
 
     @Override
     public void updateSettingsPush(boolean enable) {
-        addSubscription(doUpdateSettingsPush(enable)
-                .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> view.complete(), throwable -> view.showError(throwable)));
-    }
-
-    private Completable doUpdateSettingsPush(boolean enable) {
-        return Completable.create(emitter -> mChaskifySession.updateSettingsPush(enable, new ApiCallbackSuccess() {
-            @Override
-            public void onSuccess() {
-                emitter.onComplete();
-            }
-
-            @Override
-            public void onNetworkError(Exception e) {
-                emitter.onError(e);
-            }
-
-            @Override
-            public void onChaskifyError(Exception e) {
-                emitter.onError(e);
-            }
-
-            @Override
-            public void onUnexpectedError(Exception e) {
-                emitter.onError(e);
-            }
-        }));
+        mMethodCallHelper
+                .updateSettings(enable)
+                .continueWith(new LogIfError());
     }
 
     @Override
@@ -150,7 +125,6 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
             }
         }));
     }
-
 
     @Override
     public void updateImageProfile(String base64) {
