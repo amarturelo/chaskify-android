@@ -81,6 +81,33 @@ public class MethodCallHelper {
 
     public Task<Void> getSettings() {
         TaskCompletionSource<ChaskifySettings> task = new TaskCompletionSource<>();
+
+        try {
+            mChaskifySession.getSettingsRestClient().getSettings(new ApiCallback<ChaskifySettings>() {
+                @Override
+                public void onSuccess(ChaskifySettings info) {
+                    task.setResult(info);
+                }
+
+                @Override
+                public void onNetworkError(Exception e) {
+                    task.trySetError(e);
+                }
+
+                @Override
+                public void onChaskifyError(Exception e) {
+                    task.trySetError(e);
+                }
+
+                @Override
+                public void onUnexpectedError(Exception e) {
+                    task.trySetError(e);
+                }
+            });
+        } catch (TokenNotFoundException e) {
+            task.trySetError(e);
+        }
+
         return task.getTask()
                 .onSuccessTask(task1 -> {
                     mSettingsCache.put(SettingsDataMapper.transform(task1.getResult()));

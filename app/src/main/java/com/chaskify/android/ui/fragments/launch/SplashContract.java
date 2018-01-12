@@ -20,9 +20,9 @@ public class SplashContract {
     }
 
     interface Presenter extends BaseContract.Presenter<SplashContract.View> {
-        void profile(String driverId);
+        //void profile(String driverId);
 
-        void settings(String driverId);
+        //void settings(String driverId);
 
         void init(String driverId);
     }

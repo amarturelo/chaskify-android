@@ -15,10 +15,24 @@ import com.chaskify.domain.interactors.SettingsInteractor;
 import com.chaskify.domain.model.Profile;
 import com.chaskify.domain.model.Settings;
 
+import org.reactivestreams.Publisher;
+
+import java.util.concurrent.Callable;
+
+import bolts.Continuation;
+import bolts.Task;
+import io.reactivex.Completable;
+import io.reactivex.CompletableEmitter;
+import io.reactivex.CompletableOnSubscribe;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
+import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import timber.log.Timber;
 
@@ -54,35 +68,63 @@ public class SplashPresenter extends BasePresenter<SplashContract.View>
     @Override
     public void init(String driverId) {
         view.showProgress();
-        addSubscription(
-                profileInteractor.profileByDriverId(driverId)
-                        .firstOrError()
-                        .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(profileOptional -> {
-                            if (profileOptional.isPresent())
-                                view.complete();
-                            else
-                                mMethodCallHelper.getProfile()
-                                        .continueWith(new LogIfError());
-                        }));
+
+        Single.zip(
+                settings(driverId)
+                , profile(driverId)
+
+                , (asProfile, asSettings) -> asProfile && asSettings
+        )
+                .subscribe(aBoolean -> {
+                    if (aBoolean)
+                        view.complete();
+                    else
+                        view.showError(new Exception("paso algo con la red"));
+                })
+        ;
     }
 
-    @Override
-    public void settings(String driverId) {
-        addSubscription(settingsInteractor
-                .settingsByDriverId(driverId)
-                .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe());
+    private Single<Boolean> settings(String driverId) {
+        return settingsInteractor.settingsByDriverId(driverId)
+                .firstOrError()
+                .toFlowable()
+                .switchMap(settingsOptional -> {
+                    if (settingsOptional.isPresent())
+                        return Flowable.just(true);
+                    return Single.create((SingleOnSubscribe<Boolean>) emitter -> mMethodCallHelper.getSettings()
+                            .continueWith(task -> {
+                                if (task.isCompleted())
+                                    emitter.onSuccess(true);
+                                else
+                                    emitter.onError(task.getError());
+                                return null;
+                            }))
+                            .toFlowable();
+                })
+                .firstOrError()
+                ;
     }
 
-    @Override
-    public void profile(String driverId) {
-        addSubscription(profileInteractor.profileByDriverId(driverId)
-                .filter(Optional::isPresent)
-                .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe());
+    private Single<Boolean> profile(String driverId) {
+        return profileInteractor.profileByDriverId(driverId)
+                .firstOrError()
+                .toFlowable()
+                .switchMap(profileOptional -> {
+                    if (profileOptional.isPresent())
+                        return Flowable.just(true);
+                    else
+                        return Single.create((SingleOnSubscribe<Boolean>) emitter -> mMethodCallHelper.getProfile()
+                                .continueWith(task -> {
+                                    if (task.isCompleted())
+                                        emitter.onSuccess(true);
+                                    else
+                                        emitter.onError(task.getError());
+                                    return null;
+                                }))
+                                .toFlowable();
+                })
+                .firstOrError()
+                ;
     }
+
 }
