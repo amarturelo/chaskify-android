@@ -5,6 +5,7 @@ import com.chaskify.data.realm.cache.TaskCache;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.repositories.datasource.cloud.CloudTaskDataStore;
 import com.chaskify.data.repositories.datasource.disk.DiskTaskDataStore;
+import com.chaskify.domain.filter.Filter;
 import com.chaskify.domain.model.Task;
 import com.chaskify.domain.repositories.TaskRepository;
 
@@ -22,26 +23,19 @@ import timber.log.Timber;
 public class TaskRepositoryImpl implements TaskRepository {
 
     private DiskTaskDataStore diskTaskDataStore;
-    private CloudTaskDataStore cloudTaskDataStore;
 
-    public TaskRepositoryImpl(TaskCache taskCache, TaskRestClient taskRestClient) {
+    public TaskRepositoryImpl(TaskCache taskCache) {
         Timber.tag(this.getClass().getSimpleName());
         this.diskTaskDataStore = new DiskTaskDataStore(taskCache);
-        this.cloudTaskDataStore = new CloudTaskDataStore(taskRestClient, taskCache);
     }
 
     @Override
     public Observable<Task> taskById(String driverId, String taskId) {
-        return Observable.concatArrayDelayError(diskTaskDataStore.taskById(driverId, taskId).toObservable()
-                , cloudTaskDataStore.taskById(driverId, taskId).toObservable())
-                ;
+        return diskTaskDataStore.taskById(driverId, taskId).toObservable();
     }
 
     @Override
-    public Observable<List<Task>> tasks(String driverId, Date date) {
-
-        return Observable.concatArrayDelayError(diskTaskDataStore.tasks(driverId, date).toObservable()
-                , cloudTaskDataStore.tasks(driverId, date).toObservable())
-                ;
+    public Observable<List<Task>> tasks(List<Filter> filters) {
+        return diskTaskDataStore.tasks(filters).toObservable();
     }
 }

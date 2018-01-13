@@ -3,12 +3,12 @@ package com.chaskify.data.repositories.datasource.disk;
 import com.chaskify.data.realm.cache.TaskCache;
 import com.chaskify.data.realm.mapper.TaskDataMapper;
 import com.chaskify.data.repositories.datasource.TaskDataStore;
+import com.chaskify.domain.filter.Filter;
 import com.chaskify.domain.model.Task;
 
-import java.util.Date;
 import java.util.List;
 
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 /**
@@ -24,8 +24,8 @@ public class DiskTaskDataStore implements TaskDataStore {
     }
 
     @Override
-    public Single<List<Task>> tasks(String driverId, Date date) {
-        return mTaskCache.findAllByDate(driverId, date)
+    public Flowable<List<Task>> tasks(List<Filter> filters) {
+        return mTaskCache.getTaskAsObservable(filters)
                 .map(TaskDataMapper::transform);
     }
 

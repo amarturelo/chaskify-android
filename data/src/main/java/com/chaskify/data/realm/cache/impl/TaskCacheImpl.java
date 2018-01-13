@@ -1,18 +1,34 @@
 package com.chaskify.data.realm.cache.impl;
 
+import android.os.Looper;
+import android.util.Pair;
+
+import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
+import com.annimon.stream.function.Consumer;
+import com.chaskify.data.realm.model.RealmProfile;
 import com.chaskify.data.realm.model.RealmTask;
 import com.chaskify.data.realm.cache.TaskCache;
+import com.chaskify.domain.filter.DateFilter;
+import com.chaskify.domain.filter.DriverFilter;
+import com.chaskify.domain.filter.Filter;
+import com.chaskify.domain.filter.TaskIdFilter;
+
+import org.reactivestreams.Publisher;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
+import io.reactivex.functions.Function;
 import io.realm.Realm;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import timber.log.Timber;
 
@@ -20,7 +36,7 @@ import timber.log.Timber;
  * Created by alberto on 14/12/17.
  */
 
-public class TaskCacheImpl implements TaskCache {
+public class TaskCacheImpl extends RealmCache implements TaskCache {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", /*Locale.getDefault()*/Locale.getDefault());
 
 
@@ -54,12 +70,27 @@ public class TaskCacheImpl implements TaskCache {
     }
 
     @Override
-    public Single<List<RealmTask>> findAllByDate(String driverId, Date date) {
-        return findAll(driverId)
-                .map(realmTasks -> Stream.of(realmTasks)
-                        .filter(value -> dateFormat.format(value.getDelivery_date()).equals(dateFormat.format(date)))
-                        .toList())
-                .doOnSuccess(realmTasks -> Timber.d(realmTasks.toString()));
+    public Flowable<List<RealmTask>> getTaskAsObservable(List<Filter> filters) {
+        return Flowable.defer(() -> Flowable.using(() -> new Pair<>(Realm.getDefaultInstance(), Looper.myLooper()), pair -> {
+                    RealmQuery<RealmTask> query = pair.first.where(RealmTask.class);
+                    Stream.of(filters)
+                            .forEach(filter -> {
+                                if (filter instanceof DriverFilter)
+                                    query.equalTo(RealmTask.DRIVER_ID, ((DriverFilter) filter).getDriver());
+                                if (filter instanceof TaskIdFilter)
+                                    query.equalTo(RealmTask.TASK_ID, ((TaskIdFilter) filter).getTaskId());
+                            });
+
+                    RealmResults<RealmTask> realmProfiles = query
+                            .findAll();
+
+                    return realmProfiles.<RealmTask>asFlowable()
+                            .map(pair.first::copyFromRealm)
+                            ;
+                }
+                , pair -> close(pair.first, pair.second))
+                .unsubscribeOn(AndroidSchedulers.from(Looper.myLooper())))
+                ;
     }
 
     @Override

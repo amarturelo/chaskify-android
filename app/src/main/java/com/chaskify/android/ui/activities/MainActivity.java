@@ -1,13 +1,22 @@
 package com.chaskify.android.ui.activities;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,31 +24,39 @@ import android.widget.Toast;
 import com.annimon.stream.Stream;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
+import com.chaskify.android.adapters.TaskListAdapter;
 import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.base.BaseActivity;
-import com.chaskify.android.ui.fragments.TaskListFragment;
 import com.chaskify.android.ui.fragments.TaskMapFragment;
 import com.chaskify.android.ui.model.TaskCalendarItemModel;
+import com.chaskify.android.ui.model.TaskItemModel;
 import com.chaskify.android.ui.widget.AppBarStateChangeListener;
 import com.chaskify.android.ui.widget.DutyActionBar;
+import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.repositories.CalendarTaskRepositoryImpl;
+import com.chaskify.data.repositories.TaskRepositoryImpl;
+import com.chaskify.domain.filter.DateFilter;
+import com.chaskify.domain.filter.DriverFilter;
+import com.chaskify.domain.filter.Filter;
 import com.chaskify.domain.interactors.CalendarTaskInteractor;
+import com.chaskify.domain.interactors.TaskInteractor;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
+import com.polyak.iconswitch.IconSwitch;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import me.yokeyword.fragmentation.SupportFragment;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import timber.log.Timber;
 
 
-public class MainActivity extends BaseActivity implements DutyActionBar.OnFragmentInteractionListenerDutyActionBar, MainContract.View {
+public class MainActivity extends BaseActivity implements MainContract.View, DutyActionBar.OnListenedTaskListChange, DutyActionBar.OnListenedDutyChange {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM,d", /*Locale.getDefault()*/Locale.getDefault());
 
     private static final String ARG_TASK_VIEW_MODE = "TASK_VIEW_MODE";
@@ -57,6 +74,18 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
 
     private MainPresenter presenter;
 
+    private TaskListAdapter mTaskListAdapter;
+
+    private TaskMapFragment mTaskMapFragment;
+
+    private ValueAnimator statusBarAnimator;
+    private Interpolator contentInInterpolator;
+    private Interpolator contentOutInterpolator;
+
+    private View content;
+    private Window window;
+    private Point revealCenter;
+
     @Override
     protected int getLayout() {
         return R.layout.activity_main;
@@ -68,13 +97,20 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
 
         Timber.tag(this.getClass().getSimpleName());
 
-        presenter = new MainPresenter(
-                new CalendarTaskInteractor(
+        Chaskify.getInstance().getDefaultSession()
+                .executeIfAbsent(() -> goToLaunch())
+                .ifPresent(chaskifySession -> presenter = new MainPresenter(
+                        chaskifySession
+                        , new CalendarTaskInteractor(
                         new CalendarTaskRepositoryImpl(
-                                Chaskify.getInstance().getDefaultSession().get().getCalendarTaskRestClient()
+                                chaskifySession.getCalendarTaskRestClient()
+                        ))
+                        , new TaskInteractor(
+                        new TaskRepositoryImpl(
+                                new TaskCacheImpl()
                         )
                 )
-        );
+                ));
 
         if (savedInstanceState != null)
             currentDate = new Date(savedInstanceState.getLong(ARG_CURRENT_DATE, new Date().getTime()));
@@ -91,13 +127,30 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
 
     }
 
+    private void goToLaunch() {
+
+    }
+
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    public void renderTaskListView(List<TaskItemModel> taskItemModels) {
+        mTaskListAdapter.clear();
+        mTaskListAdapter.add(taskItemModels);
+    }
+
     private void initView() {
         appBarLayout = findViewById(R.id.app_bar_layout);
+        content = findViewById(R.id.content);
+
+        window = getWindow();
+
+        initAnimationRelatedFields();
+
         appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
             @Override
             public void onStateChanged(AppBarLayout appBarLayout, State state) {
@@ -115,8 +168,8 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
         });
         dutyActionBar = findViewById(R.id.duty_action_bar);
 
-        dutyActionBar.setOnFragmentInteractionListenerDutyActionBar(this);
-
+        dutyActionBar.setOnListenedTaskListChange(this);
+        dutyActionBar.setOnListenedDutyChange(this);
 
         // Set up the CompactCalendarView
         compactCalendarView = findViewById(R.id.compactcalendar_view);
@@ -129,18 +182,29 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
         compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {
-                findTask(dateClicked);
+                filterTask(dateClicked);
                 setTitle(dateFormat.format(dateClicked));
             }
 
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
-                findTask(firstDayOfNewMonth);
+                filterTask(firstDayOfNewMonth);
                 setTitle(dateFormat.format(firstDayOfNewMonth));
             }
         });
 
-        // Set current date to today
+        RecyclerView recyclerView = findViewById(R.id.recycler_view_task_list);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mTaskListAdapter = new TaskListAdapter();
+
+        //open details
+        mTaskListAdapter.setOnItemListened((view1, position) -> Chaskify.getInstance().getDefaultSession().ifPresent(chaskifySession -> Navigator.showTaskDetails(getSupportFragmentManager()
+                , chaskifySession.getCredentials().getDriverId()
+                , mTaskListAdapter.getItem(position).getTask_id())));
+
+        recyclerView.setAdapter(mTaskListAdapter);
+
         setCurrentDate(currentDate);
 
         RelativeLayout datePickerButton = findViewById(R.id.date_picker_button);
@@ -151,14 +215,25 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
         });
     }
 
-    private void findTask(Date date) {
-        /*Stream.of(mFragments)
-                .forEach(supportFragment -> {
-                    if (supportFragment instanceof TaskMapFragment)
-                        ((TaskMapFragment) supportFragment).putArguments(date);
-                    else if (supportFragment instanceof TaskListFragment)
-                        ((TaskListFragment) supportFragment).putArguments(date);
-                });*/
+    private void initAnimationRelatedFields() {
+        revealCenter = new Point();
+        contentInInterpolator = new OvershootInterpolator(0.5f);
+        contentOutInterpolator = new DecelerateInterpolator();
+    }
+
+    private void filterTask(Date date) {
+        Chaskify.getInstance()
+                .getDefaultSession()
+                .ifPresent(chaskifySession -> {
+                    ArrayList<Filter> filters = new ArrayList<>();
+                    filters.add(new DriverFilter()
+                            .setDriver(chaskifySession.getCredentials().getDriverId()));
+
+                    filters.add(new DateFilter()
+                            .setDate(date));
+
+                    presenter.tasks(filters);
+                });
     }
 
     private void setCurrentDate(Date date) {
@@ -178,9 +253,12 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
     }
 
     private void initActivity(Bundle savedInstanceState) {
-        SupportFragment firstFragment = findFragment(TaskMapFragment.class);
-        if (firstFragment == null) {
-            loadRootFragment(R.id.container, TaskMapFragment.newInstance(currentDate));
+        if (savedInstanceState == null) {
+            mTaskMapFragment = TaskMapFragment.newInstance();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.container, mTaskMapFragment)
+                    .commit();
         }
     }
 
@@ -224,23 +302,6 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
         return intent;
     }
 
-    @Override
-    public void onDuty(DutyActionBar.DUTY_STATE dutyState) {
-
-    }
-
-    @Override
-    public void onTaskView(DutyActionBar.TASK_VIEW_MODE taskView) {
-        /*if (taskView == DutyActionBar.TASK_VIEW_MODE.LIST)
-            renderTaskList();
-        else
-            renderTaskMap();*/
-    }
-
-    @Override
-    public void onFilter() {
-
-    }
 
     @Override
     public FragmentAnimator onCreateFragmentAnimator() {
@@ -262,5 +323,34 @@ public class MainActivity extends BaseActivity implements DutyActionBar.OnFragme
                 }).toList();
         compactCalendarView.removeAllEvents();
         compactCalendarView.addEvents(events);
+    }
+
+    @Override
+    public void onDuty(String state) {
+
+    }
+
+    private static final int DURATION_COLOR_CHANGE_MS = 400;
+
+    @Override
+    public void onSwitchList(String state) {
+        int targetTranslation = 0;
+        Interpolator interpolator = null;
+        switch (state) {
+            case "LEFT":
+                targetTranslation = 0;
+                interpolator = contentInInterpolator;
+                break;
+            case "RIGHT":
+                targetTranslation = content.getHeight();
+                interpolator = contentOutInterpolator;
+                break;
+        }
+        content.animate().cancel();
+        content.animate()
+                .translationY(targetTranslation)
+                .setInterpolator(interpolator)
+                .setDuration(DURATION_COLOR_CHANGE_MS)
+                .start();
     }
 }

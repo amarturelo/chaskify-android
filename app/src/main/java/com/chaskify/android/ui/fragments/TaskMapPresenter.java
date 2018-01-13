@@ -8,9 +8,11 @@ import com.chaskify.android.shared.BasePresenter;
 import com.chaskify.android.ui.model.TaskItemModel;
 import com.chaskify.android.ui.model.TaskItemSnapModel;
 import com.chaskify.android.ui.model.mapper.TaskSnapItemModelDataMapper;
+import com.chaskify.domain.filter.Filter;
 import com.chaskify.domain.interactors.TaskInteractor;
 
 import java.util.Date;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
@@ -30,8 +32,8 @@ public class TaskMapPresenter extends BasePresenter<TaskMapContract.View>
     }
 
     @Override
-    public void tasks(String driverId, Date date) {
-        addSubscription(taskInteractor.tasks(driverId, date)
+    public void tasks(List<Filter> filters) {
+        addSubscription(taskInteractor.tasks(filters)
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> view.showProgress())

@@ -41,6 +41,7 @@ import java.util.List;
  */
 public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.OnItemChangedListener<RecyclerView.ViewHolder>, DiscreteScrollView.ScrollStateChangeListener<RecyclerView.ViewHolder>, OnItemListened, TaskMapContract.View {
     public static final String ARG_CURRENT_DATE = "CURRENT_DATE";
+    public static final String ARG_FILTER = "arg_filters";
 
     private DiscreteScrollView taskPicker;
 
@@ -58,11 +59,9 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     }
 
 
-    // TODO: Rename and change types and number of parameters
-    public static TaskMapFragment newInstance(Date currentDate) {
+    public static TaskMapFragment newInstance() {
         TaskMapFragment fragment = new TaskMapFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_CURRENT_DATE, currentDate.getTime());
         fragment.setArguments(args);
         return fragment;
     }
@@ -77,9 +76,14 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
         presenter = new TaskMapPresenter(new TaskInteractor(
                 new TaskRepositoryImpl(
                         new TaskCacheImpl()
-                        , mChaskifySession.getTaskRestClient()
                 )
         ));
+    }
+
+    @Override
+    public void putNewBundle(Bundle newBundle) {
+        super.putNewBundle(newBundle);
+
     }
 
     private void initDiscreteScrollView() {

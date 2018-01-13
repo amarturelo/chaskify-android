@@ -1,10 +1,12 @@
 package com.chaskify.data.realm.cache;
 
 import com.chaskify.data.realm.model.RealmTask;
+import com.chaskify.domain.filter.Filter;
 
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 
@@ -15,7 +17,7 @@ import io.reactivex.Single;
 public interface TaskCache {
     Single<List<RealmTask>> findAll(String driverId);
 
-    Single<List<RealmTask>> findAllByDate(String driverId, Date date);
+    Flowable<List<RealmTask>> getTaskAsObservable(List<Filter> filters);
 
     Single<RealmTask> findById(String driverId, String taskId);
 

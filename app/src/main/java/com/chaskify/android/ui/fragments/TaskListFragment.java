@@ -17,6 +17,7 @@ import com.chaskify.android.ui.base.BaseFragment;
 import com.chaskify.android.ui.model.TaskItemModel;
 import com.chaskify.android.ui.widget.MultiStateView;
 import com.chaskify.chaskify_sdk.ChaskifySession;
+import com.chaskify.domain.filter.Filter;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.repositories.TaskRepositoryImpl;
 import com.chaskify.domain.interactors.TaskInteractor;
@@ -30,6 +31,9 @@ import java.util.Locale;
 public class TaskListFragment extends BaseFragment implements TaskListContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     public static final String ARG_CURRENT_DATE = "CURRENT_DATE";
+
+    public static final String ARG_FILTER = "arg_filters";
+
 
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", /*Locale.getDefault()*/Locale.getDefault());
 
@@ -46,14 +50,15 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
 
     private ChaskifySession mChaskifySession;
 
+    private List<Filter> mFilter;
+
     public TaskListFragment() {
         // Required empty public constructor
     }
 
-    public static TaskListFragment newInstance(Date currentDate) {
+    public static TaskListFragment newInstance() {
         TaskListFragment fragment = new TaskListFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG_CURRENT_DATE, currentDate.getTime());
         fragment.setArguments(args);
         return fragment;
     }
@@ -68,7 +73,6 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
         taskListPresenter = new TaskListPresenter(new TaskInteractor(
                 new TaskRepositoryImpl(
                         new TaskCacheImpl()
-                        , mChaskifySession.getTaskRestClient()
                 )
         )
         );
@@ -147,17 +151,19 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
 
     @Override
     public void onRefresh() {
-        taskListPresenter.tasks(mChaskifySession
-                        .getCredentials()
-                        .getDriverId()
-                , mCurrentDate);
+        taskListPresenter.tasks(mFilter);
     }
 
-    public void putArguments(Date date) {
-        if (!mCurrentDate.equals(date)) {
-            getArguments().putLong(ARG_CURRENT_DATE, date.getTime());
-            mCurrentDate = date;
-            onRefresh();
-        }
+    @Override
+    public void onNewBundle(Bundle args) {
+        super.onNewBundle(args);
     }
+
+    @Override
+    public void putNewBundle(Bundle newBundle) {
+        super.putNewBundle(newBundle);
+        mFilter = newBundle.getParcelableArrayList(ARG_FILTER);
+        onRefresh();
+    }
+
 }

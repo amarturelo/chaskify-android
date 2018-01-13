@@ -84,4 +84,6 @@ dependencies {
 
     compile 'com.parse.bolts:bolts-tasks:1.4.0'
     compile 'com.parse.bolts:bolts-applinks:1.4.0'
+
+    //compile 'com.yarolegovich:mp:1.0.5'
 }

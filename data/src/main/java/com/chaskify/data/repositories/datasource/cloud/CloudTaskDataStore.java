@@ -10,11 +10,13 @@ import com.chaskify.data.realm.model.RealmTaskWaypoint;
 import com.chaskify.data.model.chaskify.mapper.TaskDataMapper;
 import com.chaskify.data.realm.cache.TaskCache;
 import com.chaskify.data.repositories.datasource.TaskDataStore;
+import com.chaskify.domain.filter.Filter;
 import com.chaskify.domain.model.Task;
 
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.SingleOnSubscribe;
 import io.realm.RealmList;
@@ -36,7 +38,7 @@ public class CloudTaskDataStore implements TaskDataStore {
         this.mTaskCache = taskCache;
     }
 
-    @Override
+    /*@Override
     public Single<List<Task>> tasks(String driverId, Date date) {
         return Single.create((SingleOnSubscribe<List<ChaskifyTask>>) emitter -> mTaskRestClient.taskByDate(date, new ApiCallback<List<ChaskifyTask>>() {
             @Override
@@ -67,6 +69,11 @@ public class CloudTaskDataStore implements TaskDataStore {
                 .doOnSuccess(tasks -> mTaskCache.put(Stream.of(tasks)
                         .map(this::toRealm)
                         .toList()));
+    }*/
+
+    @Override
+    public Flowable<List<Task>> tasks(List<Filter> filters) {
+        return null;
     }
 
     @Override

@@ -12,7 +12,8 @@ public class TaskDataMapper {
 
     public static List<RealmTask> transform(List<ChaskifyTask> entities) {
         final List<RealmTask> list = new ArrayList<>();
-        Stream.of(entities).withoutNulls()
+        Stream.of(entities)
+                .withoutNulls()
                 .forEach(realmEvent -> list.add(transform(realmEvent)));
         return list;
     }

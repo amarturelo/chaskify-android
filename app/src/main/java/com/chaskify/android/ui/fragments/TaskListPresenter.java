@@ -4,9 +4,10 @@ import com.annimon.stream.Stream;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
 import com.chaskify.android.ui.model.TaskItemModel;
+import com.chaskify.domain.filter.Filter;
 import com.chaskify.domain.interactors.TaskInteractor;
 
-import java.util.Date;
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
@@ -26,8 +27,8 @@ public class TaskListPresenter extends BasePresenter<TaskListContract.View>
     }
 
     @Override
-    public void tasks(String driverId, Date date) {
-        addSubscription(taskInteractor.tasks(driverId, date)
+    public void tasks(List<Filter> filters) {
+        addSubscription(taskInteractor.tasks(filters)
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .unsubscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())

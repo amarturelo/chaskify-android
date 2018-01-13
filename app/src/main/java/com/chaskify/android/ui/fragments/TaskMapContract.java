@@ -3,6 +3,7 @@ package com.chaskify.android.ui.fragments;
 import com.chaskify.android.shared.BaseContract;
 import com.chaskify.android.ui.model.TaskItemModel;
 import com.chaskify.android.ui.model.TaskItemSnapModel;
+import com.chaskify.domain.filter.Filter;
 
 import java.util.Date;
 import java.util.List;
@@ -23,6 +24,6 @@ public class TaskMapContract {
     }
 
     interface Presenter extends BaseContract.Presenter<TaskMapContract.View> {
-        void tasks(String id, Date date);
+        void tasks(List<Filter> filters);
     }
 }

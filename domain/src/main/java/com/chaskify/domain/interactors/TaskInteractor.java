@@ -1,5 +1,6 @@
 package com.chaskify.domain.interactors;
 
+import com.chaskify.domain.filter.Filter;
 import com.chaskify.domain.model.Task;
 import com.chaskify.domain.repositories.TaskRepository;
 
@@ -20,8 +21,8 @@ public class TaskInteractor {
         this.taskRepository = taskRepository;
     }
 
-    public Observable<List<Task>> tasks(String driverId, Date date) {
-        return taskRepository.tasks(driverId, date);
+    public Observable<List<Task>> tasks(List<Filter> filters) {
+        return taskRepository.tasks(filters);
     }
 
     public Observable<Task> taskById(String driver_id, String task_id) {

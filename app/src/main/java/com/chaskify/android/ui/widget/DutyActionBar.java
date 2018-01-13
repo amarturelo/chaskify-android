@@ -1,19 +1,17 @@
 package com.chaskify.android.ui.widget;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 
 import com.chaskify.android.R;
-import com.github.rubensousa.bottomsheetbuilder.BottomSheetBuilder;
-import com.github.rubensousa.bottomsheetbuilder.BottomSheetMenuDialog;
-import com.github.rubensousa.bottomsheetbuilder.adapter.BottomSheetItemClickListener;
+import com.polyak.iconswitch.IconSwitch;
+
+import timber.log.Timber;
 
 /**
  * Created by alberto on 14/12/17.
@@ -25,19 +23,27 @@ public class DutyActionBar extends LinearLayout {
     private View mTaskViewMode;
     private View mTaskFilter;
     private ImageView mIvTaskViewMode;
+    private IconSwitch mIconSwitchTask;
 
-    public interface OnFragmentInteractionListenerDutyActionBar {
-        void onDuty(DUTY_STATE dutyState);
-
-        void onTaskView(TASK_VIEW_MODE taskView);
-
-        void onFilter();
+    public interface OnListenedDutyChange {
+        void onDuty(String state);
     }
 
-    private OnFragmentInteractionListenerDutyActionBar mOnFragmentInteractionListenerDutyActionBar;
+    public interface OnListenedTaskListChange {
+        void onSwitchList(String state);
+    }
 
-    public DutyActionBar setOnFragmentInteractionListenerDutyActionBar(OnFragmentInteractionListenerDutyActionBar onFragmentInteractionListenerDutyActionBar) {
-        this.mOnFragmentInteractionListenerDutyActionBar = onFragmentInteractionListenerDutyActionBar;
+    private OnListenedDutyChange mListenedDutyChange;
+
+    private OnListenedTaskListChange mListenedTaskListChange;
+
+    public DutyActionBar setOnListenedDutyChange(OnListenedDutyChange mListenedDutyChange) {
+        this.mListenedDutyChange = mListenedDutyChange;
+        return this;
+    }
+
+    public DutyActionBar setOnListenedTaskListChange(OnListenedTaskListChange mListenedTaskListChange) {
+        this.mListenedTaskListChange = mListenedTaskListChange;
         return this;
     }
 
@@ -61,10 +67,17 @@ public class DutyActionBar extends LinearLayout {
         mTaskFilter = findViewById(R.id.action_task_filter);
         mActionDuty = findViewById(R.id.switch_action_duty);
         mTaskViewMode = findViewById(R.id.action_task_view_mode);
+        mIconSwitchTask = findViewById(R.id.icon_switch_task);
+        mIconSwitchTask.setCheckedChangeListener(current -> {
+            Timber.d(current.toString());
+            if (mListenedTaskListChange != null)
+                mListenedTaskListChange.onSwitchList(current.name());
+        });
+
         mTaskViewMode.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                taskViewToggle();
+
             }
         });
         mTaskFilter.setOnClickListener(new OnClickListener() {
@@ -77,7 +90,7 @@ public class DutyActionBar extends LinearLayout {
     }
 
     private void showFilter() {
-        BottomSheetMenuDialog dialog = new BottomSheetBuilder(getContext())
+        /*BottomSheetMenuDialog dialog = new BottomSheetBuilder(getContext())
                 .setMode(BottomSheetBuilder.MODE_LIST)
                 .setMenu(R.menu.menu_bottom_sheet_fitler)
                 .setItemClickListener(new BottomSheetItemClickListener() {
@@ -87,11 +100,11 @@ public class DutyActionBar extends LinearLayout {
                     }
                 })
                 .createDialog();
-        dialog.show();
+        dialog.show();*/
 
     }
 
-    private void taskViewToggle() {
+/*    private void taskViewToggle() {
         if (taskView == TASK_VIEW_MODE.LIST)
             setTaskView(TASK_VIEW_MODE.MAP);
         else
@@ -106,9 +119,6 @@ public class DutyActionBar extends LinearLayout {
     public DutyActionBar setDutyState(DUTY_STATE dutyState) {
         this.dutyState = dutyState;
 
-
-        if (mOnFragmentInteractionListenerDutyActionBar != null)
-            mOnFragmentInteractionListenerDutyActionBar.onDuty(this.dutyState);
         return this;
     }
 
@@ -124,22 +134,7 @@ public class DutyActionBar extends LinearLayout {
         else
             mIvTaskViewMode.setImageResource(R.drawable.ic_view_list_black_24dp);
 
-        if (mOnFragmentInteractionListenerDutyActionBar != null)
-            mOnFragmentInteractionListenerDutyActionBar.onTaskView(this.taskView);
         return this;
-    }
-
-    private DUTY_STATE dutyState = DUTY_STATE.ON_DUTY;
-
-    private TASK_VIEW_MODE taskView = TASK_VIEW_MODE.LIST;
-
-    public enum DUTY_STATE {
-        ON_DUTY, OF_DUTY
-    }
-
-    public enum TASK_VIEW_MODE {
-        MAP, LIST
-    }
-
+    }*/
 
 }

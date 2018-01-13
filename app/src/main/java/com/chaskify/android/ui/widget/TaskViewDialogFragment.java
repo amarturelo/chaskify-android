@@ -68,7 +68,6 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
             taskDialogPresenter = new TaskViewDialogPresenter(new TaskInteractor(
                     new TaskRepositoryImpl(
                             new TaskCacheImpl()
-                            , mChaskifySession.getTaskRestClient()
                     )
             ));
         } else

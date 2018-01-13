@@ -193,7 +193,7 @@ public class MethodCallHelper {
             mChaskifySession.getTaskRestClient().taskByDate(date, new ApiCallback<List<ChaskifyTask>>() {
                 @Override
                 public void onSuccess(List<ChaskifyTask> info) {
-                    task.setResult(null);
+                    task.setResult(info);
                 }
 
                 @Override
@@ -217,7 +217,8 @@ public class MethodCallHelper {
         return task
                 .getTask()
                 .onSuccessTask(value -> {
-                    mTaskCache.put(TaskDataMapper.transform(value.getResult()));
+                    if (!value.getResult().isEmpty())
+                        mTaskCache.put(TaskDataMapper.transform(value.getResult()));
                     return null;
                 });
     }

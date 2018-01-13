@@ -1,10 +1,12 @@
 package com.chaskify.data.repositories.datasource;
 
+import com.chaskify.domain.filter.Filter;
 import com.chaskify.domain.model.Task;
 
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 /**
@@ -12,7 +14,7 @@ import io.reactivex.Single;
  */
 
 public interface TaskDataStore {
-    Single<List<Task>> tasks(String driverId, Date date);
+    Flowable<List<Task>> tasks(List<Filter> filters);
 
     Single<Task> taskById(String driverId, String taskId);
 }
