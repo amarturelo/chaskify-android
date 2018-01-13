@@ -1,4 +1,4 @@
-package com.chaskify.android.ui.widget;
+package com.chaskify.android.ui.fragments;
 
 import com.chaskify.android.shared.BaseContract;
 import com.chaskify.android.ui.model.TaskWaypointModel;

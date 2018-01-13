@@ -1,4 +1,4 @@
-package com.chaskify.android.ui.widget;
+package com.chaskify.android.ui.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.annimon.stream.function.Consumer;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.adapters.TaskHistoryListAdapter;
@@ -21,7 +22,13 @@ import com.chaskify.android.ui.model.TaskModel;
 import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.repositories.TaskRepositoryImpl;
+import com.chaskify.domain.filter.DriverFilter;
+import com.chaskify.domain.filter.Filter;
+import com.chaskify.domain.filter.TaskIdFilter;
 import com.chaskify.domain.interactors.TaskInteractor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TaskViewDialogFragment extends BottomSheetDialogFragment implements TaskViewDialogContract.View {
 
@@ -55,31 +62,26 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
     private RecyclerView mTaskWaypointList;
 
     private TaskWaypointListAdapter taskWaypointListAdapter;
-    private ChaskifySession mChaskifySession;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mChaskifySession = Chaskify.getInstance().getDefaultSession().get();
         if (getArguments() != null) {
             mTaskId = getArguments().getString(ARG_TASK_ID);
             mDriverId = getArguments().getString(ARG_DRIVER_ID);
-
-            taskDialogPresenter = new TaskViewDialogPresenter(new TaskInteractor(
-                    new TaskRepositoryImpl(
-                            new TaskCacheImpl()
-                    )
-            ));
+            Chaskify.getInstance().getSessionByDriverId(mDriverId)
+                    .executeIfAbsent(this::dismiss)
+                    .ifPresent(chaskifySession -> {
+                        taskDialogPresenter = new TaskViewDialogPresenter(chaskifySession, new TaskInteractor(
+                                new TaskRepositoryImpl(
+                                        new TaskCacheImpl()
+                                )
+                        ));
+                        taskDialogPresenter.bindView(this);
+                    });
         } else
             dismiss();
     }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-    }
-
 
     private void initComponents(View view) {
         textViewTaskId = view.findViewById(R.id.task_id);
@@ -111,7 +113,6 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        taskDialogPresenter.taskById(mDriverId, mTaskId);
     }
 
     @SuppressLint("RestrictedApi")
@@ -121,7 +122,15 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
         View contentView = View.inflate(getContext(), R.layout.fragment_task, null);
         dialog.setContentView(contentView);
         initComponents(contentView);
-        taskDialogPresenter.bindView(this);
+        if (taskDialogPresenter != null) {
+            List<Filter> filters = new ArrayList<>();
+            filters.add(new DriverFilter()
+                    .setDriver(mDriverId));
+            filters.add(new TaskIdFilter()
+                    .setTaskId(mTaskId));
+            taskDialogPresenter.taskById(filters);
+        }
+
     }
 
     @Override

@@ -9,9 +9,8 @@ import com.chaskify.android.ui.activities.MainActivity;
 import com.chaskify.android.ui.activities.NotificationsActivity;
 import com.chaskify.android.ui.activities.settings.SettingsProfileActivity;
 import com.chaskify.android.ui.activities.settings.SettingsVehicleActivity;
-import com.chaskify.android.ui.fragments.settings.SettingsProfileFragment;
-import com.chaskify.android.ui.widget.TaskViewDialogFragment;
-import com.chaskify.android.ui.widget.TaskWaypointViewDialogFragment;
+import com.chaskify.android.ui.fragments.TaskViewDialogFragment;
+import com.chaskify.android.ui.fragments.TaskWaypointViewDialogFragment;
 
 /**
  * Created by Alberto on 31/8/2017.

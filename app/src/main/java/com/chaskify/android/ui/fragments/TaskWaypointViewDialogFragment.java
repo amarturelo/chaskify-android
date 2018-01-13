@@ -1,4 +1,4 @@
-package com.chaskify.android.ui.widget;
+package com.chaskify.android.ui.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;

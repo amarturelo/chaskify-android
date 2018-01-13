@@ -3,12 +3,14 @@ package com.chaskify.data.realm.model;
 import java.util.Date;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by alberto on 27/12/17.
  */
 
 public class RealmTaskWaypoint extends RealmObject {
+    @PrimaryKey
     private String id;
     private String taskId;
     private String customerName;

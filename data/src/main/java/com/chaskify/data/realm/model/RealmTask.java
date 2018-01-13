@@ -5,6 +5,7 @@ import java.util.List;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by alberto on 14/12/17.
@@ -13,6 +14,7 @@ import io.realm.RealmObject;
 public class RealmTask extends RealmObject {
     public static String TASK_ID = "task_id";
     public static String DRIVER_ID = "driver_id";
+    @PrimaryKey
     private String task_id;
     private String customer_id;
     private String task_description;
