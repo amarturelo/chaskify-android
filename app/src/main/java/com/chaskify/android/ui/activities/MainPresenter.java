@@ -71,7 +71,6 @@ public class MainPresenter extends BasePresenter<MainContract.View>
 
     @Override
     public void tasks(List<Filter> filters) {
-
         Stream.of(filters)
                 .filter(value -> value instanceof DateFilter)
                 .findFirst()

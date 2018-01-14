@@ -21,4 +21,14 @@ public interface TaskApi {
             , @Query("timeZone") String timeZone
             , @Query("token") String token);
 
+    @GET("changeTaskStatusNew")
+    Call<String> changeTaskStatusNew(
+            @Query("task_id") String task_id
+            , @Query("timeZone") String timeZone
+            , @Query("token") String token
+            , @Query("status_raw") String status_raw
+            , @Query("lat") String lat
+            , @Query("lng") String lng
+    );
+
 }

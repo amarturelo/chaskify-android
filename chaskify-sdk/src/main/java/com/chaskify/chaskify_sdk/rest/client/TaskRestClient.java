@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Stream;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,11 +38,11 @@ public class TaskRestClient extends RestClient<TaskApi> {
         super(chaskifyCredentials, TaskApi.class);
     }
 
-    public void taskByDate(Date date, ApiCallback<List<ChaskifyTask>> callback) throws TokenNotFoundException {
+    public void taskByDate(Date date, ApiCallback<List<ChaskifyTask>> callback) {
         if (mChaskifyCredentials != null)
             taskByDate(date, mChaskifyCredentials.getAccessToken(), callback);
         else
-            throw new TokenNotFoundException();
+            callback.onChaskifyError(new TokenNotFoundException());
     }
 
     private void taskByDate(Date date, String token, final ApiCallback<List<ChaskifyTask>> callback) {
@@ -99,6 +100,33 @@ public class TaskRestClient extends RestClient<TaskApi> {
                         callback.onNetworkError((Exception) t);
                     }
                 });
+    }
+
+    private void changeTaskStatus(String taskId, String status, String lat, String lng, ApiCallback<ChaskifyTask> callback) {
+        if (mChaskifyCredentials != null)
+            changeTaskStatus(taskId, status, lat, lng, mChaskifyCredentials.getAccessToken(), callback);
+        else
+            callback.onChaskifyError(new TokenNotFoundException());
+    }
+
+    private void changeTaskStatus(String taskId, String status, String lat, String lng, String accessToken, ApiCallback<ChaskifyTask> callback) {
+        mApi.changeTaskStatusNew(taskId
+                , String.valueOf(new Date().getTimezoneOffset())
+                , accessToken
+                , status
+                , lat
+                , lng
+        ).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override

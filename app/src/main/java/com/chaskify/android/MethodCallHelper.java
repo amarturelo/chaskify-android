@@ -189,31 +189,28 @@ public class MethodCallHelper {
 
     public Task<Void> getTasksByDate(Date date) {
         TaskCompletionSource<List<ChaskifyTask>> task = new TaskCompletionSource<>();
-        try {
-            mChaskifySession.getTaskRestClient().taskByDate(date, new ApiCallback<List<ChaskifyTask>>() {
-                @Override
-                public void onSuccess(List<ChaskifyTask> info) {
-                    task.setResult(info);
-                }
+        mChaskifySession.getTaskRestClient().taskByDate(date, new ApiCallback<List<ChaskifyTask>>() {
+            @Override
+            public void onSuccess(List<ChaskifyTask> info) {
+                task.setResult(info);
+            }
 
-                @Override
-                public void onNetworkError(Exception e) {
-                    task.trySetError(e);
-                }
+            @Override
+            public void onNetworkError(Exception e) {
+                task.trySetError(e);
+            }
 
-                @Override
-                public void onChaskifyError(Exception e) {
-                    task.trySetError(e);
-                }
+            @Override
+            public void onChaskifyError(Exception e) {
+                task.trySetError(e);
+            }
 
-                @Override
-                public void onUnexpectedError(Exception e) {
-                    task.trySetError(e);
-                }
-            });
-        } catch (TokenNotFoundException e) {
-            task.trySetError(e);
-        }
+            @Override
+            public void onUnexpectedError(Exception e) {
+                task.trySetError(e);
+            }
+        });
+
         return task
                 .getTask()
                 .onSuccessTask(value -> {
