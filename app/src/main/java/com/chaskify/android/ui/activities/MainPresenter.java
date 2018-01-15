@@ -78,20 +78,6 @@ public class MainPresenter extends BasePresenter<MainContract.View>
                 .findFirst()
                 .ifPresent(filter -> methodCallHelper.getTasksByDate(((DateFilter) filter).getDate())
                         .continueWith(new LogIfError()));
-
-        addSubscription(mTaskInteractor.tasks(filters)
-                .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
-                .unsubscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(tasks -> view.renderTaskListView(Stream.of(tasks)
-                        .map(task -> new TaskItemModel()
-                                .setTask_id(task.getTaskId())
-                                .setTrans_type(task.getTrans_type())
-                                .setStatus(task.getStatus())
-                                .setDelivery_address(task.getDelivery_address())
-                                .setDelivery_date(task.getDelivery_date())
-                                .setCustomer_name(task.getCustomer_name()))
-                        .toList()), throwable -> view.showError(throwable)));
     }
 
 }

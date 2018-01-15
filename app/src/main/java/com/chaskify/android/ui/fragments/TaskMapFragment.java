@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.chaskify.android.Chaskify;
+import com.chaskify.android.MethodCallHelper;
 import com.chaskify.android.R;
 import com.chaskify.android.adapters.TaskListAdapter;
 import com.chaskify.android.adapters.TaskSnapListAdapter;
@@ -20,8 +21,13 @@ import com.chaskify.android.ui.model.TaskItemModel;
 import com.chaskify.android.ui.model.TaskItemSnapModel;
 import com.chaskify.android.ui.base.BaseFragment;
 import com.chaskify.chaskify_sdk.ChaskifySession;
+import com.chaskify.data.realm.cache.impl.NotificationsCacheImpl;
+import com.chaskify.data.realm.cache.impl.ProfileCacheImpl;
+import com.chaskify.data.realm.cache.impl.SettingsCacheImpl;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
+import com.chaskify.data.realm.cache.impl.TaskWayPointCacheImpl;
 import com.chaskify.data.repositories.TaskRepositoryImpl;
+import com.chaskify.domain.filter.Filter;
 import com.chaskify.domain.interactors.TaskInteractor;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
@@ -29,6 +35,8 @@ import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.chaskify.android.ui.activities.MainActivity.ARG_FILTER;
 
 
 /**
@@ -41,7 +49,6 @@ import java.util.List;
  */
 public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.OnItemChangedListener<RecyclerView.ViewHolder>, DiscreteScrollView.ScrollStateChangeListener<RecyclerView.ViewHolder>, OnItemListened, TaskMapContract.View {
     public static final String ARG_CURRENT_DATE = "CURRENT_DATE";
-    public static final String ARG_FILTER = "arg_filters";
 
     private DiscreteScrollView taskPicker;
 
@@ -53,6 +60,7 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     private TaskMapPresenter presenter;
     private ChaskifySession mChaskifySession;
 
+    private List<Filter> mFilter;
 
     public TaskMapFragment() {
         // Required empty public constructor
@@ -69,72 +77,27 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mChaskifySession = Chaskify.getInstance().getDefaultSession().get();
-
-        mCurrentDate = new Date(getArguments().getLong(ARG_CURRENT_DATE, new Date().getTime()));
-
-        presenter = new TaskMapPresenter(new TaskInteractor(
-                new TaskRepositoryImpl(
-                        new TaskCacheImpl()
-                )
-        ));
+        Chaskify.getInstance().getDefaultSession()
+                .ifPresent(chaskifySession -> {
+                    this.mChaskifySession = chaskifySession;
+                    presenter = new TaskMapPresenter(
+                            new TaskInteractor(
+                                    new TaskRepositoryImpl(
+                                            new TaskCacheImpl())));
+                    presenter.bindView(this);
+                });
     }
 
     @Override
     public void putNewBundle(Bundle newBundle) {
         super.putNewBundle(newBundle);
-
+        mFilter = newBundle.getParcelableArrayList(ARG_FILTER);
+        onRefresh();
     }
 
     private void initDiscreteScrollView() {
-
-        /*List<TaskItemSnapModel> taskItemSnapModels = new ArrayList<>();
-        taskItemSnapModels.add(new TaskItemSnapModel()
-                .setTask_id("1145")
-                .setDelivery_address("Edificio 28b apto 7, Pueblo Griffo")
-                .setDelivery_date(new Date())
-                .setTrans_type("service")
-                .setStatus("ARRIVED"));
-
-        taskItemSnapModels.add(new TaskItemSnapModel()
-                .setTask_id("1148")
-                .setDelivery_date(new Date())
-                .setTrans_type("delivery")
-                .setDelivery_address("201 Worth St, New York, United Stated")
-                .setStatus("SIGNATURE"));
-
-        taskItemSnapModels.add(new TaskItemSnapModel()
-                .setTask_id("1165")
-                .setDelivery_date(new Date())
-                .setTrans_type("picker")
-                .setDelivery_address("calle 10 e/ aldabo y carretera, Havana, Cuba")
-                .setStatus("ACCEPTED"));
-
-        taskItemSnapModels.add(new TaskItemSnapModel()
-                .setTask_id("1178")
-                .setDelivery_date(new Date())
-                .setTrans_type("service")
-                .setDelivery_address("Edificio 28b apto 7, Pueblo Griffo")
-                .setStatus("ASSIGNED"));
-
-        taskItemSnapModels.add(new TaskItemSnapModel()
-                .setTask_id("1189")
-                .setDelivery_date(new Date())
-                .setTrans_type("service")
-                .setDelivery_address("201 Worth St, New York, United Stated")
-                .setStatus("SUCCESSFUL"));
-
-        taskItemSnapModels.add(new TaskItemSnapModel()
-                .setTask_id("1178")
-                .setDelivery_date(new Date())
-                .setTrans_type("service")
-                .setDelivery_address("calle 10 e/ aldabo y carretera, Havana, Cuba")
-                .setStatus("IN ROUTE"));*/
-
         mTaskSnapListAdapter = new TaskSnapListAdapter();
-        //mTaskSnapListAdapter.add(taskItemSnapModels);
         mTaskSnapListAdapter.setOnItemListened(this);
-
         taskPicker.setSlideOnFling(true);
         taskPicker.setAdapter(mTaskSnapListAdapter);
         taskPicker.addOnItemChangedListener(this);
@@ -143,7 +106,6 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
         taskPicker.setItemTransformer(new ScaleTransformer.Builder()
                 .setMinScale(0.8f)
                 .build());
-
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -201,15 +163,6 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     @Override
     protected int getLayout() {
         return R.layout.fragment_task_map;
-    }
-
-    public void putArguments(Date date) {
-        if (!mCurrentDate.equals(date)) {
-            getArguments().putLong(ARG_CURRENT_DATE, date.getTime());
-            mCurrentDate = date;
-
-            //presenter.tasks(mChaskifySession.getCredentials().getDriverId(), mCurrentDate);
-        }
     }
 
 
@@ -299,5 +252,10 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     public void onLowMemory() {
         super.onLowMemory();
         //mMapView.onLowMemory();
+    }
+
+
+    private void onRefresh() {
+        presenter.tasks(mFilter);
     }
 }

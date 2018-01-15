@@ -111,9 +111,9 @@ public class TaskRestClient extends RestClient<TaskApi> {
     }
 
     private void changeTaskStatus(String taskId, String status, String lat, String lng, String accessToken, final ApiCallback<ChaskifyTask> callback) {
-        mApi.updateStatus(taskId
+        mApi.updateStatus(accessToken
+                , taskId
                 , String.valueOf(new Date().getTimezoneOffset())
-                , accessToken
                 , status
                 , lat
                 , lng

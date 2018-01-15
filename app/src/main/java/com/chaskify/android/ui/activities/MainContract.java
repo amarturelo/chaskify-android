@@ -14,7 +14,6 @@ import java.util.List;
 
 public class MainContract {
     interface View extends BaseContract.View {
-        void renderTaskListView(List<TaskItemModel> taskItemModels);
 
         void renderEvent(List<TaskCalendarItemModel> taskCalendarItemModels);
 

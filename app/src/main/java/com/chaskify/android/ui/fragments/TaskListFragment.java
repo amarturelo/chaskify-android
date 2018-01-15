@@ -23,21 +23,17 @@ import com.chaskify.data.repositories.TaskRepositoryImpl;
 import com.chaskify.domain.interactors.TaskInteractor;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import static com.chaskify.android.ui.activities.MainActivity.ARG_FILTER;
 
 
 public class TaskListFragment extends BaseFragment implements TaskListContract.View, SwipeRefreshLayout.OnRefreshListener {
 
-    public static final String ARG_CURRENT_DATE = "CURRENT_DATE";
-
-    public static final String ARG_FILTER = "arg_filters";
-
-
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", /*Locale.getDefault()*/Locale.getDefault());
 
-    private TaskListPresenter taskListPresenter;
+    private TaskListPresenter presenter;
 
     private RecyclerView taskList;
 
@@ -46,7 +42,6 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
     private SwipeRefreshLayout mSwipeRefresh;
 
     private MultiStateView mMultiStateView;
-    private Date mCurrentDate;
 
     private ChaskifySession mChaskifySession;
 
@@ -66,16 +61,19 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mChaskifySession = Chaskify.getInstance().getDefaultSession().get();
+        Chaskify.getInstance().getDefaultSession()
+                .ifPresent(chaskifySession -> {
+                    this.mChaskifySession = chaskifySession;
+                    presenter = new TaskListPresenter(new TaskInteractor(
+                            new TaskRepositoryImpl(
+                                    new TaskCacheImpl()
+                            )
+                    )
+                    );
+                    presenter.bindView(this);
+                });
 
-        mCurrentDate = new Date(getArguments().getLong(ARG_CURRENT_DATE, new Date().getTime()));
 
-        taskListPresenter = new TaskListPresenter(new TaskInteractor(
-                new TaskRepositoryImpl(
-                        new TaskCacheImpl()
-                )
-        )
-        );
     }
 
     @Override
@@ -83,7 +81,6 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
 
-        taskListPresenter.bindView(this);
     }
 
 
@@ -100,6 +97,10 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
 
         taskList.setLayoutManager(new LinearLayoutManager(getContext()));
         taskList.setAdapter(taskListAdapter);
+        //open details
+        taskListAdapter.setOnItemListened((view1, position) -> Chaskify.getInstance().getDefaultSession().ifPresent(chaskifySession -> Navigator.showTaskDetails(getFragmentManager()
+                , chaskifySession.getCredentials().getDriverId()
+                , taskListAdapter.getItem(position).getTask_id())));
     }
 
     @Override
@@ -115,7 +116,7 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
     @Override
     public void onDetach() {
         super.onDetach();
-        taskListPresenter.release();
+        presenter.release();
     }
 
     @Override
@@ -145,13 +146,20 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
 
     @Override
     public void renderTaskListView(List<TaskItemModel> tasks) {
+        hideProgress();
+        if (tasks.isEmpty())
+            mMultiStateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        else
+            mMultiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+
+
         taskListAdapter.clear();
         taskListAdapter.add(tasks);
     }
 
     @Override
     public void onRefresh() {
-        taskListPresenter.tasks(mFilter);
+        presenter.tasks(mFilter);
     }
 
     @Override

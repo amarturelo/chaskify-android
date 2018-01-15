@@ -1,17 +1,11 @@
 package com.chaskify.android.ui.fragments;
 
-import android.support.annotation.NonNull;
-
-import com.annimon.stream.Stream;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
-import com.chaskify.android.ui.model.TaskItemModel;
-import com.chaskify.android.ui.model.TaskItemSnapModel;
 import com.chaskify.android.ui.model.mapper.TaskSnapItemModelDataMapper;
 import com.chaskify.domain.filter.Filter;
 import com.chaskify.domain.interactors.TaskInteractor;
 
-import java.util.Date;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -24,34 +18,21 @@ import timber.log.Timber;
 public class TaskMapPresenter extends BasePresenter<TaskMapContract.View>
         implements TaskMapContract.Presenter {
 
-    private TaskInteractor taskInteractor;
+    private TaskInteractor mTaskInteractor;
 
-    public TaskMapPresenter(TaskInteractor taskInteractor) {
+    public TaskMapPresenter(TaskInteractor mTaskInteractor) {
         Timber.tag(this.getClass().getSimpleName());
-        this.taskInteractor = taskInteractor;
+        this.mTaskInteractor = mTaskInteractor;
     }
 
     @Override
     public void tasks(List<Filter> filters) {
-        addSubscription(taskInteractor.tasks(filters)
+        addSubscription(mTaskInteractor.tasks(filters)
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
+                .unsubscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> view.showProgress())
-                .doOnNext(tasks -> view.hideProgress())
                 .subscribe(tasks -> view.renderTaskListView(TaskSnapItemModelDataMapper.transform(tasks))
                         , throwable -> view.showError(throwable)));
-
-        /*List<TaskItemModel> taskItemModels = new ArrayList<>();
-        taskItemModels.add(new TaskItemModel()
-                .setTask_id("1145")
-                .setTrans_type("service")
-                .setStatus("ACCEPTED")
-                .setDelivery_address("Edificio 28 b apto7 Pueblo Griffo")
-                .setDelivery_date(new Date())
-                .setCustomer_name("Alberto Marturelo Lorenzo"));
-        view.showContentView();
-        view.renderTaskListView(taskItemModels);
-        view.hideProgress();*/
 
     }
 }

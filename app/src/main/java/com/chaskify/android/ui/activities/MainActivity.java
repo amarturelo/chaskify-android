@@ -27,6 +27,7 @@ import com.chaskify.android.R;
 import com.chaskify.android.adapters.TaskListAdapter;
 import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.base.BaseActivity;
+import com.chaskify.android.ui.fragments.TaskListFragment;
 import com.chaskify.android.ui.fragments.TaskMapFragment;
 import com.chaskify.android.ui.model.TaskCalendarItemModel;
 import com.chaskify.android.ui.model.TaskItemModel;
@@ -61,6 +62,9 @@ public class MainActivity extends BaseActivity implements MainContract.View, Dut
 
     private static final String ARG_TASK_VIEW_MODE = "TASK_VIEW_MODE";
     private static final String ARG_CURRENT_DATE = "CURRENT_DATE";
+
+    public static final String ARG_FILTER = "arg_filters";
+
     private AppBarLayout appBarLayout;
     private CompactCalendarView compactCalendarView;
 
@@ -74,9 +78,8 @@ public class MainActivity extends BaseActivity implements MainContract.View, Dut
 
     private MainPresenter presenter;
 
-    private TaskListAdapter mTaskListAdapter;
-
     private TaskMapFragment mTaskMapFragment;
+    private TaskListFragment mTaskListFragment;
 
     private ValueAnimator statusBarAnimator;
     private Interpolator contentInInterpolator;
@@ -137,12 +140,6 @@ public class MainActivity extends BaseActivity implements MainContract.View, Dut
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void renderTaskListView(List<TaskItemModel> taskItemModels) {
-        mTaskListAdapter.clear();
-        mTaskListAdapter.add(taskItemModels);
-    }
-
     private void initView() {
         appBarLayout = findViewById(R.id.app_bar_layout);
         content = findViewById(R.id.content);
@@ -193,18 +190,6 @@ public class MainActivity extends BaseActivity implements MainContract.View, Dut
             }
         });
 
-        RecyclerView recyclerView = findViewById(R.id.recycler_view_task_list);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mTaskListAdapter = new TaskListAdapter();
-
-        //open details
-        mTaskListAdapter.setOnItemListened((view1, position) -> Chaskify.getInstance().getDefaultSession().ifPresent(chaskifySession -> Navigator.showTaskDetails(getSupportFragmentManager()
-                , chaskifySession.getCredentials().getDriverId()
-                , mTaskListAdapter.getItem(position).getTask_id())));
-
-        recyclerView.setAdapter(mTaskListAdapter);
-
         setCurrentDate(currentDate);
 
         RelativeLayout datePickerButton = findViewById(R.id.date_picker_button);
@@ -232,7 +217,13 @@ public class MainActivity extends BaseActivity implements MainContract.View, Dut
                     filters.add(new DateFilter()
                             .setDate(date));
 
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList(ARG_FILTER, filters);
+
                     presenter.tasks(filters);
+
+                    mTaskListFragment.putNewBundle(bundle);
+                    mTaskMapFragment.putNewBundle(bundle);
                 });
     }
 
@@ -255,9 +246,14 @@ public class MainActivity extends BaseActivity implements MainContract.View, Dut
     private void initActivity(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             mTaskMapFragment = TaskMapFragment.newInstance();
+            mTaskListFragment = TaskListFragment.newInstance();
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, mTaskMapFragment)
+                    .commit();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content, mTaskListFragment)
                     .commit();
         }
     }

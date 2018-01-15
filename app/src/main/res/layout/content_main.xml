@@ -16,9 +16,5 @@
         android:background="#fff"
         android:fitsSystemWindows="true"
         android:gravity="center"
-        android:orientation="vertical">
-
-        <include layout="@layout/bottom_sheet_content_view" />
-
-    </FrameLayout>
+        android:orientation="vertical"/>
 </FrameLayout>
