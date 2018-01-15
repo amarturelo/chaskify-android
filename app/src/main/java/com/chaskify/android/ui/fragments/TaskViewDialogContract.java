@@ -2,6 +2,7 @@ package com.chaskify.android.ui.fragments;
 
 import com.chaskify.android.shared.BaseContract;
 import com.chaskify.android.ui.model.TaskModel;
+import com.chaskify.android.ui.widget.TaskActionWidget;
 import com.chaskify.domain.filter.Filter;
 
 import java.util.List;
@@ -20,6 +21,8 @@ public class TaskViewDialogContract {
         void showError(Throwable throwable);
 
         void renderTask(TaskModel taskModel);
+
+        void renderTaskAction(TaskActionWidget.TaskActionModel taskActionModel);
     }
 
     interface Presenter extends BaseContract.Presenter<TaskViewDialogContract.View> {

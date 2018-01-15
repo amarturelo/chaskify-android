@@ -10,6 +10,7 @@ import com.chaskify.android.helper.LogIfError;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
 import com.chaskify.android.ui.model.mapper.TaskModelDataMapper;
+import com.chaskify.android.ui.widget.TaskActionWidget;
 import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.data.realm.cache.impl.NotificationsCacheImpl;
 import com.chaskify.data.realm.cache.impl.ProfileCacheImpl;
@@ -73,7 +74,13 @@ public class TaskViewDialogPresenter extends BasePresenter<TaskViewDialogContrac
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        task -> view.renderTask(TaskModelDataMapper.transform(task))
+                        task -> {
+                            view.renderTaskAction(new TaskActionWidget.TaskActionModel()
+                                    .setDriverId(mChaskifySession.getCredentials().getDriverId())
+                                    .setTaskId(task.getTaskId())
+                                    .setStatus(task.getStatus()));
+                            view.renderTask(TaskModelDataMapper.transform(task));
+                        }
                         , throwable -> view.showError(throwable)));
     }
 }

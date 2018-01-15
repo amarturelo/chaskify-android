@@ -22,6 +22,7 @@ import com.chaskify.data.realm.cache.impl.mapper.TaskWaypointDataMapper;
 import java.util.Date;
 import java.util.List;
 
+import bolts.Continuation;
 import bolts.Task;
 import bolts.TaskCompletionSource;
 import timber.log.Timber;
@@ -432,4 +433,35 @@ public class MethodCallHelper {
                 });
     }
 
+    public Task<Void> acceptTask(String id) {
+        TaskCompletionSource<ChaskifyTask> task = new TaskCompletionSource<>();
+        mChaskifySession.getTaskRestClient().changeTaskStatus(id, "ACCEPTED", "0", "0", new ApiCallback<ChaskifyTask>() {
+            @Override
+            public void onSuccess(ChaskifyTask info) {
+                task.trySetResult(info);
+            }
+
+            @Override
+            public void onNetworkError(Exception e) {
+                task.trySetError(e);
+            }
+
+            @Override
+            public void onChaskifyError(Exception e) {
+                task.trySetError(e);
+            }
+
+            @Override
+            public void onUnexpectedError(Exception e) {
+                task.trySetError(e);
+            }
+        });
+        return task.getTask()
+                .onSuccessTask(
+                        task1 -> {
+                            mTaskCache.put(TaskDataMapper.transform(task1.getResult()));
+                            return null;
+                        }
+                );
+    }
 }

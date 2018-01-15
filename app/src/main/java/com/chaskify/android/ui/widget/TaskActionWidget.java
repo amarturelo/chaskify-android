@@ -7,9 +7,17 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.annimon.stream.function.Consumer;
+import com.chaskify.android.Chaskify;
+import com.chaskify.android.MethodCallHelper;
 import com.chaskify.android.R;
 import com.chaskify.android.ui.model.TaskItemActionModel;
+import com.chaskify.chaskify_sdk.ChaskifySession;
+import com.chaskify.data.realm.cache.impl.NotificationsCacheImpl;
+import com.chaskify.data.realm.cache.impl.ProfileCacheImpl;
+import com.chaskify.data.realm.cache.impl.SettingsCacheImpl;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
+import com.chaskify.data.realm.cache.impl.TaskWayPointCacheImpl;
 import com.chaskify.data.repositories.TaskRepositoryImpl;
 import com.chaskify.domain.interactors.TaskInteractor;
 
@@ -24,9 +32,8 @@ public class TaskActionWidget extends LinearLayout implements TaskActionContract
 
     private TaskActionPresenter presenter;
 
-    private String mTaskId;
 
-    private TaskItemActionModel model;
+    private TaskActionModel mTaskActionModel;
 
     public TaskActionWidget(Context context) {
         this(context, null, 0);
@@ -39,17 +46,7 @@ public class TaskActionWidget extends LinearLayout implements TaskActionContract
     public TaskActionWidget(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         inflate(context, R.layout.widget_task_action_buttom, this);
-        presenter = new TaskActionPresenter(
-                new TaskInteractor(
-                        new TaskRepositoryImpl(
-                                new TaskCacheImpl()
-                        )
-                ));
-
         init();
-
-        presenter.bindView(this);
-
     }
 
     private void init() {
@@ -59,55 +56,112 @@ public class TaskActionWidget extends LinearLayout implements TaskActionContract
         mNegative.setOnClickListener(this);
     }
 
-    public void setTaskId(String mTaskId) {
-        this.mTaskId = mTaskId;
-        presenter.getTask(this.mTaskId);
+    public void setTaskId(TaskActionModel mTaskActionModel) {
+        this.mTaskActionModel = mTaskActionModel;
+
+        if (presenter != null)
+            presenter.release();
+
+        Chaskify.getInstance().getSessionByDriverId(mTaskActionModel.getDriverId())
+                .executeIfAbsent(this::hide)
+                .ifPresent(chaskifySession -> {
+                    presenter = new TaskActionPresenter(new MethodCallHelper(
+                            chaskifySession
+                            , new TaskCacheImpl()
+                            , new NotificationsCacheImpl()
+                            , new ProfileCacheImpl()
+                            , new SettingsCacheImpl()
+                            , new TaskWayPointCacheImpl()));
+                    presenter.bindView(this);
+                    renderActions(this.mTaskActionModel);
+                });
     }
 
+
     @Override
-    public void renderActions(TaskItemActionModel taskItemActionModel) {
-        this.model = taskItemActionModel;
-        TASK_STATUS_ACTION taskStatusAction = TASK_STATUS_ACTION.toEnum(taskItemActionModel.getStatus());
+    public void renderActions(TaskActionModel mTaskActionModel) {
+        TASK_STATUS_ACTION taskStatusAction = TASK_STATUS_ACTION.toEnum(mTaskActionModel.getStatus());
         if (taskStatusAction == null)
-            setVisibility(GONE);
+            hide();
         else {
-            setVisibility(VISIBLE);
+            show();
             mPositive.setText(taskStatusAction.getPositive());
             mNegative.setText(taskStatusAction.getNegative());
         }
+    }
+
+    private void hide() {
+        setVisibility(GONE);
+    }
+
+    private void show() {
+        setVisibility(VISIBLE);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.positive_action:
-                switch (model.getStatus()) {
+                switch (mTaskActionModel.getStatus()) {
                     case "ASSIGNED":
-                        presenter.accept(model.getId());
+                        presenter.accept(mTaskActionModel.getTaskId());
                         break;
                     case "IN ROUTE":
-                        presenter.arrived(model.getId());
+                        presenter.arrived(mTaskActionModel.getTaskId());
                         break;
                     case "ACCEPTED":
-                        presenter.start(model.getId());
+                        presenter.start(mTaskActionModel.getTaskId());
                         break;
                     case "ARRIVED":
-                        presenter.successful(model.getId());
+                        presenter.successful(mTaskActionModel.getTaskId());
                         break;
                     case "UNASSIGNED":
-                        presenter.accept(model.getId());
+                        presenter.accept(mTaskActionModel.getTaskId());
                         break;
                     default:
                         break;
                 }
                 break;
             case R.id.negative_action:
-                switch (model.getStatus()) {
+                switch (mTaskActionModel.getStatus()) {
 
                     default:
                         break;
                 }
                 break;
+        }
+    }
+
+    public static class TaskActionModel {
+        private String driverId;
+        private String taskId;
+        private String status;
+
+        public String getDriverId() {
+            return driverId;
+        }
+
+        public TaskActionModel setDriverId(String driverId) {
+            this.driverId = driverId;
+            return this;
+        }
+
+        public String getTaskId() {
+            return taskId;
+        }
+
+        public TaskActionModel setTaskId(String taskId) {
+            this.taskId = taskId;
+            return this;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public TaskActionModel setStatus(String status) {
+            this.status = status;
+            return this;
         }
     }
 

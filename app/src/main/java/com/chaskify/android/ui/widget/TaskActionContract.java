@@ -1,7 +1,6 @@
 package com.chaskify.android.ui.widget;
 
 import com.chaskify.android.shared.BaseContract;
-import com.chaskify.android.ui.model.TaskItemActionModel;
 
 /**
  * Created by alberto on 14/01/18.
@@ -9,11 +8,10 @@ import com.chaskify.android.ui.model.TaskItemActionModel;
 
 public interface TaskActionContract {
     interface View extends BaseContract.View {
-        void renderActions(TaskItemActionModel taskItemActionModel);
+        void renderActions(TaskActionWidget.TaskActionModel mTaskActionModel);
     }
 
     interface Presenter extends BaseContract.Presenter<TaskActionContract.View> {
-        void getTask(String id);
 
         void accept(String id);
 

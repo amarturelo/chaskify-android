@@ -25,6 +25,7 @@ import com.chaskify.android.adapters.TaskWaypointListAdapter;
 import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.model.TaskModel;
 import com.chaskify.android.ui.model.TaskWaypointItemModel;
+import com.chaskify.android.ui.widget.TaskActionWidget;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.repositories.TaskRepositoryImpl;
 import com.chaskify.domain.filter.DriverFilter;
@@ -67,6 +68,7 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
     private RecyclerView mTaskWaypointList;
 
     private TaskWaypointListAdapter taskWaypointListAdapter;
+    private TaskActionWidget taskAction;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,6 +101,8 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
         formTaskDescription = view.findViewById(R.id.form_task_description);
         formTaskWaypoints = view.findViewById(R.id.form_task_way_points);
         formTaskHistory = view.findViewById(R.id.form_task_history);
+
+        taskAction = view.findViewById(R.id.task_action_button);
 
         mTextViewTaskClientName = view.findViewById(R.id.task_client_name);
         mTextViewTaskClientNumber = view.findViewById(R.id.task_client_number);
@@ -138,18 +142,14 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
             taskDialogPresenter.taskById(filters);
         }
 
-        getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                BottomSheetDialog d = (BottomSheetDialog) dialog;
-                FrameLayout bottomSheet = (FrameLayout) d.findViewById(R.id.design_bottom_sheet);
-                CoordinatorLayout coordinatorLayout = (CoordinatorLayout) bottomSheet.getParent();
-                BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-                bottomSheetBehavior.setPeekHeight(d.findViewById(R.id.form_task_actions).getHeight());
-                coordinatorLayout.getParent().requestLayout();
-                goToScrollStart();
-            }
-
+        getDialog().setOnShowListener(dialog1 -> {
+            BottomSheetDialog d = (BottomSheetDialog) dialog1;
+            FrameLayout bottomSheet = d.findViewById(R.id.design_bottom_sheet);
+            CoordinatorLayout coordinatorLayout = (CoordinatorLayout) bottomSheet.getParent();
+            BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+            bottomSheetBehavior.setPeekHeight(d.findViewById(R.id.form_task_actions).getHeight());
+            coordinatorLayout.getParent().requestLayout();
+            goToScrollStart();
         });
 
     }
@@ -172,6 +172,11 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
     @Override
     public void showError(Throwable throwable) {
         Toast.makeText(getContext(), throwable.toString(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void renderTaskAction(TaskActionWidget.TaskActionModel taskActionModel) {
+        taskAction.setTaskId(taskActionModel);
     }
 
     @SuppressLint("SetTextI18n")

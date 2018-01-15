@@ -14,6 +14,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -102,15 +103,15 @@ public class TaskRestClient extends RestClient<TaskApi> {
                 });
     }
 
-    private void changeTaskStatus(String taskId, String status, String lat, String lng, ApiCallback<ChaskifyTask> callback) {
+    public void changeTaskStatus(String taskId, String status, String lat, String lng, ApiCallback<ChaskifyTask> callback) {
         if (mChaskifyCredentials != null)
             changeTaskStatus(taskId, status, lat, lng, mChaskifyCredentials.getAccessToken(), callback);
         else
             callback.onChaskifyError(new TokenNotFoundException());
     }
 
-    private void changeTaskStatus(String taskId, String status, String lat, String lng, String accessToken, ApiCallback<ChaskifyTask> callback) {
-        mApi.changeTaskStatusNew(taskId
+    private void changeTaskStatus(String taskId, String status, String lat, String lng, String accessToken, final ApiCallback<ChaskifyTask> callback) {
+        mApi.updateStatus(taskId
                 , String.valueOf(new Date().getTimezoneOffset())
                 , accessToken
                 , status
@@ -119,12 +120,29 @@ public class TaskRestClient extends RestClient<TaskApi> {
         ).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()) {
+                    Type type = new TypeToken<BaseResponse<ChaskifyTask>>() {
+                    }.getType();
 
+                    JsonObject baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), JsonObject.class);
+                    if (baseResponse.get("code").getAsInt() == 1) {
+                        BaseResponse<ChaskifyTask> listBaseResponse = getGson().fromJson(baseResponse, type);
+                        callback.onSuccess(listBaseResponse.getDetails());
+
+                    } else {
+                        callback.onChaskifyError(new Exception(baseResponse.get("msg").getAsString()));
+                    }
+                } else
+                    try {
+                        callback.onChaskifyError(new Exception(response.errorBody().string()));
+                    } catch (IOException e) {
+                        callback.onUnexpectedError(e);
+                    }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-
+                callback.onNetworkError((Exception) t);
             }
         });
     }
