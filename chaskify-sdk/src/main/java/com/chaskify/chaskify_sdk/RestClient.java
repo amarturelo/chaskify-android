@@ -18,7 +18,11 @@ import retrofit2.Retrofit;
 
 public class RestClient<T> {
 
-    public static final String BASE = "http://dev-customer.chaskify.com/api/";
+    public static final String BASE_LOCAL = "http://192.168.1.119/chaskifyBackend/api/";
+    public static final String BASE_PRODUCTION = "http://customer.chaskify.com/api/";
+    public static final String BASE_DEVELOPER = "http://dev-customer.chaskify.com/api/";
+
+    public static final String BASE = BASE_LOCAL;
 
     protected T mApi;
 
@@ -97,7 +101,6 @@ public class RestClient<T> {
                     "; MatrixAndroidSDK " + BuildConfig.VERSION_NAME + ")";
         }
     }
-
 
 
     protected Gson getGson() {

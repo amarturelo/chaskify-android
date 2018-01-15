@@ -71,7 +71,7 @@
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:singleLine="true"
-                    android:text="vane" />
+                    android:text="amarturelo" />
             </LinearLayout>
 
 

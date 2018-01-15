@@ -45,11 +45,10 @@ public class SplashFragment extends BaseFragment implements SplashContract.View,
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Chaskify.getInstance().getDefaultSession()
+        this.mChaskifySession = Chaskify.getInstance().getDefaultSession();
+        mChaskifySession
                 .executeIfAbsent(this::goToLaunch)
                 .ifPresent(chaskifySession -> {
-                    this.mChaskifySession = Chaskify.getInstance().getDefaultSession();
                     presenter = new SplashPresenter(mChaskifySession.get(), new ProfileInteractor(
                             new ProfileRepositoryImpl(
                                     new ProfileCacheImpl()
@@ -80,7 +79,8 @@ public class SplashFragment extends BaseFragment implements SplashContract.View,
     @Override
     public void onDetach() {
         super.onDetach();
-        presenter.release();
+        if (presenter != null)
+            presenter.release();
     }
 
     @Override

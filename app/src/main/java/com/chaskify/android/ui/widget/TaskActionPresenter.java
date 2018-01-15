@@ -45,6 +45,11 @@ public class TaskActionPresenter extends BasePresenter<TaskActionContract.View>
 
     }
 
+    @Override
+    public void decline(String id) {
+
+    }
+
     public TaskActionPresenter(TaskInteractor mTaskInteractor) {
         Timber.tag(this.getClass().getSimpleName());
         this.mTaskInteractor = mTaskInteractor;

@@ -9,7 +9,7 @@ import retrofit2.http.Query;
  */
 
 public interface CalendarTaskApi {
-    @GET("CalendarTask")
+    @GET("CalendarTaskAndroid")
     Call<String> calendarTaskByRange(
             @Query("start") String start
             , @Query("end") String end

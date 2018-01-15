@@ -15,6 +15,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 
 import retrofit2.Call;
@@ -57,22 +58,29 @@ public class LoginRestClient extends RestClient<LoginApi> {
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        Type type = new TypeToken<BaseResponse<LoginResponse>>() {
-                        }.getType();
+                        if (response.isSuccessful()) {
+                            Type type = new TypeToken<BaseResponse<LoginResponse>>() {
+                            }.getType();
 
-                        JsonObject baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), JsonObject.class);
-                        if (baseResponse.get("code").getAsInt() == 1) {
-                            BaseResponse<LoginResponse> loginRequest = getGson().fromJson(baseResponse, type);
+                            JsonObject baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), JsonObject.class);
+                            if (baseResponse.get("code").getAsInt() == 1) {
+                                BaseResponse<LoginResponse> loginRequest = getGson().fromJson(baseResponse, type);
 
-                            callback.onSuccess(new ChaskifyCredentials()
-                                    .setUsername(user)
-                                    .setDriverId(loginRequest.getDetails().getDriver_id())
-                                    .setAccessToken(loginRequest.getDetails().getToken())
+                                callback.onSuccess(new ChaskifyCredentials()
+                                        .setUsername(user)
+                                        .setDriverId(loginRequest.getDetails().getDriver_id())
+                                        .setAccessToken(loginRequest.getDetails().getToken())
 
-                            );
-                        } else {
-                            callback.onChaskifyError(new Exception(baseResponse.get("msg").getAsString()));
-                        }
+                                );
+                            } else {
+                                callback.onChaskifyError(new Exception(baseResponse.get("msg").getAsString()));
+                            }
+                        } else
+                            try {
+                                callback.onChaskifyError(new Exception(response.errorBody().string()));
+                            } catch (IOException e) {
+                                callback.onUnexpectedError(e);
+                            }
                     }
 
                     @Override

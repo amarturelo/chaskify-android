@@ -10,6 +10,7 @@ import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,20 +45,28 @@ public class CalendarTaskRestClient extends RestClient<CalendarTaskApi> {
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        Type type = new TypeToken<BaseResponse<List<ChaskifyCalendarTask>>>() {
-                        }.getType();
 
-                        JsonObject baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), JsonObject.class);
-                        if (baseResponse.get("code").getAsInt() == 1) {
-                            if (baseResponse.get("details").isJsonArray()) {
-                                BaseResponse<List<ChaskifyCalendarTask>> listBaseResponse = getGson().fromJson(baseResponse, type);
-                                callback.onSuccess(listBaseResponse.getDetails());
+                        if (response.code() == 200) {
+                            Type type = new TypeToken<BaseResponse<List<ChaskifyCalendarTask>>>() {
+                            }.getType();
+
+                            JsonObject baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), JsonObject.class);
+                            if (baseResponse.get("code").getAsInt() == 1) {
+                                if (baseResponse.get("details").isJsonArray()) {
+                                    BaseResponse<List<ChaskifyCalendarTask>> listBaseResponse = getGson().fromJson(baseResponse, type);
+                                    callback.onSuccess(listBaseResponse.getDetails());
+                                } else {
+                                    callback.onSuccess(new ArrayList<ChaskifyCalendarTask>());
+                                }
                             } else {
-                                callback.onSuccess(new ArrayList<ChaskifyCalendarTask>());
+                                callback.onChaskifyError(new Exception(baseResponse.get("msg").getAsString()));
                             }
-                        } else {
-                            callback.onChaskifyError(new Exception(baseResponse.get("msg").getAsString()));
-                        }
+                        } else
+                            try {
+                                callback.onChaskifyError(new Exception(response.errorBody().string()));
+                            } catch (IOException e) {
+                                callback.onUnexpectedError(e);
+                            }
                     }
 
                     @Override
