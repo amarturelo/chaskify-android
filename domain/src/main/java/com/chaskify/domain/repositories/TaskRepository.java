@@ -6,6 +6,7 @@ import com.chaskify.domain.model.Task;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -14,7 +15,7 @@ import io.reactivex.Single;
  */
 
 public interface TaskRepository {
-    Observable<List<Task>> tasks(List<Filter> filters);
+    Flowable<List<Task>> tasks(List<Filter> filters);
 
     Observable<Task> taskById(String driverId, String taskId);
 }

@@ -10,6 +10,7 @@ import com.chaskify.data.realm.cache.impl.NotificationsCacheImpl;
 import com.chaskify.data.realm.cache.impl.ProfileCacheImpl;
 import com.chaskify.data.realm.cache.impl.SettingsCacheImpl;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
+import com.chaskify.data.realm.cache.impl.TaskWayPointCacheImpl;
 import com.chaskify.domain.interactors.ProfileInteractor;
 import com.chaskify.domain.interactors.SettingsInteractor;
 import com.chaskify.domain.model.Profile;
@@ -62,6 +63,7 @@ public class SplashPresenter extends BasePresenter<SplashContract.View>
                 , new NotificationsCacheImpl()
                 , new ProfileCacheImpl()
                 , new SettingsCacheImpl()
+                , new TaskWayPointCacheImpl()
         );
     }
 
@@ -80,7 +82,7 @@ public class SplashPresenter extends BasePresenter<SplashContract.View>
                         view.complete();
                     else
                         view.showError(new Exception("paso algo con la red"));
-                })
+                }, throwable -> view.showError(throwable))
         ;
     }
 

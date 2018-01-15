@@ -12,6 +12,7 @@ import com.chaskify.domain.repositories.TaskRepository;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import timber.log.Timber;
@@ -35,7 +36,7 @@ public class TaskRepositoryImpl implements TaskRepository {
     }
 
     @Override
-    public Observable<List<Task>> tasks(List<Filter> filters) {
-        return diskTaskDataStore.tasks(filters).toObservable();
+    public Flowable<List<Task>> tasks(List<Filter> filters) {
+        return diskTaskDataStore.tasks(filters);
     }
 }

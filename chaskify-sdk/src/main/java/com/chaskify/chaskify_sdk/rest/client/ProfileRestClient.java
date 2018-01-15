@@ -145,11 +145,11 @@ public class ProfileRestClient extends RestClient<ProfileApi> {
                 });
     }
 
-    public void updateImageProfileBase64(String base64, ApiCallback<String> callback) throws TokenNotFoundException {
+    public void updateImageProfileBase64(String base64, ApiCallback<String> callback) {
         if (mChaskifyCredentials != null)
             updateImageProfileBase64(mChaskifyCredentials.getAccessToken(), base64, callback);
         else
-            throw new TokenNotFoundException();
+            callback.onChaskifyError(new TokenNotFoundException());
     }
 
     private void updateImageProfileBase64(String accessToken, String base64, final ApiCallback<String> callback) {

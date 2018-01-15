@@ -10,11 +10,20 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.annimon.stream.function.Consumer;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.ui.model.TaskWaypointModel;
+import com.chaskify.chaskify_sdk.ChaskifySession;
+import com.chaskify.data.realm.cache.impl.TaskWayPointCacheImpl;
 import com.chaskify.data.repositories.TaskWaypointRepositoryImpl;
+import com.chaskify.domain.filter.DriverFilter;
+import com.chaskify.domain.filter.Filter;
+import com.chaskify.domain.filter.WaypointIdFilter;
 import com.chaskify.domain.interactors.TaskWaypointInteractor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by alberto on 28/12/17.
@@ -54,13 +63,15 @@ public class TaskWaypointViewDialogFragment extends BottomSheetDialogFragment im
             mTaskWaypointId = getArguments().getString(ARG_TASK_WAY_POINT_ID);
             mDriverId = getArguments().getString(ARG_DRIVER_ID);
 
-            presenter = new TaskWaypointViewDialogPresenter(
-                    new TaskWaypointInteractor(
+            Chaskify.getInstance().getSessionByDriverId(mDriverId)
+                    .ifPresent(chaskifySession -> presenter = new TaskWaypointViewDialogPresenter(
+                            chaskifySession
+                            , new TaskWaypointInteractor(
                             new TaskWaypointRepositoryImpl(
-                                    Chaskify.getInstance().getDefaultSession().get().getTaskWaypointRestClient()
+                                    new TaskWayPointCacheImpl()
                             )
                     )
-            );
+                    ));
         } else
             dismiss();
     }
@@ -72,7 +83,24 @@ public class TaskWaypointViewDialogFragment extends BottomSheetDialogFragment im
         View contentView = View.inflate(getContext(), R.layout.fragment_waypoint, null);
         dialog.setContentView(contentView);
         initComponents(contentView);
-        presenter.bindView(this);
+        if (presenter != null) {
+            presenter.bindView(this);
+
+            List<Filter> filters = new ArrayList<>();
+            filters.add(new WaypointIdFilter()
+                    .setWayPointId(mTaskWaypointId)
+            );
+            filters.add(new DriverFilter()
+                    .setDriver(mDriverId));
+
+            presenter.wayPointById(filters);
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        presenter.release();
     }
 
     private void initComponents(View view) {
@@ -93,7 +121,6 @@ public class TaskWaypointViewDialogFragment extends BottomSheetDialogFragment im
     @Override
     public void onResume() {
         super.onResume();
-        presenter.wayPointById(mDriverId, mTaskWaypointId);
     }
 
     public static TaskWaypointViewDialogFragment newInstance(String driver_id, String task_id) {

@@ -25,5 +25,6 @@
     <color name="purple">#673AB7</color>
     <color name="grey">#757575</color>
     <color name="task_pending">#757575</color>
+    <color name="task_start">#FFFFFF22</color>
 
 </resources>

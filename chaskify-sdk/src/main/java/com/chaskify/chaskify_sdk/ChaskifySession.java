@@ -112,7 +112,7 @@ public class ChaskifySession {
         mSettingsRestClient.updateSettingsSound(sound, callback);
     }
 
-    public void updateImageProfile(String base64, ApiCallback<String> callback) throws TokenNotFoundException {
+    public void updateImageProfile(String base64, ApiCallback<String> callback) {
         mProfileRestClient.updateImageProfileBase64(base64, callback);
     }
 

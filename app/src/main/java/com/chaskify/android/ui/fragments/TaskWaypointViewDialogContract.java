@@ -2,6 +2,9 @@ package com.chaskify.android.ui.fragments;
 
 import com.chaskify.android.shared.BaseContract;
 import com.chaskify.android.ui.model.TaskWaypointModel;
+import com.chaskify.domain.filter.Filter;
+
+import java.util.List;
 
 /**
  * Created by alberto on 28/12/17.
@@ -20,6 +23,6 @@ public class TaskWaypointViewDialogContract {
     }
 
     interface Presenter extends BaseContract.Presenter<TaskWaypointViewDialogContract.View> {
-        void wayPointById(String driver_id, String task_id);
+        void wayPointById(List<Filter> filters);
     }
 }

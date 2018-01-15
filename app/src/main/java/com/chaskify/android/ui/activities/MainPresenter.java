@@ -14,6 +14,7 @@ import com.chaskify.data.realm.cache.impl.NotificationsCacheImpl;
 import com.chaskify.data.realm.cache.impl.ProfileCacheImpl;
 import com.chaskify.data.realm.cache.impl.SettingsCacheImpl;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
+import com.chaskify.data.realm.cache.impl.TaskWayPointCacheImpl;
 import com.chaskify.domain.filter.DateFilter;
 import com.chaskify.domain.filter.Filter;
 import com.chaskify.domain.interactors.CalendarTaskInteractor;
@@ -46,7 +47,8 @@ public class MainPresenter extends BasePresenter<MainContract.View>
                 , new TaskCacheImpl()
                 , new NotificationsCacheImpl()
                 , new ProfileCacheImpl()
-                , new SettingsCacheImpl());
+                , new SettingsCacheImpl()
+                , new TaskWayPointCacheImpl());
         this.calendarTaskInteractor = calendarTaskInteractor;
         this.mTaskInteractor = mTaskInteractor;
     }

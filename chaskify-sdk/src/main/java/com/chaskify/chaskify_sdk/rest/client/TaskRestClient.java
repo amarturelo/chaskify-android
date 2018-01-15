@@ -70,11 +70,11 @@ public class TaskRestClient extends RestClient<TaskApi> {
                 });
     }
 
-    public void taskDetails(String task_id, ApiCallback<ChaskifyTask> callback) throws TokenNotFoundException {
+    public void taskDetails(String task_id, ApiCallback<ChaskifyTask> callback) {
         if (mChaskifyCredentials != null)
             taskDetails(task_id, mChaskifyCredentials.getAccessToken(), callback);
         else
-            throw new TokenNotFoundException();
+            callback.onChaskifyError(new TokenNotFoundException());
     }
 
     private void taskDetails(String task_id, String accessToken, final ApiCallback<ChaskifyTask> callback) {

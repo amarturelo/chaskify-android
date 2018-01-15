@@ -1,7 +1,11 @@
 package com.chaskify.domain.repositories;
 
+import com.chaskify.domain.filter.Filter;
 import com.chaskify.domain.model.TaskWaypoint;
 
+import java.util.List;
+
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 /**
@@ -9,5 +13,5 @@ import io.reactivex.Single;
  */
 
 public interface TaskWaypointRepository {
-    Single<TaskWaypoint> wayPointById(String driverId, String waypointId);
+    Flowable<List<TaskWaypoint>> wayPointById(List<Filter> filters);
 }

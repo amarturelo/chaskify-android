@@ -2,24 +2,29 @@ package com.chaskify.android.ui.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.annimon.stream.function.Consumer;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.adapters.TaskHistoryListAdapter;
 import com.chaskify.android.adapters.TaskWaypointListAdapter;
 import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.model.TaskModel;
-import com.chaskify.chaskify_sdk.ChaskifySession;
+import com.chaskify.android.ui.model.TaskWaypointItemModel;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.repositories.TaskRepositoryImpl;
 import com.chaskify.domain.filter.DriverFilter;
@@ -121,6 +126,8 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
         super.setupDialog(dialog, style);
         View contentView = View.inflate(getContext(), R.layout.fragment_task, null);
         dialog.setContentView(contentView);
+
+
         initComponents(contentView);
         if (taskDialogPresenter != null) {
             List<Filter> filters = new ArrayList<>();
@@ -131,6 +138,25 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
             taskDialogPresenter.taskById(filters);
         }
 
+        getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                BottomSheetDialog d = (BottomSheetDialog) dialog;
+                FrameLayout bottomSheet = (FrameLayout) d.findViewById(R.id.design_bottom_sheet);
+                CoordinatorLayout coordinatorLayout = (CoordinatorLayout) bottomSheet.getParent();
+                BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+                bottomSheetBehavior.setPeekHeight(d.findViewById(R.id.form_task_actions).getHeight());
+                coordinatorLayout.getParent().requestLayout();
+                goToScrollStart();
+            }
+
+        });
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     @Override
@@ -210,7 +236,14 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
 
         if (!taskModel.getTaskWaypointItemModels().isEmpty()) {
             formTaskWaypoints.setVisibility(View.VISIBLE);
-            taskWaypointListAdapter = new TaskWaypointListAdapter(taskModel.getTaskWaypointItemModels());
+
+            List<TaskWaypointItemModel> itemModels = new ArrayList<>();
+            itemModels.addAll(taskModel.getTaskWaypointItemModels());
+            itemModels.addAll(taskModel.getTaskWaypointItemModels());
+            itemModels.addAll(taskModel.getTaskWaypointItemModels());
+            itemModels.addAll(taskModel.getTaskWaypointItemModels());
+
+            taskWaypointListAdapter = new TaskWaypointListAdapter(itemModels);
             taskWaypointListAdapter.setOnItemListened((view, position) -> {
                 Navigator.showTaskWaypointDetails(getChildFragmentManager()
                         , mDriverId
@@ -221,6 +254,12 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
         } else
             formTaskWaypoints.setVisibility(View.GONE);
 
+
+        //goToScrollStart();
+    }
+
+    private void goToScrollStart() {
+        getDialog().findViewById(R.id.form_task_scroll_view).setScrollY(0);
     }
 
     @Override

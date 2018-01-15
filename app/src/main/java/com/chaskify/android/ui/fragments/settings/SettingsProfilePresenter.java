@@ -14,6 +14,7 @@ import com.chaskify.data.realm.cache.impl.NotificationsCacheImpl;
 import com.chaskify.data.realm.cache.impl.ProfileCacheImpl;
 import com.chaskify.data.realm.cache.impl.SettingsCacheImpl;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
+import com.chaskify.data.realm.cache.impl.TaskWayPointCacheImpl;
 import com.chaskify.domain.interactors.ProfileInteractor;
 import com.chaskify.domain.interactors.SettingsInteractor;
 import com.chaskify.domain.model.Profile;
@@ -50,6 +51,7 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
                 , new NotificationsCacheImpl()
                 , new ProfileCacheImpl()
                 , new SettingsCacheImpl()
+                , new TaskWayPointCacheImpl()
         );
     }
 

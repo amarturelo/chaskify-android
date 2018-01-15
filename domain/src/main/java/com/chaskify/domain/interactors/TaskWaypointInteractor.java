@@ -1,8 +1,12 @@
 package com.chaskify.domain.interactors;
 
+import com.chaskify.domain.filter.Filter;
 import com.chaskify.domain.model.TaskWaypoint;
 import com.chaskify.domain.repositories.TaskWaypointRepository;
 
+import java.util.List;
+
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 /**
@@ -16,7 +20,7 @@ public class TaskWaypointInteractor {
         this.taskTaskWaypointRepository = taskTaskWaypointRepository;
     }
 
-    public Single<TaskWaypoint> wayPointById(String driverId, String waypointId) {
-        return taskTaskWaypointRepository.wayPointById(driverId, waypointId);
+    public Flowable<List<TaskWaypoint>> wayPointById(List<Filter> filters) {
+        return taskTaskWaypointRepository.wayPointById(filters);
     }
 }

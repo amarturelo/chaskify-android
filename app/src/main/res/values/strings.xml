@@ -175,4 +175,13 @@
     <string name="error_not_internet_connection">Not connected to internet</string>
     <string name="action_retry">Try again</string>
     <string name="action_remove_account">Remove account from device</string>
+
+    //task actions positive and negative text
+    <string name="title_task_accept">accept</string>
+    <string name="title_task_decline">decline</string>
+    <string name="title_task_start">start</string>
+    <string name="title_task_cancel">cancel</string>
+    <string name="title_task_arrived">arrived</string>
+    <string name="title_task_failed">failed</string>
+    <string name="title_task_successfult">successfult</string>
 </resources>

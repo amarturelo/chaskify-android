@@ -7,6 +7,7 @@ import com.chaskify.domain.repositories.TaskRepository;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -21,7 +22,7 @@ public class TaskInteractor {
         this.taskRepository = taskRepository;
     }
 
-    public Observable<List<Task>> tasks(List<Filter> filters) {
+    public Flowable<List<Task>> tasks(List<Filter> filters) {
         return taskRepository.tasks(filters);
     }
 

@@ -10,6 +10,8 @@ import io.realm.annotations.PrimaryKey;
  */
 
 public class RealmTaskWaypoint extends RealmObject {
+    public static String ID = "id";
+
     @PrimaryKey
     private String id;
     private String taskId;

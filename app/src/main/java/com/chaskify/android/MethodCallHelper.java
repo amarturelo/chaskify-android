@@ -1,7 +1,5 @@
 package com.chaskify.android;
 
-import com.annimon.stream.Optional;
-import com.annimon.stream.function.Consumer;
 import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallbackSuccess;
@@ -15,10 +13,11 @@ import com.chaskify.data.realm.cache.NotificationsCache;
 import com.chaskify.data.realm.cache.ProfileCache;
 import com.chaskify.data.realm.cache.SettingsCache;
 import com.chaskify.data.realm.cache.TaskCache;
+import com.chaskify.data.realm.cache.TaskWayPointCache;
 import com.chaskify.data.realm.cache.impl.mapper.ProfileDataMapper;
 import com.chaskify.data.realm.cache.impl.mapper.SettingsDataMapper;
 import com.chaskify.data.realm.cache.impl.mapper.TaskDataMapper;
-import com.chaskify.data.realm.model.RealmSettings;
+import com.chaskify.data.realm.cache.impl.mapper.TaskWaypointDataMapper;
 
 import java.util.Date;
 import java.util.List;
@@ -38,14 +37,15 @@ public class MethodCallHelper {
     private NotificationsCache mNotificationsCache;
     private ProfileCache mProfileCache;
     private SettingsCache mSettingsCache;
+    private TaskWayPointCache mTaskWayPointCache;
 
-    public MethodCallHelper(ChaskifySession mChaskifySession, TaskCache mTaskCache, NotificationsCache mNotificationsCache, ProfileCache mProfileCache, SettingsCache mSettingsCache) {
-        Timber.tag(this.getClass().getSimpleName());
+    public MethodCallHelper(ChaskifySession mChaskifySession, TaskCache mTaskCache, NotificationsCache mNotificationsCache, ProfileCache mProfileCache, SettingsCache mSettingsCache, TaskWayPointCache mTaskWayPointCache) {
         this.mChaskifySession = mChaskifySession;
         this.mTaskCache = mTaskCache;
         this.mNotificationsCache = mNotificationsCache;
         this.mProfileCache = mProfileCache;
         this.mSettingsCache = mSettingsCache;
+        this.mTaskWayPointCache = mTaskWayPointCache;
     }
 
     public Task<Void> getWaypointById(String id) {
@@ -77,7 +77,7 @@ public class MethodCallHelper {
         }
         return task.getTask()
                 .onSuccessTask(value -> {
-                    //TODO save to cacheWayPoint
+                    mTaskWayPointCache.put(TaskWaypointDataMapper.transform(value.getResult()));
                     return null;
                 });
     }
@@ -223,31 +223,28 @@ public class MethodCallHelper {
     public Task<Void> getTaskDetails(String taskId) {
         TaskCompletionSource<ChaskifyTask> task = new TaskCompletionSource<>();
 
-        try {
-            mChaskifySession.getTaskRestClient().taskDetails(taskId, new ApiCallback<ChaskifyTask>() {
-                @Override
-                public void onSuccess(ChaskifyTask info) {
-                    task.trySetResult(info);
-                }
+        mChaskifySession.getTaskRestClient().taskDetails(taskId, new ApiCallback<ChaskifyTask>() {
+            @Override
+            public void onSuccess(ChaskifyTask info) {
+                task.trySetResult(info);
+            }
 
-                @Override
-                public void onNetworkError(Exception e) {
-                    task.trySetError(e);
-                }
+            @Override
+            public void onNetworkError(Exception e) {
+                task.trySetError(e);
+            }
 
-                @Override
-                public void onChaskifyError(Exception e) {
-                    task.trySetError(e);
-                }
+            @Override
+            public void onChaskifyError(Exception e) {
+                task.trySetError(e);
+            }
 
-                @Override
-                public void onUnexpectedError(Exception e) {
-                    task.trySetError(e);
-                }
-            });
-        } catch (TokenNotFoundException e) {
-            task.trySetError(e);
-        }
+            @Override
+            public void onUnexpectedError(Exception e) {
+                task.trySetError(e);
+            }
+        });
+
 
         return task
                 .getTask()
@@ -352,32 +349,28 @@ public class MethodCallHelper {
      */
     public Task<Void> updateProfileImage(String base64) {
         TaskCompletionSource<String> task = new TaskCompletionSource<>();
-        try {
-            mChaskifySession.updateImageProfile(base64, new ApiCallback<String>() {
-                @Override
-                public void onSuccess(String info) {
-                    task.trySetResult(info);
+        mChaskifySession.updateImageProfile(base64, new ApiCallback<String>() {
+            @Override
+            public void onSuccess(String info) {
+                task.trySetResult(info);
 
-                }
+            }
 
-                @Override
-                public void onNetworkError(Exception e) {
-                    task.trySetError(e);
-                }
+            @Override
+            public void onNetworkError(Exception e) {
+                task.trySetError(e);
+            }
 
-                @Override
-                public void onChaskifyError(Exception e) {
-                    task.trySetError(e);
-                }
+            @Override
+            public void onChaskifyError(Exception e) {
+                task.trySetError(e);
+            }
 
-                @Override
-                public void onUnexpectedError(Exception e) {
-                    task.trySetError(e);
-                }
-            });
-        } catch (TokenNotFoundException e) {
-            task.trySetError(e);
-        }
+            @Override
+            public void onUnexpectedError(Exception e) {
+                task.trySetError(e);
+            }
+        });
         return task.getTask()
                 .onSuccessTask(value -> {
                     mProfileCache.getByDriverIdAsObservable(mChaskifySession
