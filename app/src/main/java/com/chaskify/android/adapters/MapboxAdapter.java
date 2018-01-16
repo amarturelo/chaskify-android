@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.util.DiffUtil;
 
 import com.chaskify.android.R;
 import com.chaskify.android.ui.model.MarkerData;
@@ -34,14 +35,14 @@ public class MapboxAdapter extends MapboxMapMeAdapter {
     @Override
     public MapAnnotation onCreateAnnotation(AnnotationFactory<MapboxMap> mapFactory, int position, int i1) {
         MarkerData item = this.markers.get(position);
-        return mapFactory.createMarker(item.getLatLng(), getIconBitmap(item), item.getTitle());
+        return mapFactory.createMarker(item.getLatLng(), null, item.getTitle());
     }
 
     @Override
     public void onBindAnnotation(MapAnnotation mapAnnotation, int position, Object payload) {
         if (mapAnnotation instanceof MarkerAnnotation) {
             MarkerData item = this.markers.get(position);
-            ((MarkerAnnotation) mapAnnotation).setIcon(getIconBitmap(item));
+            //((MarkerAnnotation) mapAnnotation).setIcon(getIconBitmap(item));
         }
     }
 
@@ -50,28 +51,44 @@ public class MapboxAdapter extends MapboxMapMeAdapter {
         return markers.size();
     }
 
-    public void addAll(List<MarkerData> markers) {
-        this.markers.addAll(markers);
-        notifyDataSetChanged();
-    }
+    public static class MarkerDiffCallback extends DiffUtil.Callback {
+        private List<MarkerData> mOldList;
+        private List<MarkerData> mNewList;
 
-    public void clear() {
-        this.markers.clear();
-        notifyDataSetChanged();
-    }
-
-    private Bitmap getIconBitmap(MarkerData item) {
-        Drawable icon;
-
-        MarkerData.MarkerColour colour = item.getMarkerColour();
-
-        if (item.isSelected()) {
-            colour = MarkerData.MarkerColour.GREEN;
+        public MarkerDiffCallback(List<MarkerData> oldList, List<MarkerData> newList) {
+            this.mOldList = oldList;
+            this.mNewList = newList;
         }
 
-        icon = ContextCompat.getDrawable(getContext(), R.mipmap.ic_launcher);
+        @Override
+        public int getOldListSize() {
+            return mOldList != null ? mOldList.size() : 0;
+        }
 
-        return ((BitmapDrawable) icon).getBitmap();
+        @Override
+        public int getNewListSize() {
+            return mNewList != null ? mNewList.size() : 0;
+        }
+
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            return mNewList.get(newItemPosition).getId().equals(mOldList.get(oldItemPosition).getId());
+        }
+
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            return mNewList.get(newItemPosition).equals(mOldList.get(oldItemPosition));
+        }
+
+    }
+
+    public void update(List<MarkerData> newMarkers) {
+        MarkerDiffCallback callback = new MarkerDiffCallback(this.markers, newMarkers);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(callback);
+
+        this.markers.clear();
+        this.markers.addAll(newMarkers);
+        diffResult.dispatchUpdatesTo(this);
     }
 
 }

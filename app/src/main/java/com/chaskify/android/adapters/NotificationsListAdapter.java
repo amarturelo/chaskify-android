@@ -1,5 +1,6 @@
 package com.chaskify.android.adapters;
 
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.annimon.stream.Stream;
 import com.chaskify.android.R;
 import com.chaskify.android.ui.model.NotificationItemModel;
+import com.chaskify.android.ui.model.TaskHistoryItemModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,19 +80,6 @@ public class NotificationsListAdapter extends RecyclerView.Adapter<Notifications
         }
     }
 
-    public void add(List<NotificationItemModel> notificationItemModels) {
-        Stream.of(notificationItemModels)
-                .forEach(notificationItemModel -> {
-                    mNotificationItemModels.add(notificationItemModel);
-                    notifyItemInserted(mNotificationItemModels.size() - 1);
-                });
-    }
-
-    public void clear() {
-        mNotificationItemModels.clear();
-        notifyDataSetChanged();
-    }
-
     @Override
     public int getItemCount() {
         return mNotificationItemModels.size();
@@ -113,5 +102,44 @@ public class NotificationsListAdapter extends RecyclerView.Adapter<Notifications
             task_status = itemView.findViewById(R.id.task_status);
 
         }
+    }
+
+    public static class NotificationsDiffCallback extends DiffUtil.Callback {
+        private List<NotificationItemModel> mOldList;
+        private List<NotificationItemModel> mNewList;
+
+        public NotificationsDiffCallback(List<NotificationItemModel> mOldList, List<NotificationItemModel> mNewList) {
+            this.mOldList = mOldList;
+            this.mNewList = mNewList;
+        }
+
+        @Override
+        public int getOldListSize() {
+            return mOldList != null ? mOldList.size() : 0;
+        }
+
+        @Override
+        public int getNewListSize() {
+            return mNewList != null ? mNewList.size() : 0;
+        }
+
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            return mNewList.get(newItemPosition).getPushId().equals(mOldList.get(oldItemPosition).getPushId());
+        }
+
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            return mNewList.get(newItemPosition).equals(mOldList.get(oldItemPosition));
+        }
+
+    }
+
+    public void update(List<NotificationItemModel> mNewList) {
+        NotificationsDiffCallback callback = new NotificationsDiffCallback(this.mNotificationItemModels, mNewList);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(callback);
+        this.mNotificationItemModels.clear();
+        this.mNotificationItemModels.addAll(mNewList);
+        diffResult.dispatchUpdatesTo(this);
     }
 }

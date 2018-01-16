@@ -17,11 +17,9 @@ public class ChaskifyService extends Service {
         super.onCreate();
     }
 
-
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     @Nullable

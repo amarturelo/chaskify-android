@@ -4,14 +4,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
 import com.annimon.stream.Stream;
-import com.annimon.stream.function.Consumer;
-import com.annimon.stream.function.Function;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.adapters.MapboxAdapter;
@@ -21,14 +18,11 @@ import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.base.BaseFragment;
 import com.chaskify.android.ui.model.MarkerData;
 import com.chaskify.android.ui.model.TaskItemSnapModel;
-import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.repositories.TaskRepositoryImpl;
 import com.chaskify.domain.filter.Filter;
 import com.chaskify.domain.interactors.TaskInteractor;
-import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
-import com.mapbox.mapboxsdk.camera.CameraUpdate;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
@@ -38,11 +32,13 @@ import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import java.util.List;
 
+import nz.co.trademe.mapme.annotations.MapAnnotation;
+import nz.co.trademe.mapme.annotations.OnMapAnnotationClickListener;
 import timber.log.Timber;
 
 import static com.chaskify.android.ui.activities.MainActivity.ARG_FILTER;
 
-public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.OnItemChangedListener<RecyclerView.ViewHolder>, DiscreteScrollView.ScrollStateChangeListener<RecyclerView.ViewHolder>, OnItemListened, TaskMapContract.View, OnMapReadyCallback {
+public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.OnItemChangedListener<RecyclerView.ViewHolder>, DiscreteScrollView.ScrollStateChangeListener<RecyclerView.ViewHolder>, OnItemListened, TaskMapContract.View, OnMapReadyCallback, OnMapAnnotationClickListener {
 
     private DiscreteScrollView taskPicker;
 
@@ -118,7 +114,7 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
 
     private void initViews(Bundle savedInstanceState) {
         taskPicker = getView().findViewById(R.id.picker);
-        mMapboxAdapter = new MapboxAdapter(getActivity());
+
         initMap(savedInstanceState);
         initDiscreteScrollView();
     }
@@ -127,8 +123,9 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
         mapView = getView().findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+        mMapboxAdapter = new MapboxAdapter(getActivity());
+        mMapboxAdapter.setOnAnnotationClickListener(this);
     }
-
 
 
     @Override
@@ -150,8 +147,6 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
 
     @Override
     public void onCurrentItemChanged(@Nullable RecyclerView.ViewHolder viewHolder, int adapterPosition) {
-        if (adapterPosition != -1)
-            moveCameraTo(mTaskSnapListAdapter.getItem(adapterPosition));
     }
 
     private void moveCameraTo(TaskItemSnapModel item) {
@@ -180,27 +175,28 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     public void onClickItem(View view, int position) {
         if (taskPicker.getCurrentItem() == position)
             taskView(mTaskSnapListAdapter.getItem(position));
-        else
+        else {
             taskPicker.smoothScrollToPosition(position);
+            moveCameraTo(mTaskSnapListAdapter.getItem(position));
+        }
     }
 
     private void taskView(TaskItemSnapModel item) {
         Navigator.showTaskDetails(getFragmentManager()
                 , Chaskify.getInstance().getDefaultSession().get().getCredentials().getDriverId()
-                , item.getTask_id());
+                , item.getTaskId());
     }
 
     @Override
     public void renderTaskListView(List<TaskItemSnapModel> taskItemModels) {
-        mMapboxAdapter.clear();
-        mMapboxAdapter.addAll(Stream.of(taskItemModels)
-                .map(taskItemSnapModel -> new MarkerData(new nz.co.trademe.mapme.LatLng(taskItemSnapModel.getLat()
+        mMapboxAdapter.update(Stream.of(taskItemModels)
+                .map(taskItemSnapModel -> new MarkerData(taskItemSnapModel.getTaskId()
+                        , new nz.co.trademe.mapme.LatLng(taskItemSnapModel.getLat()
                         , taskItemSnapModel.getLng())
-                        , taskItemSnapModel.getStatus()))
+                        , taskItemSnapModel.getTaskId()))
                 .toList());
 
-        mTaskSnapListAdapter.clear();
-        mTaskSnapListAdapter.add(taskItemModels);
+        mTaskSnapListAdapter.update(taskItemModels);
     }
 
     @Override
@@ -257,6 +253,12 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
 
     @Override
     public void onMapReady(MapboxMap mapboxMap) {
-        mMapboxAdapter.attach(mapView, mapboxMap);
+        this.mapboxMap = mapboxMap;
+        mMapboxAdapter.attach(mapView, this.mapboxMap);
+    }
+
+    @Override
+    public boolean onMapAnnotationClick(@NonNull MapAnnotation mapAnnotationObject) {
+        return false;
     }
 }

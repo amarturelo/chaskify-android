@@ -37,7 +37,7 @@ public class TaskItemSnapModel {
         return this;
     }
 
-    public String getTask_id() {
+    public String getTaskId() {
         return task_id;
     }
 

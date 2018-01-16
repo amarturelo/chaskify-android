@@ -95,11 +95,12 @@ public class NotificationsFragment extends BaseFragment implements Notifications
 
     @Override
     public void renderNotifications(List<NotificationItemModel> notifications) {
-        if (!notifications.isEmpty()) {
+        if (!notifications.isEmpty())
             stateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
-            notificationsListAdapter.add(notifications);
-        } else
+        else
             stateView.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+        notificationsListAdapter.update(notifications);
+
     }
 
     @Override

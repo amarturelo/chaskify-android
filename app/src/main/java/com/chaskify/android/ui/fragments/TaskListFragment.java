@@ -88,7 +88,7 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
         taskListAdapter = new TaskListAdapter();
         taskListAdapter.setOnItemListened((view1, position) -> Navigator.showTaskDetails(getFragmentManager()
                 , mChaskifySession.getCredentials().getDriverId()
-                , taskListAdapter.getItem(position).getTask_id()));
+                , taskListAdapter.getItem(position).getTaskId()));
 
         taskList = view.findViewById(R.id.task_list);
         mSwipeRefresh = view.findViewById(R.id.swipe_refresh);
@@ -100,7 +100,7 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
         //open details
         taskListAdapter.setOnItemListened((view1, position) -> Chaskify.getInstance().getDefaultSession().ifPresent(chaskifySession -> Navigator.showTaskDetails(getFragmentManager()
                 , chaskifySession.getCredentials().getDriverId()
-                , taskListAdapter.getItem(position).getTask_id())));
+                , taskListAdapter.getItem(position).getTaskId())));
     }
 
     @Override
@@ -152,19 +152,13 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
         else
             mMultiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
 
-
-        taskListAdapter.clear();
-        taskListAdapter.add(tasks);
+        taskListAdapter.update(tasks);
     }
 
     @Override
     public void onRefresh() {
+        //TODO este metodo tiene q decirle a la actividad padre q actualice ya que es ella la que tiene la responsabilidad
         presenter.tasks(mFilter);
-    }
-
-    @Override
-    public void onNewBundle(Bundle args) {
-        super.onNewBundle(args);
     }
 
     @Override

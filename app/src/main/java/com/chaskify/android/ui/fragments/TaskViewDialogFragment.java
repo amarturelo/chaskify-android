@@ -67,8 +67,9 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
     private RecyclerView mTaskHistoryList;
     private RecyclerView mTaskWaypointList;
 
-    private TaskWaypointListAdapter taskWaypointListAdapter;
     private TaskActionWidget taskAction;
+    private TaskHistoryListAdapter mTaskHistoryAdapter;
+    private TaskWaypointListAdapter mTaskWaypointAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,12 +112,20 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
         //Waypoint list
         mTaskWaypointList = view.findViewById(R.id.task_way_points_list);
         mTaskWaypointList.setLayoutManager(new LinearLayoutManager(getContext()));
-        //mTaskWaypointList.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        mTaskWaypointAdapter = new TaskWaypointListAdapter();
+        mTaskWaypointList.setAdapter(mTaskWaypointAdapter);
+        mTaskWaypointAdapter.setOnItemListened((v, position) -> {
+            Navigator.showTaskWaypointDetails(getChildFragmentManager()
+                    , mDriverId
+                    , mTaskWaypointAdapter.getItem(position).getId());
+            mTaskWaypointAdapter.getItem(position);
+        });
 
         //history list
         mTaskHistoryList = view.findViewById(R.id.task_history_list);
         mTaskHistoryList.setLayoutManager(new LinearLayoutManager(getContext()));
-        //mTaskHistoryList.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        mTaskHistoryAdapter = new TaskHistoryListAdapter();
+        mTaskHistoryList.setAdapter(mTaskHistoryAdapter);
     }
 
     @Override
@@ -234,33 +243,15 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
 
         if (!taskModel.getTaskHistoryItemModels().isEmpty()) {
             formTaskHistory.setVisibility(View.VISIBLE);
-            mTaskHistoryList.setAdapter(new TaskHistoryListAdapter(taskModel.getTaskHistoryItemModels()));
         } else
             formTaskHistory.setVisibility(View.GONE);
-
+        mTaskHistoryAdapter.update(taskModel.getTaskHistoryItemModels());
 
         if (!taskModel.getTaskWaypointItemModels().isEmpty()) {
             formTaskWaypoints.setVisibility(View.VISIBLE);
-
-            List<TaskWaypointItemModel> itemModels = new ArrayList<>();
-            itemModels.addAll(taskModel.getTaskWaypointItemModels());
-            itemModels.addAll(taskModel.getTaskWaypointItemModels());
-            itemModels.addAll(taskModel.getTaskWaypointItemModels());
-            itemModels.addAll(taskModel.getTaskWaypointItemModels());
-
-            taskWaypointListAdapter = new TaskWaypointListAdapter(itemModels);
-            taskWaypointListAdapter.setOnItemListened((view, position) -> {
-                Navigator.showTaskWaypointDetails(getChildFragmentManager()
-                        , mDriverId
-                        , taskWaypointListAdapter.getItem(position).getId());
-                taskWaypointListAdapter.getItem(position);
-            });
-            mTaskWaypointList.setAdapter(taskWaypointListAdapter);
         } else
             formTaskWaypoints.setVisibility(View.GONE);
-
-
-        //goToScrollStart();
+        mTaskWaypointAdapter.update(taskModel.getTaskWaypointItemModels());
     }
 
     private void goToScrollStart() {

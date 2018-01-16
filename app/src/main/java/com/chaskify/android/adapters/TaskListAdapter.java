@@ -1,5 +1,6 @@
 package com.chaskify.android.adapters;
 
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -47,14 +48,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         TaskItemModel taskItemModel = mTaskItemModels.get(position);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mOnItemListened != null)
-                    mOnItemListened.onClickItem(holder.itemView, position);
-            }
-        });
-
         holder.taskType.setText(taskItemModel.getTrans_type());
         holder.taskDate.setText(DateUtils.formatDateTime(
                 holder.itemView.getContext()
@@ -62,7 +55,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
                 , DateUtils.FORMAT_SHOW_TIME));
         holder.taskPlace.setText(taskItemModel.getDelivery_address());
         holder.taskClientName.setText(taskItemModel.getCustomer_name());
-        holder.taskId.setText(taskItemModel.getTask_id());
+        holder.taskId.setText(taskItemModel.getTaskId());
 
         switch (taskItemModel.getStatus()) {
             case "ASSIGNED":
@@ -94,11 +87,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
         return mTaskItemModels.size();
     }
 
-    public void clear() {
-        mTaskItemModels.clear();
-        notifyDataSetChanged();
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView taskDate;
@@ -122,22 +110,51 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
             taskTypeColor = itemView.findViewById(R.id.task_type_color);
             taskId = itemView.findViewById(R.id.task_id);
             taskStatus = itemView.findViewById(R.id.task_status);
+
+            itemView.setOnClickListener(v -> {
+                if (mOnItemListened != null)
+                    mOnItemListened.onClickItem(itemView, getAdapterPosition());
+            });
         }
     }
 
-    public void add(List<TaskItemModel> taskItemModels) {
-        Stream.of(taskItemModels)
-                .forEach(taskItemModel -> {
-                    int pos = mTaskItemModels.indexOf(taskItemModel);
-                    if (pos != -1) {
-                        mTaskItemModels.remove(pos);
-                        mTaskItemModels.add(pos, taskItemModel);
-                        notifyItemChanged(pos);
-                    } else {
-                        mTaskItemModels.add(taskItemModel);
-                        notifyItemInserted(mTaskItemModels.size() - 1);
-                    }
-                });
+    public static class TaskSnapDiffCallback extends DiffUtil.Callback {
+        private List<TaskItemModel> mOldList;
+        private List<TaskItemModel> mNewList;
+
+        public TaskSnapDiffCallback(List<TaskItemModel> mOldList, List<TaskItemModel> mNewList) {
+            this.mOldList = mOldList;
+            this.mNewList = mNewList;
+        }
+
+        @Override
+        public int getOldListSize() {
+            return mOldList != null ? mOldList.size() : 0;
+        }
+
+        @Override
+        public int getNewListSize() {
+            return mNewList != null ? mNewList.size() : 0;
+        }
+
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            return mNewList.get(newItemPosition).getTaskId().equals(mOldList.get(oldItemPosition).getTaskId());
+        }
+
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            return mNewList.get(newItemPosition).equals(mOldList.get(oldItemPosition));
+        }
+
+    }
+
+    public void update(List<TaskItemModel> mNewList) {
+        TaskSnapDiffCallback callback = new TaskSnapDiffCallback(this.mTaskItemModels, mNewList);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(callback);
+        this.mTaskItemModels.clear();
+        this.mTaskItemModels.addAll(mNewList);
+        diffResult.dispatchUpdatesTo(this);
     }
 
 }

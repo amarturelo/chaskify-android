@@ -49,4 +49,27 @@ public class TaskWaypointItemModel {
         this.mStatus = mStatus;
         return this;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TaskWaypointItemModel)) return false;
+
+        TaskWaypointItemModel that = (TaskWaypointItemModel) o;
+
+        if (mId != null ? !mId.equals(that.mId) : that.mId != null) return false;
+        if (mType != null ? !mType.equals(that.mType) : that.mType != null) return false;
+        if (mDeliveryAddress != null ? !mDeliveryAddress.equals(that.mDeliveryAddress) : that.mDeliveryAddress != null)
+            return false;
+        return mStatus != null ? mStatus.equals(that.mStatus) : that.mStatus == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mId != null ? mId.hashCode() : 0;
+        result = 31 * result + (mType != null ? mType.hashCode() : 0);
+        result = 31 * result + (mDeliveryAddress != null ? mDeliveryAddress.hashCode() : 0);
+        result = 31 * result + (mStatus != null ? mStatus.hashCode() : 0);
+        return result;
+    }
 }

@@ -15,9 +15,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.yarolegovich.discretescrollview.DiscreteScrollView
-        android:id="@+id/picker"
+    <FrameLayout
+        android:background="@color/transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true">
+
+        <com.yarolegovich.discretescrollview.DiscreteScrollView
+            android:id="@+id/picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+
+
 </RelativeLayout>

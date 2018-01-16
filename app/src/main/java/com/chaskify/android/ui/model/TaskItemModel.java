@@ -20,7 +20,7 @@ public class TaskItemModel {
     public TaskItemModel() {
     }
 
-    public String getTask_id() {
+    public String getTaskId() {
         return task_id;
     }
 

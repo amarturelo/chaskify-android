@@ -1,17 +1,16 @@
 package com.chaskify.android.adapters;
 
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.annimon.stream.Stream;
 import com.chaskify.android.R;
 import com.chaskify.android.adapters.listened.OnItemListened;
-import com.chaskify.android.ui.model.TaskItemModel;
+import com.chaskify.android.ui.model.MarkerData;
 import com.chaskify.android.ui.model.TaskItemSnapModel;
 
 import java.util.ArrayList;
@@ -60,7 +59,7 @@ public class TaskSnapListAdapter extends RecyclerView.Adapter<TaskSnapListAdapte
                 , taskItemModel.getDelivery_date().getTime()
                 , DateUtils.FORMAT_SHOW_TIME));
         holder.taskPlace.setText(taskItemModel.getDelivery_address());
-        holder.taskId.setText(holder.itemView.getResources().getText(R.string.title_task) + " #" + taskItemModel.getTask_id());
+        holder.taskId.setText(holder.itemView.getResources().getText(R.string.title_task) + " #" + taskItemModel.getTaskId());
 
         switch (taskItemModel.getStatus()) {
             case "ASSIGNED":
@@ -104,11 +103,6 @@ public class TaskSnapListAdapter extends RecyclerView.Adapter<TaskSnapListAdapte
         return mTaskItemModels.size();
     }
 
-    public void clear() {
-        mTaskItemModels.clear();
-        notifyDataSetChanged();
-    }
-
     public List<TaskItemSnapModel> getItems() {
         return mTaskItemModels;
     }
@@ -131,22 +125,42 @@ public class TaskSnapListAdapter extends RecyclerView.Adapter<TaskSnapListAdapte
         }
     }
 
-    public void add(List<TaskItemSnapModel> taskItemModels) {
-        mTaskItemModels.clear();
-        mTaskItemModels.addAll(taskItemModels);
-        notifyDataSetChanged();
+    public static class TaskSnapDiffCallback extends DiffUtil.Callback {
+        private List<TaskItemSnapModel> mOldList;
+        private List<TaskItemSnapModel> mNewList;
 
-        /*Stream.of(taskItemModels)
-                .forEach(taskItemModel -> {
-                    int pos = mTaskItemModels.indexOf(taskItemModel);
-                    if (pos != -1) {
-                        mTaskItemModels.remove(pos);
-                        mTaskItemModels.add(pos, taskItemModel);
-                        notifyItemChanged(pos);
-                    } else {
-                        mTaskItemModels.add(taskItemModel);
-                        notifyItemInserted(mTaskItemModels.size() - 1);
-                    }
-                });*/
+        public TaskSnapDiffCallback(List<TaskItemSnapModel> mOldList, List<TaskItemSnapModel> mNewList) {
+            this.mOldList = mOldList;
+            this.mNewList = mNewList;
+        }
+
+        @Override
+        public int getOldListSize() {
+            return mOldList != null ? mOldList.size() : 0;
+        }
+
+        @Override
+        public int getNewListSize() {
+            return mNewList != null ? mNewList.size() : 0;
+        }
+
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            return mNewList.get(newItemPosition).getTaskId().equals(mOldList.get(oldItemPosition).getTaskId());
+        }
+
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            return mNewList.get(newItemPosition).equals(mOldList.get(oldItemPosition));
+        }
+
+    }
+
+    public void update(List<TaskItemSnapModel> mTaskItemModels) {
+        TaskSnapDiffCallback callback = new TaskSnapDiffCallback(this.mTaskItemModels, mTaskItemModels);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(callback);
+        this.mTaskItemModels.clear();
+        this.mTaskItemModels.addAll(mTaskItemModels);
+        diffResult.dispatchUpdatesTo(this);
     }
 }

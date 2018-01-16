@@ -1,5 +1,6 @@
 package com.chaskify.android.adapters;
 
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -9,7 +10,9 @@ import android.widget.TextView;
 
 import com.chaskify.android.R;
 import com.chaskify.android.ui.model.TaskHistoryItemModel;
+import com.chaskify.android.ui.model.TaskWaypointItemModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,8 +23,8 @@ public class TaskHistoryListAdapter extends RecyclerView.Adapter<TaskHistoryList
 
     private List<TaskHistoryItemModel> mItemModelList;
 
-    public TaskHistoryListAdapter(List<TaskHistoryItemModel> itemModelList) {
-        this.mItemModelList = itemModelList;
+    public TaskHistoryListAdapter() {
+        this.mItemModelList = new ArrayList<>();
     }
 
     @Override
@@ -97,5 +100,44 @@ public class TaskHistoryListAdapter extends RecyclerView.Adapter<TaskHistoryList
             mTaskDate = itemView.findViewById(R.id.task_date);
             mTaskTime = itemView.findViewById(R.id.task_time);
         }
+    }
+
+    public static class TaskHistoryDiffCallback extends DiffUtil.Callback {
+        private List<TaskHistoryItemModel> mOldList;
+        private List<TaskHistoryItemModel> mNewList;
+
+        public TaskHistoryDiffCallback(List<TaskHistoryItemModel> mOldList, List<TaskHistoryItemModel> mNewList) {
+            this.mOldList = mOldList;
+            this.mNewList = mNewList;
+        }
+
+        @Override
+        public int getOldListSize() {
+            return mOldList != null ? mOldList.size() : 0;
+        }
+
+        @Override
+        public int getNewListSize() {
+            return mNewList != null ? mNewList.size() : 0;
+        }
+
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            return mNewList.get(newItemPosition).getId().equals(mOldList.get(oldItemPosition).getId());
+        }
+
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            return mNewList.get(newItemPosition).equals(mOldList.get(oldItemPosition));
+        }
+
+    }
+
+    public void update(List<TaskHistoryItemModel> mNewList) {
+        TaskHistoryDiffCallback callback = new TaskHistoryDiffCallback(this.mItemModelList, mNewList);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(callback);
+        this.mItemModelList.clear();
+        this.mItemModelList.addAll(mNewList);
+        diffResult.dispatchUpdatesTo(this);
     }
 }
