@@ -85,5 +85,8 @@ dependencies {
     compile 'com.parse.bolts:bolts-tasks:1.4.0'
     compile 'com.parse.bolts:bolts-applinks:1.4.0'
 
-    //compile 'com.yarolegovich:mp:1.0.5'
+    //base dependency
+    compile 'nz.co.trademe.mapme:mapme:1.0.4'
+    //for Mapbox support
+    compile 'nz.co.trademe.mapme:mapbox:1.0.4'
 }

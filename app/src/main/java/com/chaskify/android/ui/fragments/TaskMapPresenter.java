@@ -27,6 +27,8 @@ public class TaskMapPresenter extends BasePresenter<TaskMapContract.View>
 
     @Override
     public void tasks(List<Filter> filters) {
+        clearSubscriptions();
+
         addSubscription(mTaskInteractor.tasks(filters)
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .unsubscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))

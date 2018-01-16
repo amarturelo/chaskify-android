@@ -20,8 +20,8 @@ public class Task {
     private String team_id;
     private String driver_id;
 
-    private String task_lat;
-    private String task_lng;
+    private double task_lat;
+    private double task_lng;
 
     private String status;
     private Date date_created;
@@ -158,20 +158,20 @@ public class Task {
         return this;
     }
 
-    public String getTask_lat() {
+    public double getTask_lat() {
         return task_lat;
     }
 
-    public Task setTask_lat(String task_lat) {
+    public Task setTask_lat(double task_lat) {
         this.task_lat = task_lat;
         return this;
     }
 
-    public String getTask_lng() {
+    public double getTask_lng() {
         return task_lng;
     }
 
-    public Task setTask_lng(String task_lng) {
+    public Task setTask_lng(double task_lng) {
         this.task_lng = task_lng;
         return this;
     }

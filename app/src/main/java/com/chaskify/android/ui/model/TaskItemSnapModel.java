@@ -13,7 +13,28 @@ public class TaskItemSnapModel {
     private Date delivery_date;
     private String delivery_address;
 
+    private double lat;
+    private double lng;
+
     public TaskItemSnapModel() {
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public TaskItemSnapModel setLat(double lat) {
+        this.lat = lat;
+        return this;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public TaskItemSnapModel setLng(double lng) {
+        this.lng = lng;
+        return this;
     }
 
     public String getTask_id() {

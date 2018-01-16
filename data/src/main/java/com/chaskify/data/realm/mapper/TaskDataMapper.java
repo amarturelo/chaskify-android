@@ -25,6 +25,8 @@ public class TaskDataMapper {
                 .setTeam_id(realmTask.getTeam_id())
                 .setTrans_type(realmTask.getTrans_type())
                 .setStatus(realmTask.getStatus())
+                .setTask_lat(realmTask.getTask_lat())
+                .setTask_lng(realmTask.getTask_lng())
                 .setDelivery_address(realmTask.getDelivery_address())
                 .setDelivery_date(realmTask.getDelivery_date())
                 .setDelivery_time(realmTask.getDelivery_time())

@@ -27,4 +27,9 @@
     <color name="task_pending">#757575</color>
     <color name="task_start">#FFFFFF22</color>
 
+
+    <color name="marker_red">#ef5350</color>
+    <color name="marker_blue">#42A5F5</color>
+    <color name="marker_green">#66BB6A</color>
+
 </resources>

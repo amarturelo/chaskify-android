@@ -109,6 +109,10 @@ public class TaskSnapListAdapter extends RecyclerView.Adapter<TaskSnapListAdapte
         notifyDataSetChanged();
     }
 
+    public List<TaskItemSnapModel> getItems() {
+        return mTaskItemModels;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView taskTime;

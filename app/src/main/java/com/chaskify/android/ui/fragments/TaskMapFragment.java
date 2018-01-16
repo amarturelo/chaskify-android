@@ -1,66 +1,62 @@
 package com.chaskify.android.ui.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.annimon.stream.Stream;
+import com.annimon.stream.function.Consumer;
+import com.annimon.stream.function.Function;
 import com.chaskify.android.Chaskify;
-import com.chaskify.android.MethodCallHelper;
 import com.chaskify.android.R;
-import com.chaskify.android.adapters.TaskListAdapter;
+import com.chaskify.android.adapters.MapboxAdapter;
 import com.chaskify.android.adapters.TaskSnapListAdapter;
 import com.chaskify.android.adapters.listened.OnItemListened;
 import com.chaskify.android.navigation.Navigator;
-import com.chaskify.android.ui.model.TaskItemModel;
-import com.chaskify.android.ui.model.TaskItemSnapModel;
 import com.chaskify.android.ui.base.BaseFragment;
+import com.chaskify.android.ui.model.MarkerData;
+import com.chaskify.android.ui.model.TaskItemSnapModel;
 import com.chaskify.chaskify_sdk.ChaskifySession;
-import com.chaskify.data.realm.cache.impl.NotificationsCacheImpl;
-import com.chaskify.data.realm.cache.impl.ProfileCacheImpl;
-import com.chaskify.data.realm.cache.impl.SettingsCacheImpl;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
-import com.chaskify.data.realm.cache.impl.TaskWayPointCacheImpl;
 import com.chaskify.data.repositories.TaskRepositoryImpl;
 import com.chaskify.domain.filter.Filter;
 import com.chaskify.domain.interactors.TaskInteractor;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.camera.CameraUpdate;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import timber.log.Timber;
 
 import static com.chaskify.android.ui.activities.MainActivity.ARG_FILTER;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link TaskMapFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link TaskMapFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.OnItemChangedListener<RecyclerView.ViewHolder>, DiscreteScrollView.ScrollStateChangeListener<RecyclerView.ViewHolder>, OnItemListened, TaskMapContract.View {
-    public static final String ARG_CURRENT_DATE = "CURRENT_DATE";
+public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.OnItemChangedListener<RecyclerView.ViewHolder>, DiscreteScrollView.ScrollStateChangeListener<RecyclerView.ViewHolder>, OnItemListened, TaskMapContract.View, OnMapReadyCallback {
 
     private DiscreteScrollView taskPicker;
 
     private TaskSnapListAdapter mTaskSnapListAdapter;
 
-    private OnFragmentInteractionListener mListener;
-    private Date mCurrentDate;
-
     private TaskMapPresenter presenter;
-    private ChaskifySession mChaskifySession;
 
     private List<Filter> mFilter;
+
+    private MapView mapView;
+
+    private MapboxMap mapboxMap;
+
+    private MapboxAdapter mMapboxAdapter;
 
     public TaskMapFragment() {
         // Required empty public constructor
@@ -79,7 +75,6 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
         super.onCreate(savedInstanceState);
         Chaskify.getInstance().getDefaultSession()
                 .ifPresent(chaskifySession -> {
-                    this.mChaskifySession = chaskifySession;
                     presenter = new TaskMapPresenter(
                             new TaskInteractor(
                                     new TaskRepositoryImpl(
@@ -92,7 +87,7 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     public void putNewBundle(Bundle newBundle) {
         super.putNewBundle(newBundle);
         mFilter = newBundle.getParcelableArrayList(ARG_FILTER);
-        onRefresh();
+        presenter.tasks(mFilter);
     }
 
     private void initDiscreteScrollView() {
@@ -108,13 +103,6 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
                 .build());
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onPause() {
         super.onPause();
@@ -124,24 +112,28 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initViews(view);
+        initViews(savedInstanceState);
         presenter.bindView(this);
     }
 
-    private void initViews(View view) {
-        taskPicker = view.findViewById(R.id.picker);
+    private void initViews(Bundle savedInstanceState) {
+        taskPicker = getView().findViewById(R.id.picker);
+        mMapboxAdapter = new MapboxAdapter(getActivity());
+        initMap(savedInstanceState);
         initDiscreteScrollView();
     }
+
+    private void initMap(Bundle savedInstanceState) {
+        mapView = getView().findViewById(R.id.map);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
+    }
+
+
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            /*throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentLaunchInteractionListener");*/
-        }
     }
 
     @Override
@@ -149,16 +141,6 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
         super.onDetach();
         presenter.release();
     }
-
-    /*@Override
-    public void onMapReady(MapboxMap mapboxMap) {
-        mMapboxMap = mapboxMap;
-
-        // Add a marker in Sydney and move the camera
-        *//*LatLng sydney = new LatLng(-34, 151);
-        mMapboxMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMapboxMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));*//*
-    }*/
 
     @Override
     protected int getLayout() {
@@ -168,7 +150,15 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
 
     @Override
     public void onCurrentItemChanged(@Nullable RecyclerView.ViewHolder viewHolder, int adapterPosition) {
+        if (adapterPosition != -1)
+            moveCameraTo(mTaskSnapListAdapter.getItem(adapterPosition));
+    }
 
+    private void moveCameraTo(TaskItemSnapModel item) {
+        if (mapboxMap != null)
+            mapboxMap.animateCamera(mapboxMap -> new CameraPosition.Builder()
+                    .target(new LatLng(item.getLat(), item.getLng()))
+                    .build());
     }
 
     @Override
@@ -202,6 +192,14 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
 
     @Override
     public void renderTaskListView(List<TaskItemSnapModel> taskItemModels) {
+        mMapboxAdapter.clear();
+        mMapboxAdapter.addAll(Stream.of(taskItemModels)
+                .map(taskItemSnapModel -> new MarkerData(new nz.co.trademe.mapme.LatLng(taskItemSnapModel.getLat()
+                        , taskItemSnapModel.getLng())
+                        , taskItemSnapModel.getStatus()))
+                .toList());
+
+        mTaskSnapListAdapter.clear();
         mTaskSnapListAdapter.add(taskItemModels);
     }
 
@@ -217,45 +215,48 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
 
     @Override
     public void showError(Throwable throwable) {
+        Timber.d(throwable);
         Toast.makeText(getContext(), throwable.toString(), Toast.LENGTH_LONG).show();
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 
     @Override
     public void onResume() {
-        //mMapView.onResume();
         super.onResume();
-        //presenter.tasks(mChaskifySession.getCredentials().getDriverId(), mCurrentDate);
+        mapView.onResume();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //mMapView.onDestroy();
+        mapView.onDestroy();
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        //mMapView.onLowMemory();
+        mapView.onLowMemory();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mapView.onStart();
+    }
 
-    private void onRefresh() {
-        presenter.tasks(mFilter);
+    @Override
+    public void onStop() {
+        super.onStop();
+        mapView.onStop();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onMapReady(MapboxMap mapboxMap) {
+        mMapboxAdapter.attach(mapView, mapboxMap);
     }
 }
