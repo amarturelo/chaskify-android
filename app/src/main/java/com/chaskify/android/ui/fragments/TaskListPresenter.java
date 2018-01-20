@@ -1,13 +1,9 @@
 package com.chaskify.android.ui.fragments;
 
 import com.annimon.stream.Stream;
-import com.chaskify.android.MethodCallHelper;
-import com.chaskify.android.helper.LogIfError;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
 import com.chaskify.android.ui.model.TaskItemModel;
-import com.chaskify.chaskify_sdk.ChaskifySession;
-import com.chaskify.domain.filter.DateFilter;
 import com.chaskify.domain.filter.Filter;
 import com.chaskify.domain.interactors.TaskInteractor;
 

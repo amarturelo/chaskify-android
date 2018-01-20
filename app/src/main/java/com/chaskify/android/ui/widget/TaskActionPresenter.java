@@ -1,6 +1,6 @@
 package com.chaskify.android.ui.widget;
 
-import com.chaskify.android.MethodCallHelper;
+import com.chaskify.android.helper.MethodCallHelper;
 import com.chaskify.android.helper.LogIfError;
 import com.chaskify.android.shared.BasePresenter;
 
@@ -26,17 +26,20 @@ public class TaskActionPresenter extends BasePresenter<TaskActionContract.View>
 
     @Override
     public void arrived(String id) {
-
+        mMethodCallHelper.arrived(id)
+                .continueWith(new LogIfError());
     }
 
     @Override
     public void start(String id) {
-
+        mMethodCallHelper.start(id)
+                .continueWith(new LogIfError());
     }
 
     @Override
     public void successful(String id) {
-
+        mMethodCallHelper.successful(id)
+                .continueWith(new LogIfError());
     }
 
     @Override

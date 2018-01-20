@@ -105,6 +105,7 @@ public class NotificationsFragment extends BaseFragment implements Notifications
 
     @Override
     public void showError(Throwable throwable) {
+        hideProgress();
         Toast.makeText(getContext(), throwable.toString(), Toast.LENGTH_LONG)
                 .show();
     }

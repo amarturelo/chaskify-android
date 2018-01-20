@@ -2,7 +2,7 @@ package com.chaskify.android.ui.fragments.settings;
 
 import com.annimon.stream.Optional;
 import com.chaskify.android.Chaskify;
-import com.chaskify.android.MethodCallHelper;
+import com.chaskify.android.helper.MethodCallHelper;
 import com.chaskify.android.helper.LogIfError;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
@@ -17,11 +17,7 @@ import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.realm.cache.impl.TaskWayPointCacheImpl;
 import com.chaskify.domain.interactors.ProfileInteractor;
 import com.chaskify.domain.interactors.SettingsInteractor;
-import com.chaskify.domain.model.Profile;
-import com.chaskify.domain.model.Settings;
 
-import bolts.Continuation;
-import bolts.Task;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;

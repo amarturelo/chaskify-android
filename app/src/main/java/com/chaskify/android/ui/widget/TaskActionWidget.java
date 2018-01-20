@@ -7,19 +7,14 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.annimon.stream.function.Consumer;
 import com.chaskify.android.Chaskify;
-import com.chaskify.android.MethodCallHelper;
+import com.chaskify.android.helper.MethodCallHelper;
 import com.chaskify.android.R;
-import com.chaskify.android.ui.model.TaskItemActionModel;
-import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.data.realm.cache.impl.NotificationsCacheImpl;
 import com.chaskify.data.realm.cache.impl.ProfileCacheImpl;
 import com.chaskify.data.realm.cache.impl.SettingsCacheImpl;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.realm.cache.impl.TaskWayPointCacheImpl;
-import com.chaskify.data.repositories.TaskRepositoryImpl;
-import com.chaskify.domain.interactors.TaskInteractor;
 
 /**
  * Created by alberto on 14/01/18.

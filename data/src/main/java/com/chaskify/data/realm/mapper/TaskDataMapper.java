@@ -31,6 +31,7 @@ public class TaskDataMapper {
                 .setDelivery_date(realmTask.getDelivery_date())
                 .setDelivery_time(realmTask.getDelivery_time())
                 .setCustomer_name(realmTask.getCustomer_name())
+                .setOrderNumber(realmTask.getOrderNumber())
                 .setContact_number(realmTask.getContact_number())
                 .setEmail_address(realmTask.getEmail_address())
                 .setTaskHistories(TaskHistoryDataMapper.transform(realmTask.getHistory()))

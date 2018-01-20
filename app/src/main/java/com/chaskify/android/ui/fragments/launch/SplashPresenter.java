@@ -1,9 +1,6 @@
 package com.chaskify.android.ui.fragments.launch;
 
-import com.annimon.stream.Optional;
-import com.chaskify.android.MethodCallHelper;
-import com.chaskify.android.helper.LogIfError;
-import com.chaskify.android.looper.BackgroundLooper;
+import com.chaskify.android.helper.MethodCallHelper;
 import com.chaskify.android.shared.BasePresenter;
 import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.data.realm.cache.impl.NotificationsCacheImpl;
@@ -13,28 +10,10 @@ import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.realm.cache.impl.TaskWayPointCacheImpl;
 import com.chaskify.domain.interactors.ProfileInteractor;
 import com.chaskify.domain.interactors.SettingsInteractor;
-import com.chaskify.domain.model.Profile;
-import com.chaskify.domain.model.Settings;
 
-import org.reactivestreams.Publisher;
-
-import java.util.concurrent.Callable;
-
-import bolts.Continuation;
-import bolts.Task;
-import io.reactivex.Completable;
-import io.reactivex.CompletableEmitter;
-import io.reactivex.CompletableOnSubscribe;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
-import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
-import io.reactivex.SingleSource;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import timber.log.Timber;
 
 /**

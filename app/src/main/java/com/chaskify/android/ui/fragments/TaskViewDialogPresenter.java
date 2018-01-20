@@ -4,8 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
-import com.annimon.stream.function.Consumer;
-import com.chaskify.android.MethodCallHelper;
+import com.chaskify.android.helper.MethodCallHelper;
 import com.chaskify.android.helper.LogIfError;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
@@ -75,6 +74,7 @@ public class TaskViewDialogPresenter extends BasePresenter<TaskViewDialogContrac
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         task -> {
+                            Timber.d("::Render TaskView " + task.toString() + " ::");
                             view.renderTaskAction(new TaskActionWidget.TaskActionModel()
                                     .setDriverId(mChaskifySession.getCredentials().getDriverId())
                                     .setTaskId(task.getTaskId())

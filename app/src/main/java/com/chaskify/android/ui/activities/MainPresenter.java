@@ -1,14 +1,11 @@
 package com.chaskify.android.ui.activities;
 
 import com.annimon.stream.Stream;
-import com.annimon.stream.function.Consumer;
-import com.chaskify.android.MethodCallHelper;
+import com.chaskify.android.helper.MethodCallHelper;
 import com.chaskify.android.helper.LogIfError;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
 import com.chaskify.android.ui.model.TaskCalendarItemModel;
-import com.chaskify.android.ui.model.TaskItemModel;
-import com.chaskify.android.ui.model.mapper.TaskSnapItemModelDataMapper;
 import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.data.realm.cache.impl.NotificationsCacheImpl;
 import com.chaskify.data.realm.cache.impl.ProfileCacheImpl;

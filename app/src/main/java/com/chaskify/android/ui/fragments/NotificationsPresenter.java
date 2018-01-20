@@ -54,29 +54,7 @@ public class NotificationsPresenter extends BasePresenter<NotificationsContract.
                                         .setPushMessage(notification.getPushMessage()))
                                 .toList())
                         , throwable -> view.showError(throwable)));
-        /*List<NotificationItemModel> itemModels = new ArrayList<>();
-        itemModels.add(new NotificationItemModel()
-                .setDateCreated("2017-12-04 19:00:43")
-                .setDateProcess("2017-12-04 19:00:43")
-                .setDriverId("175")
-                .setTaskId("0")
-                .setActions("private")
-                .setPushType("campaign")
-                .setPushTitle("Lorem ipsum dolor sit amet")
-                .setPushMessage("Lorem ipsum dolor sit amet, lorem ipsum dolor sit amet"));
 
-        itemModels.add(new NotificationItemModel()
-                .setDateCreated("2017-12-04 19:00:43")
-                .setDateProcess("2017-12-04 19:00:43")
-                .setDriverId("175")
-                .setTaskId("3643")
-                .setPushType("task")
-                .setActions("ASSIGN_TASK")
-                .setPushTitle("ASSIGN TASK")
-                .setPushMessage("You have new assign task 3643"));
-
-        view.hideProgress();
-        view.renderNotifications(itemModels);*/
     }
 
 

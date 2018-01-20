@@ -25,6 +25,7 @@ import java.util.stream.Stream;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Created by alberto on 7/12/17.
@@ -103,18 +104,18 @@ public class TaskRestClient extends RestClient<TaskApi> {
                 });
     }
 
-    public void changeTaskStatus(String taskId, String status, String lat, String lng, ApiCallback<ChaskifyTask> callback) {
+    public void changeTaskStatus(String taskId, ChaskifyTask.STATUS status, String lat, String lng, ApiCallback<ChaskifyTask> callback) {
         if (mChaskifyCredentials != null)
             changeTaskStatus(taskId, status, lat, lng, mChaskifyCredentials.getAccessToken(), callback);
         else
             callback.onChaskifyError(new TokenNotFoundException());
     }
 
-    private void changeTaskStatus(String taskId, String status, String lat, String lng, String accessToken, final ApiCallback<ChaskifyTask> callback) {
+    private void changeTaskStatus(String taskId, ChaskifyTask.STATUS status, String lat, String lng, String accessToken, final ApiCallback<ChaskifyTask> callback) {
         mApi.updateStatus(accessToken
                 , taskId
                 , String.valueOf(new Date().getTimezoneOffset())
-                , status
+                , status.getText()
                 , lat
                 , lng
         ).enqueue(new Callback<String>() {
@@ -125,6 +126,9 @@ public class TaskRestClient extends RestClient<TaskApi> {
                     }.getType();
 
                     JsonObject baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), JsonObject.class);
+
+                    Timber.d(baseResponse.toString());
+
                     if (baseResponse.get("code").getAsInt() == 1) {
                         BaseResponse<ChaskifyTask> listBaseResponse = getGson().fromJson(baseResponse, type);
                         callback.onSuccess(listBaseResponse.getDetails());

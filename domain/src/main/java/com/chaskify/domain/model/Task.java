@@ -34,6 +34,8 @@ public class Task {
 
     private String trans_type_raw;
 
+    private String orderNumber;
+
     private List<TaskWaypoint> taskWaypointList;
 
     private List<TaskHistory> taskHistories;
@@ -239,6 +241,15 @@ public class Task {
         return this;
     }
 
+    public String getOrderNumber() {
+        return orderNumber;
+    }
+
+    public Task setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -258,5 +269,14 @@ public class Task {
         result = 31 * result + (customer_id != null ? customer_id.hashCode() : 0);
         result = 31 * result + (driver_id != null ? driver_id.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "task_id='" + task_id + '\'' +
+                ", driver_id='" + driver_id + '\'' +
+                ", status='" + status + '\'' +
+                '}';
     }
 }

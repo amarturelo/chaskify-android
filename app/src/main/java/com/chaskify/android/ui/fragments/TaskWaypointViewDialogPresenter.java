@@ -2,7 +2,7 @@ package com.chaskify.android.ui.fragments;
 
 import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
-import com.chaskify.android.MethodCallHelper;
+import com.chaskify.android.helper.MethodCallHelper;
 import com.chaskify.android.helper.LogIfError;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
@@ -14,7 +14,6 @@ import com.chaskify.data.realm.cache.impl.SettingsCacheImpl;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.realm.cache.impl.TaskWayPointCacheImpl;
 import com.chaskify.domain.filter.Filter;
-import com.chaskify.domain.filter.TaskIdFilter;
 import com.chaskify.domain.filter.WaypointIdFilter;
 import com.chaskify.domain.interactors.TaskWaypointInteractor;
 

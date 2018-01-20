@@ -41,6 +41,8 @@ public class RealmTask extends RealmObject {
 
     private String trans_type_raw;
 
+    private String orderNumber;
+
     private RealmList<RealmTaskWaypoint> waypoints = new RealmList<>();
 
     private RealmList<RealmTaskHistory> history = new RealmList<>();
@@ -243,6 +245,15 @@ public class RealmTask extends RealmObject {
 
     public RealmTask setTrans_type_raw(String trans_type_raw) {
         this.trans_type_raw = trans_type_raw;
+        return this;
+    }
+
+    public String getOrderNumber() {
+        return orderNumber;
+    }
+
+    public RealmTask setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
         return this;
     }
 

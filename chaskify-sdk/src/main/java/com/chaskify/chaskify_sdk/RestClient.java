@@ -16,13 +16,12 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 
+import static com.chaskify.chaskify_sdk.config.ChaskifyAPI.BASE_AZURE;
+import static com.chaskify.chaskify_sdk.config.ChaskifyAPI.BASE_LOCAL;
+
 public class RestClient<T> {
 
-    public static final String BASE_LOCAL = "http://192.168.1.119/chaskifyBackend/api/";
-    public static final String BASE_PRODUCTION = "http://customer.chaskify.com/api/";
-    public static final String BASE_DEVELOPER = "http://dev-customer.chaskify.com/api/";
-
-    public static final String BASE = BASE_LOCAL;
+    public static final String BASE = BASE_AZURE;
 
     protected T mApi;
 

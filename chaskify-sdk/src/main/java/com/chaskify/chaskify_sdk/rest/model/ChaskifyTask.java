@@ -11,6 +11,23 @@ import java.util.List;
  */
 
 public class ChaskifyTask {
+
+    public enum STATUS {
+
+        IN_ROUTE("IN ROUTE"), ACCEPTED("ACCEPTED"), ARRIVED("ARRIVED"), SUCCESSFUL("SUCCESSFUL");
+        private String text;
+
+        STATUS(String s) {
+            text = s;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+    }
+
+
     @SerializedName("task_id")
     @Expose
     private String taskId;
