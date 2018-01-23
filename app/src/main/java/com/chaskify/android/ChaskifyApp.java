@@ -13,6 +13,7 @@ import com.chaskify.data.realm.module.InMemoryModule;
 import com.chaskify.logger.CrashReportingTree;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.onesignal.OneSignal;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 
 import io.realm.Realm;

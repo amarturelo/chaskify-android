@@ -42,12 +42,6 @@ public interface ProfileApi {
             , @Query("color") String color
     );
 
-    @GET("ChangeDutyStatus")
-    Call<String> changeDutyStatus(
-            @Query("token") String token
-            , @Query("onduty") String value
-    );
-
     @FormUrlEncoded
     @POST("AddPhotoToPerfil")
     Call<String> updateImageProfile(

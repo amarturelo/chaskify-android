@@ -1,5 +1,6 @@
 package com.chaskify.android.ui.activities;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import com.chaskify.android.ui.base.BaseActivity;
 import com.chaskify.android.ui.fragments.launch.LaunchFragment;
 import com.chaskify.android.ui.fragments.launch.LoginFragment;
 import com.chaskify.domain.model.Credentials;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
@@ -41,9 +43,18 @@ public class LaunchActivity extends BaseActivity {
     }
 
     private void initActivity(Bundle savedInstanceState) {
-        if(findFragment(LaunchFragment.class)==null){
-            loadRootFragment(R.id.fragment, LaunchFragment.newInstance());
-        }
+        RxPermissions rxPermissions = new RxPermissions(this);
+
+        rxPermissions.request(Manifest.permission.ACCESS_FINE_LOCATION)
+                .subscribe(granted -> {
+                    if (granted) { // Always true pre-M
+                        if (findFragment(LaunchFragment.class) == null) {
+                            loadRootFragment(R.id.fragment, LaunchFragment.newInstance());
+                        }
+                    } else {
+                        finish();
+                    }
+                });
         /*if (savedInstanceState == null)
             if (getArgAddingNewAccount())
                 loadRootFragment(R.id.fragment, LoginFragment.newInstance());

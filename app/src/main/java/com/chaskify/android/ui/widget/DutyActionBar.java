@@ -11,6 +11,7 @@ import android.widget.Switch;
 
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.polyak.iconswitch.IconSwitch;
 
 import timber.log.Timber;

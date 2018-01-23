@@ -5,6 +5,7 @@ import android.content.Context;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallbackSuccess;
 import com.chaskify.chaskify_sdk.rest.client.CalendarTaskRestClient;
+import com.chaskify.chaskify_sdk.rest.client.DriverRestClient;
 import com.chaskify.chaskify_sdk.rest.client.LoginRestClient;
 import com.chaskify.chaskify_sdk.rest.client.NotificationRestClient;
 import com.chaskify.chaskify_sdk.rest.client.ProfileRestClient;
@@ -37,6 +38,7 @@ public class ChaskifySession {
     private SettingsRestClient mSettingsRestClient;
     private CalendarTaskRestClient mCalendarTaskRestClient;
     private TaskWayPointRestClient mTaskWayPointRestClient;
+    private DriverRestClient mDriverRestClient;
 
     public interface OnDutyChange {
         void onState(STATE state);
@@ -56,6 +58,7 @@ public class ChaskifySession {
         mSettingsRestClient = new SettingsRestClient(mChaskifyCredentials);
         mCalendarTaskRestClient = new CalendarTaskRestClient(mChaskifyCredentials);
         mTaskWayPointRestClient = new TaskWayPointRestClient(mChaskifyCredentials);
+        mDriverRestClient = new DriverRestClient(mChaskifyCredentials);
     }
 
     public void addDutyChangeListener(OnDutyChange onDutyChange) {
@@ -116,7 +119,7 @@ public class ChaskifySession {
             }
         };
 
-        mProfileRestClient.onDuty(callbackSuccess);
+        mDriverRestClient.onDuty(callbackSuccess);
     }
 
     public void offDuty(final ApiCallbackSuccess callback) {
@@ -147,7 +150,7 @@ public class ChaskifySession {
             }
         };
 
-        mProfileRestClient.onDuty(callbackSuccess);
+        mDriverRestClient.onDuty(callbackSuccess);
     }
 
     public LoginRestClient getLoginRestClient() {
