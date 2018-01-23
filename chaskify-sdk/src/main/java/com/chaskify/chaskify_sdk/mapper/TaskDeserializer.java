@@ -2,7 +2,7 @@ package com.chaskify.chaskify_sdk.mapper;
 
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyTask;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyTaskHistory;
-import com.chaskify.chaskify_sdk.rest.model.ChaskifyTaskWaypoint;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifyTaskWayPoint;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -48,11 +48,11 @@ public class TaskDeserializer implements JsonDeserializer<ChaskifyTask> {
         chaskifyTask.setDateCreated(node.has("date_created") ? node.get("date_created").getAsString() : "");
         chaskifyTask.setTeamName(node.has("team_name") && !node.get("team_name").isJsonNull() ? node.get("team_name").getAsString() : "");
         if (node.has("waypoints")) {
-            Type type = new TypeToken<List<ChaskifyTaskWaypoint>>() {
+            Type type = new TypeToken<List<ChaskifyTaskWayPoint>>() {
             }.getType();
-            chaskifyTask.setWaypoints(node.get("waypoints") instanceof JsonArray ? (List<ChaskifyTaskWaypoint>) context.deserialize(node.get("waypoints"), type) : new ArrayList<ChaskifyTaskWaypoint>());
+            chaskifyTask.setWaypoints(node.get("waypoints") instanceof JsonArray ? (List<ChaskifyTaskWayPoint>) context.deserialize(node.get("waypoints"), type) : new ArrayList<ChaskifyTaskWayPoint>());
         } else
-            chaskifyTask.setWaypoints(new ArrayList<ChaskifyTaskWaypoint>());
+            chaskifyTask.setWaypoints(new ArrayList<ChaskifyTaskWayPoint>());
 
         if (node.has("history")) {
             Type type = new TypeToken<List<ChaskifyTaskHistory>>() {

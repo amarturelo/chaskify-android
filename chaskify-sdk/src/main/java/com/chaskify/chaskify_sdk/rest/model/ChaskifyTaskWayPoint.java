@@ -9,7 +9,23 @@ import java.util.Date;
  * Created by alberto on 28/12/17.
  */
 
-public class ChaskifyTaskWaypoint {
+public class ChaskifyTaskWayPoint {
+
+    public enum STATUS {
+
+        START("START"), IN_ROUTE("IN ROUTE"), ACCEPTED("ACCEPTED"), ARRIVED("ARRIVED"), SUCCESSFUL("SUCCESSFUL");
+        private String text;
+
+        STATUS(String s) {
+            text = s;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+    }
+
     @SerializedName("id")
     @Expose
     public String id;
@@ -65,14 +81,14 @@ public class ChaskifyTaskWaypoint {
     @Expose
     public String taskStatus;
 
-    public ChaskifyTaskWaypoint() {
+    public ChaskifyTaskWayPoint() {
     }
 
     public String getId() {
         return id;
     }
 
-    public ChaskifyTaskWaypoint setId(String id) {
+    public ChaskifyTaskWayPoint setId(String id) {
         this.id = id;
         return this;
     }
@@ -81,7 +97,7 @@ public class ChaskifyTaskWaypoint {
         return taskId;
     }
 
-    public ChaskifyTaskWaypoint setTaskId(String taskId) {
+    public ChaskifyTaskWayPoint setTaskId(String taskId) {
         this.taskId = taskId;
         return this;
     }
@@ -90,7 +106,7 @@ public class ChaskifyTaskWaypoint {
         return customerName;
     }
 
-    public ChaskifyTaskWaypoint setCustomerName(String customerName) {
+    public ChaskifyTaskWayPoint setCustomerName(String customerName) {
         this.customerName = customerName;
         return this;
     }
@@ -99,7 +115,7 @@ public class ChaskifyTaskWaypoint {
         return emailAddress;
     }
 
-    public ChaskifyTaskWaypoint setEmailAddress(String emailAddress) {
+    public ChaskifyTaskWayPoint setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
         return this;
     }
@@ -108,7 +124,7 @@ public class ChaskifyTaskWaypoint {
         return contactNumber;
     }
 
-    public ChaskifyTaskWaypoint setContactNumber(String contactNumber) {
+    public ChaskifyTaskWayPoint setContactNumber(String contactNumber) {
         this.contactNumber = contactNumber;
         return this;
     }
@@ -117,7 +133,7 @@ public class ChaskifyTaskWaypoint {
         return deliveryAddress;
     }
 
-    public ChaskifyTaskWaypoint setDeliveryAddress(String deliveryAddress) {
+    public ChaskifyTaskWayPoint setDeliveryAddress(String deliveryAddress) {
         this.deliveryAddress = deliveryAddress;
         return this;
     }
@@ -126,7 +142,7 @@ public class ChaskifyTaskWaypoint {
         return taskLat;
     }
 
-    public ChaskifyTaskWaypoint setTaskLat(String taskLat) {
+    public ChaskifyTaskWayPoint setTaskLat(String taskLat) {
         this.taskLat = taskLat;
         return this;
     }
@@ -135,7 +151,7 @@ public class ChaskifyTaskWaypoint {
         return taskLng;
     }
 
-    public ChaskifyTaskWaypoint setTaskLng(String taskLng) {
+    public ChaskifyTaskWayPoint setTaskLng(String taskLng) {
         this.taskLng = taskLng;
         return this;
     }
@@ -144,7 +160,7 @@ public class ChaskifyTaskWaypoint {
         return priority;
     }
 
-    public ChaskifyTaskWaypoint setPriority(String priority) {
+    public ChaskifyTaskWayPoint setPriority(String priority) {
         this.priority = priority;
         return this;
     }
@@ -153,7 +169,7 @@ public class ChaskifyTaskWaypoint {
         return dateCreated;
     }
 
-    public ChaskifyTaskWaypoint setDateCreated(Date dateCreated) {
+    public ChaskifyTaskWayPoint setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
         return this;
     }
@@ -162,7 +178,7 @@ public class ChaskifyTaskWaypoint {
         return dateModified;
     }
 
-    public ChaskifyTaskWaypoint setDateModified(Date dateModified) {
+    public ChaskifyTaskWayPoint setDateModified(Date dateModified) {
         this.dateModified = dateModified;
         return this;
     }
@@ -171,7 +187,7 @@ public class ChaskifyTaskWaypoint {
         return type;
     }
 
-    public ChaskifyTaskWaypoint setType(String type) {
+    public ChaskifyTaskWayPoint setType(String type) {
         this.type = type;
         return this;
     }
@@ -180,7 +196,7 @@ public class ChaskifyTaskWaypoint {
         return status;
     }
 
-    public ChaskifyTaskWaypoint setStatus(String status) {
+    public ChaskifyTaskWayPoint setStatus(String status) {
         this.status = status;
         return this;
     }
@@ -189,7 +205,7 @@ public class ChaskifyTaskWaypoint {
         return totalTime;
     }
 
-    public ChaskifyTaskWaypoint setTotalTime(String totalTime) {
+    public ChaskifyTaskWayPoint setTotalTime(String totalTime) {
         this.totalTime = totalTime;
         return this;
     }
@@ -198,7 +214,7 @@ public class ChaskifyTaskWaypoint {
         return totalMiles;
     }
 
-    public ChaskifyTaskWaypoint setTotalMiles(String totalMiles) {
+    public ChaskifyTaskWayPoint setTotalMiles(String totalMiles) {
         this.totalMiles = totalMiles;
         return this;
     }
@@ -207,7 +223,7 @@ public class ChaskifyTaskWaypoint {
         return orderNumber;
     }
 
-    public ChaskifyTaskWaypoint setOrderNumber(String orderNumber) {
+    public ChaskifyTaskWayPoint setOrderNumber(String orderNumber) {
         this.orderNumber = orderNumber;
         return this;
     }
@@ -216,7 +232,7 @@ public class ChaskifyTaskWaypoint {
         return waypointDescription;
     }
 
-    public ChaskifyTaskWaypoint setWaypointDescription(String waypointDescription) {
+    public ChaskifyTaskWayPoint setWaypointDescription(String waypointDescription) {
         this.waypointDescription = waypointDescription;
         return this;
     }
@@ -225,7 +241,7 @@ public class ChaskifyTaskWaypoint {
         return taskStatus;
     }
 
-    public ChaskifyTaskWaypoint setTaskStatus(String taskStatus) {
+    public ChaskifyTaskWayPoint setTaskStatus(String taskStatus) {
         this.taskStatus = taskStatus;
         return this;
     }

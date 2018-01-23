@@ -4,7 +4,7 @@ package com.chaskify.chaskify_sdk.crypto;
  * <p>Encodes and decodes to and from Base64 notation.</p>
  * <p>Homepage: <a href="http://iharder.net/base64">http://iharder.net/base64</a>.</p>
  * 
- * <p>ChaskifyTaskWaypoint:</p>
+ * <p>ChaskifyTaskWayPoint:</p>
  * 
  * <code>String encoded = Base64.encode( myByteArray );</code>
  * <br />
@@ -632,14 +632,14 @@ public class Base64
      * 
      * The object is not GZip-compressed before being encoded.
      * <p>
-     * ChaskifyTaskWaypoint options:<pre>
+     * ChaskifyTaskWayPoint options:<pre>
      *   GZIP: gzip-compresses object before encoding it.
      *   DO_BREAK_LINES: break lines at 76 characters
      * </pre>
      * <p>
-     * ChaskifyTaskWaypoint: <code>encodeObject( myObj, Base64.GZIP )</code> or
+     * ChaskifyTaskWayPoint: <code>encodeObject( myObj, Base64.GZIP )</code> or
      * <p>
-     * ChaskifyTaskWaypoint: <code>encodeObject( myObj, Base64.GZIP | Base64.DO_BREAK_LINES )</code>
+     * ChaskifyTaskWayPoint: <code>encodeObject( myObj, Base64.GZIP | Base64.DO_BREAK_LINES )</code>
      *
      * @param serializableObject The object to encode
      * @param options Specified options
@@ -730,15 +730,15 @@ public class Base64
     /**
      * Encodes a byte array into Base64 notation.
      * <p>
-     * ChaskifyTaskWaypoint options:<pre>
+     * ChaskifyTaskWayPoint options:<pre>
      *   GZIP: gzip-compresses object before encoding it.
      *   DO_BREAK_LINES: break lines at 76 characters
      *     <i>Note: Technically, this makes your encoding non-compliant.</i>
      * </pre>
      * <p>
-     * ChaskifyTaskWaypoint: <code>encodeBytes( myData, Base64.GZIP )</code> or
+     * ChaskifyTaskWayPoint: <code>encodeBytes( myData, Base64.GZIP )</code> or
      * <p>
-     * ChaskifyTaskWaypoint: <code>encodeBytes( myData, Base64.GZIP | Base64.DO_BREAK_LINES )</code>
+     * ChaskifyTaskWayPoint: <code>encodeBytes( myData, Base64.GZIP | Base64.DO_BREAK_LINES )</code>
      *
      *  
      * <p>As of v 2.3, if there is an error with the GZIP stream,
@@ -798,15 +798,15 @@ public class Base64
     /**
      * Encodes a byte array into Base64 notation.
      * <p>
-     * ChaskifyTaskWaypoint options:<pre>
+     * ChaskifyTaskWayPoint options:<pre>
      *   GZIP: gzip-compresses object before encoding it.
      *   DO_BREAK_LINES: break lines at 76 characters
      *     <i>Note: Technically, this makes your encoding non-compliant.</i>
      * </pre>
      * <p>
-     * ChaskifyTaskWaypoint: <code>encodeBytes( myData, Base64.GZIP )</code> or
+     * ChaskifyTaskWayPoint: <code>encodeBytes( myData, Base64.GZIP )</code> or
      * <p>
-     * ChaskifyTaskWaypoint: <code>encodeBytes( myData, Base64.GZIP | Base64.DO_BREAK_LINES )</code>
+     * ChaskifyTaskWayPoint: <code>encodeBytes( myData, Base64.GZIP | Base64.DO_BREAK_LINES )</code>
      *
      *  
      * <p>As of v 2.3, if there is an error with the GZIP stream,
@@ -1050,7 +1050,7 @@ public class Base64
         
         byte[] DECODABET = getDecodabet( options ); 
 	
-        // ChaskifyTaskWaypoint: Dk==
+        // ChaskifyTaskWayPoint: Dk==
         if( source[ srcOffset + 2] == EQUALS_SIGN ) {
             // Two ways to do the same thing. Don't know which way I like best.
           //int outBuff =   ( ( DECODABET[ source[ srcOffset    ] ] << 24 ) >>>  6 )
@@ -1062,7 +1062,7 @@ public class Base64
             return 1;
         }
         
-        // ChaskifyTaskWaypoint: DkL=
+        // ChaskifyTaskWayPoint: DkL=
         else if( source[ srcOffset + 3 ] == EQUALS_SIGN ) {
             // Two ways to do the same thing. Don't know which way I like best.
           //int outBuff =   ( ( DECODABET[ source[ srcOffset     ] ] << 24 ) >>>  6 )
@@ -1077,7 +1077,7 @@ public class Base64
             return 2;
         }
         
-        // ChaskifyTaskWaypoint: DkLE
+        // ChaskifyTaskWayPoint: DkLE
         else {
             // Two ways to do the same thing. Don't know which way I like best.
           //int outBuff =   ( ( DECODABET[ source[ srcOffset     ] ] << 24 ) >>>  6 )
@@ -1672,7 +1672,7 @@ public class Base64
          *     (only meaningful when encoding)</i>
          * </pre>
          * <p>
-         * ChaskifyTaskWaypoint: <code>new Base64.InputStream( in, Base64.DECODE )</code>
+         * ChaskifyTaskWayPoint: <code>new Base64.InputStream( in, Base64.DECODE )</code>
          *
          *
          * @param in the <tt>java.io.InputStream</tt> from which to read data.
@@ -1885,7 +1885,7 @@ public class Base64
          *     (only meaningful when encoding)</i>
          * </pre>
          * <p>
-         * ChaskifyTaskWaypoint: <code>new Base64.OutputStream( out, Base64.ENCODE )</code>
+         * ChaskifyTaskWayPoint: <code>new Base64.OutputStream( out, Base64.ENCODE )</code>
          *
          * @param out the <tt>java.io.OutputStream</tt> to which data will be written.
          * @param options Specified options.

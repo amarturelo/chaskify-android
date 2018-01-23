@@ -1,25 +1,23 @@
 package com.chaskify.data.realm.cache.impl.mapper;
 
 import com.annimon.stream.Stream;
-import com.chaskify.chaskify_sdk.rest.model.ChaskifyTaskWaypoint;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifyTaskWayPoint;
 import com.chaskify.data.realm.model.RealmTaskWaypoint;
-import com.chaskify.domain.model.TaskWaypoint;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.RealmList;
 
 public class TaskWaypointDataMapper {
 
-    public static RealmList<RealmTaskWaypoint> transform(List<ChaskifyTaskWaypoint> entities) {
+    public static RealmList<RealmTaskWaypoint> transform(List<ChaskifyTaskWayPoint> entities) {
         final RealmList<RealmTaskWaypoint> list = new RealmList<>();
         Stream.of(entities).withoutNulls()
                 .forEach(realmEvent -> list.add(transform(realmEvent)));
         return list;
     }
 
-    public static RealmTaskWaypoint transform(ChaskifyTaskWaypoint realmTaskWaypoint) {
+    public static RealmTaskWaypoint transform(ChaskifyTaskWayPoint realmTaskWaypoint) {
         RealmTaskWaypoint waypoint = new RealmTaskWaypoint();
         waypoint.setId(realmTaskWaypoint.getId())
                 .setTaskId(realmTaskWaypoint.getTaskId())

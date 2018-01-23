@@ -2,9 +2,7 @@ package com.chaskify.data.model.chaskify.mapper;
 
 import com.annimon.stream.Stream;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyTaskHistory;
-import com.chaskify.chaskify_sdk.rest.model.ChaskifyTaskWaypoint;
 import com.chaskify.domain.model.TaskHistory;
-import com.chaskify.domain.model.TaskWaypoint;
 
 import java.util.ArrayList;
 import java.util.List;

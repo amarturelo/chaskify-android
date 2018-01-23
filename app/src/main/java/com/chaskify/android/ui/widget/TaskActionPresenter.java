@@ -26,19 +26,19 @@ public class TaskActionPresenter extends BasePresenter<TaskActionContract.View>
 
     @Override
     public void arrived(String id) {
-        mMethodCallHelper.arrived(id)
+        mMethodCallHelper.arrivedTask(id)
                 .continueWith(new LogIfError());
     }
 
     @Override
     public void start(String id) {
-        mMethodCallHelper.start(id)
+        mMethodCallHelper.startTask(id)
                 .continueWith(new LogIfError());
     }
 
     @Override
     public void successful(String id) {
-        mMethodCallHelper.successful(id)
+        mMethodCallHelper.successfulTask(id)
                 .continueWith(new LogIfError());
     }
 

@@ -81,7 +81,6 @@
                     </LinearLayout>
                 </RelativeLayout>
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -183,7 +182,10 @@
 
                 </LinearLayout>
 
-
+                <com.chaskify.android.ui.widget.TaskWayPointActionWidget
+                    android:id="@+id/task_way_point_action_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
 

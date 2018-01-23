@@ -132,7 +132,7 @@ public class ChaskifyTask {
     private String transTypeRaw;
     @SerializedName("waypoints")
     @Expose
-    private List<ChaskifyTaskWaypoint> waypoints = null;
+    private List<ChaskifyTaskWayPoint> waypoints = null;
     @SerializedName("history")
     @Expose
     private List<ChaskifyTaskHistory> history = null;
@@ -260,11 +260,11 @@ public class ChaskifyTask {
         return this;
     }
 
-    public List<ChaskifyTaskWaypoint> getWaypoints() {
+    public List<ChaskifyTaskWayPoint> getWaypoints() {
         return waypoints;
     }
 
-    public ChaskifyTask setWaypoints(List<ChaskifyTaskWaypoint> waypoints) {
+    public ChaskifyTask setWaypoints(List<ChaskifyTaskWayPoint> waypoints) {
         this.waypoints = waypoints;
         return this;
     }

@@ -10,11 +10,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.annimon.stream.function.Consumer;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.ui.model.TaskWaypointModel;
-import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.data.realm.cache.impl.TaskWayPointCacheImpl;
 import com.chaskify.data.repositories.TaskWaypointRepositoryImpl;
 import com.chaskify.domain.filter.DriverFilter;
@@ -80,7 +78,7 @@ public class TaskWaypointViewDialogFragment extends BottomSheetDialogFragment im
     @Override
     public void setupDialog(final Dialog dialog, int style) {
         super.setupDialog(dialog, style);
-        View contentView = View.inflate(getContext(), R.layout.fragment_waypoint, null);
+        View contentView = View.inflate(getContext(), R.layout.fragment_way_point, null);
         dialog.setContentView(contentView);
         initComponents(contentView);
         if (presenter != null) {

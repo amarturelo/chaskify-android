@@ -8,7 +8,7 @@ import com.chaskify.chaskify_sdk.rest.model.ChaskifyCalendarTask;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyProfile;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifySettings;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyTask;
-import com.chaskify.chaskify_sdk.rest.model.ChaskifyTaskWaypoint;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifyTaskWayPoint;
 import com.chaskify.data.realm.cache.NotificationsCache;
 import com.chaskify.data.realm.cache.ProfileCache;
 import com.chaskify.data.realm.cache.SettingsCache;
@@ -22,10 +22,8 @@ import com.chaskify.data.realm.cache.impl.mapper.TaskWaypointDataMapper;
 import java.util.Date;
 import java.util.List;
 
-import bolts.Continuation;
 import bolts.Task;
 import bolts.TaskCompletionSource;
-import timber.log.Timber;
 
 /**
  * Created by alberto on 11/01/18.
@@ -50,11 +48,11 @@ public class MethodCallHelper {
     }
 
     public Task<Void> getWaypointById(String id) {
-        TaskCompletionSource<ChaskifyTaskWaypoint> task = new TaskCompletionSource<>();
+        TaskCompletionSource<ChaskifyTaskWayPoint> task = new TaskCompletionSource<>();
         try {
-            mChaskifySession.getTaskWaypointRestClient().wayPointById(id, new ApiCallback<ChaskifyTaskWaypoint>() {
+            mChaskifySession.getTaskWaypointRestClient().wayPointById(id, new ApiCallback<ChaskifyTaskWayPoint>() {
                 @Override
-                public void onSuccess(ChaskifyTaskWaypoint info) {
+                public void onSuccess(ChaskifyTaskWayPoint info) {
                     task.trySetResult(info);
                 }
 
@@ -465,7 +463,7 @@ public class MethodCallHelper {
                 );
     }
 
-    public Task<Void> start(String id) {
+    public Task<Void> startTask(String id) {
         TaskCompletionSource<ChaskifyTask> task = new TaskCompletionSource<>();
         mChaskifySession.getTaskRestClient().changeTaskStatus(id, ChaskifyTask.STATUS.IN_ROUTE, "0", "0", new ApiCallback<ChaskifyTask>() {
             @Override
@@ -497,7 +495,7 @@ public class MethodCallHelper {
                 );
     }
 
-    public Task<Void> arrived(String id) {
+    public Task<Void> arrivedTask(String id) {
         TaskCompletionSource<ChaskifyTask> task = new TaskCompletionSource<>();
         mChaskifySession.getTaskRestClient().changeTaskStatus(id, ChaskifyTask.STATUS.ARRIVED, "0", "0", new ApiCallback<ChaskifyTask>() {
             @Override
@@ -529,7 +527,7 @@ public class MethodCallHelper {
                 );
     }
 
-    public Task<Void> successful(String id) {
+    public Task<Void> successfulTask(String id) {
         TaskCompletionSource<ChaskifyTask> task = new TaskCompletionSource<>();
         mChaskifySession.getTaskRestClient().changeTaskStatus(id, ChaskifyTask.STATUS.SUCCESSFUL, "0", "0", new ApiCallback<ChaskifyTask>() {
             @Override
@@ -559,5 +557,37 @@ public class MethodCallHelper {
                             return null;
                         }
                 );
+    }
+
+    public Task<Void> inRouteTaskWayPoint(String id) {
+        TaskCompletionSource<ChaskifyTaskWayPoint> wayPoint = new TaskCompletionSource<>();
+
+        mChaskifySession.getTaskWaypointRestClient().changeTaskWayPointStatus(id, ChaskifyTaskWayPoint.STATUS.IN_ROUTE, "", "", new ApiCallback<ChaskifyTaskWayPoint>() {
+            @Override
+            public void onNetworkError(Exception e) {
+                wayPoint.trySetError(e);
+            }
+
+            @Override
+            public void onChaskifyError(Exception e) {
+                wayPoint.trySetError(e);
+            }
+
+            @Override
+            public void onUnexpectedError(Exception e) {
+                wayPoint.trySetError(e);
+            }
+
+            @Override
+            public void onSuccess(ChaskifyTaskWayPoint info) {
+                wayPoint.trySetResult(info);
+            }
+        });
+
+        return wayPoint.getTask()
+                .onSuccessTask(task -> {
+                    mTaskWayPointCache.put(TaskWaypointDataMapper.transform(task.getResult()));
+                    return null;
+                });
     }
 }
