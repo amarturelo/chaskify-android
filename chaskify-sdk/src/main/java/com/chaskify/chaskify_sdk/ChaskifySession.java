@@ -1,8 +1,6 @@
 package com.chaskify.chaskify_sdk;
 
 import android.content.Context;
-import android.os.AsyncTask;
-import android.os.Looper;
 
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallbackSuccess;
@@ -12,8 +10,9 @@ import com.chaskify.chaskify_sdk.rest.client.NotificationRestClient;
 import com.chaskify.chaskify_sdk.rest.client.ProfileRestClient;
 import com.chaskify.chaskify_sdk.rest.client.SettingsRestClient;
 import com.chaskify.chaskify_sdk.rest.client.TaskRestClient;
-import com.chaskify.chaskify_sdk.rest.client.TaskWaypointRestClient;
+import com.chaskify.chaskify_sdk.rest.client.TaskWayPointRestClient;
 import com.chaskify.chaskify_sdk.rest.exceptions.TokenNotFoundException;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifySettings;
 import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
 
 /**
@@ -21,7 +20,12 @@ import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
  */
 
 public class ChaskifySession {
+
+    private ChaskifySettings mChaskifySettings;
+
     private ChaskifyCredentials mChaskifyCredentials;
+
+    private STATE mState = STATE.OFF_DUTY;
 
     private LoginRestClient mLoginRestClient;
     private ProfileRestClient mProfileRestClient;
@@ -29,7 +33,7 @@ public class ChaskifySession {
     private NotificationRestClient mNotificationRestClient;
     private SettingsRestClient mSettingsRestClient;
     private CalendarTaskRestClient mCalendarTaskRestClient;
-    private TaskWaypointRestClient mTaskWaypointRestClient;
+    private TaskWayPointRestClient mTaskWayPointRestClient;
 
     public ChaskifySession(ChaskifyCredentials chaskifyCredentials) {
         this.mChaskifyCredentials = chaskifyCredentials;
@@ -40,7 +44,7 @@ public class ChaskifySession {
         mNotificationRestClient = new NotificationRestClient(mChaskifyCredentials);
         mSettingsRestClient = new SettingsRestClient(mChaskifyCredentials);
         mCalendarTaskRestClient = new CalendarTaskRestClient(mChaskifyCredentials);
-        mTaskWaypointRestClient = new TaskWaypointRestClient(mChaskifyCredentials);
+        mTaskWayPointRestClient = new TaskWayPointRestClient(mChaskifyCredentials);
     }
 
     /**
@@ -52,8 +56,77 @@ public class ChaskifySession {
         RestClient.initUserAgent(context);
     }
 
+    public void getChaskifySettings(ApiCallback<ChaskifySettings> callback) {
+        if (mChaskifySettings != null)
+            callback.onSuccess(mChaskifySettings);
+        else
+            mSettingsRestClient.getSettings(callback);
+    }
+
     public ChaskifyCredentials getCredentials() {
         return mChaskifyCredentials;
+    }
+
+    public void onDuty(final ApiCallbackSuccess callback) {
+        ApiCallbackSuccess callbackSuccess = new ApiCallbackSuccess() {
+            @Override
+            public void onSuccess() {
+                setState(STATE.ON_DUTY);
+                if (callback != null)
+                    callback.onSuccess();
+            }
+
+            @Override
+            public void onNetworkError(Exception e) {
+                if (callback != null)
+                    callback.onNetworkError(e);
+            }
+
+            @Override
+            public void onChaskifyError(Exception e) {
+                if (callback != null)
+                    callback.onChaskifyError(e);
+            }
+
+            @Override
+            public void onUnexpectedError(Exception e) {
+                if (callback != null)
+                    callback.onUnexpectedError(e);
+            }
+        };
+
+        mProfileRestClient.onDuty(callbackSuccess);
+    }
+
+    public void offDuty(final ApiCallbackSuccess callback) {
+        ApiCallbackSuccess callbackSuccess = new ApiCallbackSuccess() {
+            @Override
+            public void onSuccess() {
+                setState(STATE.OFF_DUTY);
+                if (callback != null)
+                    callback.onSuccess();
+            }
+
+            @Override
+            public void onNetworkError(Exception e) {
+                if (callback != null)
+                    callback.onNetworkError(e);
+            }
+
+            @Override
+            public void onChaskifyError(Exception e) {
+                if (callback != null)
+                    callback.onChaskifyError(e);
+            }
+
+            @Override
+            public void onUnexpectedError(Exception e) {
+                if (callback != null)
+                    callback.onUnexpectedError(e);
+            }
+        };
+
+        mProfileRestClient.onDuty(callbackSuccess);
     }
 
     public LoginRestClient getLoginRestClient() {
@@ -85,8 +158,13 @@ public class ChaskifySession {
         return this;
     }
 
-    public TaskWaypointRestClient getTaskWaypointRestClient() {
-        return mTaskWaypointRestClient;
+    public ChaskifySession setChaskifySettings(ChaskifySettings mChaskifySettings) {
+        this.mChaskifySettings = mChaskifySettings;
+        return this;
+    }
+
+    public TaskWayPointRestClient getTaskWayPointRestClient() {
+        return mTaskWayPointRestClient;
     }
 
     public void updatePasswordProfile(String oldPassword
@@ -125,6 +203,14 @@ public class ChaskifySession {
         mLoginRestClient.logout(callback);
     }
 
+    public STATE getState() {
+        return mState;
+    }
+
+    private void setState(STATE mState) {
+        this.mState = mState;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -145,5 +231,9 @@ public class ChaskifySession {
     @Override
     public int hashCode() {
         return mChaskifyCredentials != null ? mChaskifyCredentials.hashCode() : 0;
+    }
+
+    public enum STATE {
+        ON_DUTY, OFF_DUTY
     }
 }

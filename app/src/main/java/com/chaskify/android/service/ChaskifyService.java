@@ -12,6 +12,16 @@ import android.support.annotation.Nullable;
 
 public class ChaskifyService extends Service {
 
+    public static final String EXTRA_CHASKIFY_ID = "ChaskifyService.EXTRA_CHASKIFY_ID";
+    /**
+     * static instance
+     */
+    private static ChaskifyService mChaskifyService = null;
+
+    public static ChaskifyService getInstance() {
+        return mChaskifyService;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -19,6 +29,7 @@ public class ChaskifyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        mChaskifyService = this;
         return START_STICKY;
     }
 
@@ -30,5 +41,13 @@ public class ChaskifyService extends Service {
 
     public static void start(Context activity) {
         activity.startService(new Intent(activity, ChaskifyService.class));
+    }
+
+    public static void stop(Context activity) {
+        activity.stopService(new Intent(activity, ChaskifyService.class));
+    }
+
+    public void onDuty(String driverId) {
+
     }
 }

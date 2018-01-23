@@ -15,7 +15,6 @@ import com.chaskify.data.realm.cache.SettingsCache;
 import com.chaskify.data.realm.cache.TaskCache;
 import com.chaskify.data.realm.cache.TaskWayPointCache;
 import com.chaskify.data.realm.cache.impl.mapper.ProfileDataMapper;
-import com.chaskify.data.realm.cache.impl.mapper.SettingsDataMapper;
 import com.chaskify.data.realm.cache.impl.mapper.TaskDataMapper;
 import com.chaskify.data.realm.cache.impl.mapper.TaskWaypointDataMapper;
 
@@ -50,7 +49,7 @@ public class MethodCallHelper {
     public Task<Void> getWaypointById(String id) {
         TaskCompletionSource<ChaskifyTaskWayPoint> task = new TaskCompletionSource<>();
         try {
-            mChaskifySession.getTaskWaypointRestClient().wayPointById(id, new ApiCallback<ChaskifyTaskWayPoint>() {
+            mChaskifySession.getTaskWayPointRestClient().wayPointById(id, new ApiCallback<ChaskifyTaskWayPoint>() {
                 @Override
                 public void onSuccess(ChaskifyTaskWayPoint info) {
                     task.trySetResult(info);
@@ -83,36 +82,30 @@ public class MethodCallHelper {
 
     public Task<Void> getSettings() {
         TaskCompletionSource<ChaskifySettings> task = new TaskCompletionSource<>();
+        mChaskifySession.getSettingsRestClient().getSettings(new ApiCallback<ChaskifySettings>() {
+            @Override
+            public void onSuccess(ChaskifySettings info) {
+                task.setResult(info);
+            }
 
-        try {
-            mChaskifySession.getSettingsRestClient().getSettings(new ApiCallback<ChaskifySettings>() {
-                @Override
-                public void onSuccess(ChaskifySettings info) {
-                    task.setResult(info);
-                }
+            @Override
+            public void onNetworkError(Exception e) {
+                task.trySetError(e);
+            }
 
-                @Override
-                public void onNetworkError(Exception e) {
-                    task.trySetError(e);
-                }
+            @Override
+            public void onChaskifyError(Exception e) {
+                task.trySetError(e);
+            }
 
-                @Override
-                public void onChaskifyError(Exception e) {
-                    task.trySetError(e);
-                }
-
-                @Override
-                public void onUnexpectedError(Exception e) {
-                    task.trySetError(e);
-                }
-            });
-        } catch (TokenNotFoundException e) {
-            task.trySetError(e);
-        }
+            @Override
+            public void onUnexpectedError(Exception e) {
+                task.trySetError(e);
+            }
+        });
 
         return task.getTask()
                 .onSuccessTask(task1 -> {
-                    mSettingsCache.put(SettingsDataMapper.transform(task1.getResult()));
                     return null;
                 });
     }
@@ -562,7 +555,7 @@ public class MethodCallHelper {
     public Task<Void> inRouteTaskWayPoint(String id) {
         TaskCompletionSource<ChaskifyTaskWayPoint> wayPoint = new TaskCompletionSource<>();
 
-        mChaskifySession.getTaskWaypointRestClient().changeTaskWayPointStatus(id, ChaskifyTaskWayPoint.STATUS.IN_ROUTE, "", "", new ApiCallback<ChaskifyTaskWayPoint>() {
+        mChaskifySession.getTaskWayPointRestClient().changeTaskWayPointStatus(id, ChaskifyTaskWayPoint.STATUS.IN_ROUTE, "", "", new ApiCallback<ChaskifyTaskWayPoint>() {
             @Override
             public void onNetworkError(Exception e) {
                 wayPoint.trySetError(e);

@@ -27,11 +27,11 @@ public class SettingsRestClient extends RestClient<SettingsApi> {
         super(chaskifyCredentials, SettingsApi.class);
     }
 
-    public void getSettings(ApiCallback<ChaskifySettings> callback) throws TokenNotFoundException {
+    public void getSettings(ApiCallback<ChaskifySettings> callback) {
         if (mChaskifyCredentials != null)
             getSettings(mChaskifyCredentials.getAccessToken(), callback);
         else
-            throw new TokenNotFoundException();
+            callback.onChaskifyError(new TokenNotFoundException());
     }
 
     private void getSettings(String accessToken, final ApiCallback<ChaskifySettings> callback) {

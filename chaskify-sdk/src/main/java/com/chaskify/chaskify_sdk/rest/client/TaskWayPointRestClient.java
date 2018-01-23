@@ -28,11 +28,11 @@ import timber.log.Timber;
  * Created by alberto on 28/12/17.
  */
 
-public class TaskWaypointRestClient extends RestClient<TaskWayPointApi> {
+public class TaskWayPointRestClient extends RestClient<TaskWayPointApi> {
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", /*Locale.getDefault()*/Locale.getDefault());
 
-    public TaskWaypointRestClient(ChaskifyCredentials chaskifyCredentials) {
+    public TaskWayPointRestClient(ChaskifyCredentials chaskifyCredentials) {
         super(chaskifyCredentials, TaskWayPointApi.class);
     }
 

@@ -3,6 +3,8 @@ package com.chaskify.android.ui.fragments.launch;
 import com.chaskify.android.helper.MethodCallHelper;
 import com.chaskify.android.shared.BasePresenter;
 import com.chaskify.chaskify_sdk.ChaskifySession;
+import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifySettings;
 import com.chaskify.data.realm.cache.impl.NotificationsCacheImpl;
 import com.chaskify.data.realm.cache.impl.ProfileCacheImpl;
 import com.chaskify.data.realm.cache.impl.SettingsCacheImpl;
@@ -49,63 +51,28 @@ public class SplashPresenter extends BasePresenter<SplashContract.View>
     @Override
     public void init(String driverId) {
         view.showProgress();
+        mChaskifySession.getChaskifySettings(new ApiCallback<ChaskifySettings>() {
+            @Override
+            public void onSuccess(ChaskifySettings info) {
+                view.complete();
+            }
 
-        Single.zip(
-                settings(driverId)
-                , profile(driverId)
+            @Override
+            public void onNetworkError(Exception e) {
+                view.showError(e);
+            }
 
-                , (asProfile, asSettings) -> asProfile && asSettings
-        )
-                .subscribe(aBoolean -> {
-                    if (aBoolean)
-                        view.complete();
-                    else
-                        view.showError(new Exception("paso algo con la red"));
-                }, throwable -> view.showError(throwable))
-        ;
-    }
+            @Override
+            public void onChaskifyError(Exception e) {
+                view.showError(e);
+            }
 
-    private Single<Boolean> settings(String driverId) {
-        return settingsInteractor.settingsByDriverId(driverId)
-                .firstOrError()
-                .toFlowable()
-                .switchMap(settingsOptional -> {
-                    if (settingsOptional.isPresent())
-                        return Flowable.just(true);
-                    return Single.create((SingleOnSubscribe<Boolean>) emitter -> mMethodCallHelper.getSettings()
-                            .continueWith(task -> {
-                                if (task.isCompleted())
-                                    emitter.onSuccess(true);
-                                else
-                                    emitter.onError(task.getError());
-                                return null;
-                            }))
-                            .toFlowable();
-                })
-                .firstOrError()
-                ;
-    }
+            @Override
+            public void onUnexpectedError(Exception e) {
+                view.showError(e);
+            }
+        });
 
-    private Single<Boolean> profile(String driverId) {
-        return profileInteractor.profileByDriverId(driverId)
-                .firstOrError()
-                .toFlowable()
-                .switchMap(profileOptional -> {
-                    if (profileOptional.isPresent())
-                        return Flowable.just(true);
-                    else
-                        return Single.create((SingleOnSubscribe<Boolean>) emitter -> mMethodCallHelper.getProfile()
-                                .continueWith(task -> {
-                                    if (task.isCompleted())
-                                        emitter.onSuccess(true);
-                                    else
-                                        emitter.onError(task.getError());
-                                    return null;
-                                }))
-                                .toFlowable();
-                })
-                .firstOrError()
-                ;
     }
 
 }

@@ -26,6 +26,36 @@ public class ProfileRestClient extends RestClient<ProfileApi> {
         super(chaskifyCredentials, ProfileApi.class);
     }
 
+    public void onDuty(ApiCallbackSuccess callback) {
+        if (mChaskifyCredentials != null)
+            changeStatus(mChaskifyCredentials.getAccessToken(), "1", callback);
+    }
+
+    public void offDuty(ApiCallbackSuccess callback) {
+        if (mChaskifyCredentials != null)
+            changeStatus(mChaskifyCredentials.getAccessToken(), "2", callback);
+    }
+
+    private void changeStatus(String accessToken, String status, final ApiCallbackSuccess callback) {
+        mApi.changeDutyStatus(accessToken, status).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                JsonObject baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), JsonObject.class);
+                if (baseResponse.get("code").getAsInt() == 1) {
+                    callback.onSuccess();
+
+                } else {
+                    callback.onChaskifyError(new Exception(baseResponse.get("msg").getAsString()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                callback.onNetworkError((Exception) t);
+            }
+        });
+    }
+
     public void updatePassword(String currentPassword, String newPassword, String confirmNewPassoword, ApiCallbackSuccess callback) throws TokenNotFoundException {
         if (mChaskifyCredentials != null)
             updatePassword(mChaskifyCredentials.getAccessToken()
