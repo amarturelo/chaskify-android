@@ -57,7 +57,7 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import timber.log.Timber;
 
 
-public class MainActivity extends BaseActivity implements MainContract.View, DutyActionBar.OnListenedTaskListChange, DutyActionBar.OnListenedDutyChange {
+public class MainActivity extends BaseActivity implements MainContract.View, DutyActionBar.OnListenedTaskListChange {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM,d", /*Locale.getDefault()*/Locale.getDefault());
 
     private static final String ARG_TASK_VIEW_MODE = "TASK_VIEW_MODE";
@@ -166,7 +166,6 @@ public class MainActivity extends BaseActivity implements MainContract.View, Dut
         dutyActionBar = findViewById(R.id.duty_action_bar);
 
         dutyActionBar.setOnListenedTaskListChange(this);
-        dutyActionBar.setOnListenedDutyChange(this);
 
         // Set up the CompactCalendarView
         compactCalendarView = findViewById(R.id.compactcalendar_view);
@@ -319,11 +318,6 @@ public class MainActivity extends BaseActivity implements MainContract.View, Dut
                 }).toList();
         compactCalendarView.removeAllEvents();
         compactCalendarView.addEvents(events);
-    }
-
-    @Override
-    public void onDuty(String state) {
-
     }
 
     private static final int DURATION_COLOR_CHANGE_MS = 400;

@@ -4,10 +4,12 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 
+import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.polyak.iconswitch.IconSwitch;
 
@@ -17,7 +19,7 @@ import timber.log.Timber;
  * Created by alberto on 14/12/17.
  */
 
-public class DutyActionBar extends LinearLayout {
+public class DutyActionBar extends LinearLayout implements DutyContract.View {
 
     private Switch mActionDuty;
     private View mTaskViewMode;
@@ -25,22 +27,23 @@ public class DutyActionBar extends LinearLayout {
     private ImageView mIvTaskViewMode;
     private IconSwitch mIconSwitchTask;
 
-    public interface OnListenedDutyChange {
-        void onDuty(String state);
+    private DutyPresenter presenter;
+
+    @Override
+    public void renderDutyStatus(boolean isDuty) {
+        mActionDuty.setChecked(isDuty);
+    }
+
+    @Override
+    public void showError(Throwable throwable) {
+
     }
 
     public interface OnListenedTaskListChange {
         void onSwitchList(String state);
     }
 
-    private OnListenedDutyChange mListenedDutyChange;
-
     private OnListenedTaskListChange mListenedTaskListChange;
-
-    public DutyActionBar setOnListenedDutyChange(OnListenedDutyChange mListenedDutyChange) {
-        this.mListenedDutyChange = mListenedDutyChange;
-        return this;
-    }
 
     public DutyActionBar setOnListenedTaskListChange(OnListenedTaskListChange mListenedTaskListChange) {
         this.mListenedTaskListChange = mListenedTaskListChange;
@@ -64,6 +67,9 @@ public class DutyActionBar extends LinearLayout {
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         inflate(context, R.layout.widget_action_bar, this);
+
+        presenter = new DutyPresenter(Chaskify.getInstance().getDefaultSession().get());
+
         mTaskFilter = findViewById(R.id.action_task_filter);
         mActionDuty = findViewById(R.id.switch_action_duty);
         mTaskViewMode = findViewById(R.id.action_task_view_mode);
@@ -87,6 +93,18 @@ public class DutyActionBar extends LinearLayout {
             }
         });
         mIvTaskViewMode = findViewById(R.id.iv_task_view_mode);
+
+        mActionDuty.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked)
+                    presenter.onDuty();
+                else
+                    presenter.offDuty();
+            }
+        });
+
+        presenter.bindView(this);
     }
 
     private void showFilter() {

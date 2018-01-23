@@ -15,6 +15,9 @@ import com.chaskify.chaskify_sdk.rest.exceptions.TokenNotFoundException;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifySettings;
 import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by alberto on 6/12/17.
  */
@@ -35,7 +38,15 @@ public class ChaskifySession {
     private CalendarTaskRestClient mCalendarTaskRestClient;
     private TaskWayPointRestClient mTaskWayPointRestClient;
 
+    public interface OnDutyChange {
+        void onState(STATE state);
+    }
+
+    public List<OnDutyChange> mListenedDutyChange;
+
     public ChaskifySession(ChaskifyCredentials chaskifyCredentials) {
+        mListenedDutyChange = new ArrayList<>();
+
         this.mChaskifyCredentials = chaskifyCredentials;
 
         mLoginRestClient = new LoginRestClient(mChaskifyCredentials);
@@ -45,6 +56,16 @@ public class ChaskifySession {
         mSettingsRestClient = new SettingsRestClient(mChaskifyCredentials);
         mCalendarTaskRestClient = new CalendarTaskRestClient(mChaskifyCredentials);
         mTaskWayPointRestClient = new TaskWayPointRestClient(mChaskifyCredentials);
+    }
+
+    public void addDutyChangeListener(OnDutyChange onDutyChange) {
+        if (onDutyChange != null)
+            mListenedDutyChange.add(onDutyChange);
+    }
+
+    public void removeDutyChangeListener(OnDutyChange onDutyChange) {
+        if (onDutyChange != null)
+            mListenedDutyChange.remove(onDutyChange);
     }
 
     /**
@@ -209,6 +230,10 @@ public class ChaskifySession {
 
     private void setState(STATE mState) {
         this.mState = mState;
+        for (OnDutyChange onDutyChange :
+                mListenedDutyChange) {
+            onDutyChange.onState(mState);
+        }
     }
 
     @Override
