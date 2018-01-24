@@ -1,12 +1,15 @@
 package com.chaskify.android.ui.fragments.settings;
 
+import android.Manifest;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +19,7 @@ import android.widget.Toast;
 import com.annimon.stream.Stream;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
+import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.fragments.ChangePasswordDialogFragment;
 import com.chaskify.android.ui.model.ProfileModel;
@@ -29,10 +33,16 @@ import com.chaskify.data.repositories.SettingsRepositoryImpl;
 import com.chaskify.domain.interactors.ProfileInteractor;
 import com.chaskify.domain.interactors.SettingsInteractor;
 import com.marchinram.rxgallery.RxGallery;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.ByteArrayOutputStream;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -250,6 +260,7 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
 
                     return Base64.encodeBytes(byteArray);
                 })
+                .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .subscribe(s -> presenter.updateImageProfile(s), new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
@@ -296,7 +307,10 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
 
     private void pickFromCamera() {
         Timber.d("::pickFromCamera");
-        RxGallery.photoCapture(getActivity())
+        new RxPermissions(getActivity())
+                .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .filter(granted -> granted)
+                .flatMap(aBoolean -> RxGallery.photoCapture(getActivity()).toObservable())
                 .filter(uri -> uri != null)
                 .map(uri -> {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
@@ -308,6 +322,7 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
                     byte[] byteArray = byteArrayOutputStream.toByteArray();
                     return Base64.encodeBytes(byteArray);
                 })
+                .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .subscribe(s -> presenter.updateImageProfile(s), throwable -> Toast.makeText(getActivity(), throwable.toString(), Toast.LENGTH_LONG).show());
     }
 

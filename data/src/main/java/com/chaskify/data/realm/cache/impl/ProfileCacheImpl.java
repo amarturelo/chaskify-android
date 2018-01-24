@@ -58,7 +58,7 @@ public class ProfileCacheImpl extends RealmCache implements ProfileCache {
                                 if (realmProfiles1.isEmpty())
                                     return Flowable.just(Optional.empty());
                                 else
-                                    return Flowable.just(Optional.of(realmProfiles1))
+                                    return Flowable.just(Optional.of(pair.first.copyFromRealm(realmProfiles1)))
                                             .map(Optional::get)
                                             .map(value -> value.get(0))
                                             .filter(
