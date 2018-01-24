@@ -47,7 +47,7 @@ public class TaskItemModel {
         return this;
     }
 
-    public String getTrans_type() {
+    public String getTransType() {
         return trans_type;
     }
 

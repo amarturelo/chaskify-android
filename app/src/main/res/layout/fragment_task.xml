@@ -68,7 +68,7 @@
                         android:layout_width="12dp"
                         android:layout_height="12dp"
                         android:layout_gravity="center_vertical"
-                        android:background="@drawable/bg_task_type_pickup" />
+                        tools:background="@drawable/bg_task_type_pickup" />
 
                     <TextView
                         android:id="@+id/task_type"
@@ -78,7 +78,7 @@
                         android:drawableLeft="@drawable/bg_task_type_pickup"
                         android:paddingLeft="4dp"
                         android:textAllCaps="true"
-                        android:textColor="@color/purple"
+                        android:textColor="@android:color/black"
                         tools:text="pickup" />
                 </LinearLayout>
             </RelativeLayout>

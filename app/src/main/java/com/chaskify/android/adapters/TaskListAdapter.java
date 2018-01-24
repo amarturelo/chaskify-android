@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.annimon.stream.Stream;
 import com.chaskify.android.R;
 import com.chaskify.android.adapters.listened.OnItemListened;
 import com.chaskify.android.ui.model.TaskItemModel;
@@ -48,7 +47,20 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         TaskItemModel taskItemModel = mTaskItemModels.get(position);
 
-        holder.taskType.setText(taskItemModel.getTrans_type());
+        holder.taskType.setText(taskItemModel.getTransType());
+
+        switch (taskItemModel.getTransType()) {
+            case "service":
+                holder.taskTypeColor.setBackgroundResource(R.drawable.bg_task_type_service);
+                break;
+            case "delivery":
+                holder.taskTypeColor.setBackgroundResource(R.drawable.bg_task_type_delivery);
+                break;
+            case "pickup":
+                holder.taskTypeColor.setBackgroundResource(R.drawable.bg_task_type_pickup);
+                break;
+        }
+
         holder.taskDate.setText(DateUtils.formatDateTime(
                 holder.itemView.getContext()
                 , taskItemModel.getDelivery_date().getTime()

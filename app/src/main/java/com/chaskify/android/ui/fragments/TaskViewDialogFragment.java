@@ -2,7 +2,6 @@ package com.chaskify.android.ui.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
@@ -13,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +22,6 @@ import com.chaskify.android.adapters.TaskHistoryListAdapter;
 import com.chaskify.android.adapters.TaskWaypointListAdapter;
 import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.model.TaskModel;
-import com.chaskify.android.ui.model.TaskWaypointItemModel;
 import com.chaskify.android.ui.widget.TaskActionWidget;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.repositories.TaskRepositoryImpl;
@@ -52,6 +49,7 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
     private TextView textViewTaskAddress;
     private TextView textViewTaskTime;
     private TextView textViewTaskDescription;
+    private TextView textViewTaskTypeColor;
 
     private TextView mTextViewTaskClientName;
     private TextView mTextViewTaskClientNumber;
@@ -61,7 +59,7 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
     private View viewTaskStatus;
 
     private View formTaskDescription;
-    private View formTaskWaypoints;
+    private View formTaskWayPoints;
     private View formTaskHistory;
 
     private RecyclerView mTaskHistoryList;
@@ -100,8 +98,9 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
         viewTaskStatus = view.findViewById(R.id.task_status);
         textViewTaskDescription = view.findViewById(R.id.task_description);
         formTaskDescription = view.findViewById(R.id.form_task_description);
-        formTaskWaypoints = view.findViewById(R.id.form_task_way_points);
+        formTaskWayPoints = view.findViewById(R.id.form_task_way_points);
         formTaskHistory = view.findViewById(R.id.form_task_history);
+        textViewTaskTypeColor = view.findViewById(R.id.task_type_color);
 
         taskAction = view.findViewById(R.id.task_action_button);
 
@@ -195,6 +194,18 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
         textViewTaskAddress.setText(taskModel.getDeliveryAddress());
         textViewTaskType.setText(taskModel.getTransType());
 
+        switch (taskModel.getTransType()) {
+            case "service":
+                textViewTaskTypeColor.setBackgroundResource(R.drawable.bg_task_type_service);
+                break;
+            case "delivery":
+                textViewTaskTypeColor.setBackgroundResource(R.drawable.bg_task_type_delivery);
+                break;
+            case "pickup":
+                textViewTaskTypeColor.setBackgroundResource(R.drawable.bg_task_type_pickup);
+                break;
+        }
+
         if (taskModel.getDescription() == null || taskModel.getDescription().isEmpty())
             formTaskDescription.setVisibility(View.GONE);
         else {
@@ -248,9 +259,9 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
         mTaskHistoryAdapter.update(taskModel.getTaskHistoryItemModels());
 
         if (!taskModel.getTaskWaypointItemModels().isEmpty()) {
-            formTaskWaypoints.setVisibility(View.VISIBLE);
+            formTaskWayPoints.setVisibility(View.VISIBLE);
         } else
-            formTaskWaypoints.setVisibility(View.GONE);
+            formTaskWayPoints.setVisibility(View.GONE);
         mTaskWaypointAdapter.update(taskModel.getTaskWaypointItemModels());
     }
 

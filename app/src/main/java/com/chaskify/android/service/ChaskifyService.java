@@ -83,39 +83,10 @@ public class ChaskifyService extends Service implements ChaskifySession.OnDutyCh
         activity.stopService(new Intent(activity, ChaskifyService.class));
     }
 
-    public void onDuty(String driverId) {
-
-    }
-
-    public void attach(String driverId) {
-        detach();
-        mChaskifySession = Chaskify.getInstance().getSessionByDriverId(driverId).get();
-        mChaskifySession.addDutyChangeListener(this);
-
-    }
-
-    private void detach() {
-        mChaskifySession.removeDutyChangeListener(this);
-        release();
-    }
-
     @Override
     public void onState(ChaskifySession.STATE state) {
-        if (state == ChaskifySession.STATE.ON_DUTY)
-            onDuty();
-        else
-            offDuty();
-    }
 
-    private void onDuty() {
-        addSubscription(
-                rxLocation.settings().checkAndHandleResolution(locationRequest)
-                        .flatMapObservable(this::getAddressObservable)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(view::onAddressUpdate, throwable -> Log.e("MainPresenter", "Error fetching location/address updates", throwable))
-        );
     }
-
 
     private void offDuty() {
         release();
@@ -133,7 +104,7 @@ public class ChaskifyService extends Service implements ChaskifySession.OnDutyCh
         compositeSubscription.clear();
     }
 
-    private Observable<Address> getAddressObservable(boolean success) {
+    /*private Observable<Address> getAddressObservable(boolean success) {
         if (success) {
             return rxLocation.location().updates(locationRequest)
                     .subscribeOn(Schedulers.io())
@@ -151,5 +122,5 @@ public class ChaskifyService extends Service implements ChaskifySession.OnDutyCh
     private Observable<Address> getAddressFromLocation(Location location) {
         return rxLocation.geocoding().fromLocation(location).toObservable()
                 .subscribeOn(Schedulers.io());
-    }
+    }*/
 }

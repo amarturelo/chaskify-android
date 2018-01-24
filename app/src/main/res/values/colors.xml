@@ -32,5 +32,8 @@
     <color name="marker_blue">#42A5F5</color>
     <color name="marker_green">#66BB6A</color>
     <color name="transparent">#00000000</color>
+    <color name="task_type_service">#CFE7FB</color>
+    <color name="task_type_delivery">#33A17E</color>
+    <color name="task_type_pickup">#2196F3</color>
 
 </resources>
