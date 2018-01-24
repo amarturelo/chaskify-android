@@ -90,8 +90,8 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
                     presenter.bindView(this);
                     initListenedPreferenceChange();
 
-                    presenter.profile(chaskifySession.getCredentials().getDriverId());
-                    presenter.settings(chaskifySession.getCredentials().getDriverId());
+                    presenter.profile();
+                    presenter.settings();
                 });
 
     }

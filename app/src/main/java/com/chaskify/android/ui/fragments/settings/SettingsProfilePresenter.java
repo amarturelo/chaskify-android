@@ -6,10 +6,12 @@ import com.chaskify.android.helper.MethodCallHelper;
 import com.chaskify.android.helper.LogIfError;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
+import com.chaskify.android.ui.model.SettingsModel;
 import com.chaskify.android.ui.model.mapper.ProfileModelDataMapper;
 import com.chaskify.android.ui.model.mapper.SettingsModelDataMapper;
 import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallbackSuccess;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifySettings;
 import com.chaskify.data.realm.cache.impl.NotificationsCacheImpl;
 import com.chaskify.data.realm.cache.impl.ProfileCacheImpl;
 import com.chaskify.data.realm.cache.impl.SettingsCacheImpl;
@@ -18,6 +20,8 @@ import com.chaskify.data.realm.cache.impl.TaskWayPointCacheImpl;
 import com.chaskify.domain.interactors.ProfileInteractor;
 import com.chaskify.domain.interactors.SettingsInteractor;
 
+import bolts.Continuation;
+import bolts.Task;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
@@ -87,6 +91,10 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
     public void updateSettingsPush(boolean enable) {
         mMethodCallHelper
                 .updateSettings(enable)
+                .continueWith(task -> {
+                    settings();
+                    return null;
+                })
                 .continueWith(new LogIfError());
     }
 
@@ -144,9 +152,9 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
     }
 
     @Override
-    public void profile(String driverId) {
+    public void profile() {
         addSubscription(profileInteractor
-                .profileByDriverId(driverId)
+                .profileByDriverId(mChaskifySession.getCredentials().getDriverId())
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
@@ -155,14 +163,13 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
     }
 
     @Override
-    public void settings(String driverId) {
-        addSubscription(settingsInteractor
-                .settingsByDriverId(driverId)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(settings -> view.renderSettings(SettingsModelDataMapper.transform(settings)), error));
+    public void settings() {
+        mMethodCallHelper.getSettings()
+                .onSuccessTask((Continuation<ChaskifySettings, Task<Void>>) task -> {
+                    view.renderSettings(new SettingsModel()
+                            .setEnabledPush(task.getResult().getEnabledPush().equals("1")));
+                    return null;
+                });
     }
 
     private Consumer<Throwable> error = throwable -> view

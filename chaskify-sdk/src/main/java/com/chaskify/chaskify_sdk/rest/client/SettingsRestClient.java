@@ -59,11 +59,11 @@ public class SettingsRestClient extends RestClient<SettingsApi> {
                 });
     }
 
-    public void updateSettingsPush(boolean enable, ApiCallbackSuccess callback) throws TokenNotFoundException {
+    public void updateSettingsPush(boolean enable, ApiCallbackSuccess callback) {
         if (mChaskifyCredentials != null)
             updateSettingsPush(enable, mChaskifyCredentials.getAccessToken(), callback);
         else
-            throw new TokenNotFoundException();
+            callback.onChaskifyError(new TokenNotFoundException());
     }
 
     public void updateSettingsSound(String ringTone, ApiCallbackSuccess callback) throws TokenNotFoundException {

@@ -151,10 +151,10 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
         Timber.d("onCurrentItemChanged " + adapterPosition);
     }
 
-    private void moveCameraTo(TaskItemSnapModel item) {
+    private void moveCameraTo(double latitude, double longitude) {
         if (mapboxMap != null)
             mapboxMap.animateCamera(mapboxMap -> new CameraPosition.Builder()
-                    .target(new LatLng(item.getLat(), item.getLng()))
+                    .target(new LatLng(latitude, longitude))
                     .build());
     }
 
@@ -179,7 +179,7 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
             taskView(mTaskSnapListAdapter.getItem(position));
         else {
             goToSnapItem(position);
-            moveCameraTo(mTaskSnapListAdapter.getItem(position));
+            moveCameraTo(mTaskSnapListAdapter.getItem(position).getLat(), mTaskSnapListAdapter.getItem(position).getLng());
         }
     }
 
@@ -262,6 +262,8 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     @Override
     public boolean onMapAnnotationClick(@NonNull MapAnnotation mapAnnotationObject) {
         Timber.d(mapAnnotationObject.toString());
+        MarkerData markerData = mMapboxAdapter.getItem(mapAnnotationObject.getPosition());
+        moveCameraTo(markerData.getLatLng().getLatitude(), markerData.getLatLng().getLongitude());
         goToSnapItem(mTaskSnapListAdapter.getItemPositionById(mMapboxAdapter.getItem(mapAnnotationObject.getPosition()).getId()));
         return true;
     }

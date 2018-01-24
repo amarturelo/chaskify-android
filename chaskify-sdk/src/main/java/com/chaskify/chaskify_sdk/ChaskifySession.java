@@ -80,11 +80,34 @@ public class ChaskifySession {
         RestClient.initUserAgent(context);
     }
 
-    public void getChaskifySettings(ApiCallback<ChaskifySettings> callback) {
+    public void getChaskifySettings(final ApiCallback<ChaskifySettings> callback) {
         if (mChaskifySettings != null)
             callback.onSuccess(mChaskifySettings);
-        else
-            mSettingsRestClient.getSettings(callback);
+        else {
+            mSettingsRestClient.getSettings(new ApiCallback<ChaskifySettings>() {
+                @Override
+                public void onSuccess(ChaskifySettings info) {
+                    setChaskifySettings(info);
+                    callback.onSuccess(info);
+                }
+
+                @Override
+                public void onNetworkError(Exception e) {
+                    callback.onNetworkError(e);
+                }
+
+                @Override
+                public void onChaskifyError(Exception e) {
+                    callback.onChaskifyError(e);
+                }
+
+                @Override
+                public void onUnexpectedError(Exception e) {
+                    callback.onUnexpectedError(e);
+                }
+            });
+
+        }
     }
 
     public ChaskifyCredentials getCredentials() {
@@ -182,7 +205,7 @@ public class ChaskifySession {
         return this;
     }
 
-    public ChaskifySession setChaskifySettings(ChaskifySettings mChaskifySettings) {
+    private ChaskifySession setChaskifySettings(ChaskifySettings mChaskifySettings) {
         this.mChaskifySettings = mChaskifySettings;
         return this;
     }
@@ -206,8 +229,31 @@ public class ChaskifySession {
         mProfileRestClient.updateVehicle(transport_type_id, transport_description, licence_plate, color, callback);
     }
 
-    public void updateSettingsPush(boolean enable, ApiCallbackSuccess callback) throws TokenNotFoundException {
-        mSettingsRestClient.updateSettingsPush(enable, callback);
+    public void updateSettingsPush(final boolean enable, final ApiCallbackSuccess callback) {
+        ApiCallbackSuccess callbackSuccess = new ApiCallbackSuccess() {
+            @Override
+            public void onSuccess() {
+                mChaskifySettings.setEnabledPush(enable ? "1" : "0");
+                callback.onSuccess();
+            }
+
+            @Override
+            public void onNetworkError(Exception e) {
+                callback.onNetworkError(e);
+            }
+
+            @Override
+            public void onChaskifyError(Exception e) {
+                callback.onChaskifyError(e);
+            }
+
+            @Override
+            public void onUnexpectedError(Exception e) {
+                callback.onUnexpectedError(e);
+            }
+        };
+
+        mSettingsRestClient.updateSettingsPush(enable, callbackSuccess);
     }
 
     public void updateSettingsSound(String sound, ApiCallbackSuccess callback) throws TokenNotFoundException {

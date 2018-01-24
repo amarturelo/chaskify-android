@@ -58,9 +58,6 @@
         </service>
 
         <activity
-            android:name=".ui.fragments.settings.SettingsActivity"
-            android:label="@string/title_activity_settings" />
-        <activity
             android:name=".ui.activities.settings.SettingsProfileActivity"
             android:label="@string/title_activity_settings_profile"
             android:theme="@style/AppTheme.NoActionBar" />

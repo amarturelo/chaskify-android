@@ -80,9 +80,9 @@ public class MethodCallHelper {
                 });
     }
 
-    public Task<Void> getSettings() {
+    public Task<ChaskifySettings> getSettings() {
         TaskCompletionSource<ChaskifySettings> task = new TaskCompletionSource<>();
-        mChaskifySession.getSettingsRestClient().getSettings(new ApiCallback<ChaskifySettings>() {
+        mChaskifySession.getChaskifySettings(new ApiCallback<ChaskifySettings>() {
             @Override
             public void onSuccess(ChaskifySettings info) {
                 task.setResult(info);
@@ -104,10 +104,7 @@ public class MethodCallHelper {
             }
         });
 
-        return task.getTask()
-                .onSuccessTask(task1 -> {
-                    return null;
-                });
+        return task.getTask();
     }
 
     public Task<Void> getProfile() {
@@ -385,8 +382,6 @@ public class MethodCallHelper {
      */
     public Task<Void> updateSettings(boolean enable) {
         TaskCompletionSource<Void> task = new TaskCompletionSource<>();
-
-        try {
             mChaskifySession.updateSettingsPush(enable, new ApiCallbackSuccess() {
                 @Override
                 public void onSuccess() {
@@ -408,20 +403,10 @@ public class MethodCallHelper {
                     task.trySetError(e);
                 }
             });
-        } catch (TokenNotFoundException e) {
-            task.trySetError(e);
-        }
+
 
         return task.getTask()
-                .onSuccessTask(task1 -> {
-                    mSettingsCache.getByDriverIdAsObservable(mChaskifySession
-                            .getCredentials()
-                            .getDriverId())
-                            .firstOrError()
-                            .blockingGet()
-                            .ifPresent(realmSettings -> mSettingsCache.put(realmSettings.setEnabledPush(enable)));
-                    return null;
-                });
+                ;
     }
 
     public Task<Void> acceptTask(String id) {

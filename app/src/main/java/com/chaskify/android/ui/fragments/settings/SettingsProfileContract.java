@@ -27,7 +27,7 @@ public interface SettingsProfileContract {
     }
 
     interface Presenter extends BaseContract.Presenter<SettingsProfileContract.View> {
-        void profile(String driverId);
+        void profile();
 
         void updateProfile(String newPhone);
 
@@ -44,6 +44,6 @@ public interface SettingsProfileContract {
 
         void updateSettingsSound(String sound);
 
-        void settings(String driverId);
+        void settings();
     }
 }
