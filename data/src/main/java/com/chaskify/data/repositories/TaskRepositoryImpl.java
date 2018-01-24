@@ -1,20 +1,15 @@
 package com.chaskify.data.repositories;
 
-import com.chaskify.chaskify_sdk.rest.client.TaskRestClient;
 import com.chaskify.data.realm.cache.TaskCache;
-import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
-import com.chaskify.data.repositories.datasource.cloud.CloudTaskDataStore;
 import com.chaskify.data.repositories.datasource.disk.DiskTaskDataStore;
 import com.chaskify.domain.filter.Filter;
 import com.chaskify.domain.model.Task;
 import com.chaskify.domain.repositories.TaskRepository;
 
-import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
-import io.reactivex.Single;
 import timber.log.Timber;
 
 /**

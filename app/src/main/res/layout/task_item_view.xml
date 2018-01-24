@@ -32,7 +32,7 @@
                 app:srcCompat="@drawable/ic_assignment_black_24dp" />
 
             <TextView
-                android:id="@+id/task_id"
+                android:id="@+id/task_order_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"

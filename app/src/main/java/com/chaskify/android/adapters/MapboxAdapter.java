@@ -51,6 +51,10 @@ public class MapboxAdapter extends MapboxMapMeAdapter {
         return markers.size();
     }
 
+    public MarkerData getItem(int position) {
+        return markers.get(position);
+    }
+
     public static class MarkerDiffCallback extends DiffUtil.Callback {
         private List<MarkerData> mOldList;
         private List<MarkerData> mNewList;

@@ -26,6 +26,7 @@ public class TaskModelDataMapper {
                 .setDeliveryDate(task.getDelivery_date())
                 .setDescription(task.getTask_description())
                 .setStatus(task.getStatus())
+                .setTaskOrderNumber(task.getOrderNumber())
                 .setTransType(task.getTrans_type())
                 .setTaskHistoryItemModels(TaskHistoryItemModelDataMapper.transform(task.getTaskHistories()))
                 .setTaskWaypointItemModels(TaskWayPointItemModelDataMapper.transform(task.getTaskWaypointList()));

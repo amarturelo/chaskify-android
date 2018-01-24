@@ -9,15 +9,23 @@ import java.util.Date;
 public class TaskItemModel {
     private String task_id;
     private String status;
+    private String orderNumber;
     private String trans_type; //service
     private String customer_name;
     private Date delivery_date;
     private String delivery_address;
 
 
-
-
     public TaskItemModel() {
+    }
+
+    public String getOrderNumber() {
+        return orderNumber;
+    }
+
+    public TaskItemModel setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
+        return this;
     }
 
     public String getTaskId() {

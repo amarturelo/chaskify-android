@@ -158,14 +158,14 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
     @Override
     public void onRefresh() {
         //TODO este metodo tiene q decirle a la actividad padre q actualice ya que es ella la que tiene la responsabilidad
-        presenter.tasks(mFilter);
+        mSwipeRefresh.setRefreshing(false);
     }
 
     @Override
     public void putNewBundle(Bundle newBundle) {
         super.putNewBundle(newBundle);
         mFilter = newBundle.getParcelableArrayList(ARG_FILTER);
-        onRefresh();
+        presenter.tasks(mFilter);
     }
 
 }

@@ -59,40 +59,40 @@ public class TaskSnapListAdapter extends RecyclerView.Adapter<TaskSnapListAdapte
                 , taskItemModel.getDelivery_date().getTime()
                 , DateUtils.FORMAT_SHOW_TIME));
         holder.taskPlace.setText(taskItemModel.getDelivery_address());
-        holder.taskId.setText(holder.itemView.getResources().getText(R.string.title_task) + " #" + taskItemModel.getTaskId());
+        holder.taskOrderNumber.setText(holder.itemView.getResources().getText(R.string.title_task) + " #" + taskItemModel.getOrderNumber());
 
         switch (taskItemModel.getStatus()) {
             case "ASSIGNED":
-                holder.taskId.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_assigned));
+                holder.taskOrderNumber.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_assigned));
                 holder.taskStatus.setBackgroundResource(R.color.task_assigned);
                 break;
             case "SUCCESSFUL":
-                holder.taskId.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_successful));
+                holder.taskOrderNumber.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_successful));
                 holder.taskStatus.setBackgroundResource(R.color.task_successful);
                 break;
             case "COMPLETE":
-                holder.taskId.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_successful));
+                holder.taskOrderNumber.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_successful));
                 holder.taskStatus.setBackgroundResource(R.color.task_successful);
                 break;
             case "IN ROUTE":
-                holder.taskId.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_in_route));
+                holder.taskOrderNumber.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_in_route));
                 holder.taskStatus.setBackgroundResource(R.color.task_in_route);
                 break;
             case "ACCEPTED":
-                holder.taskId.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_accepted));
+                holder.taskOrderNumber.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_accepted));
                 holder.taskStatus.setBackgroundResource(R.color.task_accepted);
                 break;
             case "SIGNATURE":
-                holder.taskId.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_signature));
+                holder.taskOrderNumber.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_signature));
                 holder.taskStatus.setBackgroundResource(R.color.task_signature);
                 break;
             case "ARRIVED":
-                holder.taskId.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_arrived));
+                holder.taskOrderNumber.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_arrived));
                 holder.taskStatus.setBackgroundResource(R.color.task_arrived);
                 break;
 
             case "PENDING":
-                holder.taskId.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_pending));
+                holder.taskOrderNumber.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_pending));
                 holder.taskStatus.setBackgroundResource(R.color.task_pending);
                 break;
         }
@@ -107,10 +107,18 @@ public class TaskSnapListAdapter extends RecyclerView.Adapter<TaskSnapListAdapte
         return mTaskItemModels;
     }
 
+
+    public int getItemPositionById(String id) {
+        for (int i = 0; i < mTaskItemModels.size(); i++)
+            if (mTaskItemModels.get(i).getTaskId().equals(id))
+                return i;
+        return -1;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView taskTime;
-        public TextView taskId;
+        public TextView taskOrderNumber;
         public TextView taskPlace;
         public TextView taskType;
         public View taskStatus;
@@ -120,7 +128,7 @@ public class TaskSnapListAdapter extends RecyclerView.Adapter<TaskSnapListAdapte
             taskTime = itemView.findViewById(R.id.task_time);
             taskPlace = itemView.findViewById(R.id.task_place);
             taskType = itemView.findViewById(R.id.task_type);
-            taskId = itemView.findViewById(R.id.task_id);
+            taskOrderNumber = itemView.findViewById(R.id.task_order_number);
             taskStatus = itemView.findViewById(R.id.task_status);
         }
     }

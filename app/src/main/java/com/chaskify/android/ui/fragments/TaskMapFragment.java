@@ -69,6 +69,7 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Timber.tag(this.getClass().getSimpleName());
         Chaskify.getInstance().getDefaultSession()
                 .ifPresent(chaskifySession -> {
                     presenter = new TaskMapPresenter(
@@ -147,6 +148,7 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
 
     @Override
     public void onCurrentItemChanged(@Nullable RecyclerView.ViewHolder viewHolder, int adapterPosition) {
+        Timber.d("onCurrentItemChanged " + adapterPosition);
     }
 
     private void moveCameraTo(TaskItemSnapModel item) {
@@ -176,7 +178,7 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
         if (taskPicker.getCurrentItem() == position)
             taskView(mTaskSnapListAdapter.getItem(position));
         else {
-            taskPicker.smoothScrollToPosition(position);
+            goToSnapItem(position);
             moveCameraTo(mTaskSnapListAdapter.getItem(position));
         }
     }
@@ -259,6 +261,12 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
 
     @Override
     public boolean onMapAnnotationClick(@NonNull MapAnnotation mapAnnotationObject) {
-        return false;
+        Timber.d(mapAnnotationObject.toString());
+        goToSnapItem(mTaskSnapListAdapter.getItemPositionById(mMapboxAdapter.getItem(mapAnnotationObject.getPosition()).getId()));
+        return true;
+    }
+
+    private void goToSnapItem(int id) {
+        taskPicker.smoothScrollToPosition(id);
     }
 }

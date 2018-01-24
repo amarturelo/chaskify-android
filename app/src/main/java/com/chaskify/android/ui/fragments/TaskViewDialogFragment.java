@@ -43,7 +43,7 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
     private String mTaskId;
     private String mDriverId;
 
-    private TextView textViewTaskId;
+    private TextView textViewTaskOrderNumber;
     private TextView textViewTaskType;
     private TextView textViewTaskDate;
     private TextView textViewTaskAddress;
@@ -90,7 +90,7 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
     }
 
     private void initComponents(View view) {
-        textViewTaskId = view.findViewById(R.id.task_id);
+        textViewTaskOrderNumber = view.findViewById(R.id.task_order_number);
         textViewTaskType = view.findViewById(R.id.task_type);
         textViewTaskDate = view.findViewById(R.id.task_date);
         textViewTaskTime = view.findViewById(R.id.task_time);
@@ -190,7 +190,7 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
     @SuppressLint("SetTextI18n")
     @Override
     public void renderTask(TaskModel taskModel) {
-        textViewTaskId.setText(getText(R.string.title_task) + " #" + taskModel.getTaskId());
+        textViewTaskOrderNumber.setText(getText(R.string.title_task) + " #" + taskModel.getTaskOrderNumber());
         textViewTaskAddress.setText(taskModel.getDeliveryAddress());
         textViewTaskType.setText(taskModel.getTransType());
 
@@ -223,31 +223,31 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
 
         switch (taskModel.getStatus()) {
             case "ASSIGNED":
-                textViewTaskId.setTextColor(getResources().getColor(R.color.task_assigned));
+                textViewTaskOrderNumber.setTextColor(getResources().getColor(R.color.task_assigned));
                 viewTaskStatus.setBackgroundResource(R.color.task_assigned);
                 break;
             case "SUCCESSFUL":
-                textViewTaskId.setTextColor(getResources().getColor(R.color.task_successful));
+                textViewTaskOrderNumber.setTextColor(getResources().getColor(R.color.task_successful));
                 viewTaskStatus.setBackgroundResource(R.color.task_successful);
                 break;
             case "COMPLETE":
-                textViewTaskId.setTextColor(getResources().getColor(R.color.task_successful));
+                textViewTaskOrderNumber.setTextColor(getResources().getColor(R.color.task_successful));
                 viewTaskStatus.setBackgroundResource(R.color.task_successful);
                 break;
             case "IN ROUTE":
-                textViewTaskId.setTextColor(getResources().getColor(R.color.task_in_route));
+                textViewTaskOrderNumber.setTextColor(getResources().getColor(R.color.task_in_route));
                 viewTaskStatus.setBackgroundResource(R.color.task_in_route);
                 break;
             case "ACCEPTED":
-                textViewTaskId.setTextColor(getResources().getColor(R.color.task_accepted));
+                textViewTaskOrderNumber.setTextColor(getResources().getColor(R.color.task_accepted));
                 viewTaskStatus.setBackgroundResource(R.color.task_accepted);
                 break;
             case "SIGNATURE":
-                textViewTaskId.setTextColor(getResources().getColor(R.color.task_signature));
+                textViewTaskOrderNumber.setTextColor(getResources().getColor(R.color.task_signature));
                 viewTaskStatus.setBackgroundResource(R.color.task_signature);
                 break;
             case "ARRIVED":
-                textViewTaskId.setTextColor(getResources().getColor(R.color.task_arrived));
+                textViewTaskOrderNumber.setTextColor(getResources().getColor(R.color.task_arrived));
                 viewTaskStatus.setBackgroundResource(R.color.task_arrived);
                 break;
         }

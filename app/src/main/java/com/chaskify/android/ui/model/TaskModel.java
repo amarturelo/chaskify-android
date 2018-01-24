@@ -1,8 +1,5 @@
 package com.chaskify.android.ui.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +13,7 @@ public class TaskModel {
     private String transType; //service
     private String customerName;
     private Date deliveryDate;
+    private String taskOrderNumber;
     private String deliveryAddress;
     private String description;
     private String contactNumber;
@@ -24,6 +22,15 @@ public class TaskModel {
     private List<TaskHistoryItemModel> taskHistoryItemModels;
 
     public TaskModel() {
+    }
+
+    public String getTaskOrderNumber() {
+        return taskOrderNumber;
+    }
+
+    public TaskModel setTaskOrderNumber(String taskOrderNumber) {
+        this.taskOrderNumber = taskOrderNumber;
+        return this;
     }
 
     public String getTaskId() {

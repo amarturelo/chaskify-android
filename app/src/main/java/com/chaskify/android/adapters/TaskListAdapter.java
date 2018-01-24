@@ -67,7 +67,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
                 , DateUtils.FORMAT_SHOW_TIME));
         holder.taskPlace.setText(taskItemModel.getDelivery_address());
         holder.taskClientName.setText(taskItemModel.getCustomer_name());
-        holder.taskId.setText(taskItemModel.getTaskId());
+        holder.taskOrderNumber.setText(taskItemModel.getOrderNumber());
 
         switch (taskItemModel.getStatus()) {
             case "ASSIGNED":
@@ -102,7 +102,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView taskDate;
-        public TextView taskId;
+        public TextView taskOrderNumber;
         public TextView taskPlace;
         public TextView taskType;
         public TextView taskClientName;
@@ -120,7 +120,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
             formTaskDateComing = itemView.findViewById(R.id.form_task_date_coming);
             taskType = itemView.findViewById(R.id.task_type);
             taskTypeColor = itemView.findViewById(R.id.task_type_color);
-            taskId = itemView.findViewById(R.id.task_id);
+            taskOrderNumber = itemView.findViewById(R.id.task_order_number);
             taskStatus = itemView.findViewById(R.id.task_status);
 
             itemView.setOnClickListener(v -> {

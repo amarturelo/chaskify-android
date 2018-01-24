@@ -9,6 +9,7 @@ import java.util.Date;
 public class TaskItemSnapModel {
     private String task_id;
     private String status;
+    private String orderNumber;
     private String trans_type; //service
     private Date delivery_date;
     private String delivery_address;
@@ -17,6 +18,15 @@ public class TaskItemSnapModel {
     private double lng;
 
     public TaskItemSnapModel() {
+    }
+
+    public String getOrderNumber() {
+        return orderNumber;
+    }
+
+    public TaskItemSnapModel setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
+        return this;
     }
 
     public double getLat() {

@@ -24,6 +24,7 @@ public class TaskSnapItemModelDataMapper {
         taskItemSnapModel.setTask_id(task.getTaskId())
                 .setTrans_type(task.getTrans_type())
                 .setStatus(task.getStatus())
+                .setOrderNumber(task.getOrderNumber())
                 .setLat(task.getTask_lat())
                 .setLng(task.getTask_lng())
                 .setDelivery_address(task.getDelivery_address())
