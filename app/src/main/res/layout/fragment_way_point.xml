@@ -15,6 +15,7 @@
 
 
         <LinearLayout
+            android:id="@+id/form_task_way_points_actions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white"

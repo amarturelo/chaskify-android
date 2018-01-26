@@ -62,27 +62,17 @@ public class NotificationRepositoryImpl implements NotificationsRepository {
                         .map(chaskifyNotification -> new Notification()
                                 .setDeviceId(chaskifyNotification.getDeviceId())
                                 .setActions(chaskifyNotification.getActions())
+                                .setDateProcess(chaskifyNotification.getDateProcess())
                                 .setCustomerId(chaskifyNotification.getCustomerId())
                                 .setDriverId(chaskifyNotification.getDriverId())
                                 .setIsRead(chaskifyNotification.getIsRead())
                                 .setMessage(chaskifyNotification.getMessage())
                                 .setTaskId(chaskifyNotification.getTaskId())
+                                .setPushId(chaskifyNotification.getPushId())
                                 .setPushMessage(chaskifyNotification.getPushMessage())
                                 .setPushType(chaskifyNotification.getPushType())
                                 .setPushTitle(chaskifyNotification.getPushTitle()))
-                        .toList())
-                .doOnSuccess(notifications -> notificationsCache.put(Stream.of(notifications)
-                        .map(notification -> new RealmNotification()
-                                .setDeviceId(notification.getDeviceId())
-                                .setActions(notification.getActions())
-                                .setCustomerId(notification.getCustomerId())
-                                .setDriverId(notification.getDriverId())
-                                .setIsRead(notification.getIsRead())
-                                .setTaskId(notification.getTaskId())
-                                .setPushMessage(notification.getPushMessage())
-                                .setPushType(notification.getPushType())
-                                .setPushTitle(notification.getPushTitle()))
-                        .toList()));
+                        .toList());
 
     }
 }

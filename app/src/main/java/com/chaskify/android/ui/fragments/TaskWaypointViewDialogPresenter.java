@@ -6,7 +6,7 @@ import com.chaskify.android.helper.MethodCallHelper;
 import com.chaskify.android.helper.LogIfError;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
-import com.chaskify.android.ui.model.TaskWaypointModel;
+import com.chaskify.android.ui.model.TaskWayPointModel;
 import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.data.realm.cache.impl.NotificationsCacheImpl;
 import com.chaskify.data.realm.cache.impl.ProfileCacheImpl;
@@ -59,7 +59,7 @@ public class TaskWaypointViewDialogPresenter extends BasePresenter<TaskWaypointV
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> view.showProgress())
                 .doFinally(() -> view.hideProgress())
-                .subscribe(taskWaypoint -> view.renderWayPoint(new TaskWaypointModel()
+                .subscribe(taskWaypoint -> view.renderWayPoint(new TaskWayPointModel()
                                 .setId(taskWaypoint.getId())
                                 .setTaskId(taskWaypoint.getTaskId())
                                 .setContactNumber(taskWaypoint.getContactNumber())

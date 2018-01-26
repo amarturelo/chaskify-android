@@ -44,40 +44,40 @@ public class NotificationsListAdapter extends RecyclerView.Adapter<Notifications
         switch (itemModel.getPushType()) {
             case "task":
                 holder.image_push_type.setImageResource(R.drawable.ic_assignment_black_24dp);
-                holder.task_status.setVisibility(View.VISIBLE);
+                //holder.task_status.setVisibility(View.VISIBLE);
                 break;
             case "campaign":
                 holder.image_push_type.setImageResource(R.drawable.ic_message_black_24dp);
-                holder.task_status.setVisibility(View.GONE);
+                //holder.task_status.setVisibility(View.GONE);
                 break;
         }
-
-        switch (itemModel.getStatus()) {
-            case "ASSIGNED":
-                holder.task_status.setBackgroundResource(R.color.task_assigned);
-                break;
-            case "SUCCESSFUL":
-                holder.task_status.setBackgroundResource(R.color.task_successful);
-                break;
-            case "COMPLETE":
-                holder.task_status.setBackgroundResource(R.color.task_successful);
-                break;
-            case "IN ROUTE":
-                holder.task_status.setBackgroundResource(R.color.task_in_route);
-                break;
-            case "ACCEPTED":
-                holder.task_status.setBackgroundResource(R.color.task_accepted);
-                break;
-            case "SIGNATURE":
-                holder.task_status.setBackgroundResource(R.color.task_signature);
-                break;
-            case "ARRIVED":
-                holder.task_status.setBackgroundResource(R.color.task_arrived);
-                break;
-            case "PENDING":
-                holder.task_status.setBackgroundResource(R.color.task_pending);
-                break;
-        }
+        /*if (itemModel.getStatus() != null)
+            switch (itemModel.getStatus()) {
+                case "ASSIGNED":
+                    holder.task_status.setBackgroundResource(R.color.task_assigned);
+                    break;
+                case "SUCCESSFUL":
+                    holder.task_status.setBackgroundResource(R.color.task_successful);
+                    break;
+                case "COMPLETE":
+                    holder.task_status.setBackgroundResource(R.color.task_successful);
+                    break;
+                case "IN ROUTE":
+                    holder.task_status.setBackgroundResource(R.color.task_in_route);
+                    break;
+                case "ACCEPTED":
+                    holder.task_status.setBackgroundResource(R.color.task_accepted);
+                    break;
+                case "SIGNATURE":
+                    holder.task_status.setBackgroundResource(R.color.task_signature);
+                    break;
+                case "ARRIVED":
+                    holder.task_status.setBackgroundResource(R.color.task_arrived);
+                    break;
+                case "PENDING":
+                    holder.task_status.setBackgroundResource(R.color.task_pending);
+                    break;
+            }*/
     }
 
     @Override

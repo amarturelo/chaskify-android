@@ -50,7 +50,7 @@ public class TaskWayPointActionWidget extends LinearLayout implements View.OnCli
         mNegative.setOnClickListener(this);
     }
 
-    public void setTaskId(TaskWayPointActionModel mTaskWayPointActionModel) {
+    public void attachWayPoint(TaskWayPointActionModel mTaskWayPointActionModel) {
         this.mTaskWayPointActionModel = mTaskWayPointActionModel;
 
         if (presenter != null)
@@ -74,7 +74,7 @@ public class TaskWayPointActionWidget extends LinearLayout implements View.OnCli
     @Override
     public void renderActions(TaskWayPointActionModel mTaskActionModel) {
         TASK_WAY_POINT_STATUS_ACTION taskStatusAction = TASK_WAY_POINT_STATUS_ACTION.toEnum(mTaskActionModel.getStatus());
-        if (taskStatusAction == null)
+        if (taskStatusAction == null || !mTaskActionModel.getTaskStatus().equals("IN ROUTE"))
             hide();
         else {
             show();
@@ -95,25 +95,13 @@ public class TaskWayPointActionWidget extends LinearLayout implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.positive_action:
-                /*switch (mTaskWayPointActionModel.getStatus()) {
-                    case "ASSIGNED":
-                        presenter.accept(mTaskWayPointActionModel.getTaskId());
-                        break;
-                    case "IN ROUTE":
-                        presenter.arrivedTask(mTaskWayPointActionModel.getTaskId());
-                        break;
+                switch (mTaskWayPointActionModel.getStatus()) {
                     case "ACCEPTED":
-                        presenter.startTask(mTaskWayPointActionModel.getTaskId());
-                        break;
-                    case "ARRIVED":
-                        presenter.successfulTask(mTaskWayPointActionModel.getTaskId());
-                        break;
-                    case "UNASSIGNED":
-                        presenter.accept(mTaskWayPointActionModel.getTaskId());
+                        presenter.startTaskWayPoint(mTaskWayPointActionModel.getTaskWayPointId());
                         break;
                     default:
                         break;
-                }*/
+                }
                 break;
             case R.id.negative_action:
                 switch (mTaskWayPointActionModel.getStatus()) {
@@ -127,7 +115,8 @@ public class TaskWayPointActionWidget extends LinearLayout implements View.OnCli
 
     public static class TaskWayPointActionModel {
         private String driverId;
-        private String taskId;
+        private String taskWayPointId;
+        private String taskStatus;
         private String status;
 
         public String getDriverId() {
@@ -139,15 +128,6 @@ public class TaskWayPointActionWidget extends LinearLayout implements View.OnCli
             return this;
         }
 
-        public String getTaskId() {
-            return taskId;
-        }
-
-        public TaskWayPointActionModel setTaskId(String taskId) {
-            this.taskId = taskId;
-            return this;
-        }
-
         public String getStatus() {
             return status;
         }
@@ -156,7 +136,26 @@ public class TaskWayPointActionWidget extends LinearLayout implements View.OnCli
             this.status = status;
             return this;
         }
+
+        public String getTaskWayPointId() {
+            return taskWayPointId;
+        }
+
+        public TaskWayPointActionModel setTaskWayPointId(String taskWayPointId) {
+            this.taskWayPointId = taskWayPointId;
+            return this;
+        }
+
+        public String getTaskStatus() {
+            return taskStatus;
+        }
+
+        public TaskWayPointActionModel setTaskStatus(String taskStatus) {
+            this.taskStatus = taskStatus;
+            return this;
+        }
     }
+
 
     public enum TASK_WAY_POINT_STATUS_ACTION {
         ASSIGNED(R.string.title_task_accept, R.string.title_task_decline, R.color.task_accepted),

@@ -1,13 +1,17 @@
 package com.chaskify.chaskify_sdk.rest.client;
 
 import com.chaskify.chaskify_sdk.RestClient;
+import com.chaskify.chaskify_sdk.mapper.TaskDeserializer;
 import com.chaskify.chaskify_sdk.rest.api.NotificationApi;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.exceptions.TokenNotFoundException;
 import com.chaskify.chaskify_sdk.rest.model.BaseResponse;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyCalendarTask;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyNotification;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifyTask;
 import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
@@ -56,5 +60,14 @@ public class NotificationRestClient extends RestClient<NotificationApi> {
                         callback.onNetworkError((Exception) t);
                     }
                 });
+    }
+
+    @Override
+    protected Gson getGson() {
+        return new GsonBuilder()
+                .setLenient()
+                .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                .registerTypeAdapter(ChaskifyTask.class, new TaskDeserializer())
+                .create();
     }
 }

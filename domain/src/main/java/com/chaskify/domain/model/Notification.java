@@ -1,5 +1,7 @@
 package com.chaskify.domain.model;
 
+import java.util.Date;
+
 /**
  * Created by alberto on 16/12/17.
  */
@@ -18,7 +20,7 @@ public class Notification {
     public String driverId;
     public String taskId;
     public String dateCreated;
-    public String dateProcess;
+    public Date dateProcess;
     public String ipAddress;
     public String isRead;
     public Object message;
@@ -143,11 +145,11 @@ public class Notification {
         return this;
     }
 
-    public String getDateProcess() {
+    public Date getDateProcess() {
         return dateProcess;
     }
 
-    public Notification setDateProcess(String dateProcess) {
+    public Notification setDateProcess(Date dateProcess) {
         this.dateProcess = dateProcess;
         return this;
     }

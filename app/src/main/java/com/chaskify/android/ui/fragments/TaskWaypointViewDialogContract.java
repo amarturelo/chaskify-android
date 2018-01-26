@@ -1,7 +1,7 @@
 package com.chaskify.android.ui.fragments;
 
 import com.chaskify.android.shared.BaseContract;
-import com.chaskify.android.ui.model.TaskWaypointModel;
+import com.chaskify.android.ui.model.TaskWayPointModel;
 import com.chaskify.domain.filter.Filter;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class TaskWaypointViewDialogContract {
 
         void showError(Throwable throwable);
 
-        void renderWayPoint(TaskWaypointModel waypointModel);
+        void renderWayPoint(TaskWayPointModel waypointModel);
     }
 
     interface Presenter extends BaseContract.Presenter<TaskWaypointViewDialogContract.View> {

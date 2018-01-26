@@ -34,6 +34,7 @@ public class TaskWayPointRestClient extends RestClient<TaskWayPointApi> {
 
     public TaskWayPointRestClient(ChaskifyCredentials chaskifyCredentials) {
         super(chaskifyCredentials, TaskWayPointApi.class);
+        Timber.tag(this.getClass().getSimpleName());
     }
 
     public void wayPointById(String task_id, ApiCallback<ChaskifyTaskWayPoint> callback) throws TokenNotFoundException {

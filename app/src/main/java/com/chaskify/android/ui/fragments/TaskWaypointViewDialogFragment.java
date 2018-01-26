@@ -4,15 +4,20 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.design.widget.CoordinatorLayout;
 import android.text.format.DateUtils;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
-import com.chaskify.android.ui.model.TaskWaypointModel;
+import com.chaskify.android.ui.model.TaskWayPointModel;
+import com.chaskify.android.ui.widget.TaskWayPointActionWidget;
 import com.chaskify.data.realm.cache.impl.TaskWayPointCacheImpl;
 import com.chaskify.data.repositories.TaskWaypointRepositoryImpl;
 import com.chaskify.domain.filter.DriverFilter;
@@ -40,6 +45,8 @@ public class TaskWaypointViewDialogFragment extends BottomSheetDialogFragment im
     private TextView textViewWaypointAddress;
     private TextView textViewWaypointTime;
     private TextView textViewWayPointDescription;
+
+    private TaskWayPointActionWidget taskWayPointActionWidget;
 
 
     private TextView textViewWayPointClientName;
@@ -93,6 +100,15 @@ public class TaskWaypointViewDialogFragment extends BottomSheetDialogFragment im
 
             presenter.wayPointById(filters);
         }
+
+        getDialog().setOnShowListener(dialog1 -> {
+            BottomSheetDialog d = (BottomSheetDialog) dialog1;
+            FrameLayout bottomSheet = d.findViewById(R.id.design_bottom_sheet);
+            CoordinatorLayout coordinatorLayout = (CoordinatorLayout) bottomSheet.getParent();
+            BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+            bottomSheetBehavior.setPeekHeight(d.findViewById(R.id.form_task_way_points_actions).getHeight());
+            coordinatorLayout.getParent().requestLayout();
+        });
     }
 
     @Override
@@ -114,6 +130,8 @@ public class TaskWaypointViewDialogFragment extends BottomSheetDialogFragment im
         textViewWayPointClientName = view.findViewById(R.id.way_point_client_name);
         textViewWayPointClientNumber = view.findViewById(R.id.way_point_client_number);
         textViewWayPointClientEmail = view.findViewById(R.id.way_point_client_mail);
+
+        taskWayPointActionWidget = view.findViewById(R.id.task_way_point_action_button);
     }
 
     @Override
@@ -151,7 +169,7 @@ public class TaskWaypointViewDialogFragment extends BottomSheetDialogFragment im
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void renderWayPoint(TaskWaypointModel waypointModel) {
+    public void renderWayPoint(TaskWayPointModel waypointModel) {
         textViewTaskWaypointId.setText(getResources().getText(R.string.title_way_point) + " #" + waypointModel.getId());
 
         textViewWaypointAddress.setText(waypointModel.getDeliveryAddress());
@@ -208,5 +226,10 @@ public class TaskWaypointViewDialogFragment extends BottomSheetDialogFragment im
                 textViewWaypointStatusColor.setBackgroundResource(R.color.task_pending);
                 break;
         }
+
+        taskWayPointActionWidget.attachWayPoint(new TaskWayPointActionWidget.TaskWayPointActionModel()
+                .setTaskWayPointId(waypointModel.getId())
+                .setStatus(waypointModel.getStatus())
+                .setTaskStatus(waypointModel.getTaskStatus()));
     }
 }

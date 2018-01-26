@@ -1,5 +1,6 @@
 package com.chaskify.android.ui.widget;
 
+import com.chaskify.android.helper.LogIfError;
 import com.chaskify.android.helper.MethodCallHelper;
 import com.chaskify.android.shared.BasePresenter;
 
@@ -19,7 +20,8 @@ public class TaskWayPointActionPresenter extends BasePresenter<TaskWayPointActio
 
     @Override
     public void startTaskWayPoint(String id) {
-
+        mMethodCallHelper.startTaskWayPoint(id)
+                .continueWith(new LogIfError());
     }
 
     @Override

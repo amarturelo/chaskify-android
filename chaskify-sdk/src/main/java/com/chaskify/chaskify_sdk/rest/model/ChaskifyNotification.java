@@ -67,10 +67,10 @@ public class ChaskifyNotification {
     public String taskId;
     @SerializedName("date_created")
     @Expose
-    public Date dateCreated;
+    public String dateCreated;
     @SerializedName("date_process")
     @Expose
-    public String dateProcess;
+    public Date dateProcess;
     @SerializedName("ip_address")
     @Expose
     public String ipAddress;
@@ -108,6 +108,24 @@ public class ChaskifyNotification {
 
     public ChaskifyNotification setDevicePlatform(String devicePlatform) {
         this.devicePlatform = devicePlatform;
+        return this;
+    }
+
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    public ChaskifyNotification setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
+        return this;
+    }
+
+    public Date getDateProcess() {
+        return dateProcess;
+    }
+
+    public ChaskifyNotification setDateProcess(Date dateProcess) {
+        this.dateProcess = dateProcess;
         return this;
     }
 
@@ -192,14 +210,6 @@ public class ChaskifyNotification {
         return this;
     }
 
-    public String getDateProcess() {
-        return dateProcess;
-    }
-
-    public ChaskifyNotification setDateProcess(String dateProcess) {
-        this.dateProcess = dateProcess;
-        return this;
-    }
 
     public String getIpAddress() {
         return ipAddress;

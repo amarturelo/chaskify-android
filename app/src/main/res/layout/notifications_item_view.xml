@@ -45,7 +45,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginRight="4dp"
                     android:background="@color/task_assigned"
-                    android:orientation="vertical" />
+                    android:orientation="vertical"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/push_title"

@@ -382,27 +382,27 @@ public class MethodCallHelper {
      */
     public Task<Void> updateSettings(boolean enable) {
         TaskCompletionSource<Void> task = new TaskCompletionSource<>();
-            mChaskifySession.updateSettingsPush(enable, new ApiCallbackSuccess() {
-                @Override
-                public void onSuccess() {
-                    task.setResult(null);
-                }
+        mChaskifySession.updateSettingsPush(enable, new ApiCallbackSuccess() {
+            @Override
+            public void onSuccess() {
+                task.setResult(null);
+            }
 
-                @Override
-                public void onNetworkError(Exception e) {
-                    task.trySetError(e);
-                }
+            @Override
+            public void onNetworkError(Exception e) {
+                task.trySetError(e);
+            }
 
-                @Override
-                public void onChaskifyError(Exception e) {
-                    task.trySetError(e);
-                }
+            @Override
+            public void onChaskifyError(Exception e) {
+                task.trySetError(e);
+            }
 
-                @Override
-                public void onUnexpectedError(Exception e) {
-                    task.trySetError(e);
-                }
-            });
+            @Override
+            public void onUnexpectedError(Exception e) {
+                task.trySetError(e);
+            }
+        });
 
 
         return task.getTask()
@@ -537,7 +537,9 @@ public class MethodCallHelper {
                 );
     }
 
-    public Task<Void> inRouteTaskWayPoint(String id) {
+
+    public Task<Void> startTaskWayPoint(String id) {
+
         TaskCompletionSource<ChaskifyTaskWayPoint> wayPoint = new TaskCompletionSource<>();
 
         mChaskifySession.getTaskWayPointRestClient().changeTaskWayPointStatus(id, ChaskifyTaskWayPoint.STATUS.IN_ROUTE, "", "", new ApiCallback<ChaskifyTaskWayPoint>() {
