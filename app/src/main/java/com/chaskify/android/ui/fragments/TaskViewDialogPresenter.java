@@ -78,6 +78,10 @@ public class TaskViewDialogPresenter extends BasePresenter<TaskViewDialogContrac
                             view.renderTaskAction(new TaskActionWidget.TaskActionModel()
                                     .setDriverId(mChaskifySession.getCredentials().getDriverId())
                                     .setTaskId(task.getTaskId())
+                                    .setWayPointPending((int) Stream
+                                            .of(task.getTaskWaypointList())
+                                            .filter(value -> !value.getStatus().equals("COMPLETED"))
+                                            .count())
                                     .setStatus(task.getStatus()));
                             view.renderTask(TaskModelDataMapper.transform(task));
                         }

@@ -26,6 +26,7 @@ public class TaskWayPointActionPresenter extends BasePresenter<TaskWayPointActio
 
     @Override
     public void successfulTaskWayPoint(String id) {
-
+        mMethodCallHelper.successfulTaskWayPoint(id)
+                .continueWith(new LogIfError());
     }
 }

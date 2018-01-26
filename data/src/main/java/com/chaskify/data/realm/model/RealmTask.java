@@ -14,6 +14,7 @@ import io.realm.annotations.PrimaryKey;
 public class RealmTask extends RealmObject {
     public static String TASK_ID = "task_id";
     public static String DRIVER_ID = "driver_id";
+    public static String DELIVERY_DATE = "delivery_date";
     @PrimaryKey
     private String task_id;
     private String customer_id;

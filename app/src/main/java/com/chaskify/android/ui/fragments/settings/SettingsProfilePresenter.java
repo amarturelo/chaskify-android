@@ -154,6 +154,8 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
 
     @Override
     public void profile() {
+        mMethodCallHelper.getProfile()
+                .continueWith(new LogIfError());
         addSubscription(profileInteractor
                 .profileByDriverId(mChaskifySession.getCredentials().getDriverId())
                 .filter(Optional::isPresent)

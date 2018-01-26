@@ -184,7 +184,7 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
 
     @Override
     public void renderTaskAction(TaskActionWidget.TaskActionModel taskActionModel) {
-        taskAction.setTaskId(taskActionModel);
+        taskAction.attachTask(taskActionModel);
     }
 
     @SuppressLint("SetTextI18n")

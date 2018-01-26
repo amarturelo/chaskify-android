@@ -25,11 +25,11 @@ import timber.log.Timber;
 public class TaskWayPointActionWidget extends LinearLayout implements View.OnClickListener, TaskWayPointActionContract.View {
 
     private TextView mPositive;
-    private TextView mNegative;
 
     private TaskWayPointActionPresenter presenter;
 
     private TaskWayPointActionModel mTaskWayPointActionModel;
+    private TextView mNegative;
 
     public TaskWayPointActionWidget(Context context) {
         this(context, null, 0);
@@ -51,7 +51,6 @@ public class TaskWayPointActionWidget extends LinearLayout implements View.OnCli
         mPositive = findViewById(R.id.positive_action);
         mPositive.setOnClickListener(this);
         mNegative = findViewById(R.id.negative_action);
-        mNegative.setOnClickListener(this);
     }
 
     public void attachWayPoint(TaskWayPointActionModel mTaskWayPointActionModel) {
@@ -80,12 +79,12 @@ public class TaskWayPointActionWidget extends LinearLayout implements View.OnCli
         Timber.d(mTaskActionModel.toString());
 
         TASK_WAY_POINT_STATUS_ACTION taskStatusAction = TASK_WAY_POINT_STATUS_ACTION.toEnum(mTaskActionModel.getStatus());
-        if (taskStatusAction == null )
+        if (taskStatusAction == null)
             hide();
         else {
             show();
             mPositive.setText(taskStatusAction.getPositive());
-            mNegative.setText(taskStatusAction.getNegative());
+            mNegative.setVisibility(INVISIBLE);
         }
     }
 
@@ -102,16 +101,12 @@ public class TaskWayPointActionWidget extends LinearLayout implements View.OnCli
         switch (v.getId()) {
             case R.id.positive_action:
                 switch (mTaskWayPointActionModel.getStatus()) {
+                    case "IN ROUTE":
+                        presenter.successfulTaskWayPoint(mTaskWayPointActionModel.getTaskWayPointId());
+                        break;
                     case "ACCEPTED":
                         presenter.startTaskWayPoint(mTaskWayPointActionModel.getTaskWayPointId());
                         break;
-                    default:
-                        break;
-                }
-                break;
-            case R.id.negative_action:
-                switch (mTaskWayPointActionModel.getStatus()) {
-
                     default:
                         break;
                 }
@@ -174,28 +169,22 @@ public class TaskWayPointActionWidget extends LinearLayout implements View.OnCli
 
 
     public enum TASK_WAY_POINT_STATUS_ACTION {
-        ASSIGNED(R.string.title_task_accept, R.string.title_task_decline, R.color.task_accepted),
-        ACCEPTED(R.string.title_task_start, R.string.title_task_cancel, R.color.task_start),
-        IN_ROUTE(R.string.title_task_arrived, R.string.title_task_cancel, R.color.task_arrived),
-        ARRIVED(R.string.title_task_successfult, R.string.title_task_failed, R.color.task_successful),
-        UNASSIGNED(R.string.title_task_accept, R.string.title_task_decline, R.color.task_accepted);
+        ASSIGNED(R.string.title_task_accept, R.color.task_accepted),
+        ACCEPTED(R.string.title_task_start, R.color.task_start),
+        IN_ROUTE(R.string.title_task_way_point_successful, R.color.task_arrived),
+        ARRIVED(R.string.title_task_successfult, R.color.task_successful),
+        UNASSIGNED(R.string.title_task_accept, R.color.task_accepted);
 
         private int positive;
-        private int negative;
         private int color;
 
-        TASK_WAY_POINT_STATUS_ACTION(int positive, int negative, int color) {
+        TASK_WAY_POINT_STATUS_ACTION(int positive, int color) {
             this.positive = positive;
-            this.negative = negative;
             this.color = color;
         }
 
         public int getPositive() {
             return positive;
-        }
-
-        public int getNegative() {
-            return negative;
         }
 
         public int getColor() {

@@ -55,7 +55,7 @@ public class TaskActionWidget extends LinearLayout implements TaskActionContract
         mNegative.setOnClickListener(this);
     }
 
-    public void setTaskId(TaskActionModel mTaskActionModel) {
+    public void attachTask(TaskActionModel mTaskActionModel) {
         this.mTaskActionModel = mTaskActionModel;
 
         if (presenter != null)
@@ -87,6 +87,9 @@ public class TaskActionWidget extends LinearLayout implements TaskActionContract
             mPositive.setText(taskStatusAction.getPositive());
             mNegative.setText(taskStatusAction.getNegative());
         }
+
+        if (mTaskActionModel.getStatus().equals("IN ROUTE") && mTaskActionModel.getWayPointPending() != 0)
+            mPositive.setVisibility(INVISIBLE);
     }
 
     private void hide() {
@@ -158,6 +161,16 @@ public class TaskActionWidget extends LinearLayout implements TaskActionContract
         private String driverId;
         private String taskId;
         private String status;
+        private int wayPointPending;
+
+        public int getWayPointPending() {
+            return wayPointPending;
+        }
+
+        public TaskActionModel setWayPointPending(int wayPointPending) {
+            this.wayPointPending = wayPointPending;
+            return this;
+        }
 
         public String getDriverId() {
             return driverId;

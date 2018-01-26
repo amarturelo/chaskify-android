@@ -6,6 +6,7 @@ import android.util.Pair;
 import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
 import com.annimon.stream.function.Consumer;
+import com.annimon.stream.function.Predicate;
 import com.chaskify.data.realm.model.RealmProfile;
 import com.chaskify.data.realm.model.RealmTask;
 import com.chaskify.data.realm.cache.TaskCache;
@@ -17,6 +18,7 @@ import com.chaskify.domain.filter.TaskIdFilter;
 import org.reactivestreams.Publisher;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -75,6 +77,23 @@ public class TaskCacheImpl extends RealmCache implements TaskCache {
                     RealmQuery<RealmTask> query = pair.first.where(RealmTask.class);
                     Stream.of(filters)
                             .forEach(filter -> {
+                                if (filter instanceof DateFilter) {
+                                    Calendar start = Calendar.getInstance(); // locale-specific
+                                    start.setTime(((DateFilter) filter).getDate());
+                                    start.set(Calendar.HOUR_OF_DAY, 0);
+                                    start.set(Calendar.MINUTE, 0);
+                                    start.set(Calendar.SECOND, 0);
+                                    start.set(Calendar.MILLISECOND, 0);
+
+                                    Calendar end = Calendar.getInstance(); // locale-specific
+                                    end.setTime(((DateFilter) filter).getDate());
+                                    end.set(Calendar.HOUR_OF_DAY, 23);
+                                    end.set(Calendar.MINUTE, 59);
+                                    end.set(Calendar.SECOND, 59);
+                                    end.set(Calendar.MILLISECOND, 0);
+
+                                    query.between(RealmTask.DELIVERY_DATE, start.getTime(), end.getTime());
+                                }
                                 if (filter instanceof DriverFilter)
                                     query.equalTo(RealmTask.DRIVER_ID, ((DriverFilter) filter).getDriver());
                                 if (filter instanceof TaskIdFilter)
@@ -90,6 +109,7 @@ public class TaskCacheImpl extends RealmCache implements TaskCache {
                 }
                 , pair -> close(pair.first, pair.second))
                 .unsubscribeOn(AndroidSchedulers.from(Looper.myLooper())))
+
                 ;
     }
 

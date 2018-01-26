@@ -54,11 +54,7 @@ public class TaskHistoryListAdapter extends RecyclerView.Adapter<TaskHistoryList
                 holder.mTaskStatusColor.setBackgroundResource(R.color.task_assigned);
                 holder.mTaskStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_assigned));
                 break;
-            case "SUCCESSFUL":
-                holder.mTaskStatusColor.setBackgroundResource(R.color.task_successful);
-                holder.mTaskStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_successful));
-                break;
-            case "COMPLETE":
+            case "COMPLETED":
                 holder.mTaskStatusColor.setBackgroundResource(R.color.task_successful);
                 holder.mTaskStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_successful));
                 break;

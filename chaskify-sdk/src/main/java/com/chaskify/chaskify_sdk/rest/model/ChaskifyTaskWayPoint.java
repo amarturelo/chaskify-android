@@ -13,7 +13,7 @@ public class ChaskifyTaskWayPoint {
 
     public enum STATUS {
 
-        START("START"), IN_ROUTE("IN ROUTE"), ACCEPTED("ACCEPTED"), ARRIVED("ARRIVED"), SUCCESSFUL("SUCCESSFUL");
+        START("START"), IN_ROUTE("IN ROUTE"), ACCEPTED("ACCEPTED"), ARRIVED("ARRIVED"),  COMPLETED("COMPLETED");
         private String text;
 
         STATUS(String s) {
