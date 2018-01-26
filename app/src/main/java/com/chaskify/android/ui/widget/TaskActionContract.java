@@ -13,14 +13,16 @@ public interface TaskActionContract {
 
     interface Presenter extends BaseContract.Presenter<TaskActionContract.View> {
 
-        void accept(String id);
+        void acceptTask(String id);
 
-        void arrived(String id);
+        void arrivedTask(String id);
 
-        void start(String id);
+        void startTask(String id);
 
         void successful(String id);
 
-        void decline(String id);
+        void declineTask(String id);
+
+        void cancelTask(String taskId, String reason);
     }
 }

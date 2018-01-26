@@ -16,6 +16,8 @@ import com.chaskify.data.realm.cache.impl.SettingsCacheImpl;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.realm.cache.impl.TaskWayPointCacheImpl;
 
+import timber.log.Timber;
+
 /**
  * Created by alberto on 14/01/18.
  */
@@ -44,6 +46,8 @@ public class TaskWayPointActionWidget extends LinearLayout implements View.OnCli
     }
 
     private void init() {
+        Timber.tag(this.getClass().getSimpleName());
+
         mPositive = findViewById(R.id.positive_action);
         mPositive.setOnClickListener(this);
         mNegative = findViewById(R.id.negative_action);
@@ -73,8 +77,10 @@ public class TaskWayPointActionWidget extends LinearLayout implements View.OnCli
 
     @Override
     public void renderActions(TaskWayPointActionModel mTaskActionModel) {
+        Timber.d(mTaskActionModel.toString());
+
         TASK_WAY_POINT_STATUS_ACTION taskStatusAction = TASK_WAY_POINT_STATUS_ACTION.toEnum(mTaskActionModel.getStatus());
-        if (taskStatusAction == null || !mTaskActionModel.getTaskStatus().equals("IN ROUTE"))
+        if (taskStatusAction == null )
             hide();
         else {
             show();
@@ -153,6 +159,16 @@ public class TaskWayPointActionWidget extends LinearLayout implements View.OnCli
         public TaskWayPointActionModel setTaskStatus(String taskStatus) {
             this.taskStatus = taskStatus;
             return this;
+        }
+
+        @Override
+        public String toString() {
+            return "TaskWayPointActionModel{" +
+                    "driverId='" + driverId + '\'' +
+                    ", taskWayPointId='" + taskWayPointId + '\'' +
+                    ", taskStatus='" + taskStatus + '\'' +
+                    ", status='" + status + '\'' +
+                    '}';
         }
     }
 

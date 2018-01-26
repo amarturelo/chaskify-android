@@ -184,4 +184,5 @@
     <string name="title_task_arrived">arrived</string>
     <string name="title_task_failed">failed</string>
     <string name="title_task_successfult">successfult</string>
+    <string name="title_task_cancel_reason">Reason</string>
 </resources>

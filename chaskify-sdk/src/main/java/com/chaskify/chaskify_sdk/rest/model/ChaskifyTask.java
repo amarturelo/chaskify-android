@@ -14,7 +14,7 @@ public class ChaskifyTask {
 
     public enum STATUS {
 
-        IN_ROUTE("IN ROUTE"), ACCEPTED("ACCEPTED"), ARRIVED("ARRIVED"), SUCCESSFUL("SUCCESSFUL");
+        IN_ROUTE("IN ROUTE"), ACCEPTED("ACCEPTED"), ARRIVED("ARRIVED"), SUCCESSFUL("SUCCESSFUL"), DECLINED("DECLINED"), UNASSIGNED("UNASSIGNED"), CANCELED("CANCELED");
         private String text;
 
         STATUS(String s) {

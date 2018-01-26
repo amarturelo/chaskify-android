@@ -62,6 +62,14 @@ public class TaskSnapListAdapter extends RecyclerView.Adapter<TaskSnapListAdapte
         holder.taskOrderNumber.setText(holder.itemView.getResources().getText(R.string.title_task) + " #" + taskItemModel.getOrderNumber());
 
         switch (taskItemModel.getStatus()) {
+            case "CANCELED":
+                holder.taskOrderNumber.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_canceled));
+                holder.taskStatus.setBackgroundResource(R.color.task_canceled);
+                break;
+            case "UNASSIGNED":
+                holder.taskOrderNumber.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_unassigned));
+                holder.taskStatus.setBackgroundResource(R.color.task_unassigned);
+                break;
             case "ASSIGNED":
                 holder.taskOrderNumber.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_assigned));
                 holder.taskStatus.setBackgroundResource(R.color.task_assigned);

@@ -222,6 +222,14 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
         textViewTaskTime.setText(DateUtils.formatDateTime(getContext(), taskModel.getDeliveryDate().getTime(), DateUtils.FORMAT_SHOW_TIME));
 
         switch (taskModel.getStatus()) {
+            case "UNASSIGNED":
+                textViewTaskOrderNumber.setTextColor(getResources().getColor(R.color.task_unassigned));
+                viewTaskStatus.setBackgroundResource(R.color.task_unassigned);
+                break;
+            case "CANCELED":
+                textViewTaskOrderNumber.setTextColor(getResources().getColor(R.color.task_canceled));
+                viewTaskStatus.setBackgroundResource(R.color.task_canceled);
+                break;
             case "ASSIGNED":
                 textViewTaskOrderNumber.setTextColor(getResources().getColor(R.color.task_assigned));
                 viewTaskStatus.setBackgroundResource(R.color.task_assigned);

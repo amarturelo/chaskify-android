@@ -19,19 +19,19 @@ public class TaskActionPresenter extends BasePresenter<TaskActionContract.View>
     }
 
     @Override
-    public void accept(String id) {
+    public void acceptTask(String id) {
         mMethodCallHelper.acceptTask(id)
                 .continueWith(new LogIfError());
     }
 
     @Override
-    public void arrived(String id) {
+    public void arrivedTask(String id) {
         mMethodCallHelper.arrivedTask(id)
                 .continueWith(new LogIfError());
     }
 
     @Override
-    public void start(String id) {
+    public void startTask(String id) {
         mMethodCallHelper.startTask(id)
                 .continueWith(new LogIfError());
     }
@@ -43,8 +43,15 @@ public class TaskActionPresenter extends BasePresenter<TaskActionContract.View>
     }
 
     @Override
-    public void decline(String id) {
+    public void cancelTask(String taskId, String reason) {
+        mMethodCallHelper.cancelTask(taskId, reason)
+                .continueWith(new LogIfError());
+    }
 
+    @Override
+    public void declineTask(String id) {
+        mMethodCallHelper.declineTask(id)
+                .continueWith(new LogIfError());
     }
 
 

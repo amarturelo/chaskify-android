@@ -70,6 +70,12 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
         holder.taskOrderNumber.setText(taskItemModel.getOrderNumber());
 
         switch (taskItemModel.getStatus()) {
+            case "CANCELED":
+                holder.taskStatus.setBackgroundResource(R.color.task_canceled);
+                break;
+            case "UNASSIGNED":
+                holder.taskStatus.setBackgroundResource(R.color.task_unassigned);
+                break;
             case "ASSIGNED":
                 holder.taskStatus.setBackgroundResource(R.color.task_assigned);
                 break;

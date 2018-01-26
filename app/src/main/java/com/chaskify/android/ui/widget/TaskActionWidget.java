@@ -1,9 +1,13 @@
 package com.chaskify.android.ui.widget;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -99,19 +103,19 @@ public class TaskActionWidget extends LinearLayout implements TaskActionContract
             case R.id.positive_action:
                 switch (mTaskActionModel.getStatus()) {
                     case "ASSIGNED":
-                        presenter.accept(mTaskActionModel.getTaskId());
+                        presenter.acceptTask(mTaskActionModel.getTaskId());
                         break;
                     case "IN ROUTE":
-                        presenter.arrived(mTaskActionModel.getTaskId());
+                        presenter.arrivedTask(mTaskActionModel.getTaskId());
                         break;
                     case "ACCEPTED":
-                        presenter.start(mTaskActionModel.getTaskId());
+                        presenter.startTask(mTaskActionModel.getTaskId());
                         break;
                     case "ARRIVED":
                         presenter.successful(mTaskActionModel.getTaskId());
                         break;
                     case "UNASSIGNED":
-                        presenter.accept(mTaskActionModel.getTaskId());
+                        presenter.acceptTask(mTaskActionModel.getTaskId());
                         break;
                     default:
                         break;
@@ -119,12 +123,35 @@ public class TaskActionWidget extends LinearLayout implements TaskActionContract
                 break;
             case R.id.negative_action:
                 switch (mTaskActionModel.getStatus()) {
-
+                    case "ASSIGNED":
+                        presenter.declineTask(mTaskActionModel.getTaskId());
+                        break;
+                    case "UNASSIGNED":
+                        presenter.declineTask(mTaskActionModel.getTaskId());
+                        break;
                     default:
+                        cancelTask(mTaskActionModel.getTaskId());
                         break;
                 }
                 break;
         }
+    }
+
+    private void cancelTask(String taskId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(R.string.title_task_cancel_reason);
+
+// Set up the input
+        final EditText input = new EditText(getContext());
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+// Set up the buttons
+        builder.setPositiveButton("OK", (dialog, which) -> presenter.cancelTask(taskId, input.getText().toString()));
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+
+        builder.show();
     }
 
     public static class TaskActionModel {

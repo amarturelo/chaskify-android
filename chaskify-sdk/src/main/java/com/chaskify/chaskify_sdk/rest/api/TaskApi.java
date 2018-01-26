@@ -27,6 +27,7 @@ public interface TaskApi {
             , @Query("task_id") String task_id
             , @Query("timeZone") String timeZone
             , @Query("status_raw") String status_raw
+            , @Query("reason") String reason
             , @Query("lat") String lat
             , @Query("lng") String lng
     );

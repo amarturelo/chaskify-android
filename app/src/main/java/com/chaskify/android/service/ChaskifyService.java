@@ -88,7 +88,7 @@ public class ChaskifyService extends Service implements ChaskifySession.OnDutyCh
     }
 
     public static void start(Context activity, String driverId) {
-        Timber.d("start");
+        Timber.d("startTask");
 
         Intent intent = new Intent(activity, ChaskifyService.class);
         Bundle bundle = new Bundle();

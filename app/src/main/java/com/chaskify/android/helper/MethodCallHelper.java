@@ -46,6 +46,15 @@ public class MethodCallHelper {
         this.mTaskWayPointCache = mTaskWayPointCache;
     }
 
+    public ChaskifySession getChaskifySession() {
+        return mChaskifySession;
+    }
+
+    public MethodCallHelper setmChaskifySession(ChaskifySession mChaskifySession) {
+        this.mChaskifySession = mChaskifySession;
+        return this;
+    }
+
     public Task<Void> getWaypointById(String id) {
         TaskCompletionSource<ChaskifyTaskWayPoint> task = new TaskCompletionSource<>();
         try {
@@ -411,7 +420,7 @@ public class MethodCallHelper {
 
     public Task<Void> acceptTask(String id) {
         TaskCompletionSource<ChaskifyTask> task = new TaskCompletionSource<>();
-        mChaskifySession.getTaskRestClient().changeTaskStatus(id, ChaskifyTask.STATUS.ACCEPTED, "0", "0", new ApiCallback<ChaskifyTask>() {
+        mChaskifySession.getTaskRestClient().changeTaskStatus(id, ChaskifyTask.STATUS.ACCEPTED, "","0", "0", new ApiCallback<ChaskifyTask>() {
             @Override
             public void onSuccess(ChaskifyTask info) {
                 task.trySetResult(info);
@@ -443,7 +452,7 @@ public class MethodCallHelper {
 
     public Task<Void> startTask(String id) {
         TaskCompletionSource<ChaskifyTask> task = new TaskCompletionSource<>();
-        mChaskifySession.getTaskRestClient().changeTaskStatus(id, ChaskifyTask.STATUS.IN_ROUTE, "0", "0", new ApiCallback<ChaskifyTask>() {
+        mChaskifySession.getTaskRestClient().changeTaskStatus(id, ChaskifyTask.STATUS.IN_ROUTE,"", "0", "0", new ApiCallback<ChaskifyTask>() {
             @Override
             public void onSuccess(ChaskifyTask info) {
                 task.trySetResult(info);
@@ -475,7 +484,7 @@ public class MethodCallHelper {
 
     public Task<Void> arrivedTask(String id) {
         TaskCompletionSource<ChaskifyTask> task = new TaskCompletionSource<>();
-        mChaskifySession.getTaskRestClient().changeTaskStatus(id, ChaskifyTask.STATUS.ARRIVED, "0", "0", new ApiCallback<ChaskifyTask>() {
+        mChaskifySession.getTaskRestClient().changeTaskStatus(id, ChaskifyTask.STATUS.ARRIVED, "","0", "0", new ApiCallback<ChaskifyTask>() {
             @Override
             public void onSuccess(ChaskifyTask info) {
                 task.trySetResult(info);
@@ -507,7 +516,7 @@ public class MethodCallHelper {
 
     public Task<Void> successfulTask(String id) {
         TaskCompletionSource<ChaskifyTask> task = new TaskCompletionSource<>();
-        mChaskifySession.getTaskRestClient().changeTaskStatus(id, ChaskifyTask.STATUS.SUCCESSFUL, "0", "0", new ApiCallback<ChaskifyTask>() {
+        mChaskifySession.getTaskRestClient().changeTaskStatus(id, ChaskifyTask.STATUS.SUCCESSFUL, "","0", "0", new ApiCallback<ChaskifyTask>() {
             @Override
             public void onSuccess(ChaskifyTask info) {
                 task.trySetResult(info);
@@ -567,6 +576,70 @@ public class MethodCallHelper {
         return wayPoint.getTask()
                 .onSuccessTask(task -> {
                     mTaskWayPointCache.put(TaskWaypointDataMapper.transform(task.getResult()));
+                    return null;
+                });
+    }
+
+    public Task<Void> declineTask(String id) {
+        TaskCompletionSource<ChaskifyTask> wayPoint = new TaskCompletionSource<>();
+
+        mChaskifySession.getTaskRestClient().changeTaskStatus(id, ChaskifyTask.STATUS.DECLINED, "","", "", new ApiCallback<ChaskifyTask>() {
+            @Override
+            public void onNetworkError(Exception e) {
+                wayPoint.trySetError(e);
+            }
+
+            @Override
+            public void onChaskifyError(Exception e) {
+                wayPoint.trySetError(e);
+            }
+
+            @Override
+            public void onUnexpectedError(Exception e) {
+                wayPoint.trySetError(e);
+            }
+
+            @Override
+            public void onSuccess(ChaskifyTask info) {
+                wayPoint.trySetResult(info);
+            }
+        });
+
+        return wayPoint.getTask()
+                .onSuccessTask(task -> {
+                    mTaskCache.put(TaskDataMapper.transform(task.getResult()));
+                    return null;
+                });
+    }
+
+    public Task<Void> cancelTask(String taskId, String reason) {
+        TaskCompletionSource<ChaskifyTask> wayPoint = new TaskCompletionSource<>();
+
+        mChaskifySession.getTaskRestClient().changeTaskStatus(taskId, ChaskifyTask.STATUS.CANCELED, reason, "", "", new ApiCallback<ChaskifyTask>() {
+            @Override
+            public void onNetworkError(Exception e) {
+                wayPoint.trySetError(e);
+            }
+
+            @Override
+            public void onChaskifyError(Exception e) {
+                wayPoint.trySetError(e);
+            }
+
+            @Override
+            public void onUnexpectedError(Exception e) {
+                wayPoint.trySetError(e);
+            }
+
+            @Override
+            public void onSuccess(ChaskifyTask info) {
+                wayPoint.trySetResult(info);
+            }
+        });
+
+        return wayPoint.getTask()
+                .onSuccessTask(task -> {
+                    mTaskCache.put(TaskDataMapper.transform(task.getResult()));
                     return null;
                 });
     }

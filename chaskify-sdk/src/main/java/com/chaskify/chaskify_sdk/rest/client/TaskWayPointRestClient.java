@@ -128,4 +128,5 @@ public class TaskWayPointRestClient extends RestClient<TaskWayPointApi> {
                 .create();
     }
 
+
 }

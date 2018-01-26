@@ -8,6 +8,7 @@ import java.util.Date;
 
 public class TaskWayPointModel {
     private String id;
+    private String driverId;
     private String taskId;
     private String customerName;
     private String emailAddress;
@@ -38,6 +39,15 @@ public class TaskWayPointModel {
 
     public TaskWayPointModel setTaskId(String taskId) {
         this.taskId = taskId;
+        return this;
+    }
+
+    public String getDriverId() {
+        return driverId;
+    }
+
+    public TaskWayPointModel setDriverId(String driverId) {
+        this.driverId = driverId;
         return this;
     }
 

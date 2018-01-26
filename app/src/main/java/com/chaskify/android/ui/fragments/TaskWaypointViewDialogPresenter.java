@@ -61,6 +61,7 @@ public class TaskWaypointViewDialogPresenter extends BasePresenter<TaskWaypointV
                 .doFinally(() -> view.hideProgress())
                 .subscribe(taskWaypoint -> view.renderWayPoint(new TaskWayPointModel()
                                 .setId(taskWaypoint.getId())
+                                .setDriverId(mMethodCallHelper.getChaskifySession().getCredentials().getDriverId())
                                 .setTaskId(taskWaypoint.getTaskId())
                                 .setContactNumber(taskWaypoint.getContactNumber())
                                 .setCustomerName(taskWaypoint.getCustomerName())

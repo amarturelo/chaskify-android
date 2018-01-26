@@ -35,5 +35,7 @@
     <color name="task_type_service">#CFE7FB</color>
     <color name="task_type_delivery">#33A17E</color>
     <color name="task_type_pickup">#2196F3</color>
+    <color name="task_unassigned">#808080</color>
+    <color name="task_canceled">#FF0000</color>
 
 </resources>

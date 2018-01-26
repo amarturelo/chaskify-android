@@ -230,6 +230,7 @@ public class TaskWaypointViewDialogFragment extends BottomSheetDialogFragment im
         taskWayPointActionWidget.attachWayPoint(new TaskWayPointActionWidget.TaskWayPointActionModel()
                 .setTaskWayPointId(waypointModel.getId())
                 .setStatus(waypointModel.getStatus())
+                .setDriverId(waypointModel.getDriverId())
                 .setTaskStatus(waypointModel.getTaskStatus()));
     }
 }

@@ -7,6 +7,7 @@ import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.exceptions.TokenNotFoundException;
 import com.chaskify.chaskify_sdk.rest.model.BaseResponse;
 import com.chaskify.chaskify_sdk.rest.model.ChaskifyTask;
+import com.chaskify.chaskify_sdk.rest.model.ChaskifyTaskWayPoint;
 import com.chaskify.chaskify_sdk.rest.model.login.ChaskifyCredentials;
 import com.chaskify.chaskify_sdk.rest.model.login.LoginResponse;
 import com.google.gson.Gson;
@@ -104,18 +105,19 @@ public class TaskRestClient extends RestClient<TaskApi> {
                 });
     }
 
-    public void changeTaskStatus(String taskId, ChaskifyTask.STATUS status, String lat, String lng, ApiCallback<ChaskifyTask> callback) {
+    public void changeTaskStatus(String taskId, ChaskifyTask.STATUS status, String reason, String lat, String lng, ApiCallback<ChaskifyTask> callback) {
         if (mChaskifyCredentials != null)
-            changeTaskStatus(taskId, status, lat, lng, mChaskifyCredentials.getAccessToken(), callback);
+            changeTaskStatus(taskId, status.getText(), reason, lat, lng, mChaskifyCredentials.getAccessToken(), callback);
         else
             callback.onChaskifyError(new TokenNotFoundException());
     }
 
-    private void changeTaskStatus(String taskId, ChaskifyTask.STATUS status, String lat, String lng, String accessToken, final ApiCallback<ChaskifyTask> callback) {
+    private void changeTaskStatus(String taskId, String status, String reason, String lat, String lng, String accessToken, final ApiCallback<ChaskifyTask> callback) {
         mApi.updateStatus(accessToken
                 , taskId
                 , String.valueOf(new Date().getTimezoneOffset())
-                , status.getText()
+                , status
+                , reason
                 , lat
                 , lng
         ).enqueue(new Callback<String>() {
@@ -159,4 +161,6 @@ public class TaskRestClient extends RestClient<TaskApi> {
                 .registerTypeAdapter(ChaskifyTask.class, new TaskDeserializer())
                 .create();
     }
+
+
 }
