@@ -29,10 +29,10 @@ public class TaskDataMapper {
                 .setTask_lng(realmTask.getTask_lng())
                 .setDelivery_address(realmTask.getDelivery_address())
                 .setDelivery_date(realmTask.getDelivery_date())
-                .setDelivery_time(realmTask.getDelivery_time())
-                .setCustomer_name(realmTask.getCustomer_name())
+                .setDeliveryTime(realmTask.getDelivery_time())
+                .setCustomerName(realmTask.getCustomer_name())
                 .setOrderNumber(realmTask.getOrderNumber())
-                .setContact_number(realmTask.getContact_number())
+                .setContactNumber(realmTask.getContact_number())
                 .setEmail_address(realmTask.getEmail_address())
                 .setTaskHistories(TaskHistoryDataMapper.transform(realmTask.getHistory()))
                 .setTaskWaypointList(TaskWaypointDataMapper.transform(realmTask.getWaypoints()));

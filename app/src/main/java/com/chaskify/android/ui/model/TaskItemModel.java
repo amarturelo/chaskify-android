@@ -89,7 +89,17 @@ public class TaskItemModel {
 
         TaskItemModel that = (TaskItemModel) o;
 
-        return task_id != null ? task_id.equals(that.task_id) : that.task_id == null;
+        if (task_id != null ? !task_id.equals(that.task_id) : that.task_id != null) return false;
+        if (status != null ? !status.equals(that.status) : that.status != null) return false;
+        if (orderNumber != null ? !orderNumber.equals(that.orderNumber) : that.orderNumber != null)
+            return false;
+        if (trans_type != null ? !trans_type.equals(that.trans_type) : that.trans_type != null)
+            return false;
+        if (customer_name != null ? !customer_name.equals(that.customer_name) : that.customer_name != null)
+            return false;
+        if (delivery_date != null ? !delivery_date.equals(that.delivery_date) : that.delivery_date != null)
+            return false;
+        return delivery_address != null ? delivery_address.equals(that.delivery_address) : that.delivery_address == null;
     }
 
     @Override

@@ -101,7 +101,7 @@ public class Task {
         return contact_number;
     }
 
-    public Task setContact_number(String contact_number) {
+    public Task setContactNumber(String contact_number) {
         this.contact_number = contact_number;
         return this;
     }
@@ -119,7 +119,7 @@ public class Task {
         return customer_name;
     }
 
-    public Task setCustomer_name(String customer_name) {
+    public Task setCustomerName(String customer_name) {
         this.customer_name = customer_name;
         return this;
     }
@@ -218,7 +218,7 @@ public class Task {
         return delivery_time;
     }
 
-    public Task setDelivery_time(String delivery_time) {
+    public Task setDeliveryTime(String delivery_time) {
         this.delivery_time = delivery_time;
         return this;
     }

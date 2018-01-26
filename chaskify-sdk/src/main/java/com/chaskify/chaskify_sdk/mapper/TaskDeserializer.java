@@ -32,6 +32,7 @@ public class TaskDeserializer implements JsonDeserializer<ChaskifyTask> {
         JsonObject node = json.getAsJsonObject();
         ChaskifyTask chaskifyTask = new ChaskifyTask();
         chaskifyTask.setTaskId(node.has("task_id") ? node.get("task_id").getAsString() : "");
+        chaskifyTask.setOrderNumber(node.has("order_number") ? node.get("order_number").getAsString() : "");
         chaskifyTask.setCustomerId(node.has("customer_id") ? node.get("customer_id").getAsString() : "");
         chaskifyTask.setTaskDescription(node.has("task_description") ? node.get("task_description").getAsString() : "");
         chaskifyTask.setTransType(node.has("trans_type") ? node.get("trans_type").getAsString() : "");
@@ -44,6 +45,7 @@ public class TaskDeserializer implements JsonDeserializer<ChaskifyTask> {
         chaskifyTask.setTaskLat(node.has("task_lat") ? node.get("task_lat").getAsDouble() : 0);
         chaskifyTask.setTaskLng(node.has("task_lng") ? node.get("task_lng").getAsDouble() : 0);
         chaskifyTask.setStatus(node.has("status") ? node.get("status").getAsString() : "");
+        chaskifyTask.setStatusRaw(node.has("status_raw") ? node.get("status_raw").getAsString() : "");
         chaskifyTask.setDeliveryDate(node.has("delivery_date") ? (Date) context.deserialize(node.get("delivery_date"), Date.class) : null);
         chaskifyTask.setDateCreated(node.has("date_created") ? node.get("date_created").getAsString() : "");
         chaskifyTask.setTeamName(node.has("team_name") && !node.get("team_name").isJsonNull() ? node.get("team_name").getAsString() : "");

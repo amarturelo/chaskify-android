@@ -22,11 +22,12 @@ public class TaskDataMapper {
         RealmTask task = new RealmTask();
         task.setTask_id(realmTask.getTaskId())
                 .setCustomer_id(realmTask.getCustomerId())
+                .setOrderNumber(realmTask.getOrderNumber())
                 .setDriver_id(realmTask.getDriverId())
                 .setTask_description(realmTask.getTaskDescription())
                 .setTeam_id(realmTask.getTeamId())
                 .setTrans_type(realmTask.getTransType())
-                .setStatus(realmTask.getStatus())
+                .setStatus(realmTask.getStatusRaw())
                 .setTask_lat(realmTask.getTaskLat())
                 .setTask_lng(realmTask.getTaskLng())
                 .setDelivery_address(realmTask.getDeliveryAddress())
