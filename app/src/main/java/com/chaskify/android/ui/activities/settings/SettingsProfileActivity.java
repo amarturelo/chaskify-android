@@ -3,6 +3,7 @@ package com.chaskify.android.ui.activities.settings;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,8 +15,9 @@ import com.chaskify.android.ui.activities.NotificationsActivity;
 import com.chaskify.android.ui.base.AbstractSwipeBackActivity;
 import com.chaskify.android.ui.base.BaseActivity;
 import com.chaskify.android.ui.fragments.ChangePasswordDialogFragment;
+import com.chaskify.android.ui.fragments.settings.SettingsProfileFragment;
 
-public class SettingsProfileActivity extends AbstractSwipeBackActivity {
+public class SettingsProfileActivity extends AbstractSwipeBackActivity implements SettingsProfileFragment.ListenerInteractorFragment {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,4 +57,8 @@ public class SettingsProfileActivity extends AbstractSwipeBackActivity {
     }
 
 
+    @Override
+    public void goToLauncher() {
+        Navigator.goToLaunchActivity(this);
+    }
 }

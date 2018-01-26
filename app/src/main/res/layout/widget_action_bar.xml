@@ -21,9 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="@string/action_on_duty"
-            android:textOff="@string/action_off_duty"
-            android:textOn="@string/action_on_duty" />
+            android:text="@string/action_on_duty" />
     </LinearLayout>
 
     <LinearLayout

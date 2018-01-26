@@ -23,7 +23,6 @@ public class DutyPresenter extends BasePresenter<DutyContract.View>
     public void bindView(@NonNull DutyContract.View view) {
         super.bindView(view);
         mChaskifySession.addDutyChangeListener(this);
-        view.renderDutyStatus(mChaskifySession.getState() == ChaskifySession.STATE.ON_DUTY);
     }
 
     @Override

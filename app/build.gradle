@@ -70,16 +70,16 @@ dependencies {
     compile 'com.onesignal:OneSignal:3.6.5@aar'
     // OneSignal requires at least version 7.0.0 of GMS but the newest version is recommend.
     // Required for OneSignal, even if you have added FCM.
-    compile 'com.google.android.gms:play-services-gcm:11.2.2'
+    compile 'com.google.android.gms:play-services-gcm:11.8.0'
     // Required for geotagging
-    compile 'com.google.android.gms:play-services-location:11.2.2'
+    compile 'com.google.android.gms:play-services-location:11.8.0'
     //map
-    implementation('com.mapbox.mapboxsdk:mapbox-android-sdk:5.2.1@aar') {
+    implementation('com.mapbox.mapboxsdk:mapbox-android-sdk:5.3.2@aar') {
         transitive = true
     }
 
     compile 'com.github.marchinram:RxGallery:0.6.0'
-    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar'
+    compile 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
 
     compile 'com.github.rubensousa:bottomsheetbuilder:1.6.0'
 

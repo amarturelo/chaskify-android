@@ -62,8 +62,10 @@ public class ChaskifySession {
     }
 
     public void addDutyChangeListener(OnDutyChange onDutyChange) {
-        if (onDutyChange != null)
+        if (onDutyChange != null) {
             mListenedDutyChange.add(onDutyChange);
+            setState(mState);
+        }
     }
 
     public void removeDutyChangeListener(OnDutyChange onDutyChange) {
@@ -108,6 +110,10 @@ public class ChaskifySession {
             });
 
         }
+    }
+
+    public void updateDriverPosition(double lat, double lng, ApiCallbackSuccess callback) {
+        mDriverRestClient.updatePosition(lat, lng, callback);
     }
 
     public ChaskifyCredentials getCredentials() {
@@ -173,7 +179,7 @@ public class ChaskifySession {
             }
         };
 
-        mDriverRestClient.onDuty(callbackSuccess);
+        mDriverRestClient.offDuty(callbackSuccess);
     }
 
     public LoginRestClient getLoginRestClient() {

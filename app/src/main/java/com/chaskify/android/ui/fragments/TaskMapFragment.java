@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
@@ -23,10 +24,12 @@ import com.chaskify.data.repositories.TaskRepositoryImpl;
 import com.chaskify.domain.filter.Filter;
 import com.chaskify.domain.interactors.TaskInteractor;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.constants.Style;
 import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.MapboxMapOptions;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.maps.SupportMapFragment;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
@@ -48,9 +51,9 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
 
     private List<Filter> mFilter;
 
-    private MapView mapView;
-
     private MapboxMap mapboxMap;
+
+    private SupportMapFragment mapFragment;
 
     private MapboxAdapter mMapboxAdapter;
 
@@ -103,7 +106,6 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     @Override
     public void onPause() {
         super.onPause();
-        //mMapView.onPause();
     }
 
     @Override
@@ -121,11 +123,40 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     }
 
     private void initMap(Bundle savedInstanceState) {
-        mapView = getView().findViewById(R.id.map);
-        mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(this);
+
+
+        // Create supportMapFragment
+
+        if (savedInstanceState == null) {
+
+            // Create fragment
+            final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+
+            LatLng patagonia = new LatLng(-52.6885, -70.1395);
+
+            // Build mapboxMap
+            MapboxMapOptions options = new MapboxMapOptions();
+            options.styleUrl(Style.MAPBOX_STREETS);
+            options.camera(new CameraPosition.Builder()
+                    .target(patagonia)
+                    .zoom(9)
+                    .build());
+
+            // Create map fragment
+            mapFragment = SupportMapFragment.newInstance();
+
+            // Add map fragment to parent container
+            transaction.add(R.id.container, mapFragment, "com.mapbox.map");
+            transaction.commit();
+        } else {
+            mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentByTag("com.mapbox.map");
+        }
+
+        mapFragment.getMapAsync(this);
+
         mMapboxAdapter = new MapboxAdapter(getActivity());
         mMapboxAdapter.setOnAnnotationClickListener(this);
+
     }
 
 
@@ -220,43 +251,37 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     @Override
     public void onResume() {
         super.onResume();
-        mapView.onResume();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mapView.onDestroy();
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        mapView.onLowMemory();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mapView.onStart();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mapView.onStop();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mapView.onSaveInstanceState(outState);
     }
 
     @Override
     public void onMapReady(MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
-        mMapboxAdapter.attach(mapView, this.mapboxMap);
+        mMapboxAdapter.attach(mapFragment.getView(), this.mapboxMap);
     }
 
     @Override

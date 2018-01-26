@@ -8,7 +8,6 @@ import com.chaskify.android.ui.activities.LaunchActivity;
 import com.chaskify.android.ui.activities.MainActivity;
 import com.chaskify.android.ui.activities.NotificationsActivity;
 import com.chaskify.android.ui.activities.settings.SettingsProfileActivity;
-import com.chaskify.android.ui.activities.settings.SettingsVehicleActivity;
 import com.chaskify.android.ui.fragments.TaskViewDialogFragment;
 import com.chaskify.android.ui.fragments.TaskWaypointViewDialogFragment;
 
@@ -21,7 +20,7 @@ public class Navigator {
     public static void goToMainActivity(Context context) {
         if (context != null) {
             Intent intent = MainActivity.getCallingIntent(context);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
     }
@@ -29,13 +28,6 @@ public class Navigator {
     public static void goToProfileSettings(Context context) {
         if (context != null) {
             Intent intentToLaunch = SettingsProfileActivity.getCallingIntent(context);
-            context.startActivity(intentToLaunch);
-        }
-    }
-
-    public static void goToVehicleSettings(Context context) {
-        if (context != null) {
-            Intent intentToLaunch = SettingsVehicleActivity.getCallingIntent(context);
             context.startActivity(intentToLaunch);
         }
     }
@@ -64,7 +56,7 @@ public class Navigator {
     public static void goToLaunchActivity(Context context) {
         if (context != null) {
             Intent intent = LaunchActivity.getCallingIntent(context);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
     }

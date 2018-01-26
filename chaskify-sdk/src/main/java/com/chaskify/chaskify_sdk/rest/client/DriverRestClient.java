@@ -20,15 +20,15 @@ public class DriverRestClient extends RestClient<DriverApi> {
         super(chaskifyCredentials, DriverApi.class);
     }
 
-    public void updatePosition(String lat, String lng, ApiCallbackSuccess callback) {
+    public void updatePosition(double lat, double lng, ApiCallbackSuccess callback) {
         if (mChaskifyCredentials != null)
             updatePosition(mChaskifyCredentials.getAccessToken(), lat, lng, callback);
         else
             callback.onChaskifyError(new TokenNotFoundException());
     }
 
-    private void updatePosition(String accessToken, String lat, String lng, final ApiCallbackSuccess callback) {
-        mApi.updateDriverPosition(accessToken, lat, lng)
+    private void updatePosition(String accessToken, double lat, double lng, final ApiCallbackSuccess callback) {
+        mApi.updateDriverPosition(accessToken, String.valueOf(lat), String.valueOf(lng))
                 .enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {

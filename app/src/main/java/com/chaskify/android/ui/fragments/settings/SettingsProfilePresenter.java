@@ -105,7 +105,8 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
                 .unsubscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .doFinally(() -> view.logoutComplete())
-                .subscribe(() -> view.complete(), throwable -> view.showError(throwable)));
+                .subscribe(() -> {
+                }, throwable -> view.showError(throwable)));
     }
 
     private Completable doLogout() {

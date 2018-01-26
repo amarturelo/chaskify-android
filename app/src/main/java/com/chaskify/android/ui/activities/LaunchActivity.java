@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 
 import com.annimon.stream.Optional;
 import com.chaskify.android.R;
@@ -14,6 +15,8 @@ import com.chaskify.android.ui.fragments.launch.LoginFragment;
 import com.chaskify.domain.model.Credentials;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import me.yokeyword.fragmentation.anim.DefaultNoAnimator;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
@@ -37,6 +40,7 @@ public class LaunchActivity extends BaseActivity {
         initActivity(savedInstanceState);
     }
 
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -46,6 +50,8 @@ public class LaunchActivity extends BaseActivity {
         RxPermissions rxPermissions = new RxPermissions(this);
 
         rxPermissions.request(Manifest.permission.ACCESS_FINE_LOCATION)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(granted -> {
                     if (granted) { // Always true pre-M
                         if (findFragment(LaunchFragment.class) == null) {

@@ -10,16 +10,22 @@
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />-->
-    <com.mapbox.mapboxsdk.maps.MapView
-        android:id="@+id/map"
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
     <FrameLayout
-        android:background="@color/transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:background="@color/transparent">
 
         <com.yarolegovich.discretescrollview.DiscreteScrollView
             android:id="@+id/picker"

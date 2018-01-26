@@ -95,14 +95,11 @@ public class DutyActionBar extends LinearLayout implements DutyContract.View {
         });
         mIvTaskViewMode = findViewById(R.id.iv_task_view_mode);
 
-        mActionDuty.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
-                    presenter.onDuty();
-                else
-                    presenter.offDuty();
-            }
+        mActionDuty.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked)
+                presenter.onDuty();
+            else
+                presenter.offDuty();
         });
 
         presenter.bindView(this);

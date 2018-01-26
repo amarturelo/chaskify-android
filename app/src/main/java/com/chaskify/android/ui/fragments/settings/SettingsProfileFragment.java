@@ -1,15 +1,13 @@
 package com.chaskify.android.ui.fragments.settings;
 
 import android.Manifest;
+import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Looper;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +19,7 @@ import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.navigation.Navigator;
+import com.chaskify.android.service.ChaskifyService;
 import com.chaskify.android.ui.fragments.ChangePasswordDialogFragment;
 import com.chaskify.android.ui.model.ProfileModel;
 import com.chaskify.android.ui.model.SettingsModel;
@@ -37,12 +36,8 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.ByteArrayOutputStream;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -73,6 +68,12 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
 
     private ProfilePreferenceWidget mProfilePreferenceWidget;
 
+    public interface ListenerInteractorFragment {
+        void goToLauncher();
+
+    }
+
+    private ListenerInteractorFragment mListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,6 +105,13 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
                     presenter.settings();
                 });
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof ListenerInteractorFragment)
+            mListener = (ListenerInteractorFragment) context;
     }
 
     private void initListenedPreferenceChange() {
@@ -183,19 +191,16 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
 
     @Override
     public void logoutComplete() {
-        getActivity().finish();
-        Navigator.goToLaunchActivity(getActivity());
+        goToLaunch();
     }
 
     private void goToLaunch() {
-        Navigator.goToLaunchActivity(getActivity());
-        getActivity().finish();
+        if(mListener!=null)
+            mListener.goToLauncher();
     }
 
     @Override
     public void complete() {
-        Toast.makeText(getActivity(), "Update complete", Toast.LENGTH_LONG)
-                .show();
     }
 
     @Override
@@ -292,6 +297,7 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
     }
 
     private void doLogout() {
+        ChaskifyService.stop(getActivity());
         presenter.logout();
     }
 
