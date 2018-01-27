@@ -74,9 +74,10 @@ public class ChaskifyService extends Service implements ChaskifySession.OnDutyCh
         Timber.d("onStartCommand");
         mChaskifyService = this;
 
-        String driverId = intent.getExtras().getString(EXTRA_CHASKIFY_ID, "");
-        if (!driverId.isEmpty())
+        if (intent != null && intent.getExtras() != null && !intent.getExtras().getString(EXTRA_CHASKIFY_ID, "").isEmpty()) {
+            String driverId = intent.getExtras().getString(EXTRA_CHASKIFY_ID, "");
             attachSession(Chaskify.getInstance().getSessionByDriverId(driverId).get());
+        }
         return START_STICKY;
     }
 

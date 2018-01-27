@@ -14,7 +14,7 @@ public interface TaskWayPointApi {
             @Query("waypoint_id") String task_id
             , @Query("token") String token);
 
-    @GET("changeWaypointStatusNew")
+    @GET("changeWaypointStatusAndroid")
     Call<String> updateStatus(
             @Query("token") String token
             , @Query("waypoint_id") String waypoint_id

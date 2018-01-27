@@ -63,6 +63,7 @@ public class NotificationRepositoryImpl implements NotificationsRepository {
                                 .setDeviceId(chaskifyNotification.getDeviceId())
                                 .setActions(chaskifyNotification.getActions())
                                 .setDateProcess(chaskifyNotification.getDateProcess())
+                                .setDateCreated(chaskifyNotification.getDateCreated())
                                 .setCustomerId(chaskifyNotification.getCustomerId())
                                 .setDriverId(chaskifyNotification.getDriverId())
                                 .setIsRead(chaskifyNotification.getIsRead())

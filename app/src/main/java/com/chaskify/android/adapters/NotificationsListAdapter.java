@@ -2,6 +2,7 @@ package com.chaskify.android.adapters;
 
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,7 @@ public class NotificationsListAdapter extends RecyclerView.Adapter<Notifications
         NotificationItemModel itemModel = mNotificationItemModels.get(position);
         holder.push_message.setText(itemModel.getPushMessage());
         holder.push_title.setText(itemModel.getPushTitle());
-        holder.push_date.setText(itemModel.getDateCreated());
+        holder.push_date.setText(DateUtils.getRelativeTimeSpanString(holder.itemView.getContext(), itemModel.getDateCreated().getTime(), true));
 
         switch (itemModel.getPushType()) {
             case "task":

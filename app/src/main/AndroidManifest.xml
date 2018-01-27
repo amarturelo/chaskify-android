@@ -30,13 +30,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.activities.NotificationsActivity"
             android:label="@string/title_activity_notifications"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.activities.LaunchActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -58,6 +61,7 @@
         </service>
 
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.activities.settings.SettingsProfileActivity"
             android:label="@string/title_activity_settings_profile"
             android:theme="@style/AppTheme.NoActionBar" />

@@ -16,7 +16,7 @@ public class NotificationItemModel {
     public String status;
     public String driverId;
     public String taskId;
-    public String dateCreated;
+    public Date dateCreated;
     public Date dateProcess;
     public String isRead;
 
@@ -104,11 +104,11 @@ public class NotificationItemModel {
         return this;
     }
 
-    public String getDateCreated() {
+    public Date getDateCreated() {
         return dateCreated;
     }
 
-    public NotificationItemModel setDateCreated(String dateCreated) {
+    public NotificationItemModel setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
         return this;
     }

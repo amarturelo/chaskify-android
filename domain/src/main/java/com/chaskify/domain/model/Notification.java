@@ -19,7 +19,7 @@ public class Notification {
     public String jsonResponse;
     public String driverId;
     public String taskId;
-    public String dateCreated;
+    public Date dateCreated;
     public Date dateProcess;
     public String ipAddress;
     public String isRead;
@@ -136,11 +136,11 @@ public class Notification {
         return this;
     }
 
-    public String getDateCreated() {
+    public Date getDateCreated() {
         return dateCreated;
     }
 
-    public Notification setDateCreated(String dateCreated) {
+    public Notification setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
         return this;
     }

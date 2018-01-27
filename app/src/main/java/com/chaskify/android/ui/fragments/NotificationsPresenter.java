@@ -50,6 +50,7 @@ public class NotificationsPresenter extends BasePresenter<NotificationsContract.
                                         .setTaskId(notification.getTaskId())
                                         .setActions(notification.getActions())
                                         .setDateProcess(notification.getDateProcess())
+                                        .setDateCreated(notification.getDateCreated())
                                         .setPushType(notification.getPushType())
                                         .setPushTitle(notification.getPushTitle())
                                         .setPushMessage(notification.getPushMessage()))
