@@ -37,7 +37,7 @@ import timber.log.Timber;
  * Created by alberto on 13/12/17.
  */
 
-public class ChaskifyService extends Service implements ChaskifySession.OnDutyChange {
+public class ChaskifyService extends Service {
 
     private RxLocation rxLocation;
     private LocationRequest locationRequest;
@@ -71,12 +71,16 @@ public class ChaskifyService extends Service implements ChaskifySession.OnDutyCh
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Timber.d("onStartCommand");
+        Timber.d("on Start Command " + startId);
         mChaskifyService = this;
 
         if (intent != null && intent.getExtras() != null && !intent.getExtras().getString(EXTRA_CHASKIFY_ID, "").isEmpty()) {
             String driverId = intent.getExtras().getString(EXTRA_CHASKIFY_ID, "");
             attachSession(Chaskify.getInstance().getSessionByDriverId(driverId).get());
+
+            onDuty();
+        } else if (mChaskifySession != null) {
+            onDuty();
         }
         return START_STICKY;
     }
@@ -88,7 +92,7 @@ public class ChaskifyService extends Service implements ChaskifySession.OnDutyCh
     }
 
     public static void start(Context activity, String driverId) {
-        Timber.d("startTask");
+        Timber.d("start " + driverId);
 
         Intent intent = new Intent(activity, ChaskifyService.class);
         Bundle bundle = new Bundle();
@@ -102,26 +106,15 @@ public class ChaskifyService extends Service implements ChaskifySession.OnDutyCh
     }
 
     @Override
-    public boolean stopService(Intent name) {
-        if (mChaskifySession != null)
-            mChaskifySession.removeDutyChangeListener(this);
-        clearSubscriptions();
-        return super.stopService(name);
-    }
+    public void onDestroy() {
+        super.onDestroy();
+        Timber.d("on Destroy");
 
-    @Override
-    public void onState(ChaskifySession.STATE state) {
-        switch (state) {
-            case ON_DUTY:
-                onDuty();
-                break;
-            case OFF_DUTY:
-                offDuty();
-                break;
-        }
+        clearSubscriptions();
     }
 
     private void onDuty() {
+        Timber.d("on Duty");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -147,19 +140,18 @@ public class ChaskifyService extends Service implements ChaskifySession.OnDutyCh
         compositeSubscription.clear();
     }
 
-    public void attachSession(ChaskifySession chaskifySession) {
+    private void attachSession(ChaskifySession chaskifySession) {
+
+        Timber.d("attach Session " + chaskifySession.toString());
+
         if (this.mChaskifySession != null) {
             if (!this.mChaskifySession.getCredentials().getDriverId().equals(chaskifySession.getCredentials().getDriverId())) {
                 compositeSubscription.clear();
-                this.mChaskifySession.removeDutyChangeListener(this);
                 this.mChaskifySession = chaskifySession;
-                this.mChaskifySession.addDutyChangeListener(this);
             }
         } else {
             this.mChaskifySession = chaskifySession;
-            this.mChaskifySession.addDutyChangeListener(this);
         }
-
     }
 
     @SuppressLint("MissingPermission")
@@ -169,7 +161,6 @@ public class ChaskifyService extends Service implements ChaskifySession.OnDutyCh
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnNext(ChaskifyService.this::onLocationUpdate);
-
         } else {
             return rxLocation.location().lastLocation()
                     .doOnSuccess(ChaskifyService.this::onLocationUpdate)

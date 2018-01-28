@@ -95,12 +95,10 @@ public class TaskWayPointRestClient extends RestClient<TaskWayPointApi> {
                     }.getType();
 
                     JsonObject baseResponse = getGson().fromJson(response.body().substring(1, response.body().length() - 1), JsonObject.class);
-
-                    Timber.d(baseResponse.toString());
-
                     if (baseResponse.get("code").getAsInt() == 1) {
                         BaseResponse<ChaskifyTaskWayPoint> listBaseResponse = getGson().fromJson(baseResponse, type);
                         callback.onSuccess(listBaseResponse.getDetails());
+
                     } else {
                         callback.onChaskifyError(new Exception(baseResponse.get("msg").getAsString()));
                     }

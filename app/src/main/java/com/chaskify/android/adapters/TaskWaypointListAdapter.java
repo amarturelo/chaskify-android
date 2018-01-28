@@ -54,7 +54,7 @@ public class TaskWaypointListAdapter extends RecyclerView.Adapter<TaskWaypointLi
                 holder.mWayPointStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_successful));
                 holder.mWayPointStatusColor.setBackgroundResource(R.color.task_successful);
                 break;
-            case "COMPLETE":
+            case "COMPLETED":
                 holder.mWayPointStatus.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.task_successful));
                 holder.mWayPointStatusColor.setBackgroundResource(R.color.task_successful);
                 break;

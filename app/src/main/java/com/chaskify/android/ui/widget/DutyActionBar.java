@@ -11,6 +11,7 @@ import android.widget.Switch;
 
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
+import com.chaskify.android.service.ChaskifyService;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.polyak.iconswitch.IconSwitch;
 
@@ -33,6 +34,12 @@ public class DutyActionBar extends LinearLayout implements DutyContract.View {
     @Override
     public void renderDutyStatus(boolean isDuty) {
         mActionDuty.setChecked(isDuty);
+
+        if (isDuty)
+            ChaskifyService.start(getContext(), Chaskify.getInstance().getDefaultSession().get().getCredentials().getDriverId());
+        else if (ChaskifyService.getInstance() != null)
+            ChaskifyService.stop(getContext());
+
     }
 
     @Override

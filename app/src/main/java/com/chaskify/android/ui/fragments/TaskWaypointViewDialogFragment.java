@@ -200,7 +200,7 @@ public class TaskWaypointViewDialogFragment extends BottomSheetDialogFragment im
                 textViewTaskWaypointId.setTextColor(getResources().getColor(R.color.task_successful));
                 textViewWaypointStatusColor.setBackgroundResource(R.color.task_successful);
                 break;
-            case "COMPLETE":
+            case "COMPLETED":
                 textViewTaskWaypointId.setTextColor(getResources().getColor(R.color.task_successful));
                 textViewWaypointStatusColor.setBackgroundResource(R.color.task_successful);
                 break;

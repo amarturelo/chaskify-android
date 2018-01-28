@@ -238,7 +238,7 @@ public class TaskViewDialogFragment extends BottomSheetDialogFragment implements
                 textViewTaskOrderNumber.setTextColor(getResources().getColor(R.color.task_successful));
                 viewTaskStatus.setBackgroundResource(R.color.task_successful);
                 break;
-            case "COMPLETE":
+            case "COMPLETED":
                 textViewTaskOrderNumber.setTextColor(getResources().getColor(R.color.task_successful));
                 viewTaskStatus.setBackgroundResource(R.color.task_successful);
                 break;

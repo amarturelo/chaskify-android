@@ -55,7 +55,7 @@ public class ChaskifyApp extends MultiDexApplication {
 
         RealmConfiguration realmNotification = new RealmConfiguration.Builder()
                 .name("inMemory.realm")
-                //.inMemory()
+                .inMemory()
                 .modules(new InMemoryModule())
                 .deleteRealmIfMigrationNeeded()
                 .build();

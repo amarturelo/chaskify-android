@@ -21,7 +21,7 @@ public interface TaskApi {
             , @Query("timeZone") String timeZone
             , @Query("token") String token);
 
-    @GET("changeTaskStatusNewAndroid")
+    @GET("changeTaskStatusAndroid")
     Call<String> updateStatus(
             @Query("token") String token
             , @Query("task_id") String task_id

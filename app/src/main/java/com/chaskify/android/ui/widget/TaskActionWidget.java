@@ -90,6 +90,8 @@ public class TaskActionWidget extends LinearLayout implements TaskActionContract
 
         if (mTaskActionModel.getStatus().equals("IN ROUTE") && mTaskActionModel.getWayPointPending() != 0)
             mPositive.setVisibility(INVISIBLE);
+        else
+            mPositive.setVisibility(VISIBLE);
     }
 
     private void hide() {

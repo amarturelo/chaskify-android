@@ -16,6 +16,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -33,7 +34,9 @@ public class NotificationRestClient extends RestClient<NotificationApi> {
 
     public void getNotifications(final ApiCallback<List<ChaskifyNotification>> callback) throws TokenNotFoundException {
         if (mChaskifyCredentials != null)
-            getNotifications("300", "en", mChaskifyCredentials.getAccessToken(), callback);
+            getNotifications(String.valueOf(new Date().getTimezoneOffset())
+                    , "en"
+                    , mChaskifyCredentials.getAccessToken(), callback);
         else
             throw new TokenNotFoundException();
     }
