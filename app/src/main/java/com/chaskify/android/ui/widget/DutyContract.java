@@ -8,6 +8,8 @@ import com.chaskify.android.shared.BaseContract;
 
 public interface DutyContract {
     interface View extends BaseContract.View {
+
+
         void renderDutyStatus(boolean isDuty);
 
         void showError(Throwable throwable);

@@ -7,11 +7,14 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 
+import com.annimon.stream.function.Consumer;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.service.ChaskifyService;
+import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.polyak.iconswitch.IconSwitch;
 
@@ -28,6 +31,7 @@ public class DutyActionBar extends LinearLayout implements DutyContract.View {
     private View mTaskFilter;
     private ImageView mIvTaskViewMode;
     private IconSwitch mIconSwitchTask;
+
 
     private DutyPresenter presenter;
 
@@ -76,8 +80,6 @@ public class DutyActionBar extends LinearLayout implements DutyContract.View {
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         inflate(context, R.layout.widget_action_bar, this);
 
-        presenter = new DutyPresenter(Chaskify.getInstance().getDefaultSession().get());
-
         mTaskFilter = findViewById(R.id.action_task_filter);
         mActionDuty = findViewById(R.id.switch_action_duty);
         mTaskViewMode = findViewById(R.id.action_task_view_mode);
@@ -88,76 +90,28 @@ public class DutyActionBar extends LinearLayout implements DutyContract.View {
                 mListenedTaskListChange.onSwitchList(current.name());
         });
 
-        mTaskViewMode.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        mTaskViewMode.setOnClickListener(v -> {
 
-            }
         });
-        mTaskFilter.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showFilter();
-            }
-        });
+        mTaskFilter.setOnClickListener(v -> showFilter());
         mIvTaskViewMode = findViewById(R.id.iv_task_view_mode);
 
-        mActionDuty.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked)
-                presenter.onDuty();
-            else
-                presenter.offDuty();
+        Chaskify.getInstance().getDefaultSession().ifPresent(chaskifySession -> {
+            presenter = new DutyPresenter(chaskifySession);
+
+            mActionDuty.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked)
+                    presenter.onDuty();
+                else
+                    presenter.offDuty();
+            });
+
+            presenter.bindView(DutyActionBar.this);
         });
 
-        presenter.bindView(this);
     }
 
     private void showFilter() {
-        /*BottomSheetMenuDialog dialog = new BottomSheetBuilder(getContext())
-                .setMode(BottomSheetBuilder.MODE_LIST)
-                .setMenu(R.menu.menu_bottom_sheet_fitler)
-                .setItemClickListener(new BottomSheetItemClickListener() {
-                    @Override
-                    public void onBottomSheetItemClick(MenuItem item) {
-
-                    }
-                })
-                .createDialog();
-        dialog.show();*/
 
     }
-
-/*    private void taskViewToggle() {
-        if (taskView == TASK_VIEW_MODE.LIST)
-            setTaskView(TASK_VIEW_MODE.MAP);
-        else
-            setTaskView(TASK_VIEW_MODE.LIST);
-    }
-
-
-    public DUTY_STATE getDutyState() {
-        return dutyState;
-    }
-
-    public DutyActionBar setDutyState(DUTY_STATE dutyState) {
-        this.dutyState = dutyState;
-
-        return this;
-    }
-
-    public TASK_VIEW_MODE getTaskView() {
-        return taskView;
-    }
-
-    public DutyActionBar setTaskView(TASK_VIEW_MODE taskView) {
-        this.taskView = taskView;
-
-        if (taskView == TASK_VIEW_MODE.LIST)
-            mIvTaskViewMode.setImageResource(R.drawable.ic_map_black_24dp);
-        else
-            mIvTaskViewMode.setImageResource(R.drawable.ic_view_list_black_24dp);
-
-        return this;
-    }*/
-
 }

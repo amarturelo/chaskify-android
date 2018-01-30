@@ -8,6 +8,10 @@ import com.chaskify.android.shared.BaseContract;
 
 public interface TaskActionContract {
     interface View extends BaseContract.View {
+        void showProgress();
+
+        void hideProgress();
+
         void renderActions(TaskActionWidget.TaskActionModel mTaskActionModel);
     }
 

@@ -20,38 +20,74 @@ public class TaskActionPresenter extends BasePresenter<TaskActionContract.View>
 
     @Override
     public void acceptTask(String id) {
+        view.showProgress();
         mMethodCallHelper.acceptTask(id)
-                .continueWith(new LogIfError());
+                .continueWith(task ->
+                {
+                    new LogIfError();
+                    view.hideProgress();
+                    return null;
+                });
     }
 
     @Override
     public void arrivedTask(String id) {
+        view.showProgress();
         mMethodCallHelper.arrivedTask(id)
-                .continueWith(new LogIfError());
+                .continueWith(task ->
+                {
+                    new LogIfError();
+                    view.hideProgress();
+                    return null;
+                });
     }
 
     @Override
     public void startTask(String id) {
+        view.showProgress();
         mMethodCallHelper.startTask(id)
-                .continueWith(new LogIfError());
+                .continueWith(task ->
+                {
+                    new LogIfError();
+                    view.hideProgress();
+                    return null;
+                });
     }
 
     @Override
     public void successful(String id) {
+        view.showProgress();
         mMethodCallHelper.successfulTask(id)
-                .continueWith(new LogIfError());
+                .continueWith(task ->
+                {
+                    new LogIfError();
+                    view.hideProgress();
+                    return null;
+                });
     }
 
     @Override
     public void cancelTask(String taskId, String reason) {
+        view.showProgress();
         mMethodCallHelper.cancelTask(taskId, reason)
-                .continueWith(new LogIfError());
+                .continueWith(task ->
+                {
+                    new LogIfError();
+                    view.hideProgress();
+                    return null;
+                });
     }
 
     @Override
     public void declineTask(String id) {
+        view.showProgress();
         mMethodCallHelper.declineTask(id)
-                .continueWith(new LogIfError());
+                .continueWith(task ->
+                {
+                    new LogIfError();
+                    view.hideProgress();
+                    return null;
+                });
     }
 
 

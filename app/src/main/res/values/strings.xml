@@ -183,7 +183,7 @@
     <string name="title_task_cancel">cancel</string>
     <string name="title_task_arrived">arrived</string>
     <string name="title_task_failed">failed</string>
-    <string name="title_task_successfult">successfult</string>
+    <string name="title_task_successful">successful</string>
     <string name="title_task_cancel_reason">Reason</string>
     <string name="title_task_way_point_successful">successful</string>
 </resources>

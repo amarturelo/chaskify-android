@@ -43,7 +43,6 @@
                 android:id="@+id/profile_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Alberto Marturelo"
                 android:textSize="16sp" />
         </RelativeLayout>
 
@@ -57,7 +56,6 @@
                 android:id="@+id/profile_team"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chaskify"
                 android:textColor="@color/yellow"
                 android:textSize="16sp" />
 

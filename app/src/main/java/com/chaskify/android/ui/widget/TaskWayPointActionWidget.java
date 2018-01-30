@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.chaskify.android.Chaskify;
@@ -31,6 +32,10 @@ public class TaskWayPointActionWidget extends LinearLayout implements View.OnCli
     private TaskWayPointActionModel mTaskWayPointActionModel;
     private TextView mNegative;
 
+    private ProgressBar pbActionProgress;
+
+    private View formAction;
+
     public TaskWayPointActionWidget(Context context) {
         this(context, null, 0);
     }
@@ -47,7 +52,8 @@ public class TaskWayPointActionWidget extends LinearLayout implements View.OnCli
 
     private void init() {
         Timber.tag(this.getClass().getSimpleName());
-
+        pbActionProgress = findViewById(R.id.pb_action_progress);
+        formAction = findViewById(R.id.form_actions);
         mPositive = findViewById(R.id.positive_action);
         mPositive.setOnClickListener(this);
         mNegative = findViewById(R.id.negative_action);
@@ -95,6 +101,19 @@ public class TaskWayPointActionWidget extends LinearLayout implements View.OnCli
     private void show() {
         setVisibility(VISIBLE);
     }
+
+    @Override
+    public void showProgress() {
+        pbActionProgress.setVisibility(VISIBLE);
+        formAction.setVisibility(INVISIBLE);
+    }
+
+    @Override
+    public void hideProgress() {
+        formAction.setVisibility(VISIBLE);
+        pbActionProgress.setVisibility(INVISIBLE);
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -172,7 +191,7 @@ public class TaskWayPointActionWidget extends LinearLayout implements View.OnCli
         ASSIGNED(R.string.title_task_accept, R.color.task_accepted),
         ACCEPTED(R.string.title_task_start, R.color.task_start),
         IN_ROUTE(R.string.title_task_way_point_successful, R.color.task_arrived),
-        ARRIVED(R.string.title_task_successfult, R.color.task_successful),
+        ARRIVED(R.string.title_task_successful, R.color.task_successful),
         UNASSIGNED(R.string.title_task_accept, R.color.task_accepted);
 
         private int positive;

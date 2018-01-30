@@ -20,13 +20,25 @@ public class TaskWayPointActionPresenter extends BasePresenter<TaskWayPointActio
 
     @Override
     public void startTaskWayPoint(String id) {
+        view.showProgress();
         mMethodCallHelper.startTaskWayPoint(id)
-                .continueWith(new LogIfError());
+                .continueWith(task ->
+                {
+                    new LogIfError();
+                    view.hideProgress();
+                    return null;
+                });
     }
 
     @Override
     public void successfulTaskWayPoint(String id) {
+        view.showProgress();
         mMethodCallHelper.successfulTaskWayPoint(id)
-                .continueWith(new LogIfError());
+                .continueWith(task ->
+                {
+                    new LogIfError();
+                    view.hideProgress();
+                    return null;
+                });
     }
 }

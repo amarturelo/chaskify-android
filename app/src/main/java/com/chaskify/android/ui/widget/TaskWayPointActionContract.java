@@ -8,6 +8,10 @@ import com.chaskify.android.shared.BaseContract;
 
 public interface TaskWayPointActionContract {
     interface View extends BaseContract.View {
+        void showProgress();
+
+        void hideProgress();
+
         void renderActions(TaskWayPointActionWidget.TaskWayPointActionModel taskWayPointActionModel);
     }
 

@@ -195,7 +195,7 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
     }
 
     private void goToLaunch() {
-        if(mListener!=null)
+        if (mListener != null)
             mListener.goToLauncher();
     }
 
@@ -266,12 +266,8 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
                     return Base64.encodeBytes(byteArray);
                 })
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
-                .subscribe(s -> presenter.updateImageProfile(s), new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(getActivity(), throwable.toString(), Toast.LENGTH_LONG).show();
-                    }
-                });
+                .subscribe(s -> presenter.updateImageProfile(s)
+                        , throwable -> Toast.makeText(getActivity(), throwable.toString(), Toast.LENGTH_LONG).show());
     }
 
 
