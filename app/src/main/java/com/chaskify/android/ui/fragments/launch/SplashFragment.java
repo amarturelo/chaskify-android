@@ -1,7 +1,6 @@
 package com.chaskify.android.ui.fragments.launch;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -124,10 +123,8 @@ public class SplashFragment extends BaseFragment implements SplashContract.View,
 
     @Override
     public void complete() {
-        if (ChaskifyService.getInstance() == null)
-            ChaskifyService.start(getContext(), Chaskify.getInstance().getDefaultSession().get().getCredentials().getDriverId());
+        ChaskifyService.start(getContext(), Chaskify.getInstance().getDefaultSession().get().getCredentials().getDriverId());
         Navigator.goToMainActivity(getActivity());
-        //getActivity().finish();
     }
 
     @Override

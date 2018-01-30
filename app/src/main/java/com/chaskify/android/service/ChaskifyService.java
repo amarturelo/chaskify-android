@@ -2,29 +2,29 @@ package com.chaskify.android.service;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 
 import com.chaskify.android.Chaskify;
+import com.chaskify.android.R;
+import com.chaskify.android.ui.activities.LaunchActivity;
+import com.chaskify.android.ui.activities.MainActivity;
 import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallbackSuccess;
 import com.google.android.gms.location.LocationRequest;
 import com.patloew.rxlocation.RxLocation;
 
-import java.util.concurrent.Callable;
-
 import io.reactivex.Completable;
-import io.reactivex.CompletableEmitter;
-import io.reactivex.CompletableOnSubscribe;
-import io.reactivex.CompletableSource;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -69,20 +69,55 @@ public class ChaskifyService extends Service {
                 .setInterval(5000);
     }
 
-    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Timber.d("on Start Command " + startId);
-        mChaskifyService = this;
-
-        if (intent != null && intent.getExtras() != null && !intent.getExtras().getString(EXTRA_CHASKIFY_ID, "").isEmpty()) {
-            String driverId = intent.getExtras().getString(EXTRA_CHASKIFY_ID, "");
-            attachSession(Chaskify.getInstance().getSessionByDriverId(driverId).get());
-
-            onDuty();
-        } else if (mChaskifySession != null) {
-            onDuty();
+        if (intent.getAction().equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
+            mChaskifyService = this;
+            String driverId = intent.getExtras().getString(Constants.ACTION.MAIN_ACTION);
+            attach(driverId);
+        } else if (intent.getAction().equals(
+                Constants.ACTION.STOPFOREGROUND_ACTION)) {
+            stop();
         }
         return START_STICKY;
+    }
+
+    private void attach(String driverId) {
+        Chaskify.getInstance().getSessionByDriverId(driverId)
+                .executeIfAbsent(() -> stop())
+                .ifPresent(
+                        chaskifySession -> {
+
+                            attachSession(chaskifySession);
+
+                            Intent notificationIntent = new Intent(this, LaunchActivity.class);
+                            notificationIntent.setAction(Constants.ACTION.MAIN_ACTION);
+                            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                                    notificationIntent, 0);
+
+                            Notification notification = new NotificationCompat.Builder(this)
+                                    .setContentTitle("On Duty")
+                                    .setTicker("On Duty")
+                                    .setContentText(chaskifySession.getCredentials().getUsername())
+                                    .setSmallIcon(R.mipmap.ic_launcher)
+                                    .setOngoing(true)
+                                    .setContentIntent(pendingIntent)
+                                    .build();
+
+                            startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE,
+                                    notification);
+
+                            onDuty();
+                        }
+                );
+    }
+
+    private void stop() {
+        mChaskifyService = null;
+        clearSubscriptions();
+        stopForeground(true);
+        stopSelf();
     }
 
     @Nullable
@@ -91,30 +126,22 @@ public class ChaskifyService extends Service {
         return null;
     }
 
-    public static void start(Context activity, String driverId) {
-        Timber.d("start " + driverId);
-
-        Intent intent = new Intent(activity, ChaskifyService.class);
+    public static void start(Context context, String driverId) {
+        Intent startIntent = new Intent(context, ChaskifyService.class);
+        startIntent.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
         Bundle bundle = new Bundle();
-        bundle.putString(EXTRA_CHASKIFY_ID, driverId);
-        intent.putExtras(bundle);
-        activity.startService(intent);
+        bundle.putString(Constants.ACTION.MAIN_ACTION, driverId);
+        startIntent.putExtras(bundle);
+        context.startService(startIntent);
     }
 
-    public static void stop(Context activity) {
-        Timber.d(String.valueOf(activity.stopService(new Intent(activity, ChaskifyService.class))));
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Timber.d("on Destroy");
-
-        clearSubscriptions();
+    public static void stop(Context context) {
+        Intent stopIntent = new Intent(context, ChaskifyService.class);
+        stopIntent.setAction(Constants.ACTION.STOPFOREGROUND_ACTION);
+        context.startService(stopIntent);
     }
 
     private void onDuty() {
-        Timber.d("on Duty");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -122,14 +149,11 @@ public class ChaskifyService extends Service {
                 rxLocation.settings().checkAndHandleResolution(locationRequest)
                         .flatMapObservable(this::getAddressObservable)
                         .flatMapCompletable(ChaskifyService.this::onLocationUpdate)
+                        .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> {
                         }, Timber::e)
         );
-    }
-
-    private void offDuty() {
-        compositeSubscription.clear();
     }
 
     protected void addSubscription(Disposable subscription) {
@@ -141,9 +165,6 @@ public class ChaskifyService extends Service {
     }
 
     private void attachSession(ChaskifySession chaskifySession) {
-
-        Timber.d("attach Session " + chaskifySession.toString());
-
         if (this.mChaskifySession != null) {
             if (!this.mChaskifySession.getCredentials().getDriverId().equals(chaskifySession.getCredentials().getDriverId())) {
                 compositeSubscription.clear();
@@ -172,22 +193,26 @@ public class ChaskifyService extends Service {
         return Completable.create(emitter -> mChaskifySession.updateDriverPosition(location.getLatitude(), location.getLongitude(), new ApiCallbackSuccess() {
             @Override
             public void onSuccess() {
-                emitter.onComplete();
+                if (emitter != null && !emitter.isDisposed())
+                    emitter.onComplete();
             }
 
             @Override
             public void onNetworkError(Exception e) {
-                emitter.onError(e);
+                if (emitter != null && !emitter.isDisposed())
+                    emitter.onError(e);
             }
 
             @Override
             public void onChaskifyError(Exception e) {
-                emitter.onError(e);
+                if (emitter != null && !emitter.isDisposed())
+                    emitter.onError(e);
             }
 
             @Override
             public void onUnexpectedError(Exception e) {
-                emitter.onError(e);
+                if (emitter != null && !emitter.isDisposed())
+                    emitter.onError(e);
             }
         }));
     }

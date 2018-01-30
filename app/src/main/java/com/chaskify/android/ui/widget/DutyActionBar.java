@@ -4,18 +4,13 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Switch;
 
-import com.annimon.stream.function.Consumer;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.service.ChaskifyService;
-import com.chaskify.chaskify_sdk.ChaskifySession;
-import com.jakewharton.rxbinding2.view.RxView;
 import com.polyak.iconswitch.IconSwitch;
 
 import timber.log.Timber;
