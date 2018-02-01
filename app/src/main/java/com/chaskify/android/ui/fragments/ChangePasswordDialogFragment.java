@@ -18,6 +18,8 @@ import android.widget.Toast;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.LoginHandler;
 import com.chaskify.android.R;
+import com.chaskify.android.helper.ToastIfError;
+import com.chaskify.android.helper.ToastIfSuccessful;
 import com.chaskify.android.store.LoginStorage;
 import com.chaskify.android.store.PreferenceStorage;
 
@@ -139,7 +141,7 @@ public class ChangePasswordDialogFragment extends BottomSheetDialogFragment impl
             cancel = true;
         }
 
-        if(!newPassword.equals(confirmNewPassword)){
+        if (!newPassword.equals(confirmNewPassword)) {
             mConfirmNewPassword.setError(getString(R.string.error_password_not_match));
             focusView = mConfirmNewPassword;
             cancel = true;
@@ -171,12 +173,12 @@ public class ChangePasswordDialogFragment extends BottomSheetDialogFragment impl
 
     @Override
     public void showError(Throwable throwable) {
-        Timber.d(throwable);
-        Toast.makeText(getContext(), throwable.toString(), Toast.LENGTH_LONG).show();
+        ToastIfError.showError(getActivity(), (Exception) throwable);
     }
 
     @Override
     public void complete() {
-        Toast.makeText(getContext(), "Se cambio la contrasenna", Toast.LENGTH_LONG).show();
+        ToastIfSuccessful.show(getActivity(), getResources().getString(R.string.message_change_password_successful));
+        dismiss();
     }
 }

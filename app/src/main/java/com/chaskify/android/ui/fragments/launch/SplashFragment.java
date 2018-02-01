@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.annimon.stream.Optional;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
+import com.chaskify.android.helper.ToastIfError;
 import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.service.ChaskifyService;
 import com.chaskify.android.ui.base.BaseFragment;
@@ -117,7 +118,7 @@ public class SplashFragment extends BaseFragment implements SplashContract.View,
     @Override
     public void showError(Throwable throwable) {
         hideProgress();
-        Toast.makeText(getActivity(), throwable.toString(), Toast.LENGTH_LONG).show();
+        ToastIfError.showError(getContext(), (Exception) throwable);
         mActionTryAgain.setVisibility(View.VISIBLE);
     }
 

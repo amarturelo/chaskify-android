@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.annimon.stream.Stream;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
+import com.chaskify.android.helper.ToastIfError;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.service.ChaskifyService;
@@ -205,9 +206,7 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
 
     @Override
     public void showError(Throwable throwable) {
-        Timber.d(throwable);
-        Toast.makeText(getActivity(), throwable.toString(), Toast.LENGTH_LONG)
-                .show();
+        ToastIfError.showError(getActivity(), (Exception) throwable);
     }
 
     @Override

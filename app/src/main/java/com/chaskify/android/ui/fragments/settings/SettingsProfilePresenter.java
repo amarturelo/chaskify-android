@@ -4,6 +4,7 @@ import com.annimon.stream.Optional;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.helper.MethodCallHelper;
 import com.chaskify.android.helper.LogIfError;
+import com.chaskify.android.helper.ToastIfError;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
 import com.chaskify.android.ui.model.SettingsModel;
@@ -93,7 +94,12 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
                 .updateSettings(enable)
                 .continueWith(task -> {
                     settings();
-                    return null;
+                    return task;
+                })
+                .continueWith(task -> {
+                    if (task.isFaulted())
+                        view.showError(task.getError());
+                    return task;
                 })
                 .continueWith(new LogIfError());
     }
@@ -136,6 +142,11 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
     @Override
     public void updateImageProfile(String base64) {
         mMethodCallHelper.updateProfileImage(base64)
+                .continueWith(task -> {
+                    if (task.isFaulted())
+                        view.showError(task.getError());
+                    return task;
+                })
                 .continueWith(new LogIfError());
     }
 
@@ -143,18 +154,33 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
     public void updateProfileVehicle(String transportTypeTd, String transportDescription, String licencePlate, String color) {
         mMethodCallHelper
                 .updateProfileVehicle(transportTypeTd, transportDescription, licencePlate, color)
+                .continueWith(task -> {
+                    if (task.isFaulted())
+                        view.showError(task.getError());
+                    return task;
+                })
                 .continueWith(new LogIfError());
     }
 
     @Override
     public void updateProfile(String newPhone) {
         mMethodCallHelper.updateProfile(newPhone)
+                .continueWith(task -> {
+                    if (task.isFaulted())
+                        view.showError(task.getError());
+                    return task;
+                })
                 .continueWith(new LogIfError());
     }
 
     @Override
     public void profile() {
         mMethodCallHelper.getProfile()
+                .continueWith(task -> {
+                    if (task.isFaulted())
+                        view.showError(task.getError());
+                    return task;
+                })
                 .continueWith(new LogIfError());
         addSubscription(profileInteractor
                 .profileByDriverId(mChaskifySession.getCredentials().getDriverId())

@@ -1,5 +1,6 @@
 package com.chaskify.android.helper;
 
+import com.annimon.stream.Stream;
 import com.chaskify.chaskify_sdk.ChaskifySession;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallback;
 import com.chaskify.chaskify_sdk.rest.callback.ApiCallbackSuccess;
@@ -213,7 +214,8 @@ public class MethodCallHelper {
                 .getTask()
                 .onSuccessTask(value -> {
                     if (!value.getResult().isEmpty())
-                        mTaskCache.put(TaskDataMapper.transform(value.getResult()));
+                        mTaskCache.put(Stream.of(TaskDataMapper.transform(value.getResult()))
+                                .toList());
                     return null;
                 });
     }

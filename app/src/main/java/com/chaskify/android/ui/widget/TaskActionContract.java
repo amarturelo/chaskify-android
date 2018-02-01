@@ -12,6 +12,8 @@ public interface TaskActionContract {
 
         void hideProgress();
 
+        void showError(Exception e);
+
         void renderActions(TaskActionWidget.TaskActionModel mTaskActionModel);
     }
 

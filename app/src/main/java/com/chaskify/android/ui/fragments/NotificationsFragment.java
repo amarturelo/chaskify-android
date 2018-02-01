@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.adapters.NotificationsListAdapter;
+import com.chaskify.android.helper.ToastIfError;
 import com.chaskify.android.ui.base.BaseFragment;
 import com.chaskify.android.ui.model.NotificationItemModel;
 import com.chaskify.android.ui.widget.MultiStateView;
@@ -106,8 +107,7 @@ public class NotificationsFragment extends BaseFragment implements Notifications
     @Override
     public void showError(Throwable throwable) {
         hideProgress();
-        Toast.makeText(getContext(), throwable.toString(), Toast.LENGTH_LONG)
-                .show();
+        ToastIfError.showError(getContext(), (Exception) throwable);
     }
 
     @Override

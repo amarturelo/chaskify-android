@@ -5,20 +5,29 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.helper.MethodCallHelper;
 import com.chaskify.android.R;
+import com.chaskify.android.helper.ToastIfError;
 import com.chaskify.data.realm.cache.impl.NotificationsCacheImpl;
 import com.chaskify.data.realm.cache.impl.ProfileCacheImpl;
 import com.chaskify.data.realm.cache.impl.SettingsCacheImpl;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.realm.cache.impl.TaskWayPointCacheImpl;
+import com.fxn.cue.Cue;
+import com.fxn.cue.enums.Duration;
+import com.fxn.cue.enums.Type;
+
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 
 /**
  * Created by alberto on 14/01/18.
@@ -86,6 +95,11 @@ public class TaskActionWidget extends LinearLayout implements TaskActionContract
     public void showProgress() {
         pbActionProgress.setVisibility(VISIBLE);
         formAction.setVisibility(INVISIBLE);
+    }
+
+    @Override
+    public void showError(Exception e) {
+        ToastIfError.showError(getContext(), e);
     }
 
     @Override

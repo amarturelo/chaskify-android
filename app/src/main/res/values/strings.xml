@@ -186,6 +186,9 @@
     <string name="title_task_successful">successful</string>
     <string name="title_task_cancel_reason">Reason</string>
     <string name="title_task_way_point_successful">successful</string>
+    <string name="error_failed_to_connect">Error trying to connect to the server</string>
+    <string name="error_time_out">Exceeded the waiting time, try again</string>
+    <string name="message_change_password_successful">The password was changed correctly</string>
 
 
 </resources>

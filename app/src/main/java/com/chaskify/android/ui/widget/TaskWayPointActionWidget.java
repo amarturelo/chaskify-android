@@ -3,6 +3,7 @@ package com.chaskify.android.ui.widget;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -11,11 +12,18 @@ import android.widget.TextView;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.helper.MethodCallHelper;
+import com.chaskify.android.helper.ToastIfError;
 import com.chaskify.data.realm.cache.impl.NotificationsCacheImpl;
 import com.chaskify.data.realm.cache.impl.ProfileCacheImpl;
 import com.chaskify.data.realm.cache.impl.SettingsCacheImpl;
 import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.realm.cache.impl.TaskWayPointCacheImpl;
+import com.fxn.cue.Cue;
+import com.fxn.cue.enums.Duration;
+import com.fxn.cue.enums.Type;
+
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 
 import timber.log.Timber;
 
@@ -100,6 +108,11 @@ public class TaskWayPointActionWidget extends LinearLayout implements View.OnCli
 
     private void show() {
         setVisibility(VISIBLE);
+    }
+
+    @Override
+    public void showError(Exception e) {
+        ToastIfError.showError(getContext(), e);
     }
 
     @Override

@@ -10,6 +10,7 @@ import android.widget.Switch;
 
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
+import com.chaskify.android.helper.ToastIfError;
 import com.chaskify.android.service.ChaskifyService;
 import com.polyak.iconswitch.IconSwitch;
 
@@ -27,7 +28,6 @@ public class DutyActionBar extends LinearLayout implements DutyContract.View {
     private ImageView mIvTaskViewMode;
     private IconSwitch mIconSwitchTask;
 
-
     private DutyPresenter presenter;
 
     @Override
@@ -44,7 +44,7 @@ public class DutyActionBar extends LinearLayout implements DutyContract.View {
 
     @Override
     public void showError(Throwable throwable) {
-
+        ToastIfError.showError(getContext(), (Exception) throwable);
     }
 
     @Override

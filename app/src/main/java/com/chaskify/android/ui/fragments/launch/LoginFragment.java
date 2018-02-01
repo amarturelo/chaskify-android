@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
@@ -17,9 +18,16 @@ import android.widget.Toast;
 
 import com.chaskify.android.LoginHandler;
 import com.chaskify.android.R;
+import com.chaskify.android.helper.ToastIfError;
 import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.base.BaseFragment;
 import com.chaskify.android.ui.model.ProfileItemModel;
+import com.fxn.cue.Cue;
+import com.fxn.cue.enums.Duration;
+import com.fxn.cue.enums.Type;
+
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 
 import static com.chaskify.android.ui.activities.LaunchActivity.ARG_ACCOUNT_NAME;
 
@@ -98,7 +106,7 @@ public class LoginFragment extends BaseFragment implements LoginContract.View {
 
     @Override
     public void showError(Exception e) {
-        Toast.makeText(getContext(), e.toString(), Toast.LENGTH_LONG).show();
+        ToastIfError.showError(getContext(), e);
     }
 
     @Override

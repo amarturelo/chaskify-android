@@ -25,6 +25,7 @@ import com.annimon.stream.Stream;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.adapters.TaskListAdapter;
+import com.chaskify.android.helper.ToastIfError;
 import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.base.BaseActivity;
 import com.chaskify.android.ui.fragments.TaskListFragment;
@@ -305,7 +306,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Dut
 
     @Override
     public void showError(Throwable throwable) {
-        Toast.makeText(getApplicationContext(), throwable.toString(), Toast.LENGTH_LONG).show();
+        ToastIfError.showError(this, (Exception) throwable);
     }
 
     @Override
