@@ -126,6 +126,8 @@ public class MainActivity extends BaseActivity implements MainContract.View, Dut
 
         initToolBar();
 
+
+        filterTask(currentDate);
     }
 
 
