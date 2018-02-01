@@ -1,5 +1,6 @@
 package com.chaskify.android.adapters;
 
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import com.chaskify.android.R;
 import com.chaskify.android.adapters.listened.OnItemListened;
 import com.chaskify.android.adapters.viewholder.ProfileItemViewHolder;
 import com.chaskify.android.ui.model.ProfileItemModel;
+import com.chaskify.android.ui.model.TaskHistoryItemModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,25 +52,46 @@ public class ProfileListAdapter extends RecyclerView.Adapter<ProfileItemViewHold
         return mProfileItemModels.size();
     }
 
-    public void render(List<ProfileItemModel> listCacheModels) {
-        this.mProfileItemModels.clear();
-        this.mProfileItemModels.addAll(listCacheModels);
-        notifyDataSetChanged();
-    }
-
     public ProfileItemModel getItem(int position) {
         return mProfileItemModels.get(position);
     }
 
-    public void remove(String driverId) {
-        Stream.of(mProfileItemModels)
-                .filter(value -> value.getDriverId().equals(driverId))
-                .findFirst()
-                .ifPresent(profileItemModel -> {
-                    int index = mProfileItemModels.lastIndexOf(profileItemModel);
-                    mProfileItemModels.remove(index);
-                    notifyItemRemoved(index);
-                });
+    public void update(List<ProfileItemModel> mNewList) {
+        ProfileDiffCallback callback = new ProfileDiffCallback(this.mProfileItemModels, mNewList);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(callback);
+        this.mProfileItemModels.clear();
+        this.mProfileItemModels.addAll(mNewList);
+        diffResult.dispatchUpdatesTo(this);
+    }
+
+    public static class ProfileDiffCallback extends DiffUtil.Callback {
+        private List<ProfileItemModel> mOldList;
+        private List<ProfileItemModel> mNewList;
+
+        public ProfileDiffCallback(List<ProfileItemModel> mOldList, List<ProfileItemModel> mNewList) {
+            this.mOldList = mOldList;
+            this.mNewList = mNewList;
+        }
+
+        @Override
+        public int getOldListSize() {
+            return mOldList != null ? mOldList.size() : 0;
+        }
+
+        @Override
+        public int getNewListSize() {
+            return mNewList != null ? mNewList.size() : 0;
+        }
+
+        @Override
+        public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+            return mNewList.get(newItemPosition).getDriverId().equals(mOldList.get(oldItemPosition).getDriverId());
+        }
+
+        @Override
+        public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+            return mNewList.get(newItemPosition).equals(mOldList.get(oldItemPosition));
+        }
 
     }
 }

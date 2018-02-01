@@ -123,7 +123,6 @@ public class SplashFragment extends BaseFragment implements SplashContract.View,
 
     @Override
     public void complete() {
-        ChaskifyService.start(getContext(), Chaskify.getInstance().getDefaultSession().get().getCredentials().getDriverId());
         Navigator.goToMainActivity(getActivity());
     }
 

@@ -13,6 +13,10 @@ public interface DutyContract {
         void renderDutyStatus(boolean isDuty);
 
         void showError(Throwable throwable);
+
+        void onDuty();
+
+        void offDuty();
     }
 
     interface Presenter extends BaseContract.Presenter<DutyContract.View> {

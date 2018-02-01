@@ -72,21 +72,6 @@ public class ProfileItemModel implements Parcelable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ProfileItemModel)) return false;
-
-        ProfileItemModel that = (ProfileItemModel) o;
-
-        return mDriverId != null ? mDriverId.equals(that.mDriverId) : that.mDriverId == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return mDriverId != null ? mDriverId.hashCode() : 0;
-    }
-
-    @Override
     public int describeContents() {
         return 0;
     }
@@ -97,5 +82,30 @@ public class ProfileItemModel implements Parcelable {
         dest.writeString(mTeamName);
         dest.writeString(mDriverId);
         dest.writeString(mDriverUsername);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ProfileItemModel)) return false;
+
+        ProfileItemModel that = (ProfileItemModel) o;
+
+        if (mProfileImage != null ? !mProfileImage.equals(that.mProfileImage) : that.mProfileImage != null)
+            return false;
+        if (mTeamName != null ? !mTeamName.equals(that.mTeamName) : that.mTeamName != null)
+            return false;
+        if (mDriverId != null ? !mDriverId.equals(that.mDriverId) : that.mDriverId != null)
+            return false;
+        return mDriverUsername != null ? mDriverUsername.equals(that.mDriverUsername) : that.mDriverUsername == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mProfileImage != null ? mProfileImage.hashCode() : 0;
+        result = 31 * result + (mTeamName != null ? mTeamName.hashCode() : 0);
+        result = 31 * result + (mDriverId != null ? mDriverId.hashCode() : 0);
+        result = 31 * result + (mDriverUsername != null ? mDriverUsername.hashCode() : 0);
+        return result;
     }
 }

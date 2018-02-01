@@ -174,11 +174,11 @@ public class Chaskify {
     }
 
     public void remove(ChaskifySession chaskifySession) {
+        mChaskifySessions.remove(chaskifySession);
         mAccountStorage.removeCredentials(new Credentials()
                 .setUsername(chaskifySession.getCredentials().getUsername())
                 .setAccessToken(chaskifySession.getCredentials().getAccessToken())
                 .setDriverId(chaskifySession.getCredentials().getDriverId()));
         mPreferenceStorage.removeDefault(chaskifySession.getCredentials().getUsername());
-
     }
 }

@@ -34,16 +34,27 @@ public class DutyActionBar extends LinearLayout implements DutyContract.View {
     public void renderDutyStatus(boolean isDuty) {
         mActionDuty.setChecked(isDuty);
 
-        if (isDuty)
-            ChaskifyService.start(getContext(), Chaskify.getInstance().getDefaultSession().get().getCredentials().getDriverId());
-        else if (ChaskifyService.getInstance() != null)
-            ChaskifyService.stop(getContext());
-
+        mActionDuty.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked)
+                presenter.onDuty();
+            else
+                presenter.offDuty();
+        });
     }
 
     @Override
     public void showError(Throwable throwable) {
 
+    }
+
+    @Override
+    public void onDuty() {
+        ChaskifyService.start(getContext(), Chaskify.getInstance().getDefaultSession().get().getCredentials().getDriverId());
+    }
+
+    @Override
+    public void offDuty() {
+        ChaskifyService.stop(getContext());
     }
 
     public interface OnListenedTaskListChange {
@@ -79,6 +90,7 @@ public class DutyActionBar extends LinearLayout implements DutyContract.View {
         mActionDuty = findViewById(R.id.switch_action_duty);
         mTaskViewMode = findViewById(R.id.action_task_view_mode);
         mIconSwitchTask = findViewById(R.id.icon_switch_task);
+
         mIconSwitchTask.setCheckedChangeListener(current -> {
             Timber.d(current.toString());
             if (mListenedTaskListChange != null)
@@ -93,13 +105,6 @@ public class DutyActionBar extends LinearLayout implements DutyContract.View {
 
         Chaskify.getInstance().getDefaultSession().ifPresent(chaskifySession -> {
             presenter = new DutyPresenter(chaskifySession);
-
-            mActionDuty.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked)
-                    presenter.onDuty();
-                else
-                    presenter.offDuty();
-            });
 
             presenter.bindView(DutyActionBar.this);
         });

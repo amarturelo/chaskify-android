@@ -113,7 +113,7 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View,
     public void renderCredentials(List<ProfileItemModel> cacheItemModels) {
         formHasCredentials.setVisibility(View.VISIBLE);
         Timber.d("::Render credentials " + cacheItemModels + "::");
-        mProfileListAdapter.render(cacheItemModels);
+        mProfileListAdapter.update(cacheItemModels);
     }
 
 
@@ -132,10 +132,6 @@ public class LaunchFragment extends BaseFragment implements LaunchContract.View,
 
     }
 
-    @Override
-    public void profileRemove(String driverId) {
-        mProfileListAdapter.remove(driverId);
-    }
 
     @Override
     public void onClick(View v) {

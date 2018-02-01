@@ -11,7 +11,7 @@ import com.chaskify.chaskify_sdk.rest.callback.ApiCallbackSuccess;
  */
 
 public class DutyPresenter extends BasePresenter<DutyContract.View>
-        implements DutyContract.Presenter, ApiCallbackSuccess, ChaskifySession.OnDutyChange {
+        implements DutyContract.Presenter, ApiCallbackSuccess {
 
     private ChaskifySession mChaskifySession;
 
@@ -22,16 +22,18 @@ public class DutyPresenter extends BasePresenter<DutyContract.View>
     @Override
     public void bindView(@NonNull DutyContract.View view) {
         super.bindView(view);
-        mChaskifySession.addDutyChangeListener(this);
+        view.renderDutyStatus(mChaskifySession.getState() == ChaskifySession.STATE.ON_DUTY);
     }
 
     @Override
     public void onDuty() {
+        view.onDuty();
         mChaskifySession.onDuty(this);
     }
 
     @Override
     public void offDuty() {
+        view.offDuty();
         mChaskifySession.offDuty(this);
     }
 
@@ -55,8 +57,4 @@ public class DutyPresenter extends BasePresenter<DutyContract.View>
         view.renderDutyStatus(mChaskifySession.getState() == ChaskifySession.STATE.ON_DUTY);
     }
 
-    @Override
-    public void onState(ChaskifySession.STATE state) {
-        view.renderDutyStatus(mChaskifySession.getState() == ChaskifySession.STATE.ON_DUTY);
-    }
 }

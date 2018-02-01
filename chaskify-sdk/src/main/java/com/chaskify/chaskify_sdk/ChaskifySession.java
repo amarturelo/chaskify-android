@@ -40,15 +40,7 @@ public class ChaskifySession {
     private TaskWayPointRestClient mTaskWayPointRestClient;
     private DriverRestClient mDriverRestClient;
 
-    public interface OnDutyChange {
-        void onState(STATE state);
-    }
-
-    public List<OnDutyChange> mListenedDutyChange;
-
     public ChaskifySession(ChaskifyCredentials chaskifyCredentials) {
-        mListenedDutyChange = new ArrayList<>();
-
         this.mChaskifyCredentials = chaskifyCredentials;
 
         mLoginRestClient = new LoginRestClient(mChaskifyCredentials);
@@ -59,18 +51,6 @@ public class ChaskifySession {
         mCalendarTaskRestClient = new CalendarTaskRestClient(mChaskifyCredentials);
         mTaskWayPointRestClient = new TaskWayPointRestClient(mChaskifyCredentials);
         mDriverRestClient = new DriverRestClient(mChaskifyCredentials);
-    }
-
-    public void addDutyChangeListener(OnDutyChange onDutyChange) {
-        if (onDutyChange != null) {
-            mListenedDutyChange.add(onDutyChange);
-            setState(mState);
-        }
-    }
-
-    public void removeDutyChangeListener(OnDutyChange onDutyChange) {
-        if (onDutyChange != null)
-            mListenedDutyChange.remove(onDutyChange);
     }
 
     /**
@@ -162,18 +142,21 @@ public class ChaskifySession {
 
             @Override
             public void onNetworkError(Exception e) {
+                setState(STATE.OFF_DUTY);
                 if (callback != null)
                     callback.onNetworkError(e);
             }
 
             @Override
             public void onChaskifyError(Exception e) {
+                setState(STATE.OFF_DUTY);
                 if (callback != null)
                     callback.onChaskifyError(e);
             }
 
             @Override
             public void onUnexpectedError(Exception e) {
+                setState(STATE.OFF_DUTY);
                 if (callback != null)
                     callback.onUnexpectedError(e);
             }
@@ -285,10 +268,6 @@ public class ChaskifySession {
 
     private void setState(STATE mState) {
         this.mState = mState;
-        for (OnDutyChange onDutyChange :
-                mListenedDutyChange) {
-            onDutyChange.onState(mState);
-        }
     }
 
     @Override

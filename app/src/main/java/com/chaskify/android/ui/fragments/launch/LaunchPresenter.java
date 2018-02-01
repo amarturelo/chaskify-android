@@ -46,7 +46,7 @@ public class LaunchPresenter extends BasePresenter<LaunchContract.View>
         addSubscription(doRemove(driverId)
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> view.profileRemove(driverId)));
+                .subscribe(this::hasCredentials));
     }
 
     private Completable doRemove(String driverId) {
