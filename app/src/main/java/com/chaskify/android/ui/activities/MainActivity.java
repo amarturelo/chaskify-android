@@ -82,7 +82,6 @@ public class MainActivity extends BaseActivity implements MainContract.View, Dut
     private TaskMapFragment mTaskMapFragment;
     private TaskListFragment mTaskListFragment;
 
-    private ValueAnimator statusBarAnimator;
     private Interpolator contentInInterpolator;
     private Interpolator contentOutInterpolator;
 
@@ -102,7 +101,7 @@ public class MainActivity extends BaseActivity implements MainContract.View, Dut
         Timber.tag(this.getClass().getSimpleName());
 
         Chaskify.getInstance().getDefaultSession()
-                .executeIfAbsent(() -> goToLaunch())
+                .executeIfAbsent(this::goToLaunch)
                 .ifPresent(chaskifySession -> presenter = new MainPresenter(
                         chaskifySession
                         , new CalendarTaskInteractor(
@@ -127,23 +126,20 @@ public class MainActivity extends BaseActivity implements MainContract.View, Dut
 
         initToolBar();
 
-        initActivity(savedInstanceState);
-
     }
+
 
     private void goToLaunch() {
-
-    }
-
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+        Navigator
+                .goToLaunchActivity(this);
     }
 
     private void initView() {
         appBarLayout = findViewById(R.id.app_bar_layout);
-        content = findViewById(R.id.content);
+        content = findViewById(R.id.fragmentTaskList);
+
+        mTaskListFragment = (TaskListFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentTaskList);
+        mTaskMapFragment = (TaskMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentTaskMap);
 
         window = getWindow();
 
@@ -240,21 +236,6 @@ public class MainActivity extends BaseActivity implements MainContract.View, Dut
 
         if (tvTitle != null) {
             tvTitle.setText(title);
-        }
-    }
-
-    private void initActivity(Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            mTaskMapFragment = TaskMapFragment.newInstance();
-            mTaskListFragment = TaskListFragment.newInstance();
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.container, mTaskMapFragment)
-                    .commit();
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.content, mTaskListFragment)
-                    .commit();
         }
     }
 

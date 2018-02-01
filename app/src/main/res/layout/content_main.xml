@@ -1,20 +1,23 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <FrameLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <FrameLayout
-        android:id="@+id/content"
+    <fragment
+        android:id="@+id/fragmentTaskMap"
+        android:name="com.chaskify.android.ui.fragments.TaskMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff"
-        android:fitsSystemWindows="true"
-        android:gravity="center"
-        android:orientation="vertical"/>
+        tools:layout="@layout/fragment_task_map" />
+
+    <fragment
+        android:id="@+id/fragmentTaskList"
+        android:name="com.chaskify.android.ui.fragments.TaskListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/fragment_task_list" />
+
+
 </FrameLayout>

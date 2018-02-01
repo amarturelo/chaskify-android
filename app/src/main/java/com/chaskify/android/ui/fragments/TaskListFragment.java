@@ -73,8 +73,6 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
                     );
                     presenter.bindView(this);
                 });
-
-
     }
 
     @Override
