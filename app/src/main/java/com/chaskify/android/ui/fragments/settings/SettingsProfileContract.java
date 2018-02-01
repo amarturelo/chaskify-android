@@ -1,5 +1,7 @@
 package com.chaskify.android.ui.fragments.settings;
 
+import android.graphics.Bitmap;
+
 import com.chaskify.android.shared.BaseContract;
 import com.chaskify.android.ui.model.ProfileModel;
 import com.chaskify.android.ui.model.SettingsModel;
@@ -36,7 +38,7 @@ public interface SettingsProfileContract {
                 , String licencePlate
                 , String color);
 
-        void updateImageProfile(String base64);
+        void updateImageProfile(Bitmap bitmap);
 
         void logout();
 

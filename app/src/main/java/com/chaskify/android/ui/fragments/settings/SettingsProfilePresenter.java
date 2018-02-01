@@ -1,11 +1,15 @@
 package com.chaskify.android.ui.fragments.settings;
 
+import android.graphics.Bitmap;
+
 import com.annimon.stream.Optional;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.helper.MethodCallHelper;
 import com.chaskify.android.helper.LogIfError;
 import com.chaskify.android.helper.ToastIfError;
+import com.chaskify.android.helper.ToastIfSuccessful;
 import com.chaskify.android.looper.BackgroundLooper;
+import com.chaskify.android.rx.RxImageToBase64;
 import com.chaskify.android.shared.BasePresenter;
 import com.chaskify.android.ui.model.SettingsModel;
 import com.chaskify.android.ui.model.mapper.ProfileModelDataMapper;
@@ -26,6 +30,7 @@ import bolts.Task;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by alberto on 3/01/18.
@@ -140,14 +145,16 @@ public class SettingsProfilePresenter extends BasePresenter<SettingsProfileContr
     }
 
     @Override
-    public void updateImageProfile(String base64) {
-        mMethodCallHelper.updateProfileImage(base64)
-                .continueWith(task -> {
-                    if (task.isFaulted())
-                        view.showError(task.getError());
-                    return task;
-                })
-                .continueWith(new LogIfError());
+    public void updateImageProfile(Bitmap bitmap) {
+        RxImageToBase64.toBase64(bitmap)
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(s -> mMethodCallHelper.updateProfileImage(s)
+                        .continueWith(task -> {
+                            if (task.isFaulted())
+                                view.showError(task.getError());
+                            return task;
+                        })
+                        .continueWith(new LogIfError()));
     }
 
     @Override

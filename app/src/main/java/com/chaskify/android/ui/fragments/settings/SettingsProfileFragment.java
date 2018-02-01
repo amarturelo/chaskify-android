@@ -22,6 +22,7 @@ import com.chaskify.android.R;
 import com.chaskify.android.helper.LocaleManager;
 import com.chaskify.android.helper.ToastIfError;
 import com.chaskify.android.looper.BackgroundLooper;
+import com.chaskify.android.rx.RxImageToBase64;
 import com.chaskify.android.service.ChaskifyService;
 import com.chaskify.android.ui.activities.LaunchActivity;
 import com.chaskify.android.ui.fragments.ChangePasswordDialogFragment;
@@ -40,7 +41,11 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.ByteArrayOutputStream;
 
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -315,16 +320,10 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Stream.of(uris).findFirst().get());
                     return bitmap;
                 })
-                .map(bitmap -> {
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                    byte[] byteArray = byteArrayOutputStream.toByteArray();
-
-                    return Base64.encodeBytes(byteArray);
-                })
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(s -> presenter.updateImageProfile(s)
-                        , throwable -> Toast.makeText(getActivity(), throwable.toString(), Toast.LENGTH_LONG).show());
+                        , throwable -> ToastIfError.showError(getActivity(), (Exception) throwable));
     }
 
 
@@ -366,6 +365,14 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
 
     private void pickFromCamera() {
         Timber.d("::pickFromCamera");
+
+        Single.create(new SingleOnSubscribe<String>() {
+            @Override
+            public void subscribe(SingleEmitter<String> e) throws Exception {
+
+            }
+        });
+
         new RxPermissions(getActivity())
                 .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .filter(granted -> granted)
@@ -375,14 +382,9 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
                     return bitmap;
                 })
-                .map(bitmap -> {
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                    byte[] byteArray = byteArrayOutputStream.toByteArray();
-                    return Base64.encodeBytes(byteArray);
-                })
                 .subscribeOn(AndroidSchedulers.from(BackgroundLooper.get()))
-                .subscribe(s -> presenter.updateImageProfile(s), throwable -> Toast.makeText(getActivity(), throwable.toString(), Toast.LENGTH_LONG).show());
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(s -> presenter.updateImageProfile(s), throwable -> ToastIfError.showError(getActivity(), (Exception) throwable));
     }
 
 }

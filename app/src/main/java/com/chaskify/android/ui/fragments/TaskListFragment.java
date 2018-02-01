@@ -13,6 +13,7 @@ import com.annimon.stream.Stream;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.adapters.TaskListAdapter;
+import com.chaskify.android.helper.ToastIfError;
 import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.base.BaseFragment;
 import com.chaskify.android.ui.model.TaskItemModel;
@@ -51,6 +52,12 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
     public TaskListFragment() {
         // Required empty public constructor
     }
+
+    public interface OnListenedTaskListFragment {
+        void onRefresh();
+    }
+
+    private OnListenedTaskListFragment mOnListenedTaskListFragment;
 
     public static TaskListFragment newInstance() {
         TaskListFragment fragment = new TaskListFragment();
@@ -110,6 +117,8 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        if (context instanceof OnListenedTaskListFragment)
+            mOnListenedTaskListFragment = (OnListenedTaskListFragment) context;
     }
 
     @Override
@@ -135,7 +144,8 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
 
     @Override
     public void showError(Throwable throwable) {
-        Toast.makeText(getContext(), throwable.toString(), Toast.LENGTH_LONG).show();
+        mSwipeRefresh.setRefreshing(false);
+        ToastIfError.showError(getContext(), (Exception) throwable);
     }
 
     @Override
@@ -159,7 +169,8 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
     @Override
     public void onRefresh() {
         //TODO este metodo tiene q decirle a la actividad padre q actualice ya que es ella la que tiene la responsabilidad
-        mSwipeRefresh.setRefreshing(false);
+        if (mOnListenedTaskListFragment != null)
+            mOnListenedTaskListFragment.onRefresh();
     }
 
     @Override

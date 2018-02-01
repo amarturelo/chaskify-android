@@ -58,7 +58,9 @@ import me.yokeyword.fragmentation.anim.FragmentAnimator;
 import timber.log.Timber;
 
 
-public class MainActivity extends BaseActivity implements MainContract.View, DutyActionBar.OnListenedTaskListChange {
+public class MainActivity extends BaseActivity implements MainContract.View
+        , DutyActionBar.OnListenedTaskListChange
+        , TaskListFragment.OnListenedTaskListFragment {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM,d", /*Locale.getDefault()*/Locale.getDefault());
 
     private static final String ARG_TASK_VIEW_MODE = "TASK_VIEW_MODE";
@@ -179,12 +181,14 @@ public class MainActivity extends BaseActivity implements MainContract.View, Dut
             public void onDayClick(Date dateClicked) {
                 filterTask(dateClicked);
                 setTitle(dateFormat.format(dateClicked));
+                currentDate = dateClicked;
             }
 
             @Override
             public void onMonthScroll(Date firstDayOfNewMonth) {
                 filterTask(firstDayOfNewMonth);
                 setTitle(dateFormat.format(firstDayOfNewMonth));
+                currentDate = firstDayOfNewMonth;
             }
         });
 
@@ -326,5 +330,14 @@ public class MainActivity extends BaseActivity implements MainContract.View, Dut
                 .setInterpolator(interpolator)
                 .setDuration(DURATION_COLOR_CHANGE_MS)
                 .start();
+    }
+
+    @Override
+    public void onRefresh() {
+        filterTask(currentDate);
+    }
+
+    private void applyFilters() {
+
     }
 }
