@@ -17,6 +17,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
+import com.chaskify.android.rx.RetryWithDelay;
 import com.chaskify.android.ui.activities.LaunchActivity;
 import com.chaskify.android.ui.activities.MainActivity;
 import com.chaskify.chaskify_sdk.ChaskifySession;
@@ -24,11 +25,15 @@ import com.chaskify.chaskify_sdk.rest.callback.ApiCallbackSuccess;
 import com.google.android.gms.location.LocationRequest;
 import com.patloew.rxlocation.RxLocation;
 
+import org.reactivestreams.Publisher;
+
 import io.reactivex.Completable;
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -42,13 +47,7 @@ public class ChaskifyService extends Service {
     private RxLocation rxLocation;
     private LocationRequest locationRequest;
 
-
-    public static final String EXTRA_CHASKIFY_ID = "ChaskifyService.EXTRA_CHASKIFY_ID";
-
     private CompositeDisposable compositeSubscription = new CompositeDisposable();
-    /**
-     * static instance
-     */
 
     private ChaskifySession mChaskifySession;
 
@@ -149,6 +148,7 @@ public class ChaskifyService extends Service {
                 rxLocation.settings().checkAndHandleResolution(locationRequest)
                         .flatMapObservable(this::getAddressObservable)
                         .flatMapCompletable(ChaskifyService.this::onLocationUpdate)
+                        .retryWhen(new RetryWithDelay(5000))
                         .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> {
