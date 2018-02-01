@@ -223,13 +223,17 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     @Override
     public void renderTaskListView(List<TaskItemSnapModel> taskItemModels) {
         mMapboxAdapter.update(Stream.of(taskItemModels)
+                .filter(value -> !value.getStatus().equals("CANCELED"))
                 .map(taskItemSnapModel -> new MarkerData(taskItemSnapModel.getTaskId()
                         , new nz.co.trademe.mapme.LatLng(taskItemSnapModel.getLat()
                         , taskItemSnapModel.getLng())
+                        , taskItemSnapModel.getStatus()
                         , taskItemSnapModel.getTaskId()))
                 .toList());
 
-        mTaskSnapListAdapter.update(taskItemModels);
+        mTaskSnapListAdapter.update(Stream.of(taskItemModels)
+                .filter(value -> !value.getStatus().equals("CANCELED"))
+                .toList());
     }
 
     @Override

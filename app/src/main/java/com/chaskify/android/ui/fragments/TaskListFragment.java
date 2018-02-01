@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.annimon.stream.Stream;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
 import com.chaskify.android.adapters.TaskListAdapter;
@@ -152,7 +153,9 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
         else
             mMultiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
 
-        taskListAdapter.update(tasks);
+        taskListAdapter.update(Stream.of(tasks)
+                .filter(value -> !value.getStatus().equals("CANCELED"))
+                .toList());
     }
 
     @Override

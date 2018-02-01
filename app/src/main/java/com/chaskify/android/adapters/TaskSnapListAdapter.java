@@ -104,6 +104,11 @@ public class TaskSnapListAdapter extends RecyclerView.Adapter<TaskSnapListAdapte
                 holder.taskStatus.setBackgroundResource(R.color.task_pending);
                 break;
         }
+
+        if (taskItemModel.getStatus().equals("CANCELED")) {
+            mTaskItemModels.remove(position);
+            notifyItemRemoved(position);
+        }
     }
 
     @Override

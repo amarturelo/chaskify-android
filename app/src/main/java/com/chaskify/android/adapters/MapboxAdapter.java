@@ -42,7 +42,11 @@ public class MapboxAdapter extends MapboxMapMeAdapter {
     public void onBindAnnotation(MapAnnotation mapAnnotation, int position, Object payload) {
         if (mapAnnotation instanceof MarkerAnnotation) {
             MarkerData item = this.markers.get(position);
-            //((MarkerAnnotation) mapAnnotation).setIcon(getIconBitmap(item));
+
+            if (item.getStatus().equals("CANCELED")) {
+                markers.remove(position);
+                notifyItemRemoved(position);
+            }
         }
     }
 

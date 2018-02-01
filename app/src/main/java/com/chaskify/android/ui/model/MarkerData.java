@@ -6,6 +6,8 @@ public class MarkerData {
 
     private String id;
 
+    private String status;
+
     private final LatLng latLng;
     private String title;
 
@@ -26,15 +28,16 @@ public class MarkerData {
 
     }
 
-    public MarkerData(String id, LatLng latLng, String title) {
-        this(id, latLng, title, null);
+    public MarkerData(String id, LatLng latLng, String title, String status) {
+        this(id, latLng, title, status, null);
     }
 
-    public MarkerData(String id, LatLng latLng, String title, String icon) {
+    public MarkerData(String id, LatLng latLng, String title, String status, String icon) {
         this.id = id;
         this.latLng = latLng;
         this.title = title;
         this.icon = icon;
+        this.status = status;
     }
 
     public LatLng getLatLng() {
@@ -53,6 +56,10 @@ public class MarkerData {
     public MarkerData setId(String id) {
         this.id = id;
         return this;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     @Override
