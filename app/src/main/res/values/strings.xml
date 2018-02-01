@@ -189,6 +189,12 @@
     <string name="error_failed_to_connect">Error trying to connect to the server</string>
     <string name="error_time_out">Exceeded the waiting time, try again</string>
     <string name="message_change_password_successful">The password was changed correctly</string>
+    <string name="key_preference_language">key_preference_language</string>
 
-
+    <string name="language_default">English</string>
+    <string name="sound_default">sound_default</string>
+    <string name="title_language_change">Language change</string>
+    <string name="message_language_change">To change the language the application must restart. Do you want to do it now?</string>
+    <string name="action_positive_change_language">restart</string>
+    <string name="action_negative_change_language">later</string>
 </resources>

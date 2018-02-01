@@ -245,8 +245,31 @@ public class ChaskifySession {
         mSettingsRestClient.updateSettingsPush(enable, callbackSuccess);
     }
 
-    public void updateSettingsSound(String sound, ApiCallbackSuccess callback) throws TokenNotFoundException {
-        mSettingsRestClient.updateSettingsSound(sound, callback);
+    public void updateSettingsSound(final String sound, final ApiCallbackSuccess callback) throws TokenNotFoundException {
+        ApiCallbackSuccess callbackSuccess = new ApiCallbackSuccess() {
+            @Override
+            public void onSuccess() {
+                mSettingsRestClient.updateSettingsSound(sound, callback);
+                callback.onSuccess();
+            }
+
+            @Override
+            public void onNetworkError(Exception e) {
+                callback.onNetworkError(e);
+            }
+
+            @Override
+            public void onChaskifyError(Exception e) {
+                callback.onChaskifyError(e);
+            }
+
+            @Override
+            public void onUnexpectedError(Exception e) {
+                callback.onUnexpectedError(e);
+            }
+        };
+
+
     }
 
     public void updateImageProfile(String base64, ApiCallback<String> callback) {

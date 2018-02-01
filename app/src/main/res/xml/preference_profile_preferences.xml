@@ -40,16 +40,23 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/title_preference">
-        <Preference
-            android:summary="default"
+        <ListPreference
+            android:defaultValue="@string/language_default"
+            android:entries="@array/array_language_entries"
+            android:entryValues="@array/array_language_values"
+            android:key="@string/key_preference_language"
+            android:summary="@string/language_default"
             android:title="@string/title_preference_language" />
         <SwitchPreference
             android:key="@string/key_preference_enable_push"
             android:title="@string/title_preference_enable_push" />
-        <Preference
+        <ListPreference
+            android:defaultValue="@string/sound_default"
             android:dependency="@string/key_preference_enable_push"
+            android:entries="@array/array_sound_entries"
+            android:entryValues="@array/array_sound_values"
             android:key="@string/key_preference_notifications_sound"
-            android:summary="ring ring"
+            android:summary="@string/sound_default"
             android:title="@string/title_preference_notification_sound" />
     </PreferenceCategory>
 

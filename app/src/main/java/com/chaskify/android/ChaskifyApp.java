@@ -2,10 +2,12 @@ package com.chaskify.android;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.multidex.MultiDexApplication;
 import android.support.v7.app.AppCompatDelegate;
 
+import com.chaskify.android.helper.LocaleManager;
 import com.chaskify.android.push.ExampleNotificationOpenedHandler;
 import com.chaskify.android.push.ExampleNotificationReceivedHandler;
 import com.chaskify.android.ui.activities.MainActivity;
@@ -42,12 +44,17 @@ public class ChaskifyApp extends MultiDexApplication {
         Chaskify.getInstance(getApplicationContext());
     }
 
-    private void clearCache() {
-        Realm realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-        Realm.getDefaultInstance().deleteAll();
-        realm.commitTransaction();
-        realm.close();
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
+        Timber.d("attachBaseContext");
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        LocaleManager.setLocale(this);
+        Timber.d("onConfigurationChanged: " + newConfig.locale.getLanguage());
     }
 
     private void initRealm() {
@@ -98,8 +105,4 @@ public class ChaskifyApp extends MultiDexApplication {
                 .install();
     }
 
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-    }
 }

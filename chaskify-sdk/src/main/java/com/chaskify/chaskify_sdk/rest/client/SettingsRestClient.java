@@ -66,11 +66,11 @@ public class SettingsRestClient extends RestClient<SettingsApi> {
             callback.onChaskifyError(new TokenNotFoundException());
     }
 
-    public void updateSettingsSound(String ringTone, ApiCallbackSuccess callback) throws TokenNotFoundException {
+    public void updateSettingsSound(String ringTone, ApiCallbackSuccess callback) {
         if (mChaskifyCredentials != null)
             updateSettingsSound(ringTone, mChaskifyCredentials.getAccessToken(), callback);
         else
-            throw new TokenNotFoundException();
+            callback.onChaskifyError(new TokenNotFoundException());
     }
 
     private void updateSettingsSound(String sound, String accessToken, final ApiCallbackSuccess callback) {

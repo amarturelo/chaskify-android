@@ -6,5 +6,32 @@
         <item>Remove image</item>
     </string-array>
 
+    <string-array name="array_language_entries">
+        <item>English</item>
+        <item>Spanish</item>
+        <item>Bulgarian</item>
+    </string-array>
+    <string-array name="array_language_values">
+        <item>"en"</item>
+        <item>"es"</item>
+        <item>"bl"</item>
+    </string-array>
+
+    <string-array name="array_sound_entries">
+        <item>Food Alert</item>
+        <item>Beep</item>
+        <item>Boink</item>
+        <item>Drum Loop</item>
+        <item>Food Song</item>
+    </string-array>
+
+    <string-array name="array_sound_values">
+        <item>fb_alert.wav</item>
+        <item>beep1.wav</item>
+        <item>boink1.wav</item>
+        <item>drum_loop.wav</item>
+        <item>food_song.wav</item>
+    </string-array>
+
 
 </resources>

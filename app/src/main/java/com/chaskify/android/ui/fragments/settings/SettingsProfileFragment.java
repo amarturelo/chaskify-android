@@ -2,8 +2,10 @@ package com.chaskify.android.ui.fragments.settings;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
@@ -17,10 +19,11 @@ import android.widget.Toast;
 import com.annimon.stream.Stream;
 import com.chaskify.android.Chaskify;
 import com.chaskify.android.R;
+import com.chaskify.android.helper.LocaleManager;
 import com.chaskify.android.helper.ToastIfError;
 import com.chaskify.android.looper.BackgroundLooper;
-import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.service.ChaskifyService;
+import com.chaskify.android.ui.activities.LaunchActivity;
 import com.chaskify.android.ui.fragments.ChangePasswordDialogFragment;
 import com.chaskify.android.ui.model.ProfileModel;
 import com.chaskify.android.ui.model.SettingsModel;
@@ -38,7 +41,6 @@ import com.tbruyelle.rxpermissions2.RxPermissions;
 import java.io.ByteArrayOutputStream;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import timber.log.Timber;
 
 /**
@@ -63,9 +65,11 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
     private Preference mPreferenceVehicleLicense;
     private Preference mPreferenceVehicleColor;
 
+    private ListPreference mPreferenceLanguage;
+
     private SwitchPreference mPreferencePushNotifications;
 
-    private Preference mPreferenceNotificationsSound;
+    private ListPreference mPreferenceNotificationsSound;
 
     private ProfilePreferenceWidget mProfilePreferenceWidget;
 
@@ -160,8 +164,42 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
 
         mPreferenceNotificationsSound.setOnPreferenceChangeListener((preference, newValue) -> {
             presenter.updateSettingsSound((String) newValue);
-            return false;
+            summarySoundUpdate((String) newValue);
+            return true;
         });
+
+        mPreferenceLanguage.setOnPreferenceChangeListener((preference, newValue) -> {
+            setNewLocale((String) newValue);
+            summaryLanguageUpdate((String) newValue);
+            return true;
+        });
+    }
+
+    private void setNewLocale(String language) {
+        LocaleManager.setNewLocale(getActivity(), language);
+
+        /*Intent i = new Intent(getActivity(), LaunchActivity.class);
+        startActivity(i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+
+        if (restartProcess) {
+            System.exit(0);
+        } else {
+            Toast.makeText(getActivity(), "Activity restarted", Toast.LENGTH_SHORT).show();
+        }*/
+
+        new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.title_language_change)
+                .setMessage(R.string.message_language_change)
+                .setPositiveButton(R.string.action_positive_change_language, (dialog, which) -> restartApp())
+                .setNegativeButton(R.string.action_negative_change_language, (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
+    private void restartApp() {
+        Intent i = new Intent(getActivity(), LaunchActivity.class);
+        startActivity(i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
+
+        System.exit(0);
     }
 
     private void initComponents() {
@@ -172,8 +210,28 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
         mPreferenceVehicleLicense = findPreference(getResources().getString(R.string.key_preference_vehicle_license));
         mPreferenceVehicleColor = findPreference(getResources().getString(R.string.key_preference_vehicle_color));
         mPreferencePushNotifications = (SwitchPreference) findPreference(getResources().getString(R.string.key_preference_enable_push));
-        mPreferenceNotificationsSound = findPreference(getResources().getString(R.string.key_preference_notifications_sound));
+        mPreferenceNotificationsSound = (ListPreference) findPreference(getResources().getString(R.string.key_preference_notifications_sound));
+        summarySoundUpdate(null);
+        mPreferenceLanguage = (ListPreference) findPreference(getResources().getString(R.string.key_preference_language));
+        summaryLanguageUpdate(null);
+
         mProfilePreferenceWidget = (ProfilePreferenceWidget) findPreference(getResources().getString(R.string.key_preference_profile));
+    }
+
+    private void summaryLanguageUpdate(String newValue) {
+        for (int i = 0; i < mPreferenceLanguage.getEntryValues().length; i++) {
+            if (mPreferenceLanguage.getEntryValues()[i].equals(newValue != null ? newValue : mPreferenceLanguage.getValue())) {
+                mPreferenceLanguage.setSummary(mPreferenceLanguage.getEntries()[i]);
+            }
+        }
+    }
+
+    private void summarySoundUpdate(String newValue) {
+        for (int i = 0; i < mPreferenceNotificationsSound.getEntryValues().length; i++) {
+            if (mPreferenceNotificationsSound.getEntryValues()[i].equals(newValue != null ? newValue : mPreferenceNotificationsSound.getValue())) {
+                mPreferenceNotificationsSound.setSummary(mPreferenceNotificationsSound.getEntries()[i]);
+            }
+        }
     }
 
     @Override
