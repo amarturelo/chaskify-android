@@ -90,15 +90,15 @@ public class MapboxAdapter extends MapboxMapMeAdapter {
 
     public void update(List<MarkerData> newMarkers) {
         Timber.d("update " + newMarkers);
-        /*MarkerDiffCallback callback = new MarkerDiffCallback(this.markers, newMarkers);
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(callback);*/
+        MarkerDiffCallback callback = new MarkerDiffCallback(this.markers, newMarkers);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(callback);
 
         this.markers.clear();
         this.markers.addAll(newMarkers);
 
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
 
-        //diffResult.dispatchUpdatesTo(this);
+        diffResult.dispatchUpdatesTo(this);
     }
 
 }

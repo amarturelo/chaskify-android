@@ -90,7 +90,8 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     public void putNewBundle(Bundle newBundle) {
         super.putNewBundle(newBundle);
         mFilter = newBundle.getParcelableArrayList(ARG_FILTER);
-        presenter.tasks(mFilter);
+        if (mapboxMap != null)
+            presenter.tasks(mFilter);
     }
 
     private void initDiscreteScrollView() {
@@ -294,7 +295,10 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     @Override
     public void onMapReady(MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
+
         mMapboxAdapter.attach(mapFragment.getView(), this.mapboxMap);
+
+        presenter.tasks(mFilter);
     }
 
     @Override
