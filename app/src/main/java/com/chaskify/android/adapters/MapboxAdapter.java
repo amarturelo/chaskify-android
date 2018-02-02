@@ -21,6 +21,7 @@ import nz.co.trademe.mapme.annotations.AnnotationFactory;
 import nz.co.trademe.mapme.annotations.MapAnnotation;
 import nz.co.trademe.mapme.annotations.MarkerAnnotation;
 import nz.co.trademe.mapme.mapbox.MapboxMapMeAdapter;
+import timber.log.Timber;
 
 public class MapboxAdapter extends MapboxMapMeAdapter {
 
@@ -28,6 +29,7 @@ public class MapboxAdapter extends MapboxMapMeAdapter {
 
     public MapboxAdapter(@NonNull Context context) {
         super(context);
+        Timber.tag(MapboxAdapter.class.getSimpleName());
         this.markers = new ArrayList<>();
     }
 
@@ -91,6 +93,7 @@ public class MapboxAdapter extends MapboxMapMeAdapter {
     }
 
     public void update(List<MarkerData> newMarkers) {
+        Timber.d("update " + newMarkers);
         MarkerDiffCallback callback = new MarkerDiffCallback(this.markers, newMarkers);
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(callback);
 

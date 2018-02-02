@@ -77,8 +77,8 @@ public class MarkerData {
 
         MarkerData that = (MarkerData) o;
 
-        if (selected != that.selected) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (status != null ? !status.equals(that.status) : that.status != null) return false;
         if (latLng != null ? !latLng.equals(that.latLng) : that.latLng != null) return false;
         if (title != null ? !title.equals(that.title) : that.title != null) return false;
         return icon != null ? icon.equals(that.icon) : that.icon == null;
@@ -87,10 +87,10 @@ public class MarkerData {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (latLng != null ? latLng.hashCode() : 0);
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (icon != null ? icon.hashCode() : 0);
-        result = 31 * result + (selected ? 1 : 0);
         return result;
     }
 }

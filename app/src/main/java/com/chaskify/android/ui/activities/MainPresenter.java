@@ -3,6 +3,7 @@ package com.chaskify.android.ui.activities;
 import com.annimon.stream.Stream;
 import com.chaskify.android.helper.MethodCallHelper;
 import com.chaskify.android.helper.LogIfError;
+import com.chaskify.android.helper.ToastIfError;
 import com.chaskify.android.looper.BackgroundLooper;
 import com.chaskify.android.shared.BasePresenter;
 import com.chaskify.android.ui.model.TaskCalendarItemModel;
@@ -74,6 +75,11 @@ public class MainPresenter extends BasePresenter<MainContract.View>
                 .filter(value -> value instanceof DateFilter)
                 .findFirst()
                 .ifPresent(filter -> methodCallHelper.getTasksByDate(((DateFilter) filter).getDate())
+                        .continueWith(task -> {
+                            if (task.isFaulted())
+                                view.showError(task.getError());
+                            return task;
+                        })
                         .continueWith(new LogIfError()));
     }
 

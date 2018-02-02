@@ -127,8 +127,10 @@ public class ChaskifySession {
                     callback.onUnexpectedError(e);
             }
         };
-
-        mDriverRestClient.onDuty(callbackSuccess);
+        if (mState != STATE.ON_DUTY)
+            mDriverRestClient.onDuty(callbackSuccess);
+        else
+            callback.onSuccess();
     }
 
     public void offDuty(final ApiCallbackSuccess callback) {
@@ -161,8 +163,10 @@ public class ChaskifySession {
                     callback.onUnexpectedError(e);
             }
         };
-
-        mDriverRestClient.offDuty(callbackSuccess);
+        if (mState != STATE.OFF_DUTY)
+            mDriverRestClient.offDuty(callbackSuccess);
+        else
+            callback.onSuccess();
     }
 
     public LoginRestClient getLoginRestClient() {

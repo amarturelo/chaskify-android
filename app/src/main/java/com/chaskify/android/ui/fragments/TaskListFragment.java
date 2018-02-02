@@ -168,7 +168,6 @@ public class TaskListFragment extends BaseFragment implements TaskListContract.V
 
     @Override
     public void onRefresh() {
-        //TODO este metodo tiene q decirle a la actividad padre q actualice ya que es ella la que tiene la responsabilidad
         if (mOnListenedTaskListFragment != null)
             mOnListenedTaskListFragment.onRefresh();
     }

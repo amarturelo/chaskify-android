@@ -22,7 +22,16 @@ public class DutyPresenter extends BasePresenter<DutyContract.View>
     @Override
     public void bindView(@NonNull DutyContract.View view) {
         super.bindView(view);
-        view.renderDutyStatus(mChaskifySession.getState() == ChaskifySession.STATE.ON_DUTY);
+
+        switch (mChaskifySession.getState()) {
+            case ON_DUTY:
+                onDuty();
+                break;
+            case OFF_DUTY:
+                offDuty();
+                break;
+        }
+
     }
 
     @Override
@@ -44,17 +53,17 @@ public class DutyPresenter extends BasePresenter<DutyContract.View>
 
     @Override
     public void onNetworkError(Exception e) {
-        view.renderDutyStatus(mChaskifySession.getState() == ChaskifySession.STATE.ON_DUTY);
+        view.offDuty();
     }
 
     @Override
     public void onChaskifyError(Exception e) {
-        view.renderDutyStatus(mChaskifySession.getState() == ChaskifySession.STATE.ON_DUTY);
+        view.offDuty();
     }
 
     @Override
     public void onUnexpectedError(Exception e) {
-        view.renderDutyStatus(mChaskifySession.getState() == ChaskifySession.STATE.ON_DUTY);
+        view.offDuty();
     }
 
 }

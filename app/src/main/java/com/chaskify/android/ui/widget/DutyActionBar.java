@@ -31,29 +31,19 @@ public class DutyActionBar extends LinearLayout implements DutyContract.View {
     private DutyPresenter presenter;
 
     @Override
-    public void renderDutyStatus(boolean isDuty) {
-        mActionDuty.setChecked(isDuty);
-
-        mActionDuty.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked)
-                presenter.onDuty();
-            else
-                presenter.offDuty();
-        });
-    }
-
-    @Override
     public void showError(Throwable throwable) {
         ToastIfError.showError(getContext(), (Exception) throwable);
     }
 
     @Override
     public void onDuty() {
+        mActionDuty.setChecked(true);
         ChaskifyService.start(getContext(), Chaskify.getInstance().getDefaultSession().get().getCredentials().getDriverId());
     }
 
     @Override
     public void offDuty() {
+        mActionDuty.setChecked(false);
         ChaskifyService.stop(getContext());
     }
 
@@ -105,9 +95,15 @@ public class DutyActionBar extends LinearLayout implements DutyContract.View {
 
         Chaskify.getInstance().getDefaultSession().ifPresent(chaskifySession -> {
             presenter = new DutyPresenter(chaskifySession);
-
+            mActionDuty.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked)
+                    presenter.onDuty();
+                else
+                    presenter.offDuty();
+            });
             presenter.bindView(DutyActionBar.this);
         });
+
 
     }
 

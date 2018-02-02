@@ -15,6 +15,7 @@ import com.chaskify.android.R;
 import com.chaskify.android.adapters.MapboxAdapter;
 import com.chaskify.android.adapters.TaskSnapListAdapter;
 import com.chaskify.android.adapters.listened.OnItemListened;
+import com.chaskify.android.helper.ToastIfError;
 import com.chaskify.android.navigation.Navigator;
 import com.chaskify.android.ui.base.BaseFragment;
 import com.chaskify.android.ui.model.MarkerData;
@@ -59,6 +60,7 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
 
     public TaskMapFragment() {
         // Required empty public constructor
+        Timber.tag(this.getClass().getSimpleName());
     }
 
 
@@ -132,13 +134,11 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
             // Create fragment
             final FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-            LatLng patagonia = new LatLng(-52.6885, -70.1395);
 
             // Build mapboxMap
             MapboxMapOptions options = new MapboxMapOptions();
             options.styleUrl(Style.MAPBOX_STREETS);
             options.camera(new CameraPosition.Builder()
-                    .target(patagonia)
                     .zoom(9)
                     .build());
 
@@ -222,6 +222,8 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
 
     @Override
     public void renderTaskListView(List<TaskItemSnapModel> taskItemModels) {
+        Timber.d("renderTaskListView " + taskItemModels.toString());
+
         mMapboxAdapter.update(Stream.of(taskItemModels)
                 .filter(value -> !value.getStatus().equals("CANCELED"))
                 .map(taskItemSnapModel -> new MarkerData(taskItemSnapModel.getTaskId()
@@ -249,6 +251,7 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     @Override
     public void showError(Throwable throwable) {
         Timber.d(throwable);
+        ToastIfError.showError(getContext(), (Exception) throwable);
         Toast.makeText(getContext(), throwable.toString(), Toast.LENGTH_LONG).show();
     }
 
@@ -285,6 +288,9 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     @Override
     public void onMapReady(MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
+
+        Timber.d("onMapReady");
+
         mMapboxAdapter.attach(mapFragment.getView(), this.mapboxMap);
     }
 

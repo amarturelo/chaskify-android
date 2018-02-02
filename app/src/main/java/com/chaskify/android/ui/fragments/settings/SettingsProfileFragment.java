@@ -203,8 +203,6 @@ public class SettingsProfileFragment extends PreferenceFragment implements Setti
     private void restartApp() {
         Intent i = new Intent(getActivity(), LaunchActivity.class);
         startActivity(i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
-
-        System.exit(0);
     }
 
     private void initComponents() {

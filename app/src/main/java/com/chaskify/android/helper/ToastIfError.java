@@ -10,6 +10,7 @@ import com.fxn.cue.enums.Type;
 
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 
 /**
  * Created by alberto on 31/01/18.
@@ -22,7 +23,7 @@ public class ToastIfError {
                 .setType(Type.DANGER)
                 .setDuration(Duration.LONG)
                 .setGravity(Gravity.BOTTOM);
-        if (e instanceof ConnectException)
+        if (e instanceof ConnectException || e instanceof UnknownHostException)
             cue.setMessage(context.getResources().getString(R.string.error_failed_to_connect));
         else if (e instanceof SocketTimeoutException)
             cue.setMessage(context.getResources().getString(R.string.error_time_out));
