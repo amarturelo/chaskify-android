@@ -99,10 +99,10 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
                 break;
         }
 
-        if (taskItemModel.getStatus().equals("CANCELED")) {
+        /*if (taskItemModel.getStatus().equals("CANCELED")) {
             mTaskItemModels.remove(position);
             notifyItemRemoved(position);
-        }
+        }*/
     }
 
     @Override

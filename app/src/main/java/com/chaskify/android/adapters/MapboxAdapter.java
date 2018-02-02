@@ -21,6 +21,7 @@ import nz.co.trademe.mapme.annotations.AnnotationFactory;
 import nz.co.trademe.mapme.annotations.MapAnnotation;
 import nz.co.trademe.mapme.annotations.MarkerAnnotation;
 import nz.co.trademe.mapme.mapbox.MapboxMapMeAdapter;
+import nz.co.trademe.mapme.mapbox.MapboxMarkerAnnotation;
 import timber.log.Timber;
 
 public class MapboxAdapter extends MapboxMapMeAdapter {
@@ -42,13 +43,8 @@ public class MapboxAdapter extends MapboxMapMeAdapter {
 
     @Override
     public void onBindAnnotation(MapAnnotation mapAnnotation, int position, Object payload) {
-        if (mapAnnotation instanceof MarkerAnnotation) {
+        if (mapAnnotation instanceof MapboxMarkerAnnotation) {
             MarkerData item = this.markers.get(position);
-
-            if (item.getStatus().equals("CANCELED")) {
-                markers.remove(position);
-                notifyItemRemoved(position);
-            }
         }
     }
 
@@ -94,12 +90,15 @@ public class MapboxAdapter extends MapboxMapMeAdapter {
 
     public void update(List<MarkerData> newMarkers) {
         Timber.d("update " + newMarkers);
-        MarkerDiffCallback callback = new MarkerDiffCallback(this.markers, newMarkers);
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(callback);
+        /*MarkerDiffCallback callback = new MarkerDiffCallback(this.markers, newMarkers);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(callback);*/
 
         this.markers.clear();
         this.markers.addAll(newMarkers);
-        diffResult.dispatchUpdatesTo(this);
+
+        notifyDataSetChanged();
+
+        //diffResult.dispatchUpdatesTo(this);
     }
 
 }

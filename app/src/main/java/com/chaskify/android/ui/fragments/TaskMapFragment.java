@@ -24,6 +24,7 @@ import com.chaskify.data.realm.cache.impl.TaskCacheImpl;
 import com.chaskify.data.repositories.TaskRepositoryImpl;
 import com.chaskify.domain.filter.Filter;
 import com.chaskify.domain.interactors.TaskInteractor;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.constants.Style;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -236,6 +237,12 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
         mTaskSnapListAdapter.update(Stream.of(taskItemModels)
                 .filter(value -> !value.getStatus().equals("CANCELED"))
                 .toList());
+
+        /*if (this.mapboxMap != null) {
+            Timber.d("paso por aca");
+            mMapboxAdapter.attach(mapFragment.getView(), this.mapboxMap);
+        }
+*/
     }
 
     @Override
@@ -252,7 +259,6 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     public void showError(Throwable throwable) {
         Timber.d(throwable);
         ToastIfError.showError(getContext(), (Exception) throwable);
-        Toast.makeText(getContext(), throwable.toString(), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -288,9 +294,6 @@ public class TaskMapFragment extends BaseFragment implements DiscreteScrollView.
     @Override
     public void onMapReady(MapboxMap mapboxMap) {
         this.mapboxMap = mapboxMap;
-
-        Timber.d("onMapReady");
-
         mMapboxAdapter.attach(mapFragment.getView(), this.mapboxMap);
     }
 
