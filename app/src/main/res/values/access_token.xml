@@ -1,0 +1,6 @@
+<resources>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBrkonx91LAJiqmqv7xFfUnXSA8mZePVS8</string>
+    <string name="ACCOUNT_TYPE" templateMergeStrategy="preserve" translatable="false">com.chaskify.android</string>
+    <string name="mapbox_maps_key" templateMergeStrategy="preserve" translatable="false">pk.eyJ1IjoiYW1hcnR1cmVsbyIsImEiOiJjamF3eDRzczU2MGxmMzNyemhvczd2emFiIn0.W_-_ezzwMoNOMFV9rsIszg</string>
+    <string name="bugsee" templateMergeStrategy="preserve" translatable="false">ffdfa3d0-b5ee-4e3a-9361-740851bc4d13</string>
+</resources>

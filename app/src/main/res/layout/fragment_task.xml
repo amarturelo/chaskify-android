@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="utf-8"?><!--<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/chaskify_bg">-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:divider="?android:listDivider"
+    android:orientation="vertical"
+    android:showDividers="middle">
+
+
+    <LinearLayout
+        android:id="@+id/form_task_actions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/padding_bottom_button_sheets"
+        android:paddingLeft="@dimen/padding_left_button_sheets"
+        android:paddingRight="@dimen/padding_right_button_sheets"
+        android:paddingTop="24dp">
+
+        <LinearLayout
+            android:id="@+id/form_task_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/task_status"
+                    android:layout_width="4dp"
+                    android:layout_height="35dp"
+                    android:background="@color/task_assigned"
+                    android:orientation="horizontal" />
+
+                <TextView
+                    android:id="@+id/task_order_number"
+                    style="@style/Base.TextAppearance.AppCompat.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/task_status"
+                    android:paddingLeft="4dp"
+                    android:textColor="@color/task_assigned"
+                    android:textSize="24sp"
+                    tools:text="#1145" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="8dp">
+
+                    <TextView
+                        android:id="@+id/task_type_color"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_gravity="center_vertical"
+                        tools:background="@drawable/bg_task_type_pickup" />
+
+                    <TextView
+                        android:id="@+id/task_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:drawableLeft="@drawable/bg_task_type_pickup"
+                        android:paddingLeft="4dp"
+                        android:textAllCaps="true"
+                        android:textColor="@android:color/black"
+                        tools:text="pickup" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <LinearLayout
+                    android:id="@+id/form_task_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="4dp">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:tint="@color/grey"
+                            app:srcCompat="@drawable/ic_event_black_24dp" />
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/task_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="16dp"
+                        android:textSize="16sp"
+                        tools:text="Saturday, 9th April 2016" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/form_task_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="4dp">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_gravity="center_vertical"
+                            android:tint="@color/grey"
+                            app:srcCompat="@drawable/ic_time_black_24dp" />
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/task_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="16dp"
+                        android:textSize="16sp"
+                        tools:text="11 am" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/form_task_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="4dp">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_gravity="center_vertical"
+                            android:tint="@color/grey"
+                            app:srcCompat="@drawable/ic_place_black_24dp" />
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/task_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:autoLink="map"
+                        android:paddingLeft="16dp"
+                        android:textSize="16sp"
+                        tools:text="Blue Jasmine Restaurant, South Jakarta" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <com.chaskify.android.ui.widget.TaskActionWidget
+                android:id="@+id/task_action_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/form_task_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/padding_bottom_button_sheets"
+                android:paddingLeft="@dimen/padding_left_button_sheets"
+                android:paddingRight="@dimen/padding_right_button_sheets">
+
+                <LinearLayout
+                    android:id="@+id/form_task_header_client"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <LinearLayout
+                            android:id="@+id/form_task_client_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="4dp">
+
+                            <FrameLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical">
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:tint="@color/grey"
+                                    app:srcCompat="@drawable/ic_person_outline_black_24dp" />
+
+                            </FrameLayout>
+
+                            <TextView
+                                android:id="@+id/task_client_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:paddingLeft="16dp"
+                                android:textSize="16sp"
+                                tools:text="Arismayda Dorado" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/form_task_client_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="4dp">
+
+                            <FrameLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical">
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:tint="@color/grey"
+                                    app:srcCompat="@drawable/ic_phone_black_24dp" />
+
+                            </FrameLayout>
+
+                            <TextView
+                                android:id="@+id/task_client_number"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:autoLink="phone"
+                                android:paddingLeft="16dp"
+                                android:textSize="16sp"
+                                tools:text="+19546825198" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/form_task_client_mail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="4dp">
+
+                            <FrameLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical">
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:tint="@color/grey"
+                                    app:srcCompat="@drawable/ic_mail_black_24dp" />
+
+                            </FrameLayout>
+
+                            <TextView
+                                android:id="@+id/task_client_mail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:autoLink="email"
+                                android:paddingLeft="16dp"
+                                android:textSize="16sp"
+                                tools:text="arismayda.dorado@gmail.com" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/form_task_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/padding_bottom_button_sheets"
+                android:paddingLeft="@dimen/padding_left_button_sheets"
+                android:paddingRight="@dimen/padding_right_button_sheets"
+                android:paddingTop="8dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="4dp">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_gravity="center_vertical"
+                            android:tint="@color/grey"
+                            app:srcCompat="@drawable/ic_description_black_24dp" />
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/title_task_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:autoLink="email"
+                        android:paddingLeft="16dp"
+                        android:text="@string/title_task_description"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/task_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/large_text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/form_task_way_points"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/padding_bottom_button_sheets"
+                android:paddingLeft="@dimen/padding_left_button_sheets"
+                android:paddingRight="@dimen/padding_right_button_sheets"
+                android:paddingTop="8dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="4dp">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center_vertical"
+                            android:tint="@color/grey"
+                            app:srcCompat="@drawable/ic_way_points" />
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/task_way_points"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:autoLink="email"
+                        android:paddingLeft="16dp"
+                        android:text="Waypoints"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/task_way_points_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:nestedScrollingEnabled="false"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/form_task_history"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/padding_bottom_button_sheets"
+                android:paddingLeft="@dimen/padding_left_button_sheets"
+                android:paddingRight="@dimen/padding_right_button_sheets"
+                android:paddingTop="8dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="4dp">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_gravity="center_vertical"
+                            android:tint="@color/grey"
+                            app:srcCompat="@drawable/ic_history_black_24dp" />
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/task_history"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:autoLink="email"
+                        android:paddingLeft="16dp"
+                        android:text="@string/title_task_history"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/task_history_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:nestedScrollingEnabled="false"
+                    android:padding="8dp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+
+</LinearLayout><!--
+</android.support.v4.widget.NestedScrollView>-->

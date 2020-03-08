@@ -1,0 +1,409 @@
+#login
+http://customer.chaskify.com/api/login?driver_id=amarturelo&password=demo&remember=on&device_id=86ba6653-00d5-4008-8025-bcd33a8d3a21&device_platform=Android&lang_id=es&token=50e6136270e33c7ce418e9c9581b4d18
+
+#Disponible 1-2
+http://customer.chaskify.com/api/ChangeDutyStatus?onduty=1&lang_id=es&token=50e6136270e33c7ce418e9c9581b4d18
+
+#Calendario rango de fecha
+http://customer.chaskify.com/api/CalendarTask/?token=50e6136270e33c7ce418e9c9581b4d18&start=2017-11-27&end=2018-01-08&timeZone=300
+
+#Listar notificaciones
+http://customer.chaskify.com/api/GetNotifications?timeZone=300&lang_id=es&token=50e6136270e33c7ce418e9c9581b4d18
+
+respuesta success
+{
+    "code": 1,
+    "msg": "OK",
+    "details": [
+        {
+            "push_id": "2096",
+            "customer_id": "33",
+            "device_platform": "Android",
+            "device_id": "86ba6653-00d5-4008-8025-bcd33a8d3a21",
+            "push_title": "ASSIGN TASK",
+            "push_message": "You have new assign task 3643",
+            "push_type": "task",
+            "actions": "ASSIGN_TASK",
+            "mStatus": "process",
+            "json_response": "{\"success\":200}",
+            "driver_id": "175",
+            "task_id": "3643",
+            "date_created": "Dic 04,2017 14:00:40",
+            "date_process": "2017-12-04 19:00:43",
+            "ip_address": "172.31.0.231",
+            "is_read": "2",
+            "message": null
+        }
+    ]
+}
+
+
+
+#Detalles de una tarea
+http://customer.chaskify.com/api/TaskDetails?task_id=3643&timeZone=300&jsonDate=2017-12-05T08:43:25.808Z&lang_id=es&token=50e6136270e33c7ce418e9c9581b4d18
+
+respuesta error
+{
+    "code": 2,
+    "msg": "Lo sentimos pero esta tarea ha sido asignada a otros",
+    "details": ""
+}
+
+#Borrar tareas
+http://customer.chaskify.com/api/clearNofications?undefined&lang_id=es&token=50e6136270e33c7ce418e9c9581b4d18
+
+#Tareas en rango de fecha
+http://customer.chaskify.com/api/getTaskByDate?date=2017/12/05&onduty=1&timeZone=300&lang_id=es&token=50e6136270e33c7ce418e9c9581b4d18
+
+respuesta
+{
+    "code": 2,
+    "msg": "No hay Tareas para hoy",
+    "details": ""
+}
+
+#Get notifications
+http://customer.chaskify.com/api/GetNotifications?timeZone=300&lang_id=es&token=50e6136270e33c7ce418e9c9581b4d18
+
+respuesta con cosa
+
+{
+    "code": 1,
+    "msg": "OK",
+    "details": [
+        {
+            "push_id": "2103",
+            "customer_id": "164",
+            "device_platform": "Android",
+            "device_id": "86ba6653-00d5-4008-8025-bcd33a8d3a21",
+            "push_title": "Otro titulo",
+            "push_message": "Otro titulo",
+            "push_type": "campaign",
+            "actions": "private",
+            "mStatus": "process",
+            "json_response": "{\"success\":200}",
+            "driver_id": "174",
+            "task_id": "0",
+            "date_created": "Dic 05,2017 3:48:03",
+            "date_process": "2017-12-05 08:48:07",
+            "ip_address": "172.31.0.231",
+            "is_read": "2",
+            "message": null
+        },
+        {
+            "push_id": "2102",
+            "customer_id": "164",
+            "device_platform": "Android",
+            "device_id": "86ba6653-00d5-4008-8025-bcd33a8d3a21",
+            "push_title": "Titulo del mensaje",
+            "push_message": "Cuerpo del mensaje",
+            "push_type": "campaign",
+            "actions": "private",
+            "mStatus": "process",
+            "json_response": "{\"success\":200}",
+            "driver_id": "174",
+            "task_id": "0",
+            "date_created": "Dic 05,2017 3:46:23",
+            "date_process": "2017-12-05 08:46:27",
+            "ip_address": "172.31.0.231",
+            "is_read": "2",
+            "message": null
+        },
+        {
+            "push_id": "2085",
+            "customer_id": "164",
+            "device_platform": "Android",
+            "device_id": "86ba6653-00d5-4008-8025-bcd33a8d3a21",
+            "push_title": "asd",
+            "push_message": "asd",
+            "push_type": "campaign",
+            "actions": "private",
+            "mStatus": "process",
+            "json_response": "{\"success\":200}",
+            "driver_id": "174",
+            "task_id": "0",
+            "date_created": "Dic 04,2017 13:16:18",
+            "date_process": "2017-12-04 18:16:20",
+            "ip_address": "172.31.0.231",
+            "is_read": "2",
+            "message": null
+        },
+        {
+            "push_id": "2084",
+            "customer_id": "164",
+            "device_platform": "Android",
+            "device_id": "86ba6653-00d5-4008-8025-bcd33a8d3a21",
+            "push_title": "asda",
+            "push_message": "asd",
+            "push_type": "campaign",
+            "actions": "private",
+            "mStatus": "process",
+            "json_response": "{\"success\":200}",
+            "driver_id": "174",
+            "task_id": "0",
+            "date_created": "Dic 04,2017 13:09:46",
+            "date_process": "2017-12-04 18:09:51",
+            "ip_address": "172.31.0.231",
+            "is_read": "2",
+            "message": null
+        }
+    ]
+}
+
+respuesta vacia
+{
+    "code": 2,
+    "msg": "Sin notificaciones",
+    "details": ""
+}
+
+#configuraciones
+http://customer.chaskify.com/api/GetSettings?&lang_id=es&token=50e6136270e33c7ce418e9c9581b4d18
+
+respuesta
+{
+    "code": 1,
+    "msg": "OK",
+    "details": {
+        "enabled_push": "1",
+        "language": {
+            "en": "English"
+        }
+    }
+}
+
+#profile
+http://customer.chaskify.com/api/GetProfile?&lang_id=es&token=50e6136270e33c7ce418e9c9581b4d18
+
+respuesta
+{
+    "code": 1,
+    "msg": "OK",
+    "details": {
+        "team_name": "Metropolis Team",
+        "email": "amarturelo@gmail.com",
+        "phone": "+5352950107",
+        "transport_type_id": "truck",
+        "transport_type_id2": "Truck",
+        "transport_description": "Hunday Santa Fe, 2016",
+        "licence_plate": "W456t",
+        "color": "Red",
+        "driver_id": "175",
+        "driver_picture": ""
+    }
+}
+
+#update profile
+http://customer.chaskify.com/api/UpdateProfile?phone=%2B5352950107&image_filename1=https://s3-us-west-2.amazonaws.com/chaskify-backend-uploads/picture_174-23659001023.png&lang_id=es&token=5ccba8b7b051136d6e588a008e93be9a
+
+#gettask by date
+http://customer.chaskify.com/api/GetTaskByDate?date=2017/12/06&onduty=1&timeZone=300&lang_id=es&token=5ccba8b7b051136d6e588a008e93be9a
+
+respuesta
+{
+    "code": 1,
+    "msg": "OK",
+    "details": [
+        {
+            "task_id": "1515",
+            "customer_id": "154",
+            "task_description": "take the goods in time that is needed for production, it takes 2 tons of cotton and must arrive before 6 am in the morning to St Louis",
+            "trans_type": "pickup",
+            "contact_number": "+19546825198",
+            "email_address": "arismayda.dorado@gmail.com",
+            "customer_name": "Arismayda Dorado",
+            "delivery_date": "2017-12-14 14:00:00",
+            "delivery_address": "11411 SW 45th Mnr, Miramar, Fl 33025",
+            "team_id": "46",
+            "driver_id": "52",
+            "task_lat": "25.965452",
+            "task_lng": "-80.296087",
+            "customer_signature": null,
+            "customer_picture": null,
+            "status": "ASSIGNED",
+            "date_created": "2017-12-14 14:09:46",
+            "date_modified": "2017-12-14 14:09:46",
+            "ip_address": "172.19.0.1",
+            "auto_assign_type": "send_to_all",
+            "assign_started": "2017-12-14 14:09:46",
+            "assignment_status": null,
+            "tags": "",
+            "autoassignment": "0",
+            "order_number": "369",
+            "totalTime": "0",
+            "totalMiles": "0",
+            "delivery_time": "9:00",
+            "status_raw": "ASSIGNED",
+            "trans_type_raw": "pickup",
+            "waypoints": "0"
+        },
+        {
+            "task_id": "1516",
+            "customer_id": "154",
+            "task_description": "Task test 2",
+            "trans_type": "service",
+            "contact_number": "+19546825198",
+            "email_address": "arismayda.dorado@gmail.com",
+            "customer_name": "Arismayda Dorado",
+            "delivery_date": "2017-12-14 15:00:00",
+            "delivery_address": "11411 SW 45th Mnr, Miramar, Fl 33025",
+            "team_id": "46",
+            "driver_id": "52",
+            "task_lat": "25.965452",
+            "task_lng": "-80.296087",
+            "customer_signature": null,
+            "customer_picture": null,
+            "status": "SUCCESSFUL",
+            "date_created": "2017-12-14 14:42:00",
+            "date_modified": "2017-12-14 15:02:41",
+            "ip_address": "172.19.0.1",
+            "auto_assign_type": "send_to_all",
+            "assign_started": "2017-12-14 14:42:00",
+            "assignment_status": null,
+            "tags": "",
+            "autoassignment": "0",
+            "order_number": "546",
+            "totalTime": "0",
+            "totalMiles": "0",
+            "delivery_time": "10:00",
+            "status_raw": "SUCCESSFUL",
+            "trans_type_raw": "service",
+            "waypoints": "0"
+        },
+        {
+            "task_id": "1517",
+            "customer_id": "154",
+            "task_description": "task test number ",
+            "trans_type": "service",
+            "contact_number": "+19546825198",
+            "email_address": "arismayda.dorado@gmail.com",
+            "customer_name": "Arismayda Dorado",
+            "delivery_date": "2017-12-14 15:00:00",
+            "delivery_address": "11411 SW 45th Mnr, Miramar, Fl 33025",
+            "team_id": "46",
+            "driver_id": "52",
+            "task_lat": "25.965452",
+            "task_lng": "-80.296087",
+            "customer_signature": null,
+            "customer_picture": null,
+            "status": "ASSIGNED",
+            "date_created": "2017-12-14 15:19:35",
+            "date_modified": "2017-12-14 15:19:35",
+            "ip_address": "172.19.0.1",
+            "auto_assign_type": "send_to_all",
+            "assign_started": "2017-12-14 15:19:35",
+            "assignment_status": null,
+            "tags": "",
+            "autoassignment": "0",
+            "order_number": "",
+            "totalTime": "0",
+            "totalMiles": "0",
+            "delivery_time": "10:00",
+            "status_raw": "ASSIGNED",
+            "trans_type_raw": "service",
+            "waypoints": "0"
+        },
+        {
+            "task_id": "1518",
+            "customer_id": "154",
+            "task_description": "Message test\r\nnotify me if you receive the message",
+            "trans_type": "service",
+            "contact_number": "+19546825198",
+            "email_address": "arismayda.dorado@gmail.com",
+            "customer_name": "Arismayda Dorado",
+            "delivery_date": "2017-12-14 16:00:00",
+            "delivery_address": "11411 SW 45th Mnr, Miramar, Fl 33025",
+            "team_id": "46",
+            "driver_id": "52",
+            "task_lat": "25.965452",
+            "task_lng": "-80.296087",
+            "customer_signature": null,
+            "customer_picture": null,
+            "status": "SUCCESSFUL",
+            "date_created": "2017-12-14 15:44:18",
+            "date_modified": "2017-12-14 15:59:14",
+            "ip_address": "172.19.0.1",
+            "auto_assign_type": "send_to_all",
+            "assign_started": "2017-12-14 15:44:18",
+            "assignment_status": null,
+            "tags": "",
+            "autoassignment": "0",
+            "order_number": "",
+            "totalTime": "0",
+            "totalMiles": "0",
+            "delivery_time": "11:00",
+            "status_raw": "SUCCESSFUL",
+            "trans_type_raw": "service",
+            "waypoints": "0"
+        },
+        {
+            "task_id": "1520",
+            "customer_id": "154",
+            "task_description": "test checking",
+            "trans_type": "delivery",
+            "contact_number": "+19546825198",
+            "email_address": "arismayda.dorado@gmail.com",
+            "customer_name": "Arismayda Dorado",
+            "delivery_date": "2017-12-14 17:00:00",
+            "delivery_address": "11411 SW 45th Mnr, Miramar, Fl 33025",
+            "team_id": "46",
+            "driver_id": "52",
+            "task_lat": "25.965452",
+            "task_lng": "-80.296087",
+            "customer_signature": null,
+            "customer_picture": null,
+            "status": "ASSIGNED",
+            "date_created": "2017-12-14 21:01:33",
+            "date_modified": "2017-12-14 21:01:33",
+            "ip_address": "172.19.0.1",
+            "auto_assign_type": "send_to_all",
+            "assign_started": "2017-12-14 21:01:33",
+            "assignment_status": null,
+            "tags": "",
+            "autoassignment": "0",
+            "order_number": "",
+            "totalTime": "0",
+            "totalMiles": "0",
+            "delivery_time": "12:00",
+            "status_raw": "ASSIGNED",
+            "trans_type_raw": "delivery",
+            "waypoints": "0"
+        },
+        {
+            "task_id": "1519",
+            "customer_id": "154",
+            "task_description": "task test",
+            "trans_type": "service",
+            "contact_number": "+19546825198",
+            "email_address": "arismayda.dorado@gmail.com",
+            "customer_name": "Arismayda Dorado",
+            "delivery_date": "2017-12-15 02:00:00",
+            "delivery_address": "11411 SW 45th Mnr, Miramar, Fl 33025",
+            "team_id": "46",
+            "driver_id": "52",
+            "task_lat": "25.965452",
+            "task_lng": "-80.296087",
+            "customer_signature": null,
+            "customer_picture": null,
+            "status": "ASSIGNED",
+            "date_created": "2017-12-14 20:54:15",
+            "date_modified": "2017-12-14 20:54:15",
+            "ip_address": "172.19.0.1",
+            "auto_assign_type": "send_to_all",
+            "assign_started": "2017-12-14 20:54:15",
+            "assignment_status": null,
+            "tags": "",
+            "autoassignment": "0",
+            "order_number": "",
+            "totalTime": "0",
+            "totalMiles": "0",
+            "delivery_time": "21:00",
+            "status_raw": "ASSIGNED",
+            "trans_type_raw": "service",
+            "waypoints": "0"
+        }
+    ],
+    "status": "1"
+}
+
+

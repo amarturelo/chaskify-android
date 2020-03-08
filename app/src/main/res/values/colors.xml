@@ -1,6 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#262626</color>
+    <color name="colorPrimaryDark">#083a51</color>
+    <color name="colorAccent">#f37824</color>
+
+    <color name="disable_foreground_grey">#42221f1f</color>
+    <color name="disable_thumb_grey">#1c000000</color>
+    <color name="enable_thumb_green">#46bdbf</color>
+
+    <color name="task_assigned">#f37824</color>
+    <color name="task_accepted">#760076</color>
+    <color name="task_in_route">#0000FF</color>
+    <color name="task_arrived">#32CD32</color>
+    <color name="task_signature">#FFFF00</color>
+    <color name="task_successful">#008000</color>
+
+    <color name="yellow">#f37824</color>
+    <color name="yellow_press">#f45800</color>
+
+    <color name="chaskify_button_text_color">#FFFFFF</color>
+    <color name="chaskify_edit_text_background">#FEFEFE</color>
+
+    <color name="chaskify_bg">#F3F3F4</color>
+    <color name="purple">#673AB7</color>
+    <color name="grey">#757575</color>
+    <color name="task_pending">#757575</color>
+    <color name="task_start">#FFFFFF22</color>
+
+
+    <color name="marker_red">#ef5350</color>
+    <color name="marker_blue">#42A5F5</color>
+    <color name="marker_green">#66BB6A</color>
+    <color name="transparent">#00000000</color>
+    <color name="task_type_service">#CFE7FB</color>
+    <color name="task_type_delivery">#33A17E</color>
+    <color name="task_type_pickup">#2196F3</color>
+    <color name="task_unassigned">#808080</color>
+    <color name="task_canceled">#FF0000</color>
+
 </resources>

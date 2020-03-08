@@ -1,0 +1,658 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/chaskify_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="?android:listDivider"
+        android:orientation="vertical"
+        android:showDividers="middle">
+
+
+        <LinearLayout
+            android:id="@+id/form_task_way_points_actions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding_bottom_button_sheets"
+            android:paddingLeft="@dimen/padding_left_button_sheets"
+            android:paddingRight="@dimen/padding_right_button_sheets"
+            android:paddingTop="24dp">
+
+            <LinearLayout
+                android:id="@+id/form_task_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/task_way_point_status_color"
+                        android:layout_width="4dp"
+                        android:layout_height="35dp"
+                        android:background="@color/task_assigned"
+                        android:orientation="horizontal" />
+
+                    <TextView
+                        android:id="@+id/task_way_point_id"
+                        style="@style/Base.TextAppearance.AppCompat.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/task_way_point_status_color"
+                        android:paddingLeft="4dp"
+                        android:textColor="@color/task_assigned"
+                        android:textSize="24sp"
+                        tools:text="#1145" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingLeft="8dp">
+
+                        <TextView
+                            android:id="@+id/task_type_color"
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:layout_gravity="center_vertical"
+                            android:background="@drawable/bg_task_type_pickup" />
+
+                        <TextView
+                            android:id="@+id/way_point_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:drawableLeft="@drawable/bg_task_type_pickup"
+                            android:paddingLeft="4dp"
+                            android:textAllCaps="true"
+                            android:textColor="@color/purple"
+                            tools:text="pickup" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <LinearLayout
+                        android:id="@+id/form_task_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="4dp">
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:tint="@color/grey"
+                                app:srcCompat="@drawable/ic_event_black_24dp" />
+
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/way_point_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:paddingLeft="16dp"
+                            android:textSize="16sp"
+                            tools:text="Saturday, 9th April 2016" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/form_task_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="4dp">
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center_vertical"
+                                android:tint="@color/grey"
+                                app:srcCompat="@drawable/ic_time_black_24dp" />
+
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/way_point_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:paddingLeft="16dp"
+                            android:textSize="16sp"
+                            tools:text="11 am" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/form_task_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="4dp">
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center_vertical"
+                                android:tint="@color/grey"
+                                app:srcCompat="@drawable/ic_place_black_24dp" />
+
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/way_point_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:autoLink="map"
+                            android:paddingLeft="16dp"
+                            android:textSize="16sp"
+                            tools:text="Blue Jasmine Restaurant, South Jakarta" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <com.chaskify.android.ui.widget.TaskWayPointActionWidget
+                    android:id="@+id/task_way_point_action_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+
+            <!-- <LinearLayout
+                 android:visibility="gone"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:divider="?android:listDivider"
+                 android:orientation="vertical"
+                 android:paddingTop="8dp"
+                 android:showDividers="middle">
+
+
+                 <LinearLayout
+                     android:id="@+id/form_client_phone"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:minHeight="72dp"
+                     android:orientation="horizontal">
+
+                     <FrameLayout
+                         android:layout_width="wrap_content"
+                         android:layout_height="72dp">
+
+                         <ImageView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="center_vertical"
+                             android:tint="@color/colorAccent"
+                             app:srcCompat="@drawable/ic_phone_black_24dp" />
+
+                     </FrameLayout>
+
+                     <TextView
+                         android:id="@+id/task_client_phone"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:autoLink="phone"
+                         android:paddingLeft="32dp"
+                         android:text="+52950107"
+                         android:textSize="16sp" />
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:id="@+id/form_client_mail"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:minHeight="72dp"
+                     android:orientation="horizontal">
+
+
+                     <FrameLayout
+                         android:layout_width="wrap_content"
+                         android:layout_height="72dp">
+
+                         <ImageView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="center_vertical"
+                             android:tint="@color/colorAccent"
+                             app:srcCompat="@drawable/ic_mail_black_24dp" />
+
+                     </FrameLayout>
+
+                     <TextView
+                         android:id="@+id/task_client_mail"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:autoLink="email"
+                         android:paddingLeft="32dp"
+                         android:text="amarturelo@gmail.com"
+                         android:textSize="16sp" />
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:id="@+id/form_client_address"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:minHeight="72dp"
+                     android:orientation="horizontal">
+
+                     <FrameLayout
+                         android:layout_width="wrap_content"
+                         android:layout_height="72dp">
+
+                         <ImageView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="center_vertical"
+                             android:tint="@color/colorAccent"
+                             app:srcCompat="@drawable/ic_place_black_24dp" />
+
+                     </FrameLayout>
+
+                     <TextView
+                         android:id="@+id/task_client_address"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:autoLink="email"
+                         android:paddingLeft="32dp"
+                         android:text="7660 Miramar Parkway Miramar, FL, United states"
+                         android:textSize="16sp" />
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:id="@+id/form_task_description"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:minHeight="72dp"
+                     android:orientation="horizontal">
+
+                     <FrameLayout
+                         android:layout_width="wrap_content"
+                         android:layout_height="72dp">
+
+                         <ImageView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="center_vertical"
+                             android:tint="@color/colorAccent"
+                             android:visibility="invisible"
+                             app:srcCompat="@drawable/ic_place_black_24dp" />
+
+                     </FrameLayout>
+
+                     <TextView
+                         android:id="@+id/task_description"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:autoLink="email"
+                         android:paddingLeft="32dp"
+                         android:text="task test description"
+                         android:textSize="16sp" />
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:id="@+id/form_task_history"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:minHeight="72dp"
+                     android:orientation="horizontal">
+
+                     <FrameLayout
+                         android:layout_width="wrap_content"
+                         android:layout_height="72dp">
+
+                         <ImageView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="center_vertical"
+                             android:tint="@color/colorAccent"
+                             app:srcCompat="@drawable/ic_time_black_24dp" />
+
+                     </FrameLayout>
+
+                     <ListView
+                         android:id="@+id/task_history"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content" />
+                 </LinearLayout>
+
+
+                 <LinearLayout
+                     android:id="@+id/form_client_address1"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:minHeight="72dp"
+                     android:orientation="horizontal">
+
+                     <FrameLayout
+                         android:layout_width="wrap_content"
+                         android:layout_height="72dp">
+
+                         <ImageView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="center_vertical"
+                             android:tint="@color/colorAccent"
+                             app:srcCompat="@drawable/ic_place_black_24dp" />
+
+                     </FrameLayout>
+
+                     <TextView
+                         android:id="@+id/task_client_address1"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:autoLink="email"
+                         android:paddingLeft="32dp"
+                         android:text="7660 Miramar Parkway Miramar, FL, United states"
+                         android:textSize="16sp" />
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:id="@+id/form_client_address2"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:minHeight="72dp"
+                     android:orientation="horizontal">
+
+                     <FrameLayout
+                         android:layout_width="wrap_content"
+                         android:layout_height="72dp">
+
+                         <ImageView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="center_vertical"
+                             android:tint="@color/colorAccent"
+                             app:srcCompat="@drawable/ic_place_black_24dp" />
+
+                     </FrameLayout>
+
+                     <TextView
+                         android:id="@+id/task_client_address2"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:autoLink="email"
+                         android:paddingLeft="32dp"
+                         android:text="7660 Miramar Parkway Miramar, FL, United states"
+                         android:textSize="16sp" />
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:id="@+id/form_client_address3"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:minHeight="72dp"
+                     android:orientation="horizontal">
+
+                     <FrameLayout
+                         android:layout_width="wrap_content"
+                         android:layout_height="72dp">
+
+                         <ImageView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="center_vertical"
+                             android:tint="@color/colorAccent"
+                             app:srcCompat="@drawable/ic_place_black_24dp" />
+
+                     </FrameLayout>
+
+                     <TextView
+                         android:id="@+id/task_client_address3"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:autoLink="email"
+                         android:paddingLeft="32dp"
+                         android:text="7660 Miramar Parkway Miramar, FL, United states"
+                         android:textSize="16sp" />
+                 </LinearLayout>
+
+                 <LinearLayout
+                     android:id="@+id/form_client_address4"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:minHeight="72dp"
+                     android:orientation="horizontal">
+
+                     <FrameLayout
+                         android:layout_width="wrap_content"
+                         android:layout_height="72dp">
+
+                         <ImageView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_gravity="center_vertical"
+                             android:tint="@color/colorAccent"
+                             app:srcCompat="@drawable/ic_place_black_24dp" />
+
+                     </FrameLayout>
+
+                     <TextView
+                         android:id="@+id/task_client_address4"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_gravity="center_vertical"
+                         android:autoLink="email"
+                         android:paddingLeft="32dp"
+                         android:text="7660 Miramar Parkway Miramar, FL, United states"
+                         android:textSize="16sp" />
+                 </LinearLayout>
+             </LinearLayout>
+     -->
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding_bottom_button_sheets"
+            android:paddingLeft="@dimen/padding_left_button_sheets"
+            android:paddingRight="@dimen/padding_right_button_sheets">
+
+            <LinearLayout
+                android:id="@+id/form_task_header_client"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <LinearLayout
+                        android:id="@+id/form_task_client_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="4dp">
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center_vertical"
+                                android:tint="@color/grey"
+                                app:srcCompat="@drawable/ic_person_outline_black_24dp" />
+
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/way_point_client_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:paddingLeft="16dp"
+                            android:textSize="16sp"
+                            tools:text="Arismayda Dorado" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/form_task_client_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="4dp">
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center_vertical"
+                                android:tint="@color/grey"
+                                app:srcCompat="@drawable/ic_phone_black_24dp" />
+
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/way_point_client_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:autoLink="phone"
+                            android:paddingLeft="16dp"
+                            android:textSize="16sp"
+                            tools:text="+19546825198" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/form_task_client_mail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="4dp">
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center_vertical"
+                                android:tint="@color/grey"
+                                app:srcCompat="@drawable/ic_mail_black_24dp" />
+
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/way_point_client_mail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:autoLink="email"
+                            android:paddingLeft="16dp"
+                            android:textSize="16sp"
+                            tools:text="arismayda.dorado@gmail.com" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/form_task_waypoint_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding_bottom_button_sheets"
+            android:paddingLeft="@dimen/padding_left_button_sheets"
+            android:paddingRight="@dimen/padding_right_button_sheets"
+            android:paddingTop="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="4dp">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center_vertical"
+                        android:tint="@color/grey"
+                        app:srcCompat="@drawable/ic_description_black_24dp" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/title_task_waypoint_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:autoLink="email"
+                    android:paddingLeft="16dp"
+                    android:text="@string/title_task_waypoint_description"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/task_waypoint_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="@string/large_text" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

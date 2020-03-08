@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <com.chaskify.android.ui.widget.ProfilePreferenceWidget
+        android:key="@string/key_preference_profile"
+        android:layout="@layout/widget_profile_preference" />
+
+    <PreferenceCategory android:title="@string/title_preference_personal">
+
+        <Preference
+            android:key="@string/key_preference_driver_mail"
+            android:title="@string/title_preference_email" />
+
+        <EditTextPreference
+            android:key="@string/key_preference_driver_phone"
+            android:title="@string/title_preference_contact" />
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/title_preference_vehicle">
+
+        <ListPreference
+            android:entries="@array/vehicle_type"
+            android:entryValues="@array/vehicle_type_values"
+            android:key="@string/key_preference_vehicle_type"
+            android:title="@string/title_preference_vehicle_type" />
+
+        <EditTextPreference
+            android:key="@string/key_preference_vehicle_description"
+            android:title="@string/title_preference_vehicle_description" />
+
+        <EditTextPreference
+            android:key="@string/key_preference_vehicle_license"
+            android:title="@string/title_preference_vehicle_license_plate" />
+
+        <EditTextPreference
+            android:key="@string/key_preference_vehicle_color"
+            android:title="@string/title_preference_vehicle_color" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/title_preference">
+        <ListPreference
+            android:defaultValue="@string/language_default"
+            android:entries="@array/array_language_entries"
+            android:entryValues="@array/array_language_values"
+            android:key="@string/key_preference_language"
+            android:summary="@string/language_default"
+            android:title="@string/title_preference_language" />
+        <SwitchPreference
+            android:key="@string/key_preference_enable_push"
+            android:title="@string/title_preference_enable_push" />
+        <ListPreference
+            android:defaultValue="@string/sound_default"
+            android:dependency="@string/key_preference_enable_push"
+            android:entries="@array/array_sound_entries"
+            android:entryValues="@array/array_sound_values"
+            android:key="@string/key_preference_notifications_sound"
+            android:summary="@string/sound_default"
+            android:title="@string/title_preference_notification_sound" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
